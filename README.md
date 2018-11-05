@@ -30,7 +30,7 @@ git clone  https://github.com/YJmiss/xer-admin.git
 <br>
 
 ```
-2、创建os_admin库,执行 db/os_admin.sql 脚本
+2、创建xry_v1.0库,执行 db/xry_v1.0.sql 脚本
 ```
 <br>
 
