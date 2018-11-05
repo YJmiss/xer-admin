@@ -6,7 +6,7 @@
 彻底解决SQL注入、XSS等一系列安全问题 <br>
 
 ```
-git clone https://github.com/asd821300801/oservice-admin
+git clone  https://github.com/YJmiss/xer-admin.git
 ```
 
 <br><br>
@@ -14,7 +14,7 @@ git clone https://github.com/asd821300801/oservice-admin
 > 2、前端使用 vue-cli + Element 构建
 
 ```
-git clone https://github.com/asd821300801/oservice-admin-vue.git
+git clone https://github.com/YJmiss/xer-admin-vue.git
 ```
 
 <br>
@@ -25,7 +25,7 @@ git clone https://github.com/asd821300801/oservice-admin-vue.git
 
 ```
 1、克隆项目
-git clone https://github.com/asd821300801/oservice-admin
+git clone  https://github.com/YJmiss/xer-admin.git
 ```
 <br>
 
@@ -47,7 +47,7 @@ git clone https://github.com/asd821300801/oservice-admin
 
 详情请访问以下链接：
 
-https://github.com/asd821300801/oservice-admin-vue
+git clone https://github.com/YJmiss/xer-admin-vue.git
 
 
 
