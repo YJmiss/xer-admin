@@ -14,7 +14,7 @@ git clone  https://github.com/YJmiss/xer-admin.git
 > 2、前端使用 vue-cli + Element 构建
 
 ```
-git clone https://github.com/YJmiss/xer-admin-vue.git
+git clone  https://github.com/YJmiss/xry-admin--vue.git
 ```
 
 <br>
@@ -47,7 +47,7 @@ git clone  https://github.com/YJmiss/xer-admin.git
 
 详情请访问以下链接：
 
-git clone https://github.com/YJmiss/xer-admin-vue.git
+git clone https://github.com/YJmiss/xry-admin--vue.git
 
 
 
