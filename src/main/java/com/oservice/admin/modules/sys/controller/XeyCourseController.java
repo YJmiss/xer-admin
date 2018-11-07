@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * 系统用户
+ * 系统用 户
  * 课程表的控制器
  * @author wujunquan
  * @version 1.0
