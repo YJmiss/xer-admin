@@ -6,8 +6,8 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
-import com.oservice.admin.modules.sys.entity.XeyCourseCatEntity;
-import com.oservice.admin.modules.sys.service.XeyCourserCatService;
+import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
+import com.oservice.admin.modules.sys.service.XryCourserCatService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -20,10 +20,10 @@ import java.util.Map;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/xey/course/cat")
-public class XeyCourseCatController extends AbstractController {
+@RequestMapping("/xry/course/cat")
+public class XryCourseCatController extends AbstractController {
     @Resource
-    private XeyCourserCatService xeyCourseCatService;
+    private XryCourserCatService xryCourseCatService;
 
     /**
      * 查询课程列表
@@ -32,9 +32,9 @@ public class XeyCourseCatController extends AbstractController {
      */
     @SysLog("查询课程类目列表")
     @GetMapping("/list")
-    @RequiresPermissions("xey:course:cat:list")
+    @RequiresPermissions("xry:course:cat:list")
     public Result list(@RequestParam Map<String, Object> params){
-        PageUtils page = xeyCourseCatService.queryPage(params);
+        PageUtils page = xryCourseCatService.queryPage(params);
         return Result.ok().put("page", page);
     }
 
@@ -45,10 +45,10 @@ public class XeyCourseCatController extends AbstractController {
      */
     @SysLog("保存课程类目")
     @PostMapping("/save")
-    @RequiresPermissions("xey:course:cat:save")
-    public Result save(@RequestBody XeyCourseCatEntity courseCat){
+    @RequiresPermissions("xry:course:cat:save")
+    public Result save(@RequestBody XryCourseCatEntity courseCat){
         ValidatorUtils.validateEntity(courseCat, AddGroup.class);
-        xeyCourseCatService.save(courseCat);
+        xryCourseCatService.save(courseCat);
         return Result.ok();
     }
 
@@ -58,9 +58,9 @@ public class XeyCourseCatController extends AbstractController {
      * @return
      */
     @GetMapping("/info/{id}")
-    @RequiresPermissions("xey:course:cat:info")
+    @RequiresPermissions("xry:course:cat:info")
     public Result info(@PathVariable("id") Long id){
-        XeyCourseCatEntity courseCat = xeyCourseCatService.queryById(id);
+        XryCourseCatEntity courseCat = xryCourseCatService.queryById(id);
         return Result.ok().put("courseCat", courseCat);
     }
 
@@ -71,10 +71,10 @@ public class XeyCourseCatController extends AbstractController {
      */
     @SysLog("修改课程类目")
     @PostMapping("/update")
-    @RequiresPermissions("xey:course:cat:update")
-    public Result update(@RequestBody XeyCourseCatEntity courseCat){
+    @RequiresPermissions("xry:course:cat:update")
+    public Result update(@RequestBody XryCourseCatEntity courseCat){
         ValidatorUtils.validateEntity(courseCat, UpdateGroup.class);
-        xeyCourseCatService.update(courseCat);
+        xryCourseCatService.update(courseCat);
         return Result.ok();
     }
 
@@ -85,9 +85,9 @@ public class XeyCourseCatController extends AbstractController {
      */
     @SysLog("删除课程类目")
     @PostMapping("/delete")
-    @RequiresPermissions("xey:course:cat:delete")
+    @RequiresPermissions("xry:course:cat:delete")
     public Result delete(@RequestBody Long[] ids){
-        xeyCourseCatService.deleteBatch(ids);
+        xryCourseCatService.deleteBatch(ids);
         return Result.ok();
     }
 }

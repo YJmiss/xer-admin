@@ -1,8 +1,7 @@
 package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.oservice.admin.modules.sys.entity.XeyCourseCatEntity;
-import com.oservice.admin.modules.sys.entity.XeyCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -12,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @version 1.0
  */
 @Mapper
-public interface XeyCourseCatalogDao extends BaseMapper<XeyCourseCatalogEntity> {
+public interface XryCourseCatDao extends BaseMapper<XryCourseCatEntity> {
 	
 	
 

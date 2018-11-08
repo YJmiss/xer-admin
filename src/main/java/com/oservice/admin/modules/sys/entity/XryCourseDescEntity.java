@@ -15,7 +15,7 @@ import java.util.Date;
  * @version 1.0
  */
 @TableName("xry_course_desc")
-public class XeyCourseDescEntity implements Serializable {
+public class XryCourseDescEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 课程ID
