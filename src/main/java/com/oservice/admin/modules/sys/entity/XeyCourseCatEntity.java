@@ -15,7 +15,7 @@ import java.util.Date;
  * @version 1.0
  */
 @TableName("xry_course_cat")
-public class XryCourseCatEntity implements Serializable {
+public class XeyCourseCatEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 类目ID
