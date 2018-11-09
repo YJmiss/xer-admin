@@ -7,8 +7,7 @@ import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
-import com.oservice.admin.modules.sys.service.XryCourserService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Map;
@@ -23,7 +22,7 @@ import java.util.Map;
 @RequestMapping("/xry/course")
 public class XryCourseController extends AbstractController {
     @Resource
-    private XryCourserService xryCourserService;
+    private XryCourseService xryCourseService;
 
     /**
      * 查询课程列表
@@ -34,7 +33,7 @@ public class XryCourseController extends AbstractController {
     @GetMapping("/list")
     /*@RequiresPermissions("xry:course:list")*/
     public Result list(@RequestParam Map<String, Object> params){
-        PageUtils page = xryCourserService.queryPage(params);
+        PageUtils page = xryCourseService.queryPage(params);
         return Result.ok().put("page", page);
     }
 
@@ -48,7 +47,7 @@ public class XryCourseController extends AbstractController {
     /*@RequiresPermissions("xry:course:save")*/
     public Result save(@RequestBody XryCourseEntity course){
         ValidatorUtils.validateEntity(course, AddGroup.class);
-        xryCourserService.save(course);
+        xryCourseService.save(course);
         return Result.ok();
     }
 
@@ -60,7 +59,7 @@ public class XryCourseController extends AbstractController {
     @GetMapping("/info/{id}")
     /*@RequiresPermissions("xry:course:info")*/
     public Result info(@PathVariable("id") Long id){
-        XryCourseEntity course = xryCourserService.queryById(id);
+        XryCourseEntity course = xryCourseService.queryById(id);
         return Result.ok().put("course", course);
     }
 
@@ -74,7 +73,7 @@ public class XryCourseController extends AbstractController {
     /*@RequiresPermissions("xry:course:update")*/
     public Result update(@RequestBody XryCourseEntity course){
         ValidatorUtils.validateEntity(course, UpdateGroup.class);
-        xryCourserService.update(course);
+        xryCourseService.update(course);
         return Result.ok();
     }
 
@@ -87,7 +86,7 @@ public class XryCourseController extends AbstractController {
     @PostMapping("/delete")
    /* @RequiresPermissions("xry:course:delete")*/
     public Result delete(@RequestBody Long[] ids){
-        xryCourserService.deleteBatch(ids);
+        xryCourseService.deleteBatch(ids);
         return Result.ok();
     }
 }

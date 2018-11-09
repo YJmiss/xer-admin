@@ -11,7 +11,7 @@ import java.util.Map;
  * @author LingDu
  * @version 1.0
  */
-public interface XryCourserDescService extends IService<XryCourseDescEntity> {
+public interface XryCourseDescService extends IService<XryCourseDescEntity> {
 
 	/**
      * 课程分页查询
