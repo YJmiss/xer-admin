@@ -10,7 +10,7 @@
 
     <!-- 查询课程类目树 -->
     <select id="queryCourseCatList" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatEntity">
-      select * from xry_course_cat where parent_id != 0 order by sort_order desc
+      select * from xry_course_cat order by sort_order desc
     </select>
 
 </mapper>

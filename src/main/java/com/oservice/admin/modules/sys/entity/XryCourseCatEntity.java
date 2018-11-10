@@ -1,5 +1,6 @@
 package com.oservice.admin.modules.sys.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
@@ -25,7 +26,7 @@ public class XryCourseCatEntity implements Serializable {
 	 * 父类目ID=0时，代表的是一级的类目
 	 */
 	@NotBlank(message="父类目ID不能为空", groups = {AddGroup.class, UpdateGroup.class})
-	private Long parent_id;
+	private Long parentId;
 	/**
 	 * 类目名称
 	 */
@@ -35,12 +36,12 @@ public class XryCourseCatEntity implements Serializable {
 	/**
 	 * 排列序号，表示同级类目的展现次序，如数值相等则按名称次序排列。取值范围:大于零的整数
 	 */
-	private Integer sort_order;
+	private Integer sortOrder;
 
 	/**
 	 * 该类目是否为父类目，1为true，0为false
 	 */
-	private boolean is_parent;
+	private boolean isParent;
 
 	/**
 	 * 状态。可选值:1(正常),2(删除)
@@ -57,6 +58,19 @@ public class XryCourseCatEntity implements Serializable {
 	 */
 	private Date updated;
 
+	/**
+	 * ztree属性
+	 */
+	@TableField(exist=false)
+	private Boolean open;
+
+	public Boolean getOpen() {
+		return open;
+	}
+
+	public void setOpen(Boolean open) {
+		this.open = open;
+	}
 
 	public Long getId() {
 		return id;
@@ -66,12 +80,12 @@ public class XryCourseCatEntity implements Serializable {
 		this.id = id;
 	}
 
-	public Long getParent_id() {
-		return parent_id;
+	public Long getParentId() {
+		return parentId;
 	}
 
-	public void setParent_id(Long parent_id) {
-		this.parent_id = parent_id;
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 
 	public String getName() {
@@ -82,20 +96,20 @@ public class XryCourseCatEntity implements Serializable {
 		this.name = name;
 	}
 
-	public Integer getSort_order() {
-		return sort_order;
+	public Integer getSortOrder() {
+		return sortOrder;
 	}
 
-	public void setSort_order(Integer sort_order) {
-		this.sort_order = sort_order;
+	public void setSortOrder(Integer sortOrder) {
+		this.sortOrder = sortOrder;
 	}
 
-	public boolean isIs_parent() {
-		return is_parent;
+	public boolean isParent() {
+		return isParent;
 	}
 
-	public void setIs_parent(boolean is_parent) {
-		this.is_parent = is_parent;
+	public void setParent(boolean parent) {
+		isParent = parent;
 	}
 
 	public Integer getStatus() {

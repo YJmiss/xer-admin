@@ -10,6 +10,7 @@ import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -50,6 +51,6 @@ public class XryCourseCatServiceImpl extends ServiceImpl<XryCourseCatDao, XryCou
 
 	@Override
 	public void deleteBatch(Long[] ids) {
-   		baseMapper.deleteById(ids);
+   		this.deleteBatchIds(Arrays.asList(ids));
 	}
 }

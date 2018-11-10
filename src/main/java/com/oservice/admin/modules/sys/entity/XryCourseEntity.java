@@ -1,5 +1,6 @@
 package com.oservice.admin.modules.sys.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
@@ -61,7 +62,20 @@ public class XryCourseEntity implements Serializable {
 	 * 更新时间
 	 */
 	private Date updated;
-	
+
+	/**
+	 * ztree属性
+	 */
+	@TableField(exist=false)
+	private Boolean open;
+
+	public Boolean getOpen() {
+		return open;
+	}
+
+	public void setOpen(Boolean open) {
+		this.open = open;
+	}
 
 	public Long getId() {
 		return id;

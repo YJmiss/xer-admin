@@ -6,11 +6,14 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import com.oservice.admin.modules.sys.entity.SysMenuEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,5 +92,25 @@ public class XryCourseController extends AbstractController {
     public Result delete(@RequestBody Long[] ids){
         xryCourseService.deleteBatch(ids);
         return Result.ok();
+    }
+
+    /**
+     * 课程类目(添加、修改菜单)
+     */
+    @GetMapping("/select")
+    @RequiresPermissions("xry:course:select")
+    public Result select(){
+        //查询列表数据
+        List<XryCourseCatEntity> courseCatList = xryCourseService.queryCourseCatList();
+
+        //添加顶级菜单
+        XryCourseCatEntity root = new XryCourseCatEntity();
+        root.setId(0L);
+        root.setName("一级类目");
+        root.setParentId(-1L);
+        root.setOpen(true);
+        courseCatList.add(root);
+
+        return Result.ok().put("courseCatList", courseCatList);
     }
 }

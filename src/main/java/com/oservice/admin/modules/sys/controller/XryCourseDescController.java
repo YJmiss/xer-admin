@@ -6,12 +6,15 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -90,5 +93,17 @@ public class XryCourseDescController extends AbstractController {
     public Result delete(@RequestBody Long[] courseIds){
         xryCourseDescService.deleteBatch(courseIds);
         return Result.ok();
+    }
+
+    /**
+     * 课程(添加、修改菜单)
+     */
+    @GetMapping("/select")
+    @RequiresPermissions("xry:course:desc:select")
+    public Result select(){
+        //查询列表数据
+        List<XryCourseEntity> courseList = xryCourseDescService.queryCourseList();
+
+        return Result.ok().put("courseList", courseList);
     }
 }

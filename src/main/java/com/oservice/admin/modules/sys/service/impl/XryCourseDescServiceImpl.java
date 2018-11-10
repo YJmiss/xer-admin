@@ -7,10 +7,13 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryCourseDescDao;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,6 +54,11 @@ public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryC
 
 	@Override
 	public void deleteBatch(Long[] ids) {
-		baseMapper.deleteById(ids);
+		this.deleteBatchIds(Arrays.asList(ids));
+	}
+
+	@Override
+	public List<XryCourseEntity> queryCourseList() {
+		return  baseMapper.queryCourseList();
 	}
 }
