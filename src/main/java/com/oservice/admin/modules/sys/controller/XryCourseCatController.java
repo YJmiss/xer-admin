@@ -47,7 +47,7 @@ public class XryCourseCatController extends AbstractController {
     @PostMapping("/save")
     @RequiresPermissions("xry:course:cat:save")
     public Result save(@RequestBody XryCourseCatEntity courseCat){
-        ValidatorUtils.validateEntity(courseCat, AddGroup.class);
+//        ValidatorUtils.validateEntity(courseCat, AddGroup.class);
         xryCourseCatService.save(courseCat);
         return Result.ok();
     }
