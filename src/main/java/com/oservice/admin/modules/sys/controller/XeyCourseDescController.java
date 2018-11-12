@@ -6,7 +6,7 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
-import com.oservice.admin.modules.sys.entity.XeyCourseDescEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.service.XeyCourserDescService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +47,7 @@ public class XeyCourseDescController extends AbstractController {
     @SysLog("保存课程描述")
     @PostMapping("/save")
     @RequiresPermissions("xey:course:desc:save")
-    public Result save(@RequestBody XeyCourseDescEntity courseDesc){
+    public Result save(@RequestBody XryCourseDescEntity courseDesc){
         ValidatorUtils.validateEntity(courseDesc, AddGroup.class);
         xeyCourseDescService.save(courseDesc);
         return Result.ok();
@@ -61,7 +61,7 @@ public class XeyCourseDescController extends AbstractController {
     @GetMapping("/info/{courseId}")
     @RequiresPermissions("xey:course:desc:info")
     public Result info(@PathVariable("courseId") Long courseId){
-        XeyCourseDescEntity courseDesc = xeyCourseDescService.queryById(courseId);
+        XryCourseDescEntity courseDesc = xeyCourseDescService.queryById(courseId);
         return Result.ok().put("courseDesc", courseDesc);
     }
 
@@ -73,7 +73,7 @@ public class XeyCourseDescController extends AbstractController {
     @SysLog("修改课程描述")
     @PostMapping("/update")
     @RequiresPermissions("xey:course:desc:update")
-    public Result update(@RequestBody XeyCourseDescEntity courseDesc){
+    public Result update(@RequestBody XryCourseDescEntity courseDesc){
         ValidatorUtils.validateEntity(courseDesc, UpdateGroup.class);
         xeyCourseDescService.update(courseDesc);
         return Result.ok();

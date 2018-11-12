@@ -2,7 +2,7 @@ package com.oservice.admin.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.modules.sys.entity.XeyCourseEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import java.util.Map;
 
 /**
@@ -11,7 +11,7 @@ import java.util.Map;
  * @author LingDu
  * @version 1.0
  */
-public interface XeyCourserService extends IService<XeyCourseEntity> {
+public interface XeyCourserService extends IService<XryCourseEntity> {
 
 	/**
 	 * 课程分页查询
@@ -25,19 +25,19 @@ public interface XeyCourserService extends IService<XeyCourseEntity> {
 	 * @param id
 	 * @return
 	 */
-	XeyCourseEntity queryById(Long id);
+	XryCourseEntity queryById(Long id);
 
 	/**
 	 * 课程保存
 	 * @param xeyCourseEntity
 	 */
-	void save(XeyCourseEntity xeyCourseEntity);
+	void save(XryCourseEntity xeyCourseEntity);
 
 	/**
 	 * 课程修改
 	 * @param xeyCourseEntity
 	 */
-	void update(XeyCourseEntity xeyCourseEntity);
+	void update(XryCourseEntity xeyCourseEntity);
 
 	/**
 	 * 课程删除

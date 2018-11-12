@@ -6,14 +6,10 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XeyCourseCatDao;
-import com.oservice.admin.modules.sys.dao.XeyCourseDao;
-import com.oservice.admin.modules.sys.entity.XeyCourseCatEntity;
-import com.oservice.admin.modules.sys.entity.XeyCourseEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.service.XeyCourserCatService;
-import com.oservice.admin.modules.sys.service.XeyCourserService;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -24,29 +20,29 @@ import java.util.Map;
  * @version 1.0
  */
 @Service("xeyCourseCatService")
-public class XeyCourseCatServiceImpl extends ServiceImpl<XeyCourseCatDao, XeyCourseCatEntity> implements XeyCourserCatService {
+public class XeyCourseCatServiceImpl extends ServiceImpl<XeyCourseCatDao, XryCourseCatEntity> implements XeyCourserCatService {
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
-		Page<XeyCourseCatEntity> page = this.selectPage(new Query<XeyCourseCatEntity>(params).getPage(), new EntityWrapper<>());
+		Page<XryCourseCatEntity> page = this.selectPage(new Query<XryCourseCatEntity>(params).getPage(), new EntityWrapper<>());
 		
 		return new PageUtils(page);
 	}
 
 	@Override
-	public XeyCourseCatEntity queryById(Long id) {
+	public XryCourseCatEntity queryById(Long id) {
 		return baseMapper.selectById(id);
 	}
 
 	@Override
-	public void save(XeyCourseCatEntity xeyCourseCatEntity) {
+	public void save(XryCourseCatEntity xeyCourseCatEntity) {
 		xeyCourseCatEntity.setCreated(new Date());
 		xeyCourseCatEntity.setUpdated(new Date());
 		baseMapper.insert(xeyCourseCatEntity);
 	}
 
 	@Override
-	public void update(XeyCourseCatEntity xeyCourseCatEntity) {
+	public void update(XryCourseCatEntity xeyCourseCatEntity) {
 		xeyCourseCatEntity.setCreated(new Date());
 		xeyCourseCatEntity.setUpdated(new Date());
 		baseMapper.updateById(xeyCourseCatEntity);

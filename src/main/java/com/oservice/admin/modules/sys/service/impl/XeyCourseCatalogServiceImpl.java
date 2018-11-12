@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XeyCourseCatalogDao;
-import com.oservice.admin.modules.sys.entity.XeyCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.service.XeyCourserCatalogService;
 import org.springframework.stereotype.Service;
 
@@ -20,29 +20,29 @@ import java.util.Map;
  * @version 1.0
  */
 @Service("xeyCourseCatalogService")
-public class XeyCourseCatalogServiceImpl extends ServiceImpl<XeyCourseCatalogDao, XeyCourseCatalogEntity> implements XeyCourserCatalogService {
+public class XeyCourseCatalogServiceImpl extends ServiceImpl<XeyCourseCatalogDao, XryCourseCatalogEntity> implements XeyCourserCatalogService {
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
-		Page<XeyCourseCatalogEntity> page = this.selectPage(new Query<XeyCourseCatalogEntity>(params).getPage(), new EntityWrapper<>());
+		Page<XryCourseCatalogEntity> page = this.selectPage(new Query<XryCourseCatalogEntity>(params).getPage(), new EntityWrapper<>());
 		
 		return new PageUtils(page);
 	}
 
 	@Override
-	public XeyCourseCatalogEntity queryById(Long id) {
+	public XryCourseCatalogEntity queryById(Long id) {
 		return baseMapper.selectById(id);
 	}
 
 	@Override
-	public void save(XeyCourseCatalogEntity xeyCourseCatalogEntity) {
+	public void save(XryCourseCatalogEntity xeyCourseCatalogEntity) {
 		xeyCourseCatalogEntity.setCreated(new Date());
 		xeyCourseCatalogEntity.setUpdated(new Date());
 		baseMapper.insert(xeyCourseCatalogEntity);
 	}
 
 	@Override
-	public void update(XeyCourseCatalogEntity xeyCourseCatalogEntity) {
+	public void update(XryCourseCatalogEntity xeyCourseCatalogEntity) {
 		xeyCourseCatalogEntity.setCreated(new Date());
 		xeyCourseCatalogEntity.setUpdated(new Date());
 		baseMapper.updateById(xeyCourseCatalogEntity);

@@ -1,11 +1,8 @@
 package com.oservice.admin.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.oservice.admin.common.validator.group.AddGroup;
-import com.oservice.admin.common.validator.group.UpdateGroup;
 import io.swagger.annotations.ApiModel;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 

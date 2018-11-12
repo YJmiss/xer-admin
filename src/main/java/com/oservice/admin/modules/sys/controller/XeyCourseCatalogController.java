@@ -6,9 +6,7 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
-import com.oservice.admin.modules.sys.entity.XeyCourseCatEntity;
-import com.oservice.admin.modules.sys.entity.XeyCourseCatalogEntity;
-import com.oservice.admin.modules.sys.service.XeyCourserCatService;
+import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.service.XeyCourserCatalogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +47,7 @@ public class XeyCourseCatalogController extends AbstractController {
     @SysLog("保存课程目录")
     @PostMapping("/save")
     @RequiresPermissions("xey:course:catalog:save")
-    public Result save(@RequestBody XeyCourseCatalogEntity courseCatalog){
+    public Result save(@RequestBody XryCourseCatalogEntity courseCatalog){
         ValidatorUtils.validateEntity(courseCatalog, AddGroup.class);
         xeyCourseCatalogService.save(courseCatalog);
         return Result.ok();
@@ -63,7 +61,7 @@ public class XeyCourseCatalogController extends AbstractController {
     @GetMapping("/info/{id}")
     @RequiresPermissions("xey:course:catalog:info")
     public Result info(@PathVariable("id") Long id){
-        XeyCourseCatalogEntity courseCatalog = xeyCourseCatalogService.queryById(id);
+        XryCourseCatalogEntity courseCatalog = xeyCourseCatalogService.queryById(id);
         return Result.ok().put("courseCatalog", courseCatalog);
     }
 
@@ -75,7 +73,7 @@ public class XeyCourseCatalogController extends AbstractController {
     @SysLog("修改课程目录")
     @PostMapping("/update")
     @RequiresPermissions("xey:course:catalog:update")
-    public Result update(@RequestBody XeyCourseCatalogEntity courseCatalog){
+    public Result update(@RequestBody XryCourseCatalogEntity courseCatalog){
         ValidatorUtils.validateEntity(courseCatalog, UpdateGroup.class);
         xeyCourseCatalogService.update(courseCatalog);
         return Result.ok();
