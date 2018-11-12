@@ -2,6 +2,7 @@ package com.oservice.admin.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Date;
  * @version 1.0
  */
 @TableName("sys_log")
+@ApiModel(value = "系统日志对象")
 public class SysLogEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
