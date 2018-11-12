@@ -72,7 +72,7 @@ public class AppLoginController {
      */
     @RequestMapping(value = "/sendPhoneCode")
     public Result  sendPhoneCode(String tel) throws ApiException {
-        long code = RandomUtils.nextLong(10000, 90000);
+        long code = RandomUtils.nextLong(1000, 9000);
         String msg="";
         String template = "{\"code\":\"" + code + "\",\"product\":\"" + msg + "\"}";
         boolean isTrue = sendTelMessage(ConfigConstant.TEMPLATECODE, template, tel);
