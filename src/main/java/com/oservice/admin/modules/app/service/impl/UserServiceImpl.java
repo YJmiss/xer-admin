@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.modules.app.dao.XryUserDao;
 import com.oservice.admin.modules.app.entity.XryUserEntity;
 import com.oservice.admin.modules.app.service.UserService;
+import org.springframework.stereotype.Service;
 
+@Service("userService")
 public class UserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> implements UserService {
 
     @Override

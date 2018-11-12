@@ -38,10 +38,7 @@ public class SMSUtils {
         req.setSmsTemplateCode(templateCode);
         AlibabaAliqinFcSmsNumSendResponse rsp = client.execute(req);
         String respStr = rsp.getBody();
-        System.out.print(respStr);
-        JSONObject jsObject = new JSONObject(respStr);
-        // TODO 判断这里有个返回结果好像是msg==ok就是发送成功,自己看下里面那个是那个值
-        return Objects.equals(jsObject.get("msg"), "ok");
+        return respStr.indexOf("OK")>=0&&respStr.indexOf("msg")>=0;
 
     }
 

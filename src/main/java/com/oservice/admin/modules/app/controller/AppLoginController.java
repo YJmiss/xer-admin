@@ -36,46 +36,51 @@ import static com.oservice.admin.common.utils.SMSUtils.sendTelMessage;
 @Api(description = "APP登录api")
 public class AppLoginController {
 
-//    @Resource
-//    private UserService userService;
-//
-//
-//    /**
-//     * @Description: 发送短信验证码
-//     * @param:
-//     * @Date: 2018/11/7 9:14
-//     * @Version 1.0
-//     */
-//    @RequestMapping(value = "/sendPhoneCode")
-//    public Result  sendPhoneCode(String tel) throws ApiException {
-//        long code = RandomUtils.nextLong(1000, 9000);
-//        String msg="";
-//        String template = "{\"code\":\"" + code + "\",\"product\":\"" + msg + "\"}";
-//        boolean isTrue = sendTelMessage(ConfigConstant.TEMPLATECODE, template, tel);
-//        String checkCode = MD5Utils.md5(String.valueOf(code).toUpperCase());
-//        // Todo 存到cook里了
-//        CookieHelper.addCookie("phoneCodeApp", checkCode);
-//        // TODO 这里就是取到并校验了
-//
-//        //  if (MD5.md5(phoneCode.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp"))) {
-//       return Result.ok(String.valueOf(isTrue));
-//    }
-//
-//    /**
-//     * @Description: 通过手机号校验当前手机号是否系统用户
-//     * @Author: yiyx
-//     * @param:
-//     * @Date: 2018/11/7 9:14
-//     * @Version 1.0
-//     */
-//    @RequestMapping(value = "/checkUserPhone")
-//    public Result checkUserPhone (String phone) throws Exception{
-//        XryUserEntity user= new XryUserEntity();
-//        user =userService.queryByUserParam(phone);
-//        if(user==null) {
-//            return Result.error().put("result",false);
-//        }
-//        return Result.ok().put("result",true);
-//    }
+    @Resource
+    private UserService userService;
+
+
+    /**
+     * @Description: 发送短信验证码
+     * @param:
+     * @Date: 2018/11/7 9:14
+     * @Version 1.0
+     */
+    @RequestMapping(value = "/sendPhoneCode")
+    public Result  sendPhoneCode(String tel) throws ApiException {
+        long code = RandomUtils.nextLong(1000, 9000);
+        String msg="";
+        String template = "{\"code\":\"" + code + "\",\"product\":\"" + msg + "\"}";
+        boolean isTrue = sendTelMessage(ConfigConstant.TEMPLATECODE, template, tel);
+        String checkCode = MD5Utils.md5(String.valueOf(code).toUpperCase());
+        // Todo 存到cook里了
+        CookieHelper.addCookie("phoneCodeApp", checkCode);
+        // TODO 这里就是取到并校验了
+
+        //  if (MD5.md5(phoneCode.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp"))) {
+       return Result.ok(String.valueOf(isTrue));
+    }
+
+    /**
+     * @Description: 通过手机号校验当前手机号是否系统用户
+     * @Author: yiyx
+     * @param:
+     * @Date: 2018/11/7 9:14
+     * @Version 1.0
+     */
+    @RequestMapping(value = "/checkUserPhone")
+    public Result checkUserPhone (String phone) throws Exception{
+
+         if (MD5Utils.md5(phone.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp")))
+        {
+            System.out.print("输入验证码正确");
+        }
+            XryUserEntity user= new XryUserEntity();
+        user =userService.queryByUserParam(phone);
+        if(user==null) {
+            return Result.error().put("result",false);
+        }
+        return Result.ok().put("result",true);
+    }
 
 }
