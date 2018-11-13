@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @version 1.0
  */
 @Mapper
-public interface XeyCourseCatDao extends BaseMapper<XryCourseCatEntity> {
+public interface XryCourseCatDao extends BaseMapper<XryCourseCatEntity> {
 	
 	
 

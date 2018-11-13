@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
-import com.oservice.admin.modules.sys.dao.XeyCourseCatalogDao;
+import com.oservice.admin.modules.sys.dao.XryCourseCatalogDao;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.service.XryCourserCatalogService;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.Map;
  * @version 1.0
  */
 @Service("xeyCourseCatalogService")
-public class XryCourseCatalogServiceImpl extends ServiceImpl<XeyCourseCatalogDao, XryCourseCatalogEntity> implements XryCourserCatalogService {
+public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao, XryCourseCatalogEntity> implements XryCourserCatalogService {
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
