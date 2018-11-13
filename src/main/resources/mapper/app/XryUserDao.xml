@@ -4,7 +4,11 @@
 <mapper namespace="com.oservice.admin.modules.app.dao.XryUserDao">
 
     <!-- 通过手机号校验当前手机号是否系统用户 -->
-    <select id="queryByUserParam" resultType="com.oservice.admin.modules.app.entity.XryUserEntity">
+    <select id="queryByUserPhone" resultType="com.oservice.admin.modules.app.entity.XryUserEntity">
 		select * from xry_user where phone = #{phone}
 	</select>
+    <!--保存用户token-->
+    <update id="createToken" parameterType="com.oservice.admin.modules.app.entity.XryUserEntity">
+      update xry_user set login_token=#{loginToken},refresh_token=#{refreshToken} where id=#{id}
+    </update>
 </mapper>

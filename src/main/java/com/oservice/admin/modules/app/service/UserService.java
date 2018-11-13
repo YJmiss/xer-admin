@@ -8,5 +8,11 @@ public interface UserService extends IService<XryUserEntity>{
      * 通过手机号校验当前手机号是否系统用户
      * @param  phone 手机号
      */
-    XryUserEntity queryByUserParam(String phone);
+    XryUserEntity queryByUserPhone(String phone);
+
+    /**
+     * 保存用户token
+     * @param
+     */
+    Boolean createToken(XryUserEntity user);
 }

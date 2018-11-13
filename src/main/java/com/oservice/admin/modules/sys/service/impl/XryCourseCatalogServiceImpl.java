@@ -7,7 +7,7 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XeyCourseCatalogDao;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
-import com.oservice.admin.modules.sys.service.XeyCourserCatalogService;
+import com.oservice.admin.modules.sys.service.XryCourserCatalogService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,7 +20,7 @@ import java.util.Map;
  * @version 1.0
  */
 @Service("xeyCourseCatalogService")
-public class XeyCourseCatalogServiceImpl extends ServiceImpl<XeyCourseCatalogDao, XryCourseCatalogEntity> implements XeyCourserCatalogService {
+public class XryCourseCatalogServiceImpl extends ServiceImpl<XeyCourseCatalogDao, XryCourseCatalogEntity> implements XryCourserCatalogService {
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {

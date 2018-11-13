@@ -16,18 +16,18 @@ public class LoginForm {
 
     @ApiModelProperty(value = "手机号")
     @NotBlank(message="手机号不能为空")
-    private String mobile;
+    private String phone;
 
     @ApiModelProperty(value = "密码")
     @NotBlank(message="密码不能为空")
     private String password;
 
-    public String getMobile() {
-        return mobile;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getPassword() {

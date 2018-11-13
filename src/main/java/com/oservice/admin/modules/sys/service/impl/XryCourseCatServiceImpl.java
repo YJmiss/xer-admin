@@ -7,7 +7,7 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XeyCourseCatDao;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
-import com.oservice.admin.modules.sys.service.XeyCourserCatService;
+import com.oservice.admin.modules.sys.service.XryCourserCatService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,7 +20,7 @@ import java.util.Map;
  * @version 1.0
  */
 @Service("xeyCourseCatService")
-public class XeyCourseCatServiceImpl extends ServiceImpl<XeyCourseCatDao, XryCourseCatEntity> implements XeyCourserCatService {
+public class XryCourseCatServiceImpl extends ServiceImpl<XeyCourseCatDao, XryCourseCatEntity> implements XryCourserCatService {
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {

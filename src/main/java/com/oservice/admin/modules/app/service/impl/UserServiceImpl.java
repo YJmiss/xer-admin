@@ -10,7 +10,12 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> implements UserService {
 
     @Override
-    public XryUserEntity queryByUserParam(String phone) {
-        return baseMapper.queryByUserParam(phone);
+    public XryUserEntity queryByUserPhone(String phone) {
+        return baseMapper.queryByUserPhone(phone);
+    }
+
+    @Override
+    public Boolean createToken(XryUserEntity user) {
+        return baseMapper.createToken(user);
     }
 }

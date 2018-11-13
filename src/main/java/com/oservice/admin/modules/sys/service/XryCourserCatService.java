@@ -11,7 +11,7 @@ import java.util.Map;
  * @author LingDu
  * @version 1.0
  */
-public interface XeyCourserCatService extends IService<XryCourseCatEntity> {
+public interface XryCourserCatService extends IService<XryCourseCatEntity> {
 
 	/**
 	 * 课程类目分页查询

@@ -7,7 +7,7 @@ import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
-import com.oservice.admin.modules.sys.service.XeyCourserCatService;
+import com.oservice.admin.modules.sys.service.XryCourserCatService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -21,9 +21,9 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/xey/course/cat")
-public class XeyCourseCatController extends AbstractController {
+public class XryCourseCatController extends AbstractController {
     @Resource
-    private XeyCourserCatService xeyCourseCatService;
+    private XryCourserCatService xeyCourseCatService;
 
     /**
      * 查询课程列表
