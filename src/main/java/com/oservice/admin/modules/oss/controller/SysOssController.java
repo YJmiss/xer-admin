@@ -2,6 +2,7 @@ package com.oservice.admin.modules.oss.controller;
 
 import com.google.gson.Gson;
 import com.oservice.admin.common.exception.GlobalException;
+import com.oservice.admin.common.ueditor.ActionEnter;
 import com.oservice.admin.common.utils.ConfigConstant;
 import com.oservice.admin.common.utils.Constant;
 import com.oservice.admin.common.utils.PageUtils;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
@@ -125,6 +128,20 @@ public class SysOssController {
 		sysOssService.deleteBatchIds(Arrays.asList(ids));
 
 		return Result.ok();
+	}
+
+	/**
+	 * 处理富文本编辑器
+	 * @param request
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "/ueditor")
+	@RequiresPermissions("sys:oss:ueditor")
+	public String exec(HttpServletRequest request) throws UnsupportedEncodingException {
+		request.setCharacterEncoding("utf-8");
+		String rootPath = request.getRealPath("/");
+		return new ActionEnter( request, rootPath ).exec();
 	}
 
 }
