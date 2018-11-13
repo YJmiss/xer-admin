@@ -10,6 +10,7 @@ import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 
 	@Override
 	public void deleteBatch(Long[] ids) {
-   		baseMapper.deleteById(ids);
+   		this.deleteBatchIds(Arrays.asList(ids));
 	}
 
 	@Override

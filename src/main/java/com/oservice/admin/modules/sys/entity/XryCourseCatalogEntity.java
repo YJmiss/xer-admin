@@ -29,7 +29,6 @@ public class XryCourseCatalogEntity implements Serializable {
 	/**
 	 * 所属课程ID
 	 */
-	@NotBlank(message="课程ID不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private Long courseid;
 	
 	/**

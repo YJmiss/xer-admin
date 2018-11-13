@@ -13,6 +13,7 @@ import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryVideoService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -53,6 +54,6 @@ public class XryVideoServiceImpl extends ServiceImpl<XryVideoDao, XryVideoEntity
 
 	@Override
 	public void deleteBatch(Long[] ids) {
-		baseMapper.deleteById(ids);
+		this.deleteBatchIds(Arrays.asList(ids));
 	}
 }
