@@ -60,4 +60,9 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
 	public List<XryCourseCatEntity> queryCourseCatList() {
 		return baseMapper.queryCourseCatList();
 	}
+
+	@Override
+	public List<XryCourseEntity> treeCourseList() {
+		return baseMapper.treeCourseList();
+	}
 }

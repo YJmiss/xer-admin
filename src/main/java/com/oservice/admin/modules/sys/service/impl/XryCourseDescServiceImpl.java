@@ -39,6 +39,11 @@ public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryC
 	}
 
 	@Override
+	public XryCourseDescEntity selectByKey(Long id) {
+		return baseMapper.selectByKey(id);
+	}
+
+	@Override
 	public void save(XryCourseDescEntity xryCourseDescEntity) {
 		xryCourseDescEntity.setCreated(new Date());
 		xryCourseDescEntity.setUpdated(new Date());
@@ -54,11 +59,10 @@ public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryC
 
 	@Override
 	public void deleteBatch(Long[] ids) {
-		this.deleteBatchIds(Arrays.asList(ids));
+		for (Long id:ids) {
+			baseMapper.deleteByKey(id);
+		}
 	}
 
-	@Override
-	public List<XryCourseEntity> queryCourseList() {
-		return  baseMapper.queryCourseList();
-	}
+
 }

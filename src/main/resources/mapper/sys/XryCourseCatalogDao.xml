@@ -8,5 +8,14 @@
       select * from xry_course_catalog left join xry_course on xry_course_catalog.#{courseid} = xry_course.id;
     </select>
 
+    <!-- 查询课程信息 -->
+    <select id="treeCourseList" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity">
+      select * from xry_course
+    </select>
+
+    <!-- 查询课程目录信息 -->
+        <select id="treeCourseCatalogList" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity">
+          select * from xry_course_catalog
+        </select>
     
 </mapper>

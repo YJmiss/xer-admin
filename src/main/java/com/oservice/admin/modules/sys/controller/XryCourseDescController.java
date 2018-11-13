@@ -57,14 +57,14 @@ public class XryCourseDescController extends AbstractController {
     }
 
     /**
-     * 课程描述信息
+     * 课程描述信息  queryById
      * @param courseId
      * @return
      */
     @GetMapping("/info/{courseId}")
     @RequiresPermissions("xry:course:desc:info")
     public Result info(@PathVariable("courseId") Long courseId){
-        XryCourseDescEntity courseDesc = xryCourseDescService.queryById(courseId);
+        XryCourseDescEntity courseDesc = xryCourseDescService.selectByKey(courseId);
         return Result.ok().put("courseDesc", courseDesc);
     }
 
@@ -94,16 +94,5 @@ public class XryCourseDescController extends AbstractController {
         xryCourseDescService.deleteBatch(courseIds);
         return Result.ok();
     }
-
-    /**
-     * 课程(添加、修改菜单)
-     */
-    @GetMapping("/select")
-    @RequiresPermissions("xry:course:desc:select")
-    public Result select(){
-        //查询列表数据
-        List<XryCourseEntity> courseList = xryCourseDescService.queryCourseList();
-
-        return Result.ok().put("courseList", courseList);
-    }
+    
 }

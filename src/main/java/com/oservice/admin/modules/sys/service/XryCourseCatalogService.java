@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,5 +46,17 @@ public interface XryCourseCatalogService extends IService<XryCourseCatalogEntity
 	 * @param ids
 	 */
 	void deleteBatch(Long[] ids);
+
+	/**
+	 * 查询课程树
+	 * @return
+	 */
+	List<XryCourseCatalogEntity> treeCourseList();
+
+	/**
+	 * 查询课程目录树
+	 * @return
+	 */
+	List<XryCourseCatalogEntity> treeCourseCatalogList();
 
 }

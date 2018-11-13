@@ -2,10 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseDescDao">
-	
-    <!-- 查询课程树 -->
-    <select id="queryCourseList" resultType="com.oservice.admin.modules.sys.entity.XryCourseEntity">
-      select * from xry_course
+
+    <select id="selectByKey" resultType="com.oservice.admin.modules.sys.entity.XryCourseDescEntity">
+        select * from xry_course_desc where course_id = #{courseId}
     </select>
+
+   <delete id="deleteByKey" parameterType="java.lang.Long">
+       delete from xry_course_desc where course_id = #{courseId}
+   </delete>
 
 </mapper>

@@ -16,11 +16,19 @@ import java.util.List;
  */
 @Mapper
 public interface XryCourseDescDao extends BaseMapper<XryCourseDescEntity> {
-	
-	
+
     /**
-     * 查询课程树
+     * 根据id查询
+     * @param courseId
      * @return
      */
-    List<XryCourseEntity> queryCourseList();
+    XryCourseDescEntity selectByKey(Long courseId);
+
+    /**
+    * 根据id查询
+    * @param courseId
+    * @return
+    */
+   void deleteByKey(Long courseId);
+   
 }

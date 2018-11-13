@@ -25,7 +25,6 @@ public class XryCourseCatEntity implements Serializable {
 	/**
 	 * 父类目ID=0时，代表的是一级的类目
 	 */
-	@NotBlank(message="父类目ID不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private Long parentId;
 	/**
 	 * 类目名称
@@ -41,12 +40,11 @@ public class XryCourseCatEntity implements Serializable {
 	/**
 	 * 该类目是否为父类目，1为true，0为false
 	 */
-	private boolean isParent;
+	private Integer isParent;
 
 	/**
 	 * 状态。可选值:1(正常),2(删除)
 	 */
-	@NotBlank(message="请确认视频状态", groups = {AddGroup.class, UpdateGroup.class})
 	private Integer status;
 
 	/**
@@ -104,11 +102,11 @@ public class XryCourseCatEntity implements Serializable {
 		this.sortOrder = sortOrder;
 	}
 
-	public boolean isParent() {
+	public Integer isParent() {
 		return isParent;
 	}
 
-	public void setParent(boolean parent) {
+	public void setParent(Integer parent) {
 		isParent = parent;
 	}
 

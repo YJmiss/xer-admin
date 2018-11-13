@@ -31,6 +31,13 @@ public interface XryCourseDescService extends IService<XryCourseDescEntity> {
 	XryCourseDescEntity queryById(Long id);
 
 	/**
+	 * 根据课程id，查询课程
+	 * @param id
+	 * @return
+	 */
+	XryCourseDescEntity selectByKey(Long id);
+
+	/**
 	 * 课程描述保存
 	 * @param xryCourseDescEntity
 	 */
@@ -48,9 +55,4 @@ public interface XryCourseDescService extends IService<XryCourseDescEntity> {
 	 */
 	void deleteBatch(Long[] ids);
 
-	/**
-	 * 查询课程列表
-	 * @return
-	 */
-	List<XryCourseEntity> queryCourseList();
 }

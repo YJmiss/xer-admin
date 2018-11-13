@@ -11,6 +11,7 @@ import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,5 +52,15 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 	@Override
 	public void deleteBatch(Long[] ids) {
    		baseMapper.deleteById(ids);
+	}
+
+	@Override
+	public List<XryCourseCatalogEntity> treeCourseList() {
+		return  baseMapper.treeCourseList();
+	}
+
+	@Override
+	public List<XryCourseCatalogEntity> treeCourseCatalogList() {
+		return baseMapper.treeCourseCatalogList();
 	}
 }

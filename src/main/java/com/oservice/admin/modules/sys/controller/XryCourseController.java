@@ -102,15 +102,17 @@ public class XryCourseController extends AbstractController {
     public Result select(){
         //查询列表数据
         List<XryCourseCatEntity> courseCatList = xryCourseService.queryCourseCatList();
-
-        //添加顶级菜单
-        XryCourseCatEntity root = new XryCourseCatEntity();
-        root.setId(0L);
-        root.setName("一级类目");
-        root.setParentId(-1L);
-        root.setOpen(true);
-        courseCatList.add(root);
-
         return Result.ok().put("courseCatList", courseCatList);
+    }
+
+    /**
+     * 课程树(添加、修改菜单)
+     */
+    @GetMapping("/treeCourse")
+    @RequiresPermissions("xry:course:treeCourse")
+    public Result treeCourseList(){
+        //查询列表数据
+        List<XryCourseEntity> courseList = xryCourseService.treeCourseList();
+        return Result.ok().put("courseList", courseList);
     }
 }

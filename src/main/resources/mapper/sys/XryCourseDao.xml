@@ -3,6 +3,11 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseDao">
 
+    <!-- 查询课程树 -->
+    <select id="treeCourseList" resultType="com.oservice.admin.modules.sys.entity.XryCourseEntity">
+      select * from xry_course
+    </select>
+
     <!-- 查询课程和课程类目信息 -->
     <select id="queryCourseAndCourseCat" resultType="com.oservice.admin.modules.sys.entity.XryCourseEntity">
       select * from xry_course left join xry_course_cat on xry_course.#{cid} = xry_course_cat.id;

@@ -17,6 +17,12 @@ import java.util.List;
 public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
+    * 查询课程树
+    * @return
+    */
+   List<XryCourseEntity> treeCourseList();
+
+    /**
      * 查询课程和课程目录信息
      * @param cid
      * @return

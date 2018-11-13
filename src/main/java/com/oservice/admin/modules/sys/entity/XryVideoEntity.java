@@ -33,22 +33,18 @@ public class XryVideoEntity implements Serializable {
 	/**
 	 * 所属课程ID
 	 */
-	@NotBlank(message="所属课程不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private Long courseId;
 	/**
 	 * 所属目录ID
 	 */
-	@NotBlank(message="所属目录不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private Long catalogId;
 	/**
 	 * 视频属性，1-试学，2-收费，3-免费
 	 */
-	@NotBlank(message="请选择视频属性", groups = {AddGroup.class, UpdateGroup.class})
 	private Integer property;
 	/**
 	 * 视频状态，1-未审核，2-审核中，3-通过审核，4-未通过
 	 */
-	@NotBlank(message="请确认视频状态", groups = {AddGroup.class, UpdateGroup.class})
 	private Integer status;
 	
 	/**
