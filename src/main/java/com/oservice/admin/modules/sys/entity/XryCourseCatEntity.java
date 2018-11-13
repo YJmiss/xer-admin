@@ -40,7 +40,7 @@ public class XryCourseCatEntity implements Serializable {
 	/**
 	 * 该类目是否为父类目，1为true，0为false
 	 */
-	private Integer isParent;
+	private Integer flag;
 
 	/**
 	 * 状态。可选值:1(正常),2(删除)
@@ -102,12 +102,12 @@ public class XryCourseCatEntity implements Serializable {
 		this.sortOrder = sortOrder;
 	}
 
-	public Integer isParent() {
-		return isParent;
+	public Integer flag() {
+		return flag;
 	}
 
 	public void setParent(Integer parent) {
-		isParent = parent;
+		flag = parent;
 	}
 
 	public Integer getStatus() {

@@ -84,14 +84,14 @@ public class XryCourseDescController extends AbstractController {
 
     /**
      * 删除课程描述
-     * @param courseIds
+     * @param ids
      * @return
      */
     @SysLog("删除课程描述")
     @PostMapping("/delete")
     @RequiresPermissions("xry:course:desc:delete")
-    public Result delete(@RequestBody Long[] courseIds){
-        xryCourseDescService.deleteBatch(courseIds);
+    public Result delete(@RequestBody Long[] ids){
+        xryCourseDescService.deleteBatch(ids);
         return Result.ok();
     }
     

@@ -61,7 +61,6 @@ public class XryCourseCatController extends AbstractController {
     @RequiresPermissions("xry:course:cat:info")
     public Result info(@PathVariable("id") Long id){
         XryCourseCatEntity courseCat = xryCourseCatService.queryById(id);
-        System.out.println(courseCat);
         return Result.ok().put("courseCat", courseCat);
     }
 
