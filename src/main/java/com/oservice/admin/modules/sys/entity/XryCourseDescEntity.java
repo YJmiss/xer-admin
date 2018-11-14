@@ -1,8 +1,10 @@
 package com.oservice.admin.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
-import io.swagger.annotations.ApiModel;
+import com.oservice.admin.common.validator.group.AddGroup;
+import com.oservice.admin.common.validator.group.UpdateGroup;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,7 +15,6 @@ import java.util.Date;
  * @version 1.0
  */
 @TableName("xry_course_desc")
-@ApiModel(value = "课程描述对象")
 public class XryCourseDescEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**

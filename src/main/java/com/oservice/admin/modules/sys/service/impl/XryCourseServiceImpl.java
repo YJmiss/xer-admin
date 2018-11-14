@@ -10,6 +10,7 @@ import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.springframework.stereotype.Service;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.Map;
  * @author wujunquan
  * @version 1.0
  */
-@Service("xryCourseService")
+@Service("xryCourserService")
 public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEntity> implements XryCourseService {
 
 	@Override
@@ -56,12 +57,8 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
 	}
 
 	@Override
-	public List<XryCourseCatEntity> queryCourseCatList() {
-		return baseMapper.queryCourseCatList();
+	public List<XryCourseEntity> treeCourse() {
+		return baseMapper.treeCourse();
 	}
 
-	@Override
-	public List<XryCourseEntity> treeCourseList() {
-		return baseMapper.treeCourseList();
-	}
 }

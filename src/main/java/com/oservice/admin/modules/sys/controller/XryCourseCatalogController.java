@@ -8,7 +8,7 @@ import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
-import com.oservice.admin.modules.sys.service.XryCourserCatalogService;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +28,7 @@ import java.util.Map;
 public class XryCourseCatalogController extends AbstractController {
     @Resource
     private XryCourseCatalogService xryCourseCatalogService;
+
     /**
      * 查询课程目录列表
      * @param params
@@ -95,25 +96,14 @@ public class XryCourseCatalogController extends AbstractController {
     }
 
     /**
-     * 课程树(添加、修改菜单)
-     */
-    @GetMapping("/select")
-    @RequiresPermissions("xry:course:catalog:select")
-    public Result select(){
-        //查询列表数据
-        List<XryCourseCatalogEntity> courseList = xryCourseCatalogService.treeCourseList();
-        return Result.ok().put("courseList", courseList);
-    }
-
-    /**
-     * 课程目录树(添加、修改菜单)
+     * 构造目录树
+     * @return
      */
     @GetMapping("/treeCourseCatalog")
     @RequiresPermissions("xry:course:catalog:treeCourseCatalog")
-    public Result treeCourseList(){
-        //查询列表数据
-        List<XryCourseCatalogEntity> courseCatalogList = xryCourseCatalogService.treeCourseCatalogList();
+    public Result treeCourseCatalog(){
+        List<XryCourseCatalogEntity> courseCatalogList = xryCourseCatalogService.treeCourseCatalog();
         return Result.ok().put("courseCatalogList", courseCatalogList);
     }
-
+    
 }

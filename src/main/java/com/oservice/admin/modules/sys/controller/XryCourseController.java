@@ -25,7 +25,7 @@ import java.util.Map;
 @RequestMapping("/xry/course")
 public class XryCourseController extends AbstractController {
     @Resource
-    private XryCourseService xryCourseService;
+    private XryCourseService xryCourserService;
 
     /**
      * 查询课程列表
@@ -36,7 +36,7 @@ public class XryCourseController extends AbstractController {
     @GetMapping("/list")
     @RequiresPermissions("xry:course:list")
     public Result list(@RequestParam Map<String, Object> params){
-        PageUtils page = xryCourseService.queryPage(params);
+        PageUtils page = xryCourserService.queryPage(params);
         return Result.ok().put("page", page);
     }
 
@@ -50,7 +50,7 @@ public class XryCourseController extends AbstractController {
     @RequiresPermissions("xry:course:save")
     public Result save(@RequestBody XryCourseEntity course){
         ValidatorUtils.validateEntity(course, AddGroup.class);
-        xryCourseService.save(course);
+        xryCourserService.save(course);
         return Result.ok();
     }
 
@@ -62,7 +62,7 @@ public class XryCourseController extends AbstractController {
     @GetMapping("/info/{id}")
     @RequiresPermissions("xry:course:info")
     public Result info(@PathVariable("id") Long id){
-        XryCourseEntity course = xryCourseService.queryById(id);
+        XryCourseEntity course = xryCourserService.queryById(id);
         return Result.ok().put("course", course);
     }
 
@@ -76,7 +76,7 @@ public class XryCourseController extends AbstractController {
     @RequiresPermissions("xry:course:update")
     public Result update(@RequestBody XryCourseEntity course){
         ValidatorUtils.validateEntity(course, UpdateGroup.class);
-        xryCourseService.update(course);
+        xryCourserService.update(course);
         return Result.ok();
     }
 
@@ -89,29 +89,18 @@ public class XryCourseController extends AbstractController {
     @PostMapping("/delete")
     @RequiresPermissions("xry:course:delete")
     public Result delete(@RequestBody Long[] ids){
-        xryCourseService.deleteBatch(ids);
+        xryCourserService.deleteBatch(ids);
         return Result.ok();
     }
 
     /**
-     * 课程类目(添加、修改菜单)
-     */
-    @GetMapping("/select")
-    @RequiresPermissions("xry:course:select")
-    public Result select(){
-        //查询列表数据
-        List<XryCourseCatEntity> courseCatList = xryCourseService.queryCourseCatList();
-        return Result.ok().put("courseCatList", courseCatList);
-    }
-
-    /**
-     * 课程树(添加、修改菜单)
+     * 构造课程树
+     * @return
      */
     @GetMapping("/treeCourse")
     @RequiresPermissions("xry:course:treeCourse")
-    public Result treeCourseList(){
-        //查询列表数据
-        List<XryCourseEntity> courseList = xryCourseService.treeCourseList();
+    public Result treeCourse(){
+        List<XryCourseEntity> courseList = xryCourserService.treeCourse();
         return Result.ok().put("courseList", courseList);
     }
 }

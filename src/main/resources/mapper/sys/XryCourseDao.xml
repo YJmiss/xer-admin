@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.oservice.admin.modules.sys.dao.XeyCourseDao">
+<mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseDao">
 
-
-    <!-- 查询课程和课程类目信息 -->
-    <select id="queryCourseAndCourseCat" resultType="com.oservice.admin.modules.sys.entity.XryCourseEntity">
-      select * from xry_course left join xry_course_cat on xry_course.#{cid} = xry_course_cat.id;
-    </select>
-
-    <!-- 查询课程类目树 -->
-    <select id="queryCourseCatList" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatEntity">
-      select * from xry_course_cat order by sort_order desc
+    <!-- 查询课程树 -->
+    <select id="treeCourse" resultType="com.oservice.admin.modules.sys.entity.XryCourseEntity">
+      select * from xry_course
     </select>
 
 </mapper>

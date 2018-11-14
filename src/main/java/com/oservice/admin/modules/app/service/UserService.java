@@ -1,18 +1,23 @@
 package com.oservice.admin.modules.app.service;
 
-import com.oservice.admin.modules.app.entity.XryUserEntity;
 import com.baomidou.mybatisplus.service.IService;
+import com.oservice.admin.modules.app.entity.UserEntity;
+import com.oservice.admin.modules.app.form.LoginForm;
 
-public interface UserService extends IService<XryUserEntity>{
-    /**
-     * 通过手机号校验当前手机号是否系统用户
-     * @param  phone 手机号
-     */
-    XryUserEntity queryByUserPhone(String phone);
+/**
+ * 用户
+ *
+ * @author LingDu
+ * @version 1.0
+ */
+public interface UserService extends IService<UserEntity> {
 
-    /**
-     * 保存用户token
-     * @param
-     */
-    Boolean createToken(XryUserEntity user);
+	UserEntity queryByMobile(String mobile);
+
+	/**
+	 * 用户登录
+	 * @param form    登录表单
+	 * @return        返回用户ID
+	 */
+	long login(LoginForm form);
 }

@@ -6,14 +6,12 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
-import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,14 +54,14 @@ public class XryCourseDescController extends AbstractController {
     }
 
     /**
-     * 课程描述信息  queryById
+     * 课程描述信息
      * @param courseId
      * @return
      */
     @GetMapping("/info/{courseId}")
     @RequiresPermissions("xry:course:desc:info")
     public Result info(@PathVariable("courseId") Long courseId){
-        XryCourseDescEntity courseDesc = xryCourseDescService.selectByKey(courseId);
+        XryCourseDescEntity courseDesc = xryCourseDescService.queryById(courseId);
         return Result.ok().put("courseDesc", courseDesc);
     }
 
@@ -83,15 +81,14 @@ public class XryCourseDescController extends AbstractController {
 
     /**
      * 删除课程描述
-     * @param ids
+     * @param courseIds
      * @return
      */
     @SysLog("删除课程描述")
     @PostMapping("/delete")
     @RequiresPermissions("xry:course:desc:delete")
-    public Result delete(@RequestBody Long[] ids){
-        xryCourseDescService.deleteBatch(ids);
+    public Result delete(@RequestBody Long[] courseIds){
+        xryCourseDescService.deleteBatch(courseIds);
         return Result.ok();
     }
-    
 }

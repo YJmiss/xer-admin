@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseCatDao">
-	
+
+    <!-- 查询课程类目树 -->
+    <select id="treeCourseCat" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatEntity">
+      select * from xry_course_cat
+    </select>
 
 </mapper>
