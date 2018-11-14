@@ -1,5 +1,6 @@
 package com.oservice.admin.modules.sys.service.impl;
 
+
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -25,7 +26,7 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
 		Page<XryCourseCatalogEntity> page = this.selectPage(new Query<XryCourseCatalogEntity>(params).getPage(), new EntityWrapper<>());
-		
+
 		return new PageUtils(page);
 	}
 

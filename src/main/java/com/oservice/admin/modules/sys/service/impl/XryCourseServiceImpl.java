@@ -6,10 +6,13 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryCourseDao;
+import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
-import com.oservice.admin.modules.sys.service.XryCourserService;
+import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.springframework.stereotype.Service;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,8 +21,8 @@ import java.util.Map;
  * @author wujunquan
  * @version 1.0
  */
-@Service("xeyCourserService")
-public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEntity> implements XryCourserService {
+@Service("xryCourseService")
+public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEntity> implements XryCourseService {
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
@@ -34,21 +37,31 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
 	}
 
 	@Override
-	public void save(XryCourseEntity xeyCourseEntity) {
-		xeyCourseEntity.setCreated(new Date());
-		xeyCourseEntity.setUpdated(new Date());
-		baseMapper.insert(xeyCourseEntity);
+	public void save(XryCourseEntity xryCourseEntity) {
+		xryCourseEntity.setCreated(new Date());
+		xryCourseEntity.setUpdated(new Date());
+		baseMapper.insert(xryCourseEntity);
 	}
 
 	@Override
-	public void update(XryCourseEntity xeyCourseEntity) {
-		xeyCourseEntity.setCreated(new Date());
-		xeyCourseEntity.setUpdated(new Date());
-		baseMapper.updateById(xeyCourseEntity);
+	public void update(XryCourseEntity xryCourseEntity) {
+		xryCourseEntity.setCreated(new Date());
+		xryCourseEntity.setUpdated(new Date());
+		baseMapper.updateById(xryCourseEntity);
 	}
 
 	@Override
 	public void deleteBatch(Long[] ids) {
-		baseMapper.deleteById(ids);
+		this.deleteBatchIds(Arrays.asList(ids));
+	}
+
+	@Override
+	public List<XryCourseCatEntity> queryCourseCatList() {
+		return baseMapper.queryCourseCatList();
+	}
+
+	@Override
+	public List<XryCourseEntity> treeCourseList() {
+		return baseMapper.treeCourseList();
 	}
 }

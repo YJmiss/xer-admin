@@ -7,10 +7,10 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryCourseDescDao;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
-import com.oservice.admin.modules.sys.service.XryCourserDescService;
+import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,9 +19,8 @@ import java.util.Map;
  * @author wujunquan
  * @version 1.0
  */
-@Service("xeyCourserDescService")
-public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryCourseDescEntity> implements XryCourserDescService {
-
+@Service("xryCourseDescService")
+public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryCourseDescEntity> implements XryCourseDescService {
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
@@ -36,10 +35,15 @@ public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryC
 	}
 
 	@Override
-	public void save(XryCourseDescEntity xeyCourseDescEntity) {
-		xeyCourseDescEntity.setCreated(new Date());
-		xeyCourseDescEntity.setUpdated(new Date());
-		baseMapper.insert(xeyCourseDescEntity);
+	public XryCourseDescEntity selectByKey(Long id) {
+		return baseMapper.selectByKey(id);
+	}
+
+	@Override
+	public void save(XryCourseDescEntity xryCourseDescEntity) {
+		xryCourseDescEntity.setCreated(new Date());
+		xryCourseDescEntity.setUpdated(new Date());
+		baseMapper.insert(xryCourseDescEntity);
 	}
 
 	@Override
@@ -51,6 +55,10 @@ public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryC
 
 	@Override
 	public void deleteBatch(Long[] ids) {
-		baseMapper.deleteById(ids);
+		for (Long id:ids) {
+			baseMapper.deleteByKey(id);
+		}
 	}
+
+
 }
