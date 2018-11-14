@@ -7,5 +7,13 @@
     <select id="treeCourse" resultType="com.oservice.admin.modules.sys.entity.XryCourseEntity">
       select * from xry_course
     </select>
+    <!-- 查询课程目录 -->
+    <select id="queryCourseCatalogByCourseId" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity">
+        select * from xry_course_catalog where courseid = #{id}
+    </select>
+    <!-- 查询课描述 -->
+    <select id="queryCourseDescById" resultType="com.oservice.admin.modules.sys.entity.XryCourseDescEntity">
+        select * from xry_course_desc where course_id = #{id}
+    </select>
 
 </mapper>

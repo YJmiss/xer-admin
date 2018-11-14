@@ -6,9 +6,13 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
-import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
+import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -26,6 +30,8 @@ import java.util.Map;
 public class XryCourseController extends AbstractController {
     @Resource
     private XryCourseService xryCourserService;
+    @Resource
+    private XryCourseCatalogService xryCourseCatalogService;
 
     /**
      * 查询课程列表
@@ -89,6 +95,17 @@ public class XryCourseController extends AbstractController {
     @PostMapping("/delete")
     @RequiresPermissions("xry:course:delete")
     public Result delete(@RequestBody Long[] ids){
+        // 删除课程，同事删除课程对应的课程描述和课程目录
+        for (Long id:ids) {
+            XryCourseCatalogEntity xryCourseCatalogEntity = xryCourserService.queryCourseCatalogByCourseId(id);
+            if (null != xryCourseCatalogEntity) {
+                return Result.error("请先删除该课程下面的课程目录");
+            }
+            XryCourseDescEntity xryCourseDescEntity = xryCourserService.queryCourseDescById(id);
+            if (null != xryCourseDescEntity) {
+                return Result.error("请先删除该课程下面的课程描述");
+            }
+        }
         xryCourserService.deleteBatch(ids);
         return Result.ok();
     }

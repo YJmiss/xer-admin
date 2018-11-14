@@ -2,6 +2,8 @@ package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,5 +23,19 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @return
      */
     List<XryCourseEntity> treeCourse();
+
+    /**
+     * 查询课程目录
+     * @param id
+     * @return
+     */
+    XryCourseCatalogEntity queryCourseCatalogByCourseId(Long id);
+
+    /**
+    * 查询课程描述
+    * @param id
+    * @return
+    */
+   XryCourseDescEntity queryCourseDescById(Long id);
 
 }

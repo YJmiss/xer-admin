@@ -7,6 +7,8 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryCourseDao;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.springframework.stereotype.Service;
@@ -59,6 +61,16 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
 	@Override
 	public List<XryCourseEntity> treeCourse() {
 		return baseMapper.treeCourse();
+	}
+
+	@Override
+	public XryCourseCatalogEntity queryCourseCatalogByCourseId(Long id) {
+		return baseMapper.queryCourseCatalogByCourseId(id);
+	}
+
+	@Override
+	public XryCourseDescEntity queryCourseDescById(Long id) {
+		return baseMapper.queryCourseDescById(id);
 	}
 
 }

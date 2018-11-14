@@ -8,6 +8,7 @@ import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.service.XryCourseDescService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,9 +49,14 @@ public class XryCourseDescController extends AbstractController {
     @PostMapping("/save")
     @RequiresPermissions("xry:course:desc:save")
     public Result save(@RequestBody XryCourseDescEntity courseDesc){
-        ValidatorUtils.validateEntity(courseDesc, AddGroup.class);
-        xryCourseDescService.save(courseDesc);
-        return Result.ok();
+        XryCourseDescEntity xryCourseDesc = xryCourseDescService.queryById(courseDesc.getCourseId());
+        if (null != xryCourseDesc) {
+            ValidatorUtils.validateEntity(courseDesc, AddGroup.class);
+            xryCourseDescService.save(courseDesc);
+            return Result.ok();
+        } else {
+            return Result.error("所选课程已有课程描述");
+        }
     }
 
     /**
@@ -74,9 +80,14 @@ public class XryCourseDescController extends AbstractController {
     @PostMapping("/update")
     @RequiresPermissions("xry:course:desc:update")
     public Result update(@RequestBody XryCourseDescEntity courseDesc){
-        ValidatorUtils.validateEntity(courseDesc, UpdateGroup.class);
-        xryCourseDescService.update(courseDesc);
-        return Result.ok();
+        XryCourseDescEntity xryCourseDesc = xryCourseDescService.queryById(courseDesc.getCourseId());
+        if (null != xryCourseDesc) {
+            ValidatorUtils.validateEntity(courseDesc, UpdateGroup.class);
+            xryCourseDescService.update(courseDesc);
+            return Result.ok();
+        } else {
+            return Result.error("所选课程已有课程描述");
+        }
     }
 
     /**
