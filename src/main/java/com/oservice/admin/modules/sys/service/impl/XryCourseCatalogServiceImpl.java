@@ -7,7 +7,9 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryCourseCatalogDao;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -26,8 +28,10 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
-		Page<XryCourseCatalogEntity> page = this.selectPage(new Query<XryCourseCatalogEntity>(params).getPage(), new EntityWrapper<>());
-		
+		String title = (String)params.get("title");
+		Page<XryCourseCatalogEntity> page = this.selectPage( new Query<XryCourseCatalogEntity>(params).getPage(),
+					new EntityWrapper<XryCourseCatalogEntity>().like(StringUtils.isNotBlank(title),"title", title)
+				);
 		return new PageUtils(page);
 	}
 
