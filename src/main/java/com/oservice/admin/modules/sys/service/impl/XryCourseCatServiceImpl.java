@@ -19,7 +19,7 @@ import java.util.Map;
  * @author wujunquan
  * @version 1.0
  */
-@Service("xryCourseCatService")
+@Service("xeyCourseCatService")
 public class XryCourseCatServiceImpl extends ServiceImpl<XryCourseCatDao, XryCourseCatEntity> implements XryCourserCatService {
 
 	@Override
@@ -35,17 +35,17 @@ public class XryCourseCatServiceImpl extends ServiceImpl<XryCourseCatDao, XryCou
 	}
 
 	@Override
-	public void save(XryCourseCatEntity xryCourseCatEntity) {
-		xryCourseCatEntity.setCreated(new Date());
-		xryCourseCatEntity.setUpdated(new Date());
-		baseMapper.insert(xryCourseCatEntity);
+	public void save(XryCourseCatEntity xeyCourseCatEntity) {
+		xeyCourseCatEntity.setCreated(new Date());
+		xeyCourseCatEntity.setUpdated(new Date());
+		baseMapper.insert(xeyCourseCatEntity);
 	}
 
 	@Override
-	public void update(XryCourseCatEntity xryCourseCatEntity) {
-		xryCourseCatEntity.setCreated(new Date());
-		xryCourseCatEntity.setUpdated(new Date());
-		baseMapper.updateById(xryCourseCatEntity);
+	public void update(XryCourseCatEntity xeyCourseCatEntity) {
+		xeyCourseCatEntity.setCreated(new Date());
+		xeyCourseCatEntity.setUpdated(new Date());
+		baseMapper.updateById(xeyCourseCatEntity);
 	}
 
 	@Override

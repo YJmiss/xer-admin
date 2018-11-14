@@ -29,15 +29,15 @@ public interface XryCourserDescService extends IService<XryCourseDescEntity> {
 
 	/**
 	 * 课程描述保存
-	 * @param xryCourseDescEntity
+	 * @param xeyCourseDescEntity
 	 */
-	void save(XryCourseDescEntity xryCourseDescEntity);
+	void save(XryCourseDescEntity xeyCourseDescEntity);
 
 	/**
 	 * 课程描述修改
-	 * @param xryCourseDescEntity
+	 * @param xeyCourseDescEntity
 	 */
-	void update(XryCourseDescEntity xryCourseDescEntity);
+	void update(XryCourseDescEntity xeyCourseDescEntity);
 
 	/**
 	 * 课程描述删除

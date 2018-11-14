@@ -3,6 +3,5 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseDescDao">
 	
-    
 
 </mapper>

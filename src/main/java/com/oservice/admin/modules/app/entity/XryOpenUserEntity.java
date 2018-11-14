@@ -2,6 +2,7 @@ package com.oservice.admin.modules.app.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * @version 1.0
  */
 @TableName("xry_openuser")
+@ApiModel(value = "第三方登录用户对象")
 public class XryOpenUserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     /**

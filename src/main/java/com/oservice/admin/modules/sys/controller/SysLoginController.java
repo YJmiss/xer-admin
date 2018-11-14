@@ -6,6 +6,8 @@ import com.oservice.admin.modules.sys.form.SysLoginForm;
 import com.oservice.admin.modules.sys.service.SysCaptchaService;
 import com.oservice.admin.modules.sys.service.SysUserService;
 import com.oservice.admin.modules.sys.service.SysUserTokenService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ import java.util.Map;
  * @version 1.0
  */
 @RestController
+@Api("系统后台登陆API")
 public class SysLoginController extends AbstractController {
 
 	@Resource
@@ -43,6 +46,7 @@ public class SysLoginController extends AbstractController {
 	/**
 	 * 验证码
 	 */
+	@ApiOperation(value = "获取验证码")
 	@GetMapping("captcha.jpg")
 	public void captcha(HttpServletResponse response, String uuid)throws ServletException, IOException {
 		response.setHeader("Cache-Control", "no-store, no-cache");
@@ -59,6 +63,7 @@ public class SysLoginController extends AbstractController {
 	/**
 	 * 登录
 	 */
+	@ApiOperation(value = "系统用户登陆")
 	@PostMapping("/sys/login")
 	public Map<String, Object> login(@RequestBody SysLoginForm form)throws IOException {
 		boolean captcha = sysCaptchaService.validate(form.getUuid(), form.getCaptcha());

@@ -19,7 +19,7 @@ import java.util.Map;
  * @author wujunquan
  * @version 1.0
  */
-@Service("xryCourseCatalogService")
+@Service("xeyCourseCatalogService")
 public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao, XryCourseCatalogEntity> implements XryCourserCatalogService {
 
 	@Override
@@ -35,17 +35,17 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 	}
 
 	@Override
-	public void save(XryCourseCatalogEntity xryCourseCatalogEntity) {
-		xryCourseCatalogEntity.setCreated(new Date());
-		xryCourseCatalogEntity.setUpdated(new Date());
-		baseMapper.insert(xryCourseCatalogEntity);
+	public void save(XryCourseCatalogEntity xeyCourseCatalogEntity) {
+		xeyCourseCatalogEntity.setCreated(new Date());
+		xeyCourseCatalogEntity.setUpdated(new Date());
+		baseMapper.insert(xeyCourseCatalogEntity);
 	}
 
 	@Override
-	public void update(XryCourseCatalogEntity xryCourseCatalogEntity) {
-		xryCourseCatalogEntity.setCreated(new Date());
-		xryCourseCatalogEntity.setUpdated(new Date());
-		baseMapper.updateById(xryCourseCatalogEntity);
+	public void update(XryCourseCatalogEntity xeyCourseCatalogEntity) {
+		xeyCourseCatalogEntity.setCreated(new Date());
+		xeyCourseCatalogEntity.setUpdated(new Date());
+		baseMapper.updateById(xeyCourseCatalogEntity);
 	}
 
 	@Override

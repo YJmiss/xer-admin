@@ -30,15 +30,15 @@ public interface XryCourserCatalogService extends IService<XryCourseCatalogEntit
 
 	/**
 	 * 课程目录保存
-	 * @param xryCourseCatalogEntity
+	 * @param xeyCourseCatalogEntity
 	 */
-	void save(XryCourseCatalogEntity xryCourseCatalogEntity);
+	void save(XryCourseCatalogEntity xeyCourseCatalogEntity);
 
 	/**
 	 * 课程目录修改
-	 * @param xryCourseCatalogEntity
+	 * @param xeyCourseCatalogEntity
 	 */
-	void update(XryCourseCatalogEntity xryCourseCatalogEntity);
+	void update(XryCourseCatalogEntity xeyCourseCatalogEntity);
 
 	/**
 	 * 课程目录删除

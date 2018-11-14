@@ -19,7 +19,7 @@ import java.util.Map;
  * @author wujunquan
  * @version 1.0
  */
-@Service("xryCourserDescService")
+@Service("xeyCourserDescService")
 public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryCourseDescEntity> implements XryCourserDescService {
 
 
@@ -36,17 +36,17 @@ public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryC
 	}
 
 	@Override
-	public void save(XryCourseDescEntity xryCourseDescEntity) {
-		xryCourseDescEntity.setCreated(new Date());
-		xryCourseDescEntity.setUpdated(new Date());
-		baseMapper.insert(xryCourseDescEntity);
+	public void save(XryCourseDescEntity xeyCourseDescEntity) {
+		xeyCourseDescEntity.setCreated(new Date());
+		xeyCourseDescEntity.setUpdated(new Date());
+		baseMapper.insert(xeyCourseDescEntity);
 	}
 
 	@Override
-	public void update(XryCourseDescEntity xryCourseDescEntity) {
-		xryCourseDescEntity.setCreated(new Date());
-		xryCourseDescEntity.setUpdated(new Date());
-		baseMapper.updateById(xryCourseDescEntity);
+	public void update(XryCourseDescEntity xeyCourseDescEntity) {
+		xeyCourseDescEntity.setCreated(new Date());
+		xeyCourseDescEntity.setUpdated(new Date());
+		baseMapper.updateById(xeyCourseDescEntity);
 	}
 
 	@Override

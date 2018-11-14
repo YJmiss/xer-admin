@@ -21,10 +21,10 @@ import java.util.Map;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/xry/course/catalog")
+@RequestMapping("/xey/course/catalog")
 public class XryCourseCatalogController extends AbstractController {
     @Resource
-    private XryCourserCatalogService xryCourseCatalogService;
+    private XryCourserCatalogService xeyCourseCatalogService;
 
     /**
      * 查询课程目录列表
@@ -33,9 +33,9 @@ public class XryCourseCatalogController extends AbstractController {
      */
     @SysLog("查询课程目录列表")
     @GetMapping("/list")
-    @RequiresPermissions("xry:course:catalog:list")
+    @RequiresPermissions("xey:course:catalog:list")
     public Result list(@RequestParam Map<String, Object> params){
-        PageUtils page = xryCourseCatalogService.queryPage(params);
+        PageUtils page = xeyCourseCatalogService.queryPage(params);
         return Result.ok().put("page", page);
     }
 
@@ -46,10 +46,10 @@ public class XryCourseCatalogController extends AbstractController {
      */
     @SysLog("保存课程目录")
     @PostMapping("/save")
-    @RequiresPermissions("xry:course:catalog:save")
+    @RequiresPermissions("xey:course:catalog:save")
     public Result save(@RequestBody XryCourseCatalogEntity courseCatalog){
         ValidatorUtils.validateEntity(courseCatalog, AddGroup.class);
-        xryCourseCatalogService.save(courseCatalog);
+        xeyCourseCatalogService.save(courseCatalog);
         return Result.ok();
     }
 
@@ -59,9 +59,9 @@ public class XryCourseCatalogController extends AbstractController {
      * @return
      */
     @GetMapping("/info/{id}")
-    @RequiresPermissions("xry:course:catalog:info")
+    @RequiresPermissions("xey:course:catalog:info")
     public Result info(@PathVariable("id") Long id){
-        XryCourseCatalogEntity courseCatalog = xryCourseCatalogService.queryById(id);
+        XryCourseCatalogEntity courseCatalog = xeyCourseCatalogService.queryById(id);
         return Result.ok().put("courseCatalog", courseCatalog);
     }
 
@@ -72,10 +72,10 @@ public class XryCourseCatalogController extends AbstractController {
      */
     @SysLog("修改课程目录")
     @PostMapping("/update")
-    @RequiresPermissions("xry:course:catalog:update")
+    @RequiresPermissions("xey:course:catalog:update")
     public Result update(@RequestBody XryCourseCatalogEntity courseCatalog){
         ValidatorUtils.validateEntity(courseCatalog, UpdateGroup.class);
-        xryCourseCatalogService.update(courseCatalog);
+        xeyCourseCatalogService.update(courseCatalog);
         return Result.ok();
     }
 
@@ -86,9 +86,9 @@ public class XryCourseCatalogController extends AbstractController {
      */
     @SysLog("删除课程目录")
     @PostMapping("/delete")
-    @RequiresPermissions("xry:course:catalog:delete")
+    @RequiresPermissions("xey:course:catalog:delete")
     public Result delete(@RequestBody Long[] ids){
-        xryCourseCatalogService.deleteBatch(ids);
+        xeyCourseCatalogService.deleteBatch(ids);
         return Result.ok();
     }
 }

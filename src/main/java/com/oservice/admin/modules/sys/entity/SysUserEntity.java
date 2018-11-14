@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import io.swagger.annotations.ApiModel;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ import java.util.List;
  * @version 1.0
  */
 @TableName("sys_user")
+@ApiModel(value = "系统用户对象")
 public class SysUserEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

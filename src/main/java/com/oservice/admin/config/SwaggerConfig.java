@@ -1,6 +1,5 @@
 package com.oservice.admin.config;
 
-import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -22,6 +21,9 @@ import static com.google.common.collect.Lists.newArrayList;
 @EnableSwagger2
 public class SwaggerConfig implements WebMvcConfigurer {
 
+    /*
+    * 手动配置@EnableMvc默认的静态资源路径
+    * */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/js/");
@@ -33,26 +35,28 @@ public class SwaggerConfig implements WebMvcConfigurer {
     }
 
 
+
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
             .apiInfo(apiInfo())
             .select()
             //加了ApiOperation注解的类，才生成接口文档
-          //  .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+        //   .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
             //包下的类，才生成接口文档
-            .apis(RequestHandlerSelectors.basePackage("com.oservice.admin.controller"))
+            .apis(RequestHandlerSelectors.basePackage("com.oservice.admin.modules"))
             .paths(PathSelectors.any())
-            .build()
-            .securitySchemes(security());
+            .build();
+           // .securitySchemes(security());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("OService-Admin")
-            .description("os-admin文档")
+            .title("疆恒科技学而用接口文档")
+            .description("学而用接口文档")
             .termsOfServiceUrl("http://www.oservice.net")
-            .version("1.0")
+            .contact("YJmiss")
+            .version("2.0.0")
             .build();
     }
 

@@ -20,7 +20,7 @@ import java.util.Map;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/xry/course")
+@RequestMapping("/xey/course")
 public class XryCourseController extends AbstractController {
     @Resource
     private XryCourserService xryCourserService;
@@ -32,7 +32,7 @@ public class XryCourseController extends AbstractController {
      */
     @SysLog("查询课程列表")
     @GetMapping("/list")
-    @RequiresPermissions("xry:course:list")
+    @RequiresPermissions("xey:course:list")
     public Result list(@RequestParam Map<String, Object> params){
         PageUtils page = xryCourserService.queryPage(params);
         return Result.ok().put("page", page);
@@ -45,7 +45,7 @@ public class XryCourseController extends AbstractController {
      */
     @SysLog("保存课程")
     @PostMapping("/save")
-    @RequiresPermissions("xry:course:save")
+    @RequiresPermissions("xey:course:save")
     public Result save(@RequestBody XryCourseEntity course){
         ValidatorUtils.validateEntity(course, AddGroup.class);
         xryCourserService.save(course);
@@ -58,7 +58,7 @@ public class XryCourseController extends AbstractController {
      * @return
      */
     @GetMapping("/info/{id}")
-    @RequiresPermissions("xry:course:info")
+    @RequiresPermissions("xey:course:info")
     public Result info(@PathVariable("id") Long id){
         XryCourseEntity course = xryCourserService.queryById(id);
         return Result.ok().put("course", course);
@@ -71,7 +71,7 @@ public class XryCourseController extends AbstractController {
      */
     @SysLog("修改课程")
     @PostMapping("/update")
-    @RequiresPermissions("xry:course:update")
+    @RequiresPermissions("xey:course:update")
     public Result update(@RequestBody XryCourseEntity course){
         ValidatorUtils.validateEntity(course, UpdateGroup.class);
         xryCourserService.update(course);
@@ -85,7 +85,7 @@ public class XryCourseController extends AbstractController {
      */
     @SysLog("删除课程")
     @PostMapping("/delete")
-    @RequiresPermissions("xry:course:delete")
+    @RequiresPermissions("xey:course:delete")
     public Result delete(@RequestBody Long[] ids){
         xryCourserService.deleteBatch(ids);
         return Result.ok();
