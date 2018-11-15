@@ -7,10 +7,12 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryCourseCatDao;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
-import com.oservice.admin.modules.sys.service.XryCourserCatService;
+import com.oservice.admin.modules.sys.service.XryCourseCatService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,8 +21,8 @@ import java.util.Map;
  * @author wujunquan
  * @version 1.0
  */
-@Service("xeyCourseCatService")
-public class XryCourseCatServiceImpl extends ServiceImpl<XryCourseCatDao, XryCourseCatEntity> implements XryCourserCatService {
+@Service("xryCourseCatService")
+public class XryCourseCatServiceImpl extends ServiceImpl<XryCourseCatDao, XryCourseCatEntity> implements XryCourseCatService {
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
@@ -35,21 +37,26 @@ public class XryCourseCatServiceImpl extends ServiceImpl<XryCourseCatDao, XryCou
 	}
 
 	@Override
-	public void save(XryCourseCatEntity xeyCourseCatEntity) {
-		xeyCourseCatEntity.setCreated(new Date());
-		xeyCourseCatEntity.setUpdated(new Date());
-		baseMapper.insert(xeyCourseCatEntity);
+	public void save(XryCourseCatEntity xryCourseCatEntity) {
+		xryCourseCatEntity.setCreated(new Date());
+		xryCourseCatEntity.setUpdated(new Date());
+		baseMapper.insert(xryCourseCatEntity);
 	}
 
 	@Override
-	public void update(XryCourseCatEntity xeyCourseCatEntity) {
-		xeyCourseCatEntity.setCreated(new Date());
-		xeyCourseCatEntity.setUpdated(new Date());
-		baseMapper.updateById(xeyCourseCatEntity);
+	public void update(XryCourseCatEntity xryCourseCatEntity) {
+		xryCourseCatEntity.setCreated(new Date());
+		xryCourseCatEntity.setUpdated(new Date());
+		baseMapper.updateById(xryCourseCatEntity);
 	}
 
 	@Override
 	public void deleteBatch(Long[] ids) {
-   		baseMapper.deleteById(ids);
+   		this.deleteBatchIds(Arrays.asList(ids));
+	}
+
+	@Override
+	public List<XryCourseCatEntity> treeCourseCat() {
+		return  baseMapper.treeCourseCat();
 	}
 }

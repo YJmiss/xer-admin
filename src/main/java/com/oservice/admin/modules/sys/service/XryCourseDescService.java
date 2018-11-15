@@ -11,7 +11,7 @@ import java.util.Map;
  * @author LingDu
  * @version 1.0
  */
-public interface XryCourserDescService extends IService<XryCourseDescEntity> {
+public interface XryCourseDescService extends IService<XryCourseDescEntity> {
 
 	/**
      * 课程分页查询
@@ -29,15 +29,15 @@ public interface XryCourserDescService extends IService<XryCourseDescEntity> {
 
 	/**
 	 * 课程描述保存
-	 * @param xeyCourseDescEntity
+	 * @param xryCourseDescEntity
 	 */
-	void save(XryCourseDescEntity xeyCourseDescEntity);
+	void save(XryCourseDescEntity xryCourseDescEntity);
 
 	/**
 	 * 课程描述修改
-	 * @param xeyCourseDescEntity
+	 * @param xryCourseDescEntity
 	 */
-	void update(XryCourseDescEntity xeyCourseDescEntity);
+	void update(XryCourseDescEntity xryCourseDescEntity);
 
 	/**
 	 * 课程描述删除

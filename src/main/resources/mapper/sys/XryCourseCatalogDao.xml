@@ -3,5 +3,14 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseCatalogDao">
 	
+    <!-- 查询课程和课程目录信息 -->
+    <select id="queryCourseAndCourseCatalog" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity">
+      select * from xry_course_catalog left join xry_course on xry_course_catalog.#{courseid} = xry_course.id;
+    </select>
 
+    <!-- 查询目录树 -->
+    <select id="treeCourseCatalog" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity">
+      select * from xry_course_catalog
+    </select>
+    
 </mapper>

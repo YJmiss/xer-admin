@@ -3,7 +3,6 @@ package com.oservice.admin.modules.sys.entity;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
-import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,7 +14,6 @@ import java.util.Date;
  * @version 1.0
  */
 @TableName("sys_user_token")
-@ApiModel(value = "系统用户Token对象")
 public class SysUserTokenEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

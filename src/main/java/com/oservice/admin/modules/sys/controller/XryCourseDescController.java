@@ -7,7 +7,8 @@ import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
-import com.oservice.admin.modules.sys.service.XryCourserDescService;
+import com.oservice.admin.modules.sys.service.XryCourseDescService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +22,10 @@ import java.util.Map;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/xey/course/desc")
+@RequestMapping("/xry/course/desc")
 public class XryCourseDescController extends AbstractController {
     @Resource
-    private XryCourserDescService xeyCourseDescService;
+    private XryCourseDescService xryCourseDescService;
 
     /**
      * 查询课程列表
@@ -33,9 +34,9 @@ public class XryCourseDescController extends AbstractController {
      */
     @SysLog("查询课程描述列表")
     @GetMapping("/list")
-    @RequiresPermissions("xey:course:desc:list")
+    @RequiresPermissions("xry:course:desc:list")
     public Result list(@RequestParam Map<String, Object> params){
-        PageUtils page = xeyCourseDescService.queryPage(params);
+        PageUtils page = xryCourseDescService.queryPage(params);
         return Result.ok().put("page", page);
     }
 
@@ -46,11 +47,16 @@ public class XryCourseDescController extends AbstractController {
      */
     @SysLog("保存课程描述")
     @PostMapping("/save")
-    @RequiresPermissions("xey:course:desc:save")
+    @RequiresPermissions("xry:course:desc:save")
     public Result save(@RequestBody XryCourseDescEntity courseDesc){
-        ValidatorUtils.validateEntity(courseDesc, AddGroup.class);
-        xeyCourseDescService.save(courseDesc);
-        return Result.ok();
+        XryCourseDescEntity xryCourseDesc = xryCourseDescService.queryById(courseDesc.getCourseId());
+        if (null != xryCourseDesc) {
+            ValidatorUtils.validateEntity(courseDesc, AddGroup.class);
+            xryCourseDescService.save(courseDesc);
+            return Result.ok();
+        } else {
+            return Result.error("所选课程已有课程描述");
+        }
     }
 
     /**
@@ -59,9 +65,9 @@ public class XryCourseDescController extends AbstractController {
      * @return
      */
     @GetMapping("/info/{courseId}")
-    @RequiresPermissions("xey:course:desc:info")
+    @RequiresPermissions("xry:course:desc:info")
     public Result info(@PathVariable("courseId") Long courseId){
-        XryCourseDescEntity courseDesc = xeyCourseDescService.queryById(courseId);
+        XryCourseDescEntity courseDesc = xryCourseDescService.queryById(courseId);
         return Result.ok().put("courseDesc", courseDesc);
     }
 
@@ -72,11 +78,16 @@ public class XryCourseDescController extends AbstractController {
      */
     @SysLog("修改课程描述")
     @PostMapping("/update")
-    @RequiresPermissions("xey:course:desc:update")
+    @RequiresPermissions("xry:course:desc:update")
     public Result update(@RequestBody XryCourseDescEntity courseDesc){
-        ValidatorUtils.validateEntity(courseDesc, UpdateGroup.class);
-        xeyCourseDescService.update(courseDesc);
-        return Result.ok();
+        XryCourseDescEntity xryCourseDesc = xryCourseDescService.queryById(courseDesc.getCourseId());
+        if (null != xryCourseDesc) {
+            ValidatorUtils.validateEntity(courseDesc, UpdateGroup.class);
+            xryCourseDescService.update(courseDesc);
+            return Result.ok();
+        } else {
+            return Result.error("所选课程已有课程描述");
+        }
     }
 
     /**
@@ -86,9 +97,9 @@ public class XryCourseDescController extends AbstractController {
      */
     @SysLog("删除课程描述")
     @PostMapping("/delete")
-    @RequiresPermissions("xey:course:desc:delete")
+    @RequiresPermissions("xry:course:desc:delete")
     public Result delete(@RequestBody Long[] courseIds){
-        xeyCourseDescService.deleteBatch(courseIds);
+        xryCourseDescService.deleteBatch(courseIds);
         return Result.ok();
     }
 }

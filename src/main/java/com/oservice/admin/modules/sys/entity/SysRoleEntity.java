@@ -3,7 +3,6 @@ package com.oservice.admin.modules.sys.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import io.swagger.annotations.ApiModel;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -17,7 +16,6 @@ import java.util.List;
  * @version 1.0
  */
 @TableName("sys_role")
-@ApiModel(value = "角色对象")
 public class SysRoleEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

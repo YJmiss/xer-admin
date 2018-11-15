@@ -2,7 +2,6 @@ package com.oservice.admin.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import io.swagger.annotations.ApiModel;
 
 import javax.validation.constraints.NotBlank;
 
@@ -13,7 +12,6 @@ import javax.validation.constraints.NotBlank;
  * @version 1.0
  */
 @TableName("sys_config")
-@ApiModel(value = "系统配置信息对象")
 public class SysConfigEntity {
 	@TableId
 	private Long id;

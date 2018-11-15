@@ -3,7 +3,9 @@ package com.oservice.admin.modules.sys.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,7 +14,7 @@ import java.util.Map;
  * @author LingDu
  * @version 1.0
  */
-public interface XryCourserCatalogService extends IService<XryCourseCatalogEntity> {
+public interface XryCourseCatalogService extends IService<XryCourseCatalogEntity> {
 
 	/**
      * 课程目录分页查询
@@ -30,15 +32,15 @@ public interface XryCourserCatalogService extends IService<XryCourseCatalogEntit
 
 	/**
 	 * 课程目录保存
-	 * @param xeyCourseCatalogEntity
+	 * @param xryCourseCatalogEntity
 	 */
-	void save(XryCourseCatalogEntity xeyCourseCatalogEntity);
+	void save(XryCourseCatalogEntity xryCourseCatalogEntity);
 
 	/**
 	 * 课程目录修改
-	 * @param xeyCourseCatalogEntity
+	 * @param xryCourseCatalogEntity
 	 */
-	void update(XryCourseCatalogEntity xeyCourseCatalogEntity);
+	void update(XryCourseCatalogEntity xryCourseCatalogEntity);
 
 	/**
 	 * 课程目录删除
@@ -46,4 +48,10 @@ public interface XryCourserCatalogService extends IService<XryCourseCatalogEntit
 	 */
 	void deleteBatch(Long[] ids);
 
+	/**
+	 * 构造目录树
+	 * @return
+	 */
+	List<XryCourseCatalogEntity> treeCourseCatalog();
+	
 }
