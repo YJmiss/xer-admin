@@ -28,14 +28,14 @@ public class JwtUtils {
     /**
      * 生成jwt token
      */
-    public String generateToken(long userId) {
+    public String generateToken(String userId) {
         Date nowDate = new Date();
         //过期时间
         Date expireDate = new Date(nowDate.getTime() + expire * 1000);
 
         return Jwts.builder()
-                .setHeaderParam("typ", "JWT")
-                .setSubject(userId+"")
+                .setHeaderParam("typ", "JWT")//header
+                .setSubject(userId)
                 .setIssuedAt(nowDate)
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, secret)

@@ -1,19 +1,22 @@
 package com.oservice.admin.config;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.models.parameters.Parameter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -22,34 +25,49 @@ import static com.google.common.collect.Lists.newArrayList;
 @EnableSwagger2
 public class SwaggerConfig implements WebMvcConfigurer {
 
+    /*
+    * 手动配置@EnableMvc默认的静态资源路径
+    * */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-        registry.addResourceHandler("/swagger/**").addResourceLocations("classpath:/static/swagger/");
+        registry.addResourceHandler("/js/**").addResourceLocations("classpath:/js/");
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+
     }
+
 
 
     @Bean
     public Docket createRestApi() {
+
+        //添加head参数start
+       /* ParameterBuilder tokenPar = new ParameterBuilder();
+        List<Parameter> pars = new ArrayList<Parameter>();
+        tokenPar.name("token").description("令牌").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+        pars.add((Parameter) tokenPar.build());*/
+
         return new Docket(DocumentationType.SWAGGER_2)
             .apiInfo(apiInfo())
             .select()
             //加了ApiOperation注解的类，才生成接口文档
-            .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+        //   .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
             //包下的类，才生成接口文档
-            //.apis(RequestHandlerSelectors.basePackage("com.oservice.admin.controller"))
+            .apis(RequestHandlerSelectors.basePackage("com.oservice.admin.modules"))
             .paths(PathSelectors.any())
-            .build()
-            .securitySchemes(security());
+            .build().securitySchemes(security());
+
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("OService-Admin")
-            .description("os-admin文档")
+            .title("疆恒科技学而用接口文档")
+            .description("学而用接口文档")
             .termsOfServiceUrl("http://www.oservice.net")
-            .version("1.0")
+            .contact("YJmiss")
+            .version("2.0.0")
             .build();
     }
 

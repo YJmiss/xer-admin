@@ -97,7 +97,6 @@ public class XryCourseController extends AbstractController {
         xryCourserService.update(course);
         return Result.ok();
     }
-
     /**
      * 删除课程
      * @param ids
