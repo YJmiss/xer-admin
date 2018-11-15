@@ -7,7 +7,7 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryCourseDescDao;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
-import com.oservice.admin.modules.sys.service.XryCourserDescService;
+import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,7 +20,7 @@ import java.util.Map;
  * @version 1.0
  */
 @Service("xeyCourserDescService")
-public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryCourseDescEntity> implements XryCourserDescService {
+public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryCourseDescEntity> implements XryCourseDescService {
 
 
 	@Override

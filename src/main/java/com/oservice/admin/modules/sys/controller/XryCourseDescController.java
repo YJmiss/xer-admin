@@ -7,7 +7,7 @@ import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
-import com.oservice.admin.modules.sys.service.XryCourserDescService;
+import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +24,7 @@ import java.util.Map;
 @RequestMapping("/xey/course/desc")
 public class XryCourseDescController extends AbstractController {
     @Resource
-    private XryCourserDescService xeyCourseDescService;
+    private XryCourseDescService xeyCourseDescService;
 
     /**
      * 查询课程列表

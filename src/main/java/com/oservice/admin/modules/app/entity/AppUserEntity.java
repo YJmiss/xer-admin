@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @TableName("xry_user")
 @ApiModel(value = "APP用户对象")
-public class XryUserEntity implements Serializable {
+public class AppUserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

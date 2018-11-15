@@ -3,6 +3,7 @@ package com.oservice.admin.modules.sys.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
+
 import java.util.Map;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Map;
  * @author LingDu
  * @version 1.0
  */
-public interface XryCourserCatService extends IService<XryCourseCatEntity> {
+public interface XryCourseCatService extends IService<XryCourseCatEntity> {
 
 	/**
 	 * 课程类目分页查询

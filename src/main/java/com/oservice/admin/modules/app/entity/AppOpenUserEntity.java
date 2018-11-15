@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @TableName("xry_openuser")
 @ApiModel(value = "第三方登录用户对象")
-public class XryOpenUserEntity implements Serializable {
+public class AppOpenUserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 用户ID

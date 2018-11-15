@@ -1,21 +1,24 @@
 package com.oservice.admin.modules.app.controller;
 
-import com.oservice.admin.common.utils.*;
-import com.oservice.admin.modules.app.entity.XryUserEntity;
+import com.oservice.admin.common.utils.ConfigConstant;
+import com.oservice.admin.common.utils.CookieHelper;
+import com.oservice.admin.common.utils.MD5Utils;
+import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.modules.app.entity.AppUserEntity;
 import com.oservice.admin.modules.app.form.LoginForm;
 import com.oservice.admin.modules.app.service.UserService;
 import com.oservice.admin.modules.app.utils.JwtUtils;
 import com.taobao.api.ApiException;
-//import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-//import java.util.Date;
-
 import static com.oservice.admin.common.utils.SMSUtils.sendTelMessage;
+
+//import io.jsonwebtoken.Claims;
+//import java.util.Date;
 
 /**
  * @ClassName: AppLoginController
@@ -79,7 +82,7 @@ public class AppLoginController {
      */
     @GetMapping(value = "/checkUserPhone")
     public Result checkUserPhone (String phone){
-        XryUserEntity user= new XryUserEntity();
+        AppUserEntity user = new AppUserEntity();
         user =userService.queryByUserPhone(phone);
         if(user==null) {
             return Result.error().put("result",false);
@@ -97,9 +100,12 @@ public class AppLoginController {
     @PostMapping(value = "/password/login")
     public Result loginForPassword(@RequestBody LoginForm form) {
         //用户信息
-        XryUserEntity user = userService.queryByUserPhone(form.getPhone());
+        AppUserEntity user = userService.queryByUserPhone(form.getPhone());
+        System.out.println(form.getPassword());
+        Boolean b = MD5Utils.verify(form.getPassword(), user.getPassword());
+        System.out.println(b);
         ////账号不存在、密码错误
-        if(user==null||!(MD5Utils.verify(form.getPassword(),user.getPassword()))){
+        if (user == null || !(user.getPassword().equals(MD5Utils.generate(form.getPassword())))) {
             return Result.error("账号或密码不正确");
         }
       /*  //生成token，并保存到数据库
@@ -141,7 +147,7 @@ public class AppLoginController {
      */
     @PostMapping(value = "/setPassword")
     public Result setPassword(@RequestParam String param,String phone){
-        XryUserEntity user = userService.queryByUserPhone(phone);
+        AppUserEntity user = userService.queryByUserPhone(phone);
         if(user==null){
             return Result.error("手机号不正确");
         }
