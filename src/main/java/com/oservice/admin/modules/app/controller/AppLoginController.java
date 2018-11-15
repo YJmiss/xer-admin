@@ -99,7 +99,7 @@ public class AppLoginController {
         //用户信息
         XryUserEntity user = userService.queryByUserPhone(form.getPhone());
         ////账号不存在、密码错误
-        if(user==null||!user.getPassword().equals(MD5Utils.generate(form.getPassword()))){
+        if(user==null||!(MD5Utils.verify(form.getPassword(),user.getPassword()))){
             return Result.error("账号或密码不正确");
         }
       /*  //生成token，并保存到数据库

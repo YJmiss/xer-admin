@@ -3,6 +3,7 @@ package com.oservice.admin.modules.sys.entity;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import io.swagger.annotations.ApiModel;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.Date;
  * @version 1.0
  */
 @TableName("xry_course_cat")
+@ApiModel(value = "课程类目对象")
 public class XryCourseCatEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
@@ -24,7 +26,8 @@ public class XryCourseCatEntity implements Serializable {
 	/**
 	 * 父类目ID=0时，代表的是一级的类目
 	 */
-	private Long parentId;
+	@NotBlank(message="父类目ID不能为空", groups = {AddGroup.class, UpdateGroup.class})
+	private Long parent_id;
 	/**
 	 * 类目名称
 	 */
@@ -34,16 +37,17 @@ public class XryCourseCatEntity implements Serializable {
 	/**
 	 * 排列序号，表示同级类目的展现次序，如数值相等则按名称次序排列。取值范围:大于零的整数
 	 */
-	private Integer sortOrder;
+	private Integer sort_order;
 
 	/**
-	 * 该类目是否为父类目，1为Otrue，0为false
+	 * 该类目是否为父类目，1为true，0为false
 	 */
-	private Integer flag;
+	private boolean is_parent;
 
 	/**
 	 * 状态。可选值:1(正常),2(删除)
 	 */
+	@NotBlank(message="请确认视频状态", groups = {AddGroup.class, UpdateGroup.class})
 	private Integer status;
 
 	/**
@@ -64,12 +68,12 @@ public class XryCourseCatEntity implements Serializable {
 		this.id = id;
 	}
 
-	public Long getParentId() {
-		return parentId;
+	public Long getParent_id() {
+		return parent_id;
 	}
 
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
+	public void setParent_id(Long parent_id) {
+		this.parent_id = parent_id;
 	}
 
 	public String getName() {
@@ -80,20 +84,20 @@ public class XryCourseCatEntity implements Serializable {
 		this.name = name;
 	}
 
-	public Integer getSortOrder() {
-		return sortOrder;
+	public Integer getSort_order() {
+		return sort_order;
 	}
 
-	public void setSortOrder(Integer sortOrder) {
-		this.sortOrder = sortOrder;
+	public void setSort_order(Integer sort_order) {
+		this.sort_order = sort_order;
 	}
 
-	public Integer getFlag() {
-		return flag;
+	public boolean isIs_parent() {
+		return is_parent;
 	}
 
-	public void setFlag(Integer flag) {
-		this.flag = flag;
+	public void setIs_parent(boolean is_parent) {
+		this.is_parent = is_parent;
 	}
 
 	public Integer getStatus() {

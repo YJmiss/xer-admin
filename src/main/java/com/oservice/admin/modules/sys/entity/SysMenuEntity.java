@@ -4,6 +4,7 @@ package com.oservice.admin.modules.sys.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  * @version 1.0
  */
 @TableName("sys_menu")
+@ApiModel(value = "系统菜单对象")
 public class SysMenuEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

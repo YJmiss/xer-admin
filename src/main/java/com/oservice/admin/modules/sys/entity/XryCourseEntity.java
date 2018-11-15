@@ -3,6 +3,8 @@ package com.oservice.admin.modules.sys.entity;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import io.swagger.annotations.ApiModel;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +16,7 @@ import java.util.Date;
  * @version 1.0
  */
 @TableName("xry_course")
+@ApiModel(value = "课程对象")
 public class XryCourseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
@@ -32,6 +35,7 @@ public class XryCourseEntity implements Serializable {
 	/**
 	 * 所属课程类目ID
 	 */
+	@NotBlank(message="课程标题不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private Long cid;
 	/**
 	 * 所属讲师ID
@@ -40,14 +44,17 @@ public class XryCourseEntity implements Serializable {
 	/**
 	 * 课程属性：1-收费，2-免费
 	 */
+	@NotBlank(message="请选择课程属性", groups = {AddGroup.class, UpdateGroup.class})
 	private Integer property;
 	/**
 	 * 视频状态，1-未审核，2-审核中，3-通过审核，4-未通过
 	 */
+	@NotBlank(message="请确认视频状态", groups = {AddGroup.class, UpdateGroup.class})
 	private Integer status;
 	/**
 	 * 课程价格 默认0，单位为：分
 	 */
+	@NotBlank(message="请填写课程价格", groups = {AddGroup.class, UpdateGroup.class})
 	private Long price;
 	/**
 	 * 创建时间

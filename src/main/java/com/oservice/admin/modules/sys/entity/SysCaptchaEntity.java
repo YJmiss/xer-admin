@@ -3,6 +3,7 @@ package com.oservice.admin.modules.sys.entity;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
+import io.swagger.annotations.ApiModel;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  * @version 1.0
  */
 @TableName("sys_captcha")
+@ApiModel(value = "系统验证码对象")
 public class SysCaptchaEntity {
 
     @TableId(type = IdType.INPUT)

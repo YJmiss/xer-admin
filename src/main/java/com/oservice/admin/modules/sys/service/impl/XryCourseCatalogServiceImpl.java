@@ -7,14 +7,10 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryCourseCatalogDao;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseEntity;
-import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
-import org.apache.commons.lang.StringUtils;
+import com.oservice.admin.modules.sys.service.XryCourserCatalogService;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,15 +19,13 @@ import java.util.Map;
  * @author wujunquan
  * @version 1.0
  */
-@Service("xryCourseCatalogService")
-public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao, XryCourseCatalogEntity> implements XryCourseCatalogService {
+@Service("xeyCourseCatalogService")
+public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao, XryCourseCatalogEntity> implements XryCourserCatalogService {
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
-		String title = (String)params.get("title");
-		Page<XryCourseCatalogEntity> page = this.selectPage( new Query<XryCourseCatalogEntity>(params).getPage(),
-					new EntityWrapper<XryCourseCatalogEntity>().like(StringUtils.isNotBlank(title),"title", title)
-				);
+		Page<XryCourseCatalogEntity> page = this.selectPage(new Query<XryCourseCatalogEntity>(params).getPage(), new EntityWrapper<>());
+		
 		return new PageUtils(page);
 	}
 
@@ -41,28 +35,21 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 	}
 
 	@Override
-	public void save(XryCourseCatalogEntity xryCourseCatalogEntity) {
-		xryCourseCatalogEntity.setCreated(new Date());
-		xryCourseCatalogEntity.setUpdated(new Date());
-		baseMapper.insert(xryCourseCatalogEntity);
+	public void save(XryCourseCatalogEntity xeyCourseCatalogEntity) {
+		xeyCourseCatalogEntity.setCreated(new Date());
+		xeyCourseCatalogEntity.setUpdated(new Date());
+		baseMapper.insert(xeyCourseCatalogEntity);
 	}
 
 	@Override
-	public void update(XryCourseCatalogEntity xryCourseCatalogEntity) {
-		xryCourseCatalogEntity.setCreated(new Date());
-		xryCourseCatalogEntity.setUpdated(new Date());
-		baseMapper.updateById(xryCourseCatalogEntity);
+	public void update(XryCourseCatalogEntity xeyCourseCatalogEntity) {
+		xeyCourseCatalogEntity.setCreated(new Date());
+		xeyCourseCatalogEntity.setUpdated(new Date());
+		baseMapper.updateById(xeyCourseCatalogEntity);
 	}
 
 	@Override
 	public void deleteBatch(Long[] ids) {
-   		this.deleteBatchIds(Arrays.asList(ids));
+   		baseMapper.deleteById(ids);
 	}
-
-	@Override
-	public List<XryCourseCatalogEntity> treeCourseCatalog() {
-		return baseMapper.treeCourseCatalog();
-	}
-
-
 }

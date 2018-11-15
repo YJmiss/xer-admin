@@ -53,6 +53,9 @@ public class MD5Utils {
         }
         return new String(cs);
     }
+    /**
+     * 校验密码是否正确
+     */
     public static boolean verify(String password, String md5) {
         char[] cs1 = new char[32];
         char[] cs2 = new char[16];

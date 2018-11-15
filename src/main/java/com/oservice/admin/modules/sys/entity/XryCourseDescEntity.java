@@ -1,10 +1,8 @@
 package com.oservice.admin.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.oservice.admin.common.validator.group.AddGroup;
-import com.oservice.admin.common.validator.group.UpdateGroup;
+import io.swagger.annotations.ApiModel;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,16 +13,17 @@ import java.util.Date;
  * @version 1.0
  */
 @TableName("xry_course_desc")
+@ApiModel(value = "课程描述对象")
 public class XryCourseDescEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 课程ID
 	 */
-	private Long courseId;
+	private Long course_id;
 	/**
 	 * 课程描述
 	 */
-	private String courseDesc;
+	private String course_desc;
 
 	/**
 	 * 创建时间
@@ -35,20 +34,20 @@ public class XryCourseDescEntity implements Serializable {
 	 */
 	private Date updated;
 
-	public Long getCourseId() {
-		return courseId;
+	public Long getCourse_id() {
+		return course_id;
 	}
 
-	public void setCourseId(Long courseId) {
-		this.courseId = courseId;
+	public void setCourse_id(Long course_id) {
+		this.course_id = course_id;
 	}
 
-	public String getCourseDesc() {
-		return courseDesc;
+	public String getCourse_desc() {
+		return course_desc;
 	}
 
-	public void setCourseDesc(String courseDesc) {
-		this.courseDesc = courseDesc;
+	public void setCourse_desc(String course_desc) {
+		this.course_desc = course_desc;
 	}
 
 	public Date getCreated() {

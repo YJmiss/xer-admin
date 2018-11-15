@@ -3,17 +3,20 @@ package com.oservice.admin.modules.sys.entity;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import io.swagger.annotations.ApiModel;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 系统用户
+ *
  * 课程目录表的实体类
  * @author wujunquan
  * @version 1.0
  */
 @TableName("xry_course_catalog")
+@ApiModel(value = "课程目录对象")
 public class XryCourseCatalogEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
@@ -29,6 +32,7 @@ public class XryCourseCatalogEntity implements Serializable {
 	/**
 	 * 所属课程ID
 	 */
+	@NotBlank(message="课程ID不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private Long courseid;
 	
 	/**

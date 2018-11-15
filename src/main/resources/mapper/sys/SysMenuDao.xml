@@ -7,7 +7,7 @@
 		select * from sys_menu where parent_id = #{parentId} order by order_num asc
 	</select>
 
-	<select id="queryNotButtonList" resultType="com.oservice.admin.modules.sys.entity.SysMenuEntity">
+	<select id="queryNotButtonList" parameterType="com.oservice.admin.modules.sys.entity.SysMenuEntity">
 		select * from sys_menu where type != 2 order by order_num asc
 	</select>
 
