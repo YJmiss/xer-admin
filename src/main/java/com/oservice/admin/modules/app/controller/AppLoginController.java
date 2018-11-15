@@ -6,13 +6,14 @@ import com.oservice.admin.modules.app.form.LoginForm;
 import com.oservice.admin.modules.app.service.UserService;
 import com.oservice.admin.modules.app.utils.JwtUtils;
 import com.taobao.api.ApiException;
+//import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-import java.util.Date;
+//import java.util.Date;
 
 import static com.oservice.admin.common.utils.SMSUtils.sendTelMessage;
 
@@ -62,7 +63,7 @@ public class AppLoginController {
     @GetMapping(value = "/validationPhoneCode")
     public Result validationPhoneCode
     (@RequestParam String param,String phone){
-        if (param != null) {
+        if (param != null && phone!= null) {
             if (MD5Utils.md5(param.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp"+phone))) {
                 return Result.ok().put("result",true);
             }
@@ -93,15 +94,15 @@ public class AppLoginController {
      * @Date: 2018/11/7 9:14
      * @Version 1.0
      */
-    @PostMapping(value = "/app/login")
-    public Result login(@RequestBody LoginForm form) {
+    @PostMapping(value = "/password/login")
+    public Result loginForPassword(@RequestBody LoginForm form) {
         //用户信息
         XryUserEntity user = userService.queryByUserPhone(form.getPhone());
         ////账号不存在、密码错误
-        if(user==null||user.getPassword().equals(MD5Utils.md5(form.getPassword()))){
+        if(user==null||!user.getPassword().equals(MD5Utils.generate(form.getPassword()))){
             return Result.error("账号或密码不正确");
         }
-        //生成token，并保存到数据库
+      /*  //生成token，并保存到数据库
         String token = jwtUtils.generateToken(user.getId());
         //生成更新token(MD5+时间)
         String refreshToken=MD5Utils.md5(DateUtils.format(new Date()));
@@ -109,7 +110,48 @@ public class AppLoginController {
         user.setLoginToken(token);
         user.setRefreshToken(refreshToken);
         userService.createToken(user);
+        Claims claims=jwtUtils.getClaimByToken(token);
+        System.err.print(claims.getSubject());
+        */
+        return Result.ok().put("result","认证通过");
+    }
+    /**
+     * @Description: 手机号+短信登陆
+     * @Author:yiyx
+     * @param:
+     * @Date: 2018/11/7 9:14
+     * @Version 1.0
+     */
+    @GetMapping(value = "/sms/login")
+    public Result loginForSMS(@RequestParam String param,String phone){
+        if (param != null && phone !=null) {
+            if (MD5Utils.md5(param.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp"+phone))) {
+                return Result.ok().put("result","认证通过");
+            }
+            return Result.error("手机号或验证码不正确");
+        }
+        return Result.error("手机号或验证码不能为空");
+    }
+    /**
+     * @Description: 重置密码
+     * @Author:yiyx
+     * @param:
+     * @Date: 2018/11/7 9:14
+     * @Version 1.0
+     */
+    @PostMapping(value = "/setPassword")
+    public Result setPassword(@RequestParam String param,String phone){
+        XryUserEntity user = userService.queryByUserPhone(phone);
+        if(user==null){
+            return Result.error("手机号不正确");
+        }
+        user.setPassword(MD5Utils.generate(param));
+        Boolean br=userService.updatePassword(user);
+        if(br){
+            return Result.ok().put("result","密码重置成功");
+        }
+        return Result.error("密码重置失败");
 
-        return  null;
+
     }
 }

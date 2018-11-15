@@ -11,4 +11,8 @@
     <update id="createToken" parameterType="com.oservice.admin.modules.app.entity.XryUserEntity">
       update xry_user set login_token=#{loginToken},refresh_token=#{refreshToken} where id=#{id}
     </update>
+    <!--重置密码-->
+    <update id="updatePassword" parameterType="com.oservice.admin.modules.app.entity.XryUserEntity">
+      update xry_user set password=#{password} where phone=#{phone}
+    </update>
 </mapper>

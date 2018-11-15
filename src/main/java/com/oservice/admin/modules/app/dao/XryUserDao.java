@@ -17,4 +17,10 @@ public interface XryUserDao extends BaseMapper<XryUserEntity> {
      * @param
      */
     Boolean createToken(XryUserEntity user);
+
+    /**
+     * 重置密码
+     * @param
+     */
+    Boolean updatePassword(XryUserEntity user);
 }

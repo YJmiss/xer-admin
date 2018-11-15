@@ -18,4 +18,9 @@ public class UserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> impl
     public Boolean createToken(XryUserEntity user) {
         return baseMapper.createToken(user);
     }
+
+    @Override
+    public Boolean updatePassword(XryUserEntity user) {
+        return baseMapper.updatePassword(user);
+    }
 }
