@@ -13,11 +13,23 @@ import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
 import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 系统用户
@@ -120,4 +132,68 @@ public class XryCourseController extends AbstractController {
         List<XryCourseEntity> courseList = xryCourserService.treeCourse();
         return Result.ok().put("courseList", courseList);
     }
+
+    /**
+     * 上传图片
+     * @param formData
+     * @param config
+     * @return
+     */
+    @PostMapping("/upload/img")
+    @RequiresPermissions("xry:course:upload:img")
+    public Result uploadImg(@RequestBody(required=false)HttpServletRequest request, @RequestParam("formData") String[] formData, String type, String config) throws FileUploadException {
+        Map<String, String> uri = new HashMap<>();
+        DateFormat format = new SimpleDateFormat("yyyy-MM");
+        String time = format.format(new Date());
+        String tempPathDir = "";
+        File tempPathDirFile = new File(tempPathDir);
+        String realDir = "product/" + type + "/" + time + "/" + "516513650132032023";
+        try {
+            //文件上传的三部曲
+            //创建工厂
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            // 设置缓冲区大小，这里是400kb
+            factory.setSizeThreshold(4096 * 100);
+            // 设置缓冲区目录
+            factory.setRepository(tempPathDirFile);
+            // Create a new file upload handler
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            //设置上传文件的大小 12M
+            upload.setSizeMax(4194304 * 3);
+            //创建解析器 // 得到所有的文件
+            List<FileItem> items = upload.parseRequest(request);
+            Iterator<FileItem> i = items.iterator();
+            while (i.hasNext()) {
+                FileItem fi = i.next();
+                // false表示文件 否则字段
+                if (!fi.isFormField()) {
+                    String fileName = fi.getName();
+                    if (fileName != null) {
+                        // 这里加一个限制，如果不是图片格式，则提示错误. (gif,jpg,jpeg,bmp,png)
+                        String suffixName = FilenameUtils.getExtension(fileName);
+                        if ("jpg".equalsIgnoreCase(suffixName) || "jpeg".equalsIgnoreCase(suffixName) || "png".equalsIgnoreCase(suffixName)) {
+                            // 文件名
+                            DateFormat format2 = new SimpleDateFormat("yyyyMMddHHmmss");
+                            String baseName = FilenameUtils.getBaseName(fileName);
+                            String dirFileUri = realDir + "/" + baseName + format2.format(new Date()) + "." + suffixName;
+                            return Result.ok(dirFileUri);
+                        } else {
+                            return Result.ok("");
+                        }
+                    }
+                } else {
+                    fi.getString("UTF-8");
+                    uri.put(new String(fi.getFieldName().getBytes("iso-8859-1"), "utf-8"),
+                            new String(fi.getString().getBytes("iso-8859-1"), "utf-8"));
+                }
+            }
+//            return Result.ok(uri);
+        } catch (FileUploadException e) {
+            return Result.error(404,"request文件接收失败");
+        } catch (UnsupportedEncodingException e) {
+            return Result.error(404,"乱码解决失败");
+        }
+        return Result.ok("");
+    }
+
 }
