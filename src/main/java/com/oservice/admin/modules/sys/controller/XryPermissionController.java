@@ -17,7 +17,6 @@ import java.util.Map;
 /**
  * 系统用户
  * app权限表的控制器
- *
  * @author wujunquan
  * @version 1.0
  */
@@ -29,7 +28,6 @@ public class XryPermissionController extends AbstractController {
 
     /**
      * 查询app权限列表
-     *
      * @param params
      * @return
      */
@@ -43,7 +41,6 @@ public class XryPermissionController extends AbstractController {
 
     /**
      * 保存app权限
-     *
      * @param permission
      * @return
      */
@@ -58,7 +55,6 @@ public class XryPermissionController extends AbstractController {
 
     /**
      * app权限信息
-     *
      * @param id
      * @return
      */
@@ -71,7 +67,6 @@ public class XryPermissionController extends AbstractController {
 
     /**
      * 修改app权限
-     *
      * @param permission
      * @return
      */
@@ -86,7 +81,6 @@ public class XryPermissionController extends AbstractController {
 
     /**
      * 删除app权限
-     *
      * @param ids
      * @return
      */

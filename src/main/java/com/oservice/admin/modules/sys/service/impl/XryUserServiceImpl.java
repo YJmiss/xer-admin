@@ -16,7 +16,6 @@ import java.util.Map;
 /**
  * 系统用户
  * app用户表的接口实现类
- *
  * @author wujunquan
  * @version 1.0
  */

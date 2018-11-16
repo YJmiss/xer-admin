@@ -9,7 +9,6 @@ import java.util.Map;
 /**
  * 系统用户
  * app用户表的接口
- *
  * @author LingDu
  * @version 1.0
  */

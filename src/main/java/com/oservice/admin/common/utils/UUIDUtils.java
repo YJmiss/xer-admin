@@ -1,5 +1,8 @@
 package com.oservice.admin.common.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
     /**
      * ID生成工具
@@ -33,4 +36,18 @@ public class UUIDUtils {
  /*     public static void main(String[] args) {
         System.out.println(getUUID());
     }*/
+
+        /**
+         * 生成图片名字
+         *
+         * @param oldName
+         * @return
+         */
+        public static String generateFileName(String oldName) {
+            String randomStr = new Random().nextInt(10) + UUID.randomUUID().toString().substring(0, 4);// 随机数+UUID的前4位
+            String timeStr = new SimpleDateFormat("yyyyMMddHH24mmss").format(new Date());// 时间字符串
+            String suffix = oldName.substring(oldName.lastIndexOf("."));
+            System.out.println(suffix);
+            return timeStr + randomStr + suffix;
+        }
 }

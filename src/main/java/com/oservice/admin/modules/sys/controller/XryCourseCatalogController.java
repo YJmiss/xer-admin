@@ -12,6 +12,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,10 +22,10 @@ import java.util.Map;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/xey/course/catalog")
+@RequestMapping("/xry/course/catalog")
 public class XryCourseCatalogController extends AbstractController {
     @Resource
-    private XryCourseCatalogService xeyCourseCatalogService;
+    private XryCourseCatalogService xryCourseCatalogService;
 
     /**
      * 查询课程目录列表
@@ -33,9 +34,9 @@ public class XryCourseCatalogController extends AbstractController {
      */
     @SysLog("查询课程目录列表")
     @GetMapping("/list")
-    @RequiresPermissions("xey:course:catalog:list")
+    @RequiresPermissions("xry:course:catalog:list")
     public Result list(@RequestParam Map<String, Object> params){
-        PageUtils page = xeyCourseCatalogService.queryPage(params);
+        PageUtils page = xryCourseCatalogService.queryPage(params);
         return Result.ok().put("page", page);
     }
 
@@ -46,10 +47,10 @@ public class XryCourseCatalogController extends AbstractController {
      */
     @SysLog("保存课程目录")
     @PostMapping("/save")
-    @RequiresPermissions("xey:course:catalog:save")
+    @RequiresPermissions("xry:course:catalog:save")
     public Result save(@RequestBody XryCourseCatalogEntity courseCatalog){
         ValidatorUtils.validateEntity(courseCatalog, AddGroup.class);
-        xeyCourseCatalogService.save(courseCatalog);
+        xryCourseCatalogService.save(courseCatalog);
         return Result.ok();
     }
 
@@ -59,9 +60,9 @@ public class XryCourseCatalogController extends AbstractController {
      * @return
      */
     @GetMapping("/info/{id}")
-    @RequiresPermissions("xey:course:catalog:info")
+    @RequiresPermissions("xry:course:catalog:info")
     public Result info(@PathVariable("id") Long id){
-        XryCourseCatalogEntity courseCatalog = xeyCourseCatalogService.queryById(id);
+        XryCourseCatalogEntity courseCatalog = xryCourseCatalogService.queryById(id);
         return Result.ok().put("courseCatalog", courseCatalog);
     }
 
@@ -72,10 +73,10 @@ public class XryCourseCatalogController extends AbstractController {
      */
     @SysLog("修改课程目录")
     @PostMapping("/update")
-    @RequiresPermissions("xey:course:catalog:update")
+    @RequiresPermissions("xry:course:catalog:update")
     public Result update(@RequestBody XryCourseCatalogEntity courseCatalog){
         ValidatorUtils.validateEntity(courseCatalog, UpdateGroup.class);
-        xeyCourseCatalogService.update(courseCatalog);
+        xryCourseCatalogService.update(courseCatalog);
         return Result.ok();
     }
 
@@ -86,9 +87,22 @@ public class XryCourseCatalogController extends AbstractController {
      */
     @SysLog("删除课程目录")
     @PostMapping("/delete")
-    @RequiresPermissions("xey:course:catalog:delete")
+    @RequiresPermissions("xry:course:catalog:delete")
     public Result delete(@RequestBody Long[] ids){
-        xeyCourseCatalogService.deleteBatch(ids);
+        xryCourseCatalogService.deleteBatch(ids);
         return Result.ok();
     }
+
+    /**
+     * 构造目录树
+     *
+     * @return
+     */
+    @GetMapping("/treeCourseCatalog")
+    @RequiresPermissions("xry:course:catalog:treeCourseCatalog")
+    public Result treeCourseCatalog() {
+        List<XryCourseCatalogEntity> courseCatalogList = xryCourseCatalogService.treeCourseCatalog();
+        return Result.ok().put("courseCatalogList", courseCatalogList);
+    }
+    
 }

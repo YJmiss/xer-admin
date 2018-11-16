@@ -2,8 +2,11 @@ package com.oservice.admin.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
+import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,20 +33,41 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 
 	/**
 	 * 课程保存
-	 * @param xeyCourseEntity
+	 * @param xryCourseEntity
 	 */
-	void save(XryCourseEntity xeyCourseEntity);
+	void save(XryCourseEntity xryCourseEntity);
 
 	/**
 	 * 课程修改
-	 * @param xeyCourseEntity
+	 * @param xryCourseEntity
 	 */
-	void update(XryCourseEntity xeyCourseEntity);
+	void update(XryCourseEntity xryCourseEntity);
 
 	/**
 	 * 课程删除
 	 * @param ids
 	 */
 	void deleteBatch(Long[] ids);
+
+	/**
+	 * 构造课程树
+	 *
+	 * @return
+	 */
+	List<XryCourseEntity> treeCourse();
+
+	/**
+	 * 查询课程目录
+	 *
+	 * @return
+	 */
+	XryCourseCatalogEntity queryCourseCatalogByCourseId(Long id);
+
+	/**
+	 * 查询课程描述
+	 *
+	 * @return
+	 */
+	XryCourseDescEntity queryCourseDescById(Long id);
 
 }

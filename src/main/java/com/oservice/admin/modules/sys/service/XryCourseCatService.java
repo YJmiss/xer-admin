@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 
+import java.util.List;
 import java.util.Map;
+
 
 /**
  * 系统用户
@@ -30,20 +32,27 @@ public interface XryCourseCatService extends IService<XryCourseCatEntity> {
 
 	/**
 	 * 课程类目保存
-	 * @param xeyCourseCatEntity
+	 * @param xryCourseCatEntity
 	 */
-	void save(XryCourseCatEntity xeyCourseCatEntity);
+	void save(XryCourseCatEntity xryCourseCatEntity);
 
 	/**
 	 * 课程类目修改
-	 * @param xeyCourseCatEntity
+	 * @param xryCourseCatEntity
 	 */
-	void update(XryCourseCatEntity xeyCourseCatEntity);
+	void update(XryCourseCatEntity xryCourseCatEntity);
 
 	/**
 	 * 课程类目删除
 	 * @param ids
 	 */
 	void deleteBatch(Long[] ids);
+
+	/**
+	 * 构造课程类目树
+	 *
+	 * @return
+	 */
+	List<XryCourseCatEntity> treeCourseCat();
 
 }

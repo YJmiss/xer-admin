@@ -17,7 +17,6 @@ import java.util.Map;
 /**
  * 系统用户
  * app用户表的控制器
- *
  * @author wujunquan
  * @version 1.0
  */
@@ -29,7 +28,6 @@ public class XryUserController extends AbstractController {
 
     /**
      * 查询app用户列表
-     *
      * @param params
      * @return
      */
@@ -43,7 +41,6 @@ public class XryUserController extends AbstractController {
 
     /**
      * 保存app用户
-     *
      * @param user
      * @return
      */
@@ -58,7 +55,6 @@ public class XryUserController extends AbstractController {
 
     /**
      * app用户信息
-     *
      * @param id
      * @return
      */
@@ -71,7 +67,6 @@ public class XryUserController extends AbstractController {
 
     /**
      * 修改app用户
-     *
      * @param user
      * @return
      */
@@ -86,7 +81,6 @@ public class XryUserController extends AbstractController {
 
     /**
      * 删除app用户
-     *
      * @param ids
      * @return
      */

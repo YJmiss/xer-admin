@@ -17,7 +17,6 @@ import java.util.Map;
 /**
  * 系统用户
  * 视频表的控制器
- *
  * @author wujunquan
  * @version 1.0
  */
@@ -29,7 +28,6 @@ public class XryVideoController extends AbstractController {
 
     /**
      * 查询视频列表
-     *
      * @param params
      * @return
      */
@@ -43,7 +41,6 @@ public class XryVideoController extends AbstractController {
 
     /**
      * 保存视频
-     *
      * @param video
      * @return
      */
@@ -58,7 +55,6 @@ public class XryVideoController extends AbstractController {
 
     /**
      * 视频信息
-     *
      * @param id
      * @return
      */
@@ -71,7 +67,6 @@ public class XryVideoController extends AbstractController {
 
     /**
      * 修改视频
-     *
      * @param video
      * @return
      */
@@ -86,7 +81,6 @@ public class XryVideoController extends AbstractController {
 
     /**
      * 删除视频
-     *
      * @param ids
      * @return
      */
