@@ -15,4 +15,9 @@
     <update id="updatePassword" parameterType="com.oservice.admin.modules.app.entity.AppUserEntity">
       update xry_user set password=#{password} where phone=#{phone}
     </update>
+    <!--注册用户-->
+    <insert id="register" parameterType="com.oservice.admin.modules.app.entity.AppUserEntity">
+        insert into xry_user (id,phone,password,social_source,created,updated) values (#{id},#{phone},#{password},#{socialSource},#{created},#{updated})
+    </insert>
+
 </mapper>

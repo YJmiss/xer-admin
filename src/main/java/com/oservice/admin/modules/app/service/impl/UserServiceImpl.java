@@ -23,4 +23,11 @@ public class UserServiceImpl extends ServiceImpl<AppUserDao, AppUserEntity> impl
     public Boolean updatePassword(AppUserEntity user) {
         return baseMapper.updatePassword(user);
     }
+
+    @Override
+    public void register(AppUserEntity user) {
+
+
+        baseMapper.register(user);
+    }
 }

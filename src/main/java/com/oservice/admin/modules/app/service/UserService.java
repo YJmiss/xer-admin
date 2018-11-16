@@ -21,4 +21,11 @@ public interface UserService extends IService<AppUserEntity> {
      */
     Boolean updatePassword(AppUserEntity user);
 
+    /**
+     * 注册用户
+     *
+     * @param
+     */
+    void register(AppUserEntity user);
+
 }

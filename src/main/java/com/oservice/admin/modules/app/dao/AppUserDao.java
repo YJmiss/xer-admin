@@ -23,4 +23,11 @@ public interface AppUserDao extends BaseMapper<AppUserEntity> {
      * @param
      */
     Boolean updatePassword(AppUserEntity user);
+
+    /**
+     * 注册用户
+     *
+     * @param
+     */
+    void register(AppUserEntity user);
 }

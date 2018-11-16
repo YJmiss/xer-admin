@@ -1,9 +1,6 @@
 package com.oservice.admin.modules.app.controller;
 
-import com.oservice.admin.common.utils.ConfigConstant;
-import com.oservice.admin.common.utils.CookieHelper;
-import com.oservice.admin.common.utils.MD5Utils;
-import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.common.utils.*;
 import com.oservice.admin.modules.app.entity.AppUserEntity;
 import com.oservice.admin.modules.app.form.LoginForm;
 import com.oservice.admin.modules.app.service.UserService;
@@ -14,6 +11,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 import static com.oservice.admin.common.utils.SMSUtils.sendTelMessage;
 
@@ -29,7 +27,7 @@ import static com.oservice.admin.common.utils.SMSUtils.sendTelMessage;
  */
 @RestController
 @RequestMapping("/api/appAccount")
-@Api(description = "APP登录api")
+@Api(description = "APP登录/注册api")
 public class AppLoginController {
 
     @Resource
@@ -37,6 +35,7 @@ public class AppLoginController {
 
     @Resource
     private JwtUtils jwtUtils;
+
     /**
      * @Description: 发送短信验证码
      * @Author:yiyx
@@ -45,15 +44,15 @@ public class AppLoginController {
      * @Version 1.0
      */
     @GetMapping(value = "/sendPhoneCode")
-    public Result  sendPhoneCode(String tel) throws ApiException {
+    public Result sendPhoneCode(String tel) throws ApiException {
         long code = RandomUtils.nextLong(100000, 900000);
-        String msg="";
+        String msg = "";
         String template = "{\"code\":\"" + code + "\",\"product\":\"" + msg + "\"}";
         boolean isTrue = sendTelMessage(ConfigConstant.TEMPLATECODE, template, tel);
         String checkCode = MD5Utils.md5(String.valueOf(code).toUpperCase());
         // Todo 存到cook里 有效时间：60s
-        CookieHelper.addCookie("phoneCodeApp"+tel, checkCode,60);
-       return Result.ok(String.valueOf(isTrue));
+        CookieHelper.addCookie("phoneCodeApp" + tel, checkCode, 60);
+        return Result.ok(String.valueOf(isTrue));
     }
 
     /**
@@ -65,14 +64,15 @@ public class AppLoginController {
      */
     @GetMapping(value = "/validationPhoneCode")
     public Result validationPhoneCode
-    (@RequestParam String param,String phone){
-        if (param != null && phone!= null) {
-            if (MD5Utils.md5(param.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp"+phone))) {
-                return Result.ok().put("result",true);
+    (@RequestParam String param, String phone) {
+        if (param != null && phone != null) {
+            if (MD5Utils.md5(param.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp" + phone))) {
+                return Result.ok().put("result", true);
             }
         }
-        return Result.ok().put("result",false);
+        return Result.ok().put("result", false);
     }
+
     /**
      * @Description: 通过手机号校验当前手机号是否系统用户
      * @Author:yiyx
@@ -81,13 +81,13 @@ public class AppLoginController {
      * @Version 1.0
      */
     @GetMapping(value = "/checkUserPhone")
-    public Result checkUserPhone (String phone){
+    public Result checkUserPhone(String phone) {
         AppUserEntity user = new AppUserEntity();
-        user =userService.queryByUserPhone(phone);
-        if(user==null) {
-            return Result.error().put("result",false);
+        user = userService.queryByUserPhone(phone);
+        if (user == null) {
+            return Result.error().put("result", false);
         }
-        return Result.ok().put("result",true);
+        return Result.ok().put("result", true);
     }
 
     /**
@@ -119,8 +119,9 @@ public class AppLoginController {
         Claims claims=jwtUtils.getClaimByToken(token);
         System.err.print(claims.getSubject());
         */
-        return Result.ok().put("result","认证通过");
+        return Result.ok().put("result", "认证通过");
     }
+
     /**
      * @Description: 手机号+短信登陆
      * @Author:yiyx
@@ -129,15 +130,16 @@ public class AppLoginController {
      * @Version 1.0
      */
     @GetMapping(value = "/sms/login")
-    public Result loginForSMS(@RequestParam String param,String phone){
-        if (param != null && phone !=null) {
-            if (MD5Utils.md5(param.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp"+phone))) {
-                return Result.ok().put("result","认证通过");
+    public Result loginForSMS(@RequestParam String param, String phone) {
+        if (param != null && phone != null) {
+            if (MD5Utils.md5(param.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp" + phone))) {
+                return Result.ok().put("result", "认证通过");
             }
             return Result.error("手机号或验证码不正确");
         }
         return Result.error("手机号或验证码不能为空");
     }
+
     /**
      * @Description: 重置密码
      * @Author:yiyx
@@ -146,18 +148,44 @@ public class AppLoginController {
      * @Version 1.0
      */
     @PostMapping(value = "/setPassword")
-    public Result setPassword(@RequestParam String param,String phone){
+    public Result setPassword(@RequestParam String param, String phone) {
         AppUserEntity user = userService.queryByUserPhone(phone);
-        if(user==null){
+        if (user == null) {
             return Result.error("手机号不正确");
         }
         user.setPassword(MD5Utils.generate(param));
-        Boolean br=userService.updatePassword(user);
-        if(br){
-            return Result.ok().put("result","密码重置成功");
+        Boolean br = userService.updatePassword(user);
+        if (br) {
+            return Result.ok().put("result", "密码重置成功");
         }
         return Result.error("密码重置失败");
-
-
     }
+
+    /**
+     * @Description: 用户注册
+     * @Author:yiyx
+     * @param:
+     * @Date: 2018/11/7 9:14
+     * @Version 1.0
+     */
+    @PostMapping("/register")
+    public Result register(@RequestParam String param, String phone, String password) {
+        if (userService.queryByUserPhone(phone) != null) {
+            return Result.error("手机号已注册");
+        }
+        if (!(MD5Utils.md5(param.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp" + phone)))) {
+            return Result.error("验证码错误");
+        }
+        AppUserEntity user = new AppUserEntity();
+        user.setPassword(MD5Utils.generate(password));
+        user.setPhone(phone);
+        user.setId(UUIDUtils.getUUID());
+        user.setCreated(DateUtils.stringToDate(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss"));
+        user.setUpdated(DateUtils.stringToDate(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss"));
+        user.setSocialSource(0);
+        userService.register(user);
+        return Result.ok().put("result", "注册成功");
+    }
+
+
 }
