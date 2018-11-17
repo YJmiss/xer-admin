@@ -56,19 +56,20 @@ public class MD5Utils {
     /**
      * 校验密码是否正确
      */
-    public static boolean verify(String password, String md5) {
+    public static boolean verify(String password, String md5pw) {
         char[] cs1 = new char[32];
         char[] cs2 = new char[16];
         for (int i = 0; i < 48; i += 3) {
-            cs1[i / 3 * 2] = md5.charAt(i);
-            cs1[i / 3 * 2 + 1] = md5.charAt(i + 2);
-            cs2[i / 3] = md5.charAt(i + 1);
+            cs1[i / 3 * 2] = md5pw.charAt(i);
+            cs1[i / 3 * 2 + 1] = md5pw.charAt(i + 2);
+            cs2[i / 3] = md5pw.charAt(i + 1);
         }
         String salt = new String(cs2);
         return md5(password + salt).equals(new String(cs1));
     }
-  /*  public static void main(String[] args) {
-        System.out.println(md5("123"));
-    }*/
+
+    public static void main(String[] args) {
+        System.out.println(verify("123456", "81fb74f3626a47950e18ca25e4bc9fc48a5ac2351b807e01"));
+    }
 
 }
