@@ -128,54 +128,15 @@ public class XryCourseController extends AbstractController {
     }
 
     /**
-     * 上传图片
-     *
-     * @param imgName
-     * @param config
+     * 课程上架
+     * @param ids
      * @return
      */
-    @PostMapping("/upload/img")
-    @RequiresPermissions("xry:course:upload:img")
-    public Result uploadImg(@RequestBody(required = false) @RequestParam("imgName") String imgName, String imgUrl, String type, String config) throws FileUploadException {
-        if (null != imgName && null != imgUrl) {
-            // 把图片写入到服务器的upload/image/文件夹下面
-            BufferedOutputStream out = null;
-            File file = null;
-            try {
-                file = new File(imgUrl + "/" + imgName);
-                out = new BufferedOutputStream(new FileOutputStream(file));
-                //out.write(file.getBytes());
-                out.flush();
-                out.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            // 如果不是图片格式，则提示错误. (gif,jpg,jpeg,bmp,png)
-            String suffixName = FilenameUtils.getExtension(imgName);
-            if ("jpg".equalsIgnoreCase(suffixName) || "jpeg".equalsIgnoreCase(suffixName) || "png".equalsIgnoreCase(suffixName)) {
-                String tempPathDir = "";
-                File tempPathDirFile = new File(tempPathDir);
-                String realDir = "upload/" + type;
-                //创建工厂
-                DiskFileItemFactory factory = new DiskFileItemFactory();
-                // 设置缓冲区大小，这里是400kb
-                factory.setSizeThreshold(4096 * 100);
-                // 设置缓冲区目录
-                factory.setRepository(tempPathDirFile);
-                ServletFileUpload upload = new ServletFileUpload(factory);
-                //设置上传文件的大小 12M
-                upload.setSizeMax(4194304 * 3);
-                // 生成图片路径+图片名   upload/course/20181115142427303c789.jpg
-                String imageUrl = realDir + "/" + UUIDUtils.generateFileName(imgName);
-                return Result.ok(imageUrl);
-            } else {
-                return Result.error(404, "图片格式不正确");
-            }
-        } else {
-            return Result.error(404, "图片名为空");
-        }
+    @PostMapping("/updateStatus")
+    @RequiresPermissions("xry:course:update:status")
+    public Result updateStatus(@RequestBody Long[] ids) {
+
+        return Result.ok();
     }
 
 }

@@ -26,8 +26,7 @@ public class XryCourseCatEntity implements Serializable {
 	/**
 	 * 父类目ID=0时，代表的是一级的类目
 	 */
-	@NotBlank(message="父类目ID不能为空", groups = {AddGroup.class, UpdateGroup.class})
-	private Long parent_id;
+	private Long parentId;
 	/**
 	 * 类目名称
 	 */
@@ -37,17 +36,16 @@ public class XryCourseCatEntity implements Serializable {
 	/**
 	 * 排列序号，表示同级类目的展现次序，如数值相等则按名称次序排列。取值范围:大于零的整数
 	 */
-	private Integer sort_order;
+	private Integer sortOrder;
 
 	/**
 	 * 该类目是否为父类目，1为true，0为false
 	 */
-	private boolean is_parent;
+	private boolean flag;
 
 	/**
 	 * 状态。可选值:1(正常),2(删除)
 	 */
-	@NotBlank(message="请确认视频状态", groups = {AddGroup.class, UpdateGroup.class})
 	private Integer status;
 
 	/**
@@ -68,12 +66,12 @@ public class XryCourseCatEntity implements Serializable {
 		this.id = id;
 	}
 
-	public Long getParent_id() {
-		return parent_id;
+	public Long getParentId() {
+		return parentId;
 	}
 
-	public void setParent_id(Long parent_id) {
-		this.parent_id = parent_id;
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 
 	public String getName() {
@@ -84,20 +82,20 @@ public class XryCourseCatEntity implements Serializable {
 		this.name = name;
 	}
 
-	public Integer getSort_order() {
-		return sort_order;
+	public Integer getSortOrder() {
+		return sortOrder;
 	}
 
-	public void setSort_order(Integer sort_order) {
-		this.sort_order = sort_order;
+	public void setSortOrder(Integer sortOrder) {
+		this.sortOrder = sortOrder;
 	}
 
-	public boolean isIs_parent() {
-		return is_parent;
+	public boolean isFlag() {
+		return flag;
 	}
 
-	public void setIs_parent(boolean is_parent) {
-		this.is_parent = is_parent;
+	public void setFlag(boolean flag) {
+		this.flag = flag;
 	}
 
 	public Integer getStatus() {

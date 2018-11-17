@@ -8,6 +8,7 @@ import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +24,13 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/xry/course/catalog")
+@Api(description = "课程目录管理")
 public class XryCourseCatalogController extends AbstractController {
     @Resource
     private XryCourseCatalogService xryCourseCatalogService;
 
     /**
-     * 查询课程目录列表
+     * 查询课程目录列表                                                             f
      * @param params
      * @return
      */
