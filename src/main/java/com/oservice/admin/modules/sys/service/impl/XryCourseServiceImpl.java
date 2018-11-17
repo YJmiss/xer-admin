@@ -76,4 +76,9 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         return baseMapper.queryCourseDescById(id);
     }
 
+    @Override
+    public void updateCourseStatus(Map<String,Object> params) {
+        baseMapper.updateCourseStatus(params);
+    }
+
 }

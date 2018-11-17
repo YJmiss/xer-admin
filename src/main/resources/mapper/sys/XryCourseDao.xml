@@ -15,5 +15,12 @@
     <select id="queryCourseDescById" resultType="com.oservice.admin.modules.sys.entity.XryCourseDescEntity">
         select * from xry_course_desc where course_id = #{id}
     </select>
+    <!--课程上下架-->
+    <update id="updateCourseStatus" parameterType="java.util.Map">
+      update xry_course set status = #{flag} where id in
+        <foreach collection="ids" item="id"  open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
 </mapper>

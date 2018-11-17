@@ -7,7 +7,10 @@ import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatService;
+import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +29,8 @@ import java.util.Map;
 public class XryCourseCatController extends AbstractController {
     @Resource
     private XryCourseCatService xryCourseCatService;
+    @Resource
+    private XryCourseService xryCourseService;
 
     /**
      * 查询课程列表
@@ -89,6 +94,18 @@ public class XryCourseCatController extends AbstractController {
     @PostMapping("/delete")
     @RequiresPermissions("xry:course:cat:delete")
     public Result delete(@RequestBody Long[] ids){
+        for (Long id: ids) {
+            // 删除类目时查询该类目下是否有课程
+            List<XryCourseEntity> courseList = xryCourseCatService.listCourseByCourseCatalogId(id);
+            if (courseList.size() > 0) {
+                return Result.error("请先删除该类目下的课程");
+            }
+            // 删除类目时查询该类目下是否有子类目
+            List<XryCourseCatEntity> courseCatList = xryCourseCatService.isParentCourseCatalogById(id);
+            if (courseCatList.size() > 0) {
+                return Result.error("请先删除该类目下的子类目");
+            }
+        }
         xryCourseCatService.deleteBatch(ids);
         return Result.ok();
     }

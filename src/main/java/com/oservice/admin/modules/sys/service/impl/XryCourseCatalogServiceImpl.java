@@ -63,5 +63,9 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 		return baseMapper.treeCourseCatalog();
 	}
 
+	@Override
+	public void updateCourseCatalogStatus(Map<String, Object> params) {
+		 baseMapper.updateCourseCatalogStatus(params);
+	}
 
 }

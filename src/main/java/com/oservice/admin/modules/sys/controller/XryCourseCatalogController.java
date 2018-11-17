@@ -13,6 +13,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,11 +27,15 @@ import java.util.Map;
 @RequestMapping("/xry/course/catalog")
 @Api(description = "课程目录管理")
 public class XryCourseCatalogController extends AbstractController {
+    /** 目录上架标识符常量 */
+   final static Integer ADD_TO_COURSE_CATALOG = 6;
+   /** 目录下架标识符常量 */
+   final static Integer DEL_FROM_COURSE_CATALOG = 5;
     @Resource
     private XryCourseCatalogService xryCourseCatalogService;
 
     /**
-     * 查询课程目录列表                                                             f
+     * 查询课程目录列表                                                             
      * @param params
      * @return
      */
@@ -105,6 +110,38 @@ public class XryCourseCatalogController extends AbstractController {
     public Result treeCourseCatalog() {
         List<XryCourseCatalogEntity> courseCatalogList = xryCourseCatalogService.treeCourseCatalog();
         return Result.ok().put("courseCatalogList", courseCatalogList);
+    }
+
+    /**
+     * 目录上架
+     * @param ids
+     * @return
+     */
+    @SysLog("目录上架")
+    @PostMapping("/addToCourseCatalog")
+    @RequiresPermissions("xry:course:add:to:course:catalog")
+    public Result addToCourseCatalog(@RequestBody Long[] ids) {
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("ids",ids);
+        params.put("flag",ADD_TO_COURSE_CATALOG);
+        xryCourseCatalogService.updateCourseCatalogStatus(params);
+        return Result.ok();
+    }
+
+    /**
+     * 目录下架
+     * @param ids
+     * @return
+     */
+    @SysLog("目录下架")
+    @PostMapping("/delFromCourseCatalog")
+    @RequiresPermissions("xry:course:del:from:course:catalog")
+    public Result delFromCourseCatalog(@RequestBody Long[] ids) {
+        Map<String,Object> params = new HashMap();
+        params.put("ids",ids);
+        params.put("flag",DEL_FROM_COURSE_CATALOG);
+        xryCourseCatalogService.updateCourseCatalogStatus(params);
+        return Result.ok();
     }
     
 }

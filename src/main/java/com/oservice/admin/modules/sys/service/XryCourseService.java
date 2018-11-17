@@ -6,6 +6,7 @@ import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,4 +71,9 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 */
 	XryCourseDescEntity queryCourseDescById(Long id);
 
+	/**
+	 * 课程上、下架
+	 * @param params
+	 */
+	void updateCourseStatus(Map<String, Object> params);
 }

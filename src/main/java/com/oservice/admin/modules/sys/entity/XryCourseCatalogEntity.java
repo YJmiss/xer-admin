@@ -32,8 +32,12 @@ public class XryCourseCatalogEntity implements Serializable {
 	/**
 	 * 所属课程ID
 	 */
-	@NotBlank(message="课程ID不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private Long courseid;
+
+	/**
+	 * 目录状态，1-未审核，2-审核中，3-通过审核，4-未通过，5通过审核未上架，6、通过审核已上架
+	 */
+	private Integer status;
 	
 	/**
 	 * 创建时间
@@ -82,5 +86,13 @@ public class XryCourseCatalogEntity implements Serializable {
 
 	public void setUpdated(Date updated) {
 		this.updated = updated;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 }

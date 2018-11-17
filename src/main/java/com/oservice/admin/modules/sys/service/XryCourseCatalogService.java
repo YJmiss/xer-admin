@@ -53,5 +53,11 @@ public interface XryCourseCatalogService extends IService<XryCourseCatalogEntity
 	 * @return
 	 */
 	List<XryCourseCatalogEntity> treeCourseCatalog();
-	
+
+
+	/**
+	 * 目录上、下架
+	 * @param params
+	 */
+	void updateCourseCatalogStatus(Map<String, Object> params);
 }

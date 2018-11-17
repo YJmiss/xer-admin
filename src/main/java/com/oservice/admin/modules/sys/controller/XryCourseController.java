@@ -12,6 +12,7 @@ import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,10 +35,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/xry/course")
 public class XryCourseController extends AbstractController {
+    /** 课程上架标识符常量 */
+    final static Integer ADD_TO_COURSE = 6;
+    /** 课程下架标识符常量 */
+    final static Integer DEL_FROM_COURSE = 5;
     @Resource
     private XryCourseService xryCourserService;
-    @Resource
-    private XryCourseCatalogService xryCourseCatalogService;
+
 
     /**
      * 查询课程列表
@@ -104,11 +109,11 @@ public class XryCourseController extends AbstractController {
         for (Long id : ids) {
             XryCourseCatalogEntity xryCourseCatalogEntity = xryCourserService.queryCourseCatalogByCourseId(id);
             if (null != xryCourseCatalogEntity) {
-                return Result.error("请先删除该课程下面的课程目录");
+                return Result.error("请先删除该课程下的课程目录");
             }
             XryCourseDescEntity xryCourseDescEntity = xryCourserService.queryCourseDescById(id);
             if (null != xryCourseDescEntity) {
-                return Result.error("请先删除该课程下面的课程描述");
+                return Result.error("请先删除该课程下的课程描述");
             }
         }
         xryCourserService.deleteBatch(ids);
@@ -120,6 +125,7 @@ public class XryCourseController extends AbstractController {
      *
      * @return
      */
+    @SysLog("删除课程")
     @GetMapping("/treeCourse")
     @RequiresPermissions("xry:course:treeCourse")
     public Result treeCourse() {
@@ -132,10 +138,30 @@ public class XryCourseController extends AbstractController {
      * @param ids
      * @return
      */
-    @PostMapping("/updateStatus")
-    @RequiresPermissions("xry:course:update:status")
-    public Result updateStatus(@RequestBody Long[] ids) {
+    @SysLog("课程上架")
+    @PostMapping("/addToCourse")
+    @RequiresPermissions("xry:course:add:to:course")
+    public Result addToCourse(@RequestBody Long[] ids) {
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("ids",ids);
+        params.put("flag",ADD_TO_COURSE);
+        xryCourserService.updateCourseStatus(params);
+        return Result.ok();
+    }
 
+    /**
+     * 课程下架
+     * @param ids
+     * @return
+     */
+    @SysLog("课程下架")
+    @PostMapping("/delFromCourse")
+    @RequiresPermissions("xry:course:del:from:course")
+    public Result delFromCourse(@RequestBody Long[] ids) {
+        Map<String,Object> params = new HashMap();
+        params.put("ids",ids);
+        params.put("flag",DEL_FROM_COURSE);
+        xryCourserService.updateCourseStatus(params);
         return Result.ok();
     }
 

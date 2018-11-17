@@ -7,6 +7,7 @@ import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统用户
@@ -19,14 +20,12 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
      * 构造课程树
-     *
      * @return
      */
     List<XryCourseEntity> treeCourse();
 
     /**
      * 查询课程目录
-     *
      * @param id
      * @return
      */
@@ -34,10 +33,15 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
      * 查询课程描述
-     *
      * @param id
      * @return
      */
     XryCourseDescEntity queryCourseDescById(Long id);
+
+    /**
+     * 课程上、下架
+     * @param params
+     */
+    void updateCourseStatus(Map<String,Object> params);
 
 }
