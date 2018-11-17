@@ -101,11 +101,11 @@ public class AppLoginController {
     public Result loginForPassword(@RequestBody LoginForm form) {
         //用户信息
         AppUserEntity user = userService.queryByUserPhone(form.getPhone());
-        System.out.println(form.getPassword());
-        Boolean b = MD5Utils.verify(form.getPassword(), user.getPassword());
-        System.out.println(b);
+/*        System.out.println(user.getPassword());
+        Boolean b = MD5Utils.verify(form.getPassword(),user.getPassword());
+        System.out.println(b);*/
         ////账号不存在、密码错误
-        if (user == null || !(user.getPassword().equals(MD5Utils.generate(form.getPassword())))) {
+        if (user == null || !(MD5Utils.verify(form.getPassword(), user.getPassword()))) {
             return Result.error("账号或密码不正确");
         }
       /*  //生成token，并保存到数据库
