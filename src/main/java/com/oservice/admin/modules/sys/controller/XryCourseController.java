@@ -142,6 +142,14 @@ public class XryCourseController extends AbstractController {
     @PostMapping("/addToCourse")
     @RequiresPermissions("xry:course:add:to:course")
     public Result addToCourse(@RequestBody Long[] ids) {
+        // 课程上架之前先判断课程是否已经审核 审核状态：1、2、4
+        for (Long id:ids) {
+            XryCourseEntity xryCourseEntity = xryCourserService.queryById(id);
+            if (1 == xryCourseEntity.getStatus() || 2 == xryCourseEntity.getStatus() || 4 == xryCourseEntity.getStatus()) {
+                return Result.error("所选记录中有未审核的课程，请先审核通过该课程再进行此操作");
+            }
+        }
+
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("ids",ids);
         params.put("flag",ADD_TO_COURSE);
@@ -163,6 +171,19 @@ public class XryCourseController extends AbstractController {
         params.put("flag",DEL_FROM_COURSE);
         xryCourserService.updateCourseStatus(params);
         return Result.ok();
+    }
+
+    /**
+     * 审核系统->课程审核
+     * @param ids
+     * @return
+     */
+    @SysLog("审核系统->课程审核")
+    @GetMapping("/examine")
+    @RequiresPermissions("xry:course:examine")
+    public Result examine(@RequestBody Long[] ids) {
+
+        return Result.ok().put("courseList", "");
     }
 
 }

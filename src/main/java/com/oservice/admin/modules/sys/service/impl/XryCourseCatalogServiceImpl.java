@@ -28,8 +28,12 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
 		String title = (String) params.get("title");
+		// 所属课程的搜索
+		String courseid =  (String) params.get("courseid");
 		Page<XryCourseCatalogEntity> page = this.selectPage(new Query<XryCourseCatalogEntity>(params).getPage(),
-				new EntityWrapper<XryCourseCatalogEntity>().like(StringUtils.isNotBlank(title), "title", title)
+				new EntityWrapper<XryCourseCatalogEntity>()
+						.like(StringUtils.isNotBlank(title), "title", title)
+						.like(StringUtils.isNotBlank(courseid), "courseid",courseid)
 		);
 		return new PageUtils(page);
 	}

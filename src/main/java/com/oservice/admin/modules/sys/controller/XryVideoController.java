@@ -12,6 +12,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -49,6 +50,8 @@ public class XryVideoController extends AbstractController {
     @RequiresPermissions("xry:video:save")
     public Result save(@RequestBody XryVideoEntity video) {
         ValidatorUtils.validateEntity(video, AddGroup.class);
+        video.setCreated(new Date());
+        video.setUpdated(new Date());
         xryVideoService.save(video);
         return Result.ok();
     }
