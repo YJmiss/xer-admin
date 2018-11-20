@@ -6,12 +6,15 @@ import com.oservice.admin.modules.app.form.LoginForm;
 import com.oservice.admin.modules.app.service.UserService;
 import com.oservice.admin.modules.app.utils.JwtUtils;
 import com.taobao.api.ApiException;
+import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.oservice.admin.common.utils.SMSUtils.sendTelMessage;
 
@@ -108,18 +111,22 @@ public class AppLoginController {
         if (user == null || !(MD5Utils.verify(form.getPassword(), user.getPassword()))) {
             return Result.error("账号或密码不正确");
         }
-      /*  //生成token，并保存到数据库
+        //生成token，并保存到数据库
         String token = jwtUtils.generateToken(user.getId());
         //生成更新token(MD5+时间)
         String refreshToken=MD5Utils.md5(DateUtils.format(new Date()));
-        System.err.print(DateUtils.format(new Date()));
-        user.setLoginToken(token);
-        user.setRefreshToken(refreshToken);
-        userService.createToken(user);
+        //   System.err.print(DateUtils.format(new Date()));
+        //   user.setLoginToken(token);
+        //   user.setRefreshToken(refreshToken);
+        //   userService.createToken(user);
         Claims claims=jwtUtils.getClaimByToken(token);
         System.err.print(claims.getSubject());
-        */
-        return Result.ok().put("result", "认证通过");
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", token);
+        map.put("expire", jwtUtils.getExpire());
+
+        return Result.ok(map);
     }
 
     /**

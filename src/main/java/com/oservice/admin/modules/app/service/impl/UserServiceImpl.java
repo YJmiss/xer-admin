@@ -30,4 +30,29 @@ public class UserServiceImpl extends ServiceImpl<AppUserDao, AppUserEntity> impl
 
         baseMapper.register(user);
     }
+
+    @Override
+    public void insertSignByid(String userId, String sign) {
+
+    }
+
+    @Override
+    public void insertReTokByid(String userId, String reToken) {
+
+    }
+
+    @Override
+    public String queryReTokenBySign(String sign) {
+        return null;
+    }
+
+    @Override
+    public void updataReTokByid(String userId, String reToken) {
+
+    }
+
+    @Override
+    public void deleteTokenBySign(String sign) {
+
+    }
 }

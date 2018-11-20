@@ -28,4 +28,38 @@ public interface UserService extends IService<AppUserEntity> {
      */
     void register(AppUserEntity user);
 
+    /**
+     * 保存用户签名
+     *
+     * @param
+     */
+    void insertSignByid(String userId, String sign);
+
+    /**
+     * 新增刷新令牌时间
+     *
+     * @param
+     */
+    void insertReTokByid(String userId, String reToken);
+
+    /**
+     * 查看刷新令牌时间
+     *
+     * @param
+     */
+    String queryReTokenBySign(String sign);
+
+    /**
+     * 修改刷新令牌时间
+     *
+     * @param
+     */
+    void updataReTokByid(String userId, String reToken);
+
+    /**
+     * 删除令牌相关
+     *
+     * @param
+     */
+    void deleteTokenBySign(String sign);
 }
