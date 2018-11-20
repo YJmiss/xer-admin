@@ -22,7 +22,7 @@ import java.util.Map;
  * @author wujunquan
  * @version 1.0
  */
-@Service("xryCourserDescService")
+@Service("xryCourseDescService")
 public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryCourseDescEntity> implements XryCourseDescService {
 
 

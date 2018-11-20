@@ -1,6 +1,7 @@
 package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
@@ -17,6 +18,14 @@ import java.util.Map;
  */
 @Mapper
 public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
+
+
+    /**
+     * 自定义分页查询
+     * @param map
+     * @return
+     */
+    Page<XryCourseEntity> selectPageList(Map<String,Object> map);
 
     /**
      * 构造课程树
@@ -39,7 +48,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
     XryCourseDescEntity queryCourseDescById(Long id);
 
     /**
-     * 课程上、下架
+     * 课程上、下架 、审核、驳回
      * @param params
      */
     void updateCourseStatus(Map<String,Object> params);
