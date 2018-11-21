@@ -7,6 +7,7 @@ import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryVideoEntity;
+import com.oservice.admin.modules.sys.service.XryRecordService;
 import com.oservice.admin.modules.sys.service.XryVideoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +30,12 @@ public class XryVideoController extends AbstractController {
     final static  Integer VIDEO_EXAMINE_PASS = 3;
     /** 课程审核驳回常量 */
     final static  Integer VIDEO_EXAMINE_REJECT = 4;
+    /** 视频审核的标识符 */
+    final static  Integer VIDEO_EXAMINE_FLAG = 2;
     @Resource
     private XryVideoService xryVideoService;
+    @Resource
+    private XryRecordService xryRecordService;
 
     /**
      * 查询视频列表
@@ -113,6 +118,10 @@ public class XryVideoController extends AbstractController {
         params.put("ids",ids);
         params.put("flag",VIDEO_EXAMINE_PASS);
         xryVideoService.updateVideoStatus(params);
+        // 记录课程审核事件
+        params.put("userId",getUserId());
+        params.put("type",VIDEO_EXAMINE_FLAG);
+        xryRecordService.recordCourseExamine(params);
         return Result.ok("审核通过");
     }
 
@@ -124,6 +133,10 @@ public class XryVideoController extends AbstractController {
         params.put("ids",ids);
         params.put("flag",VIDEO_EXAMINE_REJECT);
         xryVideoService.updateVideoStatus(params);
+        // 记录课程审核事件
+        params.put("userId",getUserId());
+        params.put("type",VIDEO_EXAMINE_FLAG);
+        xryRecordService.recordCourseExamine(params);
         return Result.ok("审核驳回");
     }
 }

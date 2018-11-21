@@ -39,16 +39,6 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
             .like(StringUtils.isNotBlank(courseId), "id", courseId)
             .like(StringUtils.isNotBlank(examineStatus), "status", examineStatus)
         );
-        /*Map<String,Object> map = new HashMap<String,Object>();
-        String page = (String) params.get("page");
-        String limit = (String) params.get("limit");
-        map.put("page",page);
-        map.put("limit",limit);
-        map.put("title",title);
-        map.put("cid",cid);
-        map.put("courseId",courseId);
-        map.put("examineStatus",examineStatus);
-        Page<XryCourseEntity> pageList = baseMapper.selectPageList(map);*/
 
 		return new PageUtils(page);
 	}

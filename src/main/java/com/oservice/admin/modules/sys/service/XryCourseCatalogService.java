@@ -52,7 +52,7 @@ public interface XryCourseCatalogService extends IService<XryCourseCatalogEntity
 	 *
 	 * @return
 	 */
-	List<XryCourseCatalogEntity> treeCourseCatalog();
+	List<XryCourseCatalogEntity> treeCourseCatalog(Long courseId);
 
 
 	/**

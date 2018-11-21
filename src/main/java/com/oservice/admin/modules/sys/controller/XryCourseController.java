@@ -10,8 +10,10 @@ import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
+import com.oservice.admin.modules.sys.service.XryRecordService;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -24,6 +26,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,11 +45,15 @@ public class XryCourseController extends AbstractController {
     /** 课程下架标识符常量 */
     final static Integer DEL_FROM_COURSE = 5;
     /** 课程审核通过常量 */
-    final static  Integer COURSE_EXAMINE_PASS = 3;
+    final static Integer COURSE_EXAMINE_PASS = 3;
     /** 课程审核驳回常量 */
-    final static  Integer COURSE_EXAMINE_REJECT = 4;
+    final static Integer COURSE_EXAMINE_REJECT = 4;
+    /** 课程审核的标识符 */
+    final static Integer COURSE_EXAMINE_FLAG = 1;
     @Resource
     private XryCourseService xryCourseService;
+    @Resource
+    private XryRecordService xryRecordService;
 
 
     /**
@@ -191,6 +198,10 @@ public class XryCourseController extends AbstractController {
         params.put("ids",ids);
         params.put("flag",COURSE_EXAMINE_PASS);
         xryCourseService.updateCourseStatus(params);
+        // 记录课程审核事件
+        params.put("userId",getUserId());
+        params.put("type",COURSE_EXAMINE_FLAG);
+        xryRecordService.recordCourseExamine(params);
         return Result.ok("审核通过");
     }
 
@@ -202,18 +213,11 @@ public class XryCourseController extends AbstractController {
         params.put("ids",ids);
         params.put("flag",COURSE_EXAMINE_REJECT);
         xryCourseService.updateCourseStatus(params);
+        // 记录课程审核事件
+        params.put("userId",getUserId());
+        params.put("type",COURSE_EXAMINE_FLAG);
+        xryRecordService.recordCourseExamine(params);
         return Result.ok("审核驳回");
-    }
-
-    /**
-     * 上传图片
-     * @return
-     */
-    @PostMapping("/upload/img")
-    @RequiresPermissions("xry:course:upload:img")
-    public Result uploadImg(@RequestBody String formData, HttpServletRequest request, HttpServletResponse response) {
-        System.out.println(formData);
-        return Result.ok();
     }
     
 }

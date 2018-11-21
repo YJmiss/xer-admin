@@ -9,7 +9,10 @@
     </select>
     <!-- 查询目录树 -->
     <select id="treeCourseCatalog" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity">
-      select * from xry_course_catalog
+      select * from xry_course_catalog where 1=1
+        <if test="_parameter != null">
+            and courseid = #{_parameter,jdbcType=INTEGER}
+        </if>
     </select>
     <!--目录上下架-->
     <update id="updateCourseCatalogStatus" parameterType="java.util.Map">

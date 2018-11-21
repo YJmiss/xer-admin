@@ -63,8 +63,8 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 	}
 
 	@Override
-	public List<XryCourseCatalogEntity> treeCourseCatalog() {
-		return baseMapper.treeCourseCatalog();
+	public List<XryCourseCatalogEntity> treeCourseCatalog(Long courseId) {
+		return baseMapper.treeCourseCatalog(courseId);
 	}
 
 	@Override

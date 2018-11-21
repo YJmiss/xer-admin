@@ -20,7 +20,7 @@ public interface XryCourseCatalogDao extends BaseMapper<XryCourseCatalogEntity> 
      * 查询课程目录树
      * @return
      */
-    List<XryCourseCatalogEntity> treeCourseCatalog();
+    List<XryCourseCatalogEntity> treeCourseCatalog(Long courseId);
 
     /**
      * 目录上、下架

@@ -107,8 +107,8 @@ public class XryCourseCatalogController extends AbstractController {
      */
     @GetMapping("/treeCourseCatalog")
     @RequiresPermissions("xry:course:catalog:treeCourseCatalog")
-    public Result treeCourseCatalog() {
-        List<XryCourseCatalogEntity> courseCatalogList = xryCourseCatalogService.treeCourseCatalog();
+    public Result treeCourseCatalog( Long courseId) {
+        List<XryCourseCatalogEntity> courseCatalogList = xryCourseCatalogService.treeCourseCatalog(courseId);
         return Result.ok().put("courseCatalogList", courseCatalogList);
     }
 
