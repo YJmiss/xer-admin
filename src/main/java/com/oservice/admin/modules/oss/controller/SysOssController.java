@@ -2,17 +2,12 @@ package com.oservice.admin.modules.oss.controller;
 
 import com.google.gson.Gson;
 import com.oservice.admin.common.exception.GlobalException;
-import com.oservice.admin.common.utils.ConfigConstant;
-import com.oservice.admin.common.utils.Constant;
-import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.common.utils.*;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AliyunGroup;
 import com.oservice.admin.common.validator.group.QcloudGroup;
 import com.oservice.admin.common.validator.group.QiniuGroup;
 import com.oservice.admin.modules.oss.cloud.CloudStorageConfig;
-import com.oservice.admin.modules.oss.cloud.OSSFactory;
-import com.oservice.admin.modules.oss.entity.SysOssEntity;
 import com.oservice.admin.modules.oss.service.SysOssService;
 import com.oservice.admin.modules.sys.service.SysConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -21,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -97,12 +92,12 @@ public class SysOssController {
 	 */
 	@PostMapping("/upload")
 	@RequiresPermissions("sys:oss:all")
-	public Result upload(@RequestParam("file") MultipartFile file) throws Exception {
-		if (file.isEmpty()) {
+	public Result upload(@RequestParam("file") MultipartFile uploadFile) throws Exception {
+		if (uploadFile.isEmpty()) {
 			throw new GlobalException("上传文件不能为空");
 		}
 
-		//上传文件
+		/*//上传文件
 		String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 		String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
 
@@ -112,7 +107,32 @@ public class SysOssController {
 		ossEntity.setCreateDate(new Date());
 		sysOssService.insert(ossEntity);
 
-		return Result.ok().put("url", url);
+		return Result.ok().put("url", url);*/
+
+		Map map = new HashMap<>();
+		try {
+			//1.第一步：定义上传工具类对象
+			FastDFSClient dfsClient = new FastDFSClient("classpath:fastdfs/client.conf");
+			//2.根据上传文件分析出基本后缀名
+			//2.1)得到原始文件名
+			String originalFilename = uploadFile.getOriginalFilename();
+			//2.2)得到文件后缀名
+			String extName = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+			//3.得到文件的内容（二进制数据）
+			byte[] fileContent = uploadFile.getBytes();
+			String url = dfsClient.uploadFile(fileContent, extName);
+			url = "http://192.168.1.30:1025" + "/" + url;
+			System.out.println("url:" + url);
+			//上传成功的map
+			return Result.ok().put("url", url);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			//上传失败的map
+			map.put("error", 1);
+			map.put("message", "图片上传失败！");
+		}
+		return Result.ok(map);
 	}
 
 
