@@ -18,4 +18,8 @@ public class ConfigConstant {
     public final static String APPKEY = "23277221";
     public final static String SECRET = "ee7b5c5e5dc7bb82f27d382d1c5fb67a";
     public final static String TEMPLATECODE = "SMS_2695297";
+    /**
+     * 图片服务器地址
+     */
+    public final static String IMAGE_URL = "http://192.168.1.30:1025";
 }

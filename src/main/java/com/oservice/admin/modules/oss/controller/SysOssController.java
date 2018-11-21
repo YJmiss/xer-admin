@@ -121,7 +121,7 @@ public class SysOssController {
 			//3.得到文件的内容（二进制数据）
 			byte[] fileContent = uploadFile.getBytes();
 			String url = dfsClient.uploadFile(fileContent, extName);
-			url = "http://192.168.1.30:1025" + "/" + url;
+			url = ConfigConstant.IMAGE_URL + "/" + url;
 			System.out.println("url:" + url);
 			//上传成功的map
 			return Result.ok().put("url", url);
