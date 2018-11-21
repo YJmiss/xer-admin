@@ -21,7 +21,7 @@ public class SysUserTokenEntity implements Serializable {
 	
 	//用户ID
 	@TableId(type = IdType.INPUT)
-	private Long userId;
+	private String userId;
 
 	//token
 	private String token;
@@ -35,13 +35,13 @@ public class SysUserTokenEntity implements Serializable {
 	/**
 	 * 设置：用户ID
 	 */
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 	/**
 	 * 获取：用户ID
 	 */
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 	/**

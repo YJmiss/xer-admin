@@ -21,7 +21,7 @@ public class XryUserEntity implements Serializable {
      * app用户ID
      */
     @TableId
-    private Long id;
+    private String id;
 
     /**
      * 账号
@@ -93,11 +93,11 @@ public class XryUserEntity implements Serializable {
      */
     private Date updated;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

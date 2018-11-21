@@ -4,9 +4,9 @@ import com.oservice.admin.common.utils.*;
 import com.oservice.admin.modules.app.entity.AppUserEntity;
 import com.oservice.admin.modules.app.form.LoginForm;
 import com.oservice.admin.modules.app.service.UserService;
-import com.oservice.admin.modules.app.utils.JwtUtils;
+import com.oservice.admin.modules.sys.controller.AbstractController;
+import com.oservice.admin.modules.sys.service.SysUserTokenService;
 import com.taobao.api.ApiException;
-import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +18,6 @@ import java.util.Map;
 
 import static com.oservice.admin.common.utils.SMSUtils.sendTelMessage;
 
-//import io.jsonwebtoken.Claims;
-//import java.util.Date;
-
 /**
  * @ClassName: AppLoginController
  * @Description: APP登录模块相关登录信息
@@ -31,13 +28,13 @@ import static com.oservice.admin.common.utils.SMSUtils.sendTelMessage;
 @RestController
 @RequestMapping("/api/appAccount")
 @Api(description = "APP登录/注册api")
-public class AppLoginController {
+public class AppLoginController extends AbstractController {
 
     @Resource
     private UserService userService;
 
     @Resource
-    private JwtUtils jwtUtils;
+    private SysUserTokenService sysUserTokenService;
 
     /**
      * @Description: 发送短信验证码
@@ -104,28 +101,20 @@ public class AppLoginController {
     public Result loginForPassword(@RequestBody LoginForm form) {
         //用户信息
         AppUserEntity user = userService.queryByUserPhone(form.getPhone());
-/*        System.out.println(user.getPassword());
+        /*  測試
+        System.out.println(user.getPassword());
         Boolean b = MD5Utils.verify(form.getPassword(),user.getPassword());
-        System.out.println(b);*/
-        ////账号不存在、密码错误
+        System.out.println(b);
+        */
+        //账号不存在、密码错误
         if (user == null || !(MD5Utils.verify(form.getPassword(), user.getPassword()))) {
             return Result.error("账号或密码不正确");
         }
         //生成token，并保存到数据库
-        String token = jwtUtils.generateToken(user.getId());
-        //生成更新token(MD5+时间)
-        String refreshToken=MD5Utils.md5(DateUtils.format(new Date()));
-        //   System.err.print(DateUtils.format(new Date()));
-        //   user.setLoginToken(token);
-        //   user.setRefreshToken(refreshToken);
-        //   userService.createToken(user);
-        Claims claims=jwtUtils.getClaimByToken(token);
-        System.err.print(claims.getSubject());
-
+        Result token = sysUserTokenService.createToken(user.getId());
         Map<String, Object> map = new HashMap<>();
         map.put("token", token);
-        map.put("expire", jwtUtils.getExpire());
-
+        map.put("user", user);
         return Result.ok(map);
     }
 
@@ -139,8 +128,15 @@ public class AppLoginController {
     @GetMapping(value = "/sms/login")
     public Result loginForSMS(@RequestParam String param, String phone) {
         if (param != null && phone != null) {
-            if (MD5Utils.md5(param.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp" + phone))) {
-                return Result.ok().put("result", "认证通过");
+            AppUserEntity user = userService.queryByUserPhone(phone);
+            if (user != null && MD5Utils.md5(param.trim().toUpperCase())
+                    .equals(CookieHelper.getCookie("phoneCodeApp" + phone))) {
+                //生成token，并保存到数据库
+                Result token = sysUserTokenService.createToken(user.getId());
+                Map<String, Object> map = new HashMap<>();
+                map.put("token", token);
+                map.put("user", user);
+                return Result.ok(map);
             }
             return Result.error("手机号或验证码不正确");
         }
@@ -194,5 +190,12 @@ public class AppLoginController {
         return Result.ok().put("result", "注册成功");
     }
 
-
+    /**
+     * 退出登陸
+     */
+    @PostMapping("/logout")
+    public Result logout() {
+        sysUserTokenService.logout(getAppUserId());
+        return Result.ok();
+    }
 }

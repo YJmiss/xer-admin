@@ -18,7 +18,7 @@ public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenDao, SysUse
 	private final static int EXPIRE = 3600 * 12;
 
 	@Override
-	public Result createToken(long userId) {
+	public Result createToken(String userId) {
 		//生成一个token
 		String token = TokenGenerator.generateValue();
 
@@ -54,7 +54,7 @@ public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenDao, SysUse
 	}
 
 	@Override
-	public void logout(long userId) {
+	public void logout(String userId) {
 		//生成一个token
 		String token = TokenGenerator.generateValue();
 

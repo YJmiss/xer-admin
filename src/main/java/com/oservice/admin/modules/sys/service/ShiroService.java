@@ -2,6 +2,7 @@ package com.oservice.admin.modules.sys.service;
 
 import com.oservice.admin.modules.sys.entity.SysUserEntity;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryUserEntity;
 
 import java.util.Set;
 
@@ -20,8 +21,15 @@ public interface ShiroService {
     SysUserTokenEntity queryByToken(String token);
 
     /**
-     * 根据用户ID，查询用户
+     * 根据用户ID，查询系统用户
      * @param userId
      */
-    SysUserEntity queryUser(Long userId);
+    SysUserEntity queryUser(String userId);
+
+    /**
+     * 根据用户ID，查询APP用户
+     *
+     * @param id
+     */
+    XryUserEntity queryUsers(String id);
 }

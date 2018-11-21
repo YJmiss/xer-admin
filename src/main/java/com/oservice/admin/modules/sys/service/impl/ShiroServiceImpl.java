@@ -4,9 +4,11 @@ import com.oservice.admin.common.utils.Constant;
 import com.oservice.admin.modules.sys.dao.SysMenuDao;
 import com.oservice.admin.modules.sys.dao.SysUserDao;
 import com.oservice.admin.modules.sys.dao.SysUserTokenDao;
+import com.oservice.admin.modules.sys.dao.XryUserDao;
 import com.oservice.admin.modules.sys.entity.SysMenuEntity;
 import com.oservice.admin.modules.sys.entity.SysUserEntity;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.ShiroService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Resource
     private SysUserDao sysUserDao;
+
+    @Resource
+    private XryUserDao xryUserDao;
 
     @Resource
     private SysUserTokenDao sysUserTokenDao;
@@ -57,7 +62,12 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public SysUserEntity queryUser(Long userId) {
+    public SysUserEntity queryUser(String userId) {
         return sysUserDao.selectById(userId);
+    }
+
+    @Override
+    public XryUserEntity queryUsers(String id) {
+        return xryUserDao.selectById(id);
     }
 }

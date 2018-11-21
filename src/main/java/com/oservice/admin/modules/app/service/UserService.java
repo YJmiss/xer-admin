@@ -31,7 +31,7 @@ public interface UserService extends IService<AppUserEntity> {
     /**
      * 保存用户签名
      *
-     * @param
+     * @paramAZ
      */
     void insertSignByid(String userId, String sign);
 

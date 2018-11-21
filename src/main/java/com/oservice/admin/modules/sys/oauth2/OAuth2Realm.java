@@ -2,6 +2,7 @@ package com.oservice.admin.modules.sys.oauth2;
 
 import com.oservice.admin.modules.sys.entity.SysUserEntity;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.ShiroService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -62,11 +63,17 @@ public class OAuth2Realm extends AuthorizingRealm {
 
         //查询用户信息
         SysUserEntity user = shiroService.queryUser(tokenEntity.getUserId());
+        XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
         //账号锁定
-        if(user.getStatus() == 0){
+        if (user != null && user.getStatus() == 0) {
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
-
-        return new SimpleAuthenticationInfo(user, accessToken, getName());
+        if (users == null) {
+            return new SimpleAuthenticationInfo(user, accessToken, getName());
+        }
+        if (user == null) {
+            return new SimpleAuthenticationInfo(users, accessToken, getName());
+        }
+        return null;
     }
 }

@@ -77,11 +77,4 @@ os-admin:
     open: false
   shiro:
     redis: false
-  # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】
-  jwt:
-    # token秘钥，请勿泄露，请勿随便修改
-    secret: YJmiss123
-    # token有效时长，7天，单位秒
-    expire: 604800
-    header: token
 

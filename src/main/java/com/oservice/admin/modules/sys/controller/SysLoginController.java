@@ -86,7 +86,7 @@ public class SysLoginController extends AbstractController {
 
 		//生成token，并保存到数据库
 		return sysUserTokenService.
-				createToken(user.getUserId());
+				createToken(user.getUserId().toString());
 	}
 
 
@@ -95,7 +95,7 @@ public class SysLoginController extends AbstractController {
 	 */
 	@PostMapping("/sys/logout")
 	public Result logout() {
-		sysUserTokenService.logout(getUserId());
+		sysUserTokenService.logout(getUserId().toString());
 		return Result.ok();
 	}
 	

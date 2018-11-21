@@ -16,12 +16,12 @@ public interface SysUserTokenService extends IService<SysUserTokenEntity> {
 	 * 生成token
 	 * @param userId  用户ID
 	 */
-	Result createToken(long userId);
+	Result createToken(String userId);
 
 	/**
 	 * 退出，修改token值
 	 * @param userId  用户ID
 	 */
-	void logout(long userId);
+	void logout(String userId);
 
 }
