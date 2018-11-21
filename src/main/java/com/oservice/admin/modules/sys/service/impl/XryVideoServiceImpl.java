@@ -26,8 +26,14 @@ public class XryVideoServiceImpl extends ServiceImpl<XryVideoDao, XryVideoEntity
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         String title = (String) params.get("title");
+        // 所属课程搜索
+        String courseId = (String) params.get("courseId");
+        // 所属目录搜索
+        String catalogId = (String) params.get("catalogId");
         Page<XryVideoEntity> page = this.selectPage(new Query<XryVideoEntity>(params).getPage(),
                 new EntityWrapper<XryVideoEntity>().like(StringUtils.isNotBlank(title), "title", title)
+                        .like(StringUtils.isNotBlank(courseId),"course_id",courseId)
+                        .like(StringUtils.isNotBlank(catalogId),"catalog_id",catalogId)
         );
         return new PageUtils(page);
     }
@@ -50,5 +56,10 @@ public class XryVideoServiceImpl extends ServiceImpl<XryVideoDao, XryVideoEntity
     @Override
     public void deleteBatch(Long[] ids) {
         this.deleteBatchIds(Arrays.asList(ids));
+    }
+
+    @Override
+    public void updateVideoStatus(Map<String, Object> params) {
+        baseMapper.updateVideoStatus(params);
     }
 }

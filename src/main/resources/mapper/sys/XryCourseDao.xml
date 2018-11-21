@@ -3,6 +3,15 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseDao">
 
+    <!--自定义分页查询-->
+    <select id="selectPageList" parameterType="java.util.Map" resultType="com.oservice.admin.modules.sys.entity.XryCourseEntity">
+        select * from xry_course left join xry_course_cat on (xry_course.cid = xry_course_cat.id) where 1=1
+        <if test="title != null and title != ''"> and title like connect(concat('%',#{title}),'%') </if>
+        <if test="cid != null and cid != ''"> and cid like connect(concat('%',#{cid}),'%') </if>
+        <if test="courseId != null and courseId != ''"> and courseId like connect(concat('%',#{courseId}),'%') </if>
+        <if test="examineStatus != null and examineStatus != ''"> and examineStatus like connect(concat('%',#{examineStatus}),'%') </if>
+        limit ${page},${limit}
+    </select>
     <!-- 查询课程树 -->
     <select id="treeCourse" resultType="com.oservice.admin.modules.sys.entity.XryCourseEntity">
       select * from xry_course
@@ -15,5 +24,12 @@
     <select id="queryCourseDescById" resultType="com.oservice.admin.modules.sys.entity.XryCourseDescEntity">
         select * from xry_course_desc where course_id = #{id}
     </select>
+    <!--课程上下架-->
+    <update id="updateCourseStatus" parameterType="java.util.Map">
+      update xry_course set status = #{flag} where id in
+        <foreach collection="ids" item="id"  open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
 </mapper>

@@ -10,13 +10,11 @@ import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseService;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统用户
@@ -24,15 +22,33 @@ import java.util.Map;
  * @author wujunquan
  * @version 1.0
  */
-@Service("xryCourserService")
+@Service("xryCourseService")
 public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEntity> implements XryCourseService {
 
-	@Override
+    @Override
 	public PageUtils queryPage(Map<String, Object> params) {
         String title = (String) params.get("title");
-        Page<XryCourseEntity> page = this.selectPage(new Query<XryCourseEntity>(params).getPage(),
-                new EntityWrapper<XryCourseEntity>().like(StringUtils.isNotBlank(title), "title", title)
+        // 所属类目的搜索cid
+        String cid = (String) params.get("cid");
+        // 根据课程id
+        String courseId = (String) params.get("courseId");
+        String examineStatus = (String) params.get("examineStatus");
+        Page<XryCourseEntity> page = this.selectPage(new Query<XryCourseEntity>(params).getPage(), new EntityWrapper<XryCourseEntity>()
+            .like(StringUtils.isNotBlank(title), "title", title)
+            .like(StringUtils.isNotBlank(cid), "cid", cid)
+            .like(StringUtils.isNotBlank(courseId), "id", courseId)
+            .like(StringUtils.isNotBlank(examineStatus), "status", examineStatus)
         );
+        /*Map<String,Object> map = new HashMap<String,Object>();
+        String page = (String) params.get("page");
+        String limit = (String) params.get("limit");
+        map.put("page",page);
+        map.put("limit",limit);
+        map.put("title",title);
+        map.put("cid",cid);
+        map.put("courseId",courseId);
+        map.put("examineStatus",examineStatus);
+        Page<XryCourseEntity> pageList = baseMapper.selectPageList(map);*/
 
 		return new PageUtils(page);
 	}
@@ -74,6 +90,11 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     @Override
     public XryCourseDescEntity queryCourseDescById(Long id) {
         return baseMapper.queryCourseDescById(id);
+    }
+
+    @Override
+    public void updateCourseStatus(Map<String,Object> params) {
+        baseMapper.updateCourseStatus(params);
     }
 
 }

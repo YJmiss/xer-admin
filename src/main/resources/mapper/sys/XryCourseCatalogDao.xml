@@ -7,10 +7,16 @@
     <select id="queryCourseAndCourseCatalog" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity">
       select * from xry_course_catalog left join xry_course on xry_course_catalog.#{courseid} = xry_course.id;
     </select>
-
     <!-- 查询目录树 -->
     <select id="treeCourseCatalog" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity">
       select * from xry_course_catalog
     </select>
+    <!--目录上下架-->
+    <update id="updateCourseCatalogStatus" parameterType="java.util.Map">
+        update xry_course_catalog set status = #{flag} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
 </mapper>

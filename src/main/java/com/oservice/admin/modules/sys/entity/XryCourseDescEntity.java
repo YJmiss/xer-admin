@@ -19,11 +19,11 @@ public class XryCourseDescEntity implements Serializable {
 	/**
 	 * 课程ID
 	 */
-	private Long course_id;
+	private Long courseId;
 	/**
 	 * 课程描述
 	 */
-	private String course_desc;
+	private String courseDesc;
 
 	/**
 	 * 创建时间
@@ -34,20 +34,20 @@ public class XryCourseDescEntity implements Serializable {
 	 */
 	private Date updated;
 
-	public Long getCourse_id() {
-		return course_id;
+	public Long getCourseId() {
+		return courseId;
 	}
 
-	public void setCourse_id(Long course_id) {
-		this.course_id = course_id;
+	public void setCourseId(Long courseId) {
+		this.courseId = courseId;
 	}
 
-	public String getCourse_desc() {
-		return course_desc;
+	public String getCourseDesc() {
+		return courseDesc;
 	}
 
-	public void setCourse_desc(String course_desc) {
-		this.course_desc = course_desc;
+	public void setCourseDesc(String courseDesc) {
+		this.courseDesc = courseDesc;
 	}
 
 	public Date getCreated() {

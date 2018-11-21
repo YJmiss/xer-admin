@@ -7,7 +7,9 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryCourseCatDao;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -26,8 +28,14 @@ public class XryCourseCatServiceImpl extends ServiceImpl<XryCourseCatDao, XryCou
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
-		Page<XryCourseCatEntity> page = this.selectPage(new Query<XryCourseCatEntity>(params).getPage(), new EntityWrapper<>());
-		
+		// 根据类目id搜索（即类目树搜索）
+		String id = (String) params.get("id");
+		String status = (String) params.get("status");
+		Page<XryCourseCatEntity> page = this.selectPage(new Query<XryCourseCatEntity>(params).getPage(),
+				new EntityWrapper<XryCourseCatEntity>()
+						.like(StringUtils.isNotBlank(id), "id", id)
+						.like(StringUtils.isNotBlank(status), "status", status)
+			);
 		return new PageUtils(page);
 	}
 
@@ -58,5 +66,15 @@ public class XryCourseCatServiceImpl extends ServiceImpl<XryCourseCatDao, XryCou
     @Override
     public List<XryCourseCatEntity> treeCourseCat() {
         return baseMapper.treeCourseCat();
+	}
+
+	@Override
+	public List<XryCourseEntity> listCourseByCourseCatalogId(Long id) {
+		return  baseMapper.listCourseByCourseCatalogId(id);
+	}
+	
+	@Override
+	public List<XryCourseCatEntity> isParentCourseCatalogById(Long id) {
+		return  baseMapper.isParentCourseCatalogById(id);
 	}
 }

@@ -3,6 +3,7 @@ package com.oservice.admin.modules.sys.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -54,5 +55,19 @@ public interface XryCourseCatService extends IService<XryCourseCatEntity> {
 	 * @return
 	 */
 	List<XryCourseCatEntity> treeCourseCat();
+
+	/**
+	 * 查询课程信息
+	 * @param id
+	 * @return
+	 */
+	List<XryCourseEntity> listCourseByCourseCatalogId(Long id);
+
+	/**
+	 * 查询类目信息
+	 * @param id
+	 * @return
+	 */
+	List<XryCourseCatEntity> isParentCourseCatalogById(Long id);
 
 }

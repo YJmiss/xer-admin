@@ -48,7 +48,7 @@ public class XryCourseDescController extends AbstractController {
     @PostMapping("/save")
     @RequiresPermissions("xry:course:desc:save")
     public Result save(@RequestBody XryCourseDescEntity courseDesc){
-        XryCourseDescEntity xryCourseDesc = xryCourseDescService.queryById(courseDesc.getCourse_id());
+        XryCourseDescEntity xryCourseDesc = xryCourseDescService.queryById(courseDesc.getCourseId());
         if (null != xryCourseDesc) {
             ValidatorUtils.validateEntity(courseDesc, AddGroup.class);
             xryCourseDescService.save(courseDesc);
@@ -79,7 +79,7 @@ public class XryCourseDescController extends AbstractController {
     @PostMapping("/update")
     @RequiresPermissions("xry:course:desc:update")
     public Result update(@RequestBody XryCourseDescEntity courseDesc){
-        XryCourseDescEntity xryCourseDesc = xryCourseDescService.queryById(courseDesc.getCourse_id());
+        XryCourseDescEntity xryCourseDesc = xryCourseDescService.queryById(courseDesc.getCourseId());
         if (null != xryCourseDesc) {
             ValidatorUtils.validateEntity(courseDesc, UpdateGroup.class);
             xryCourseDescService.update(courseDesc);
@@ -101,4 +101,6 @@ public class XryCourseDescController extends AbstractController {
         xryCourseDescService.deleteBatch(courseIds);
         return Result.ok();
     }
+
+    
 }
