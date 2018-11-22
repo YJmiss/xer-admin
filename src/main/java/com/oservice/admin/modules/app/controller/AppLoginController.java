@@ -34,6 +34,9 @@ public class AppLoginController extends AbstractController {
     private UserService userService;
 
     @Resource
+    private RedisUtils redisUtils;
+
+    @Resource
     private SysUserTokenService sysUserTokenService;
 
     /**
@@ -45,13 +48,17 @@ public class AppLoginController extends AbstractController {
      */
     @GetMapping(value = "/sendPhoneCode")
     public Result sendPhoneCode(String tel) throws ApiException {
+        if (!CheckUtil.isMobile(tel)) {
+            return Result.error("手机号格式错误");
+        }
         long code = RandomUtils.nextLong(100000, 900000);
         String msg = "";
         String template = "{\"code\":\"" + code + "\",\"product\":\"" + msg + "\"}";
         boolean isTrue = sendTelMessage(ConfigConstant.TEMPLATECODE, template, tel);
-        String checkCode = MD5Utils.md5(String.valueOf(code).toUpperCase());
-        // Todo 存到cook里 有效时间：60s
-        CookieHelper.addCookie("phoneCodeApp" + tel, checkCode, 60);
+        //String checkCode = MD5Utils.md5(String.valueOf(code).toUpperCase());
+        // Todo 存到redis里 有效时间：60s
+        redisUtils.set("phoneCodeApp" + tel, code, 600);
+        //  CookieHelper.addCookie("phoneCodeApp" + tel, checkCode, 60);
         return Result.ok(String.valueOf(isTrue));
     }
 
@@ -65,14 +72,23 @@ public class AppLoginController extends AbstractController {
     @GetMapping(value = "/validationPhoneCode")
     public Result validationPhoneCode
     (@RequestParam String param, String phone) {
-        if (param != null && phone != null) {
-            if (MD5Utils.md5(param.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp" + phone))) {
-                return Result.ok().put("result", true);
-            }
+        System.out.println("验证码：" + param);
+        System.out.println("手机号：" + phone);
+        System.out.println("yuanz ：" + redisUtils.get("phoneCodeApp" + phone));
+        Boolean b = param.equals(redisUtils.get("phoneCodeApp" + phone));
+        System.out.println(b);
+        if (!CheckUtil.isMobile(phone)) {
+            return Result.error("手机号格式错误");
         }
-        return Result.ok().put("result", false);
+        if (param == null || param.equals("")) {
+            return Result.error("验证码为空");
+        }
+        if (b) {
+            return Result.ok().put("result", true);
+        } else {
+            return Result.ok().put("result", false);
+        }
     }
-
     /**
      * @Description: 通过手机号校验当前手机号是否系统用户
      * @Author:yiyx
@@ -82,6 +98,9 @@ public class AppLoginController extends AbstractController {
      */
     @GetMapping(value = "/checkUserPhone")
     public Result checkUserPhone(String phone) {
+        if (!CheckUtil.isMobile(phone)) {
+            return Result.error("手机号格式错误");
+        }
         AppUserEntity user = new AppUserEntity();
         user = userService.queryByUserPhone(phone);
         if (user == null) {
@@ -99,6 +118,9 @@ public class AppLoginController extends AbstractController {
      */
     @PostMapping(value = "/password/login")
     public Result loginForPassword(@RequestBody LoginForm form) {
+        if (!CheckUtil.isMobile(form.getPhone())) {
+            return Result.error("手机号格式错误");
+        }
         //用户信息
         AppUserEntity user = userService.queryByUserPhone(form.getPhone());
         /*  測試
@@ -127,18 +149,21 @@ public class AppLoginController extends AbstractController {
      */
     @GetMapping(value = "/sms/login")
     public Result loginForSMS(@RequestParam String param, String phone) {
-        if (param != null && phone != null) {
-            AppUserEntity user = userService.queryByUserPhone(phone);
-            if (user != null && MD5Utils.md5(param.trim().toUpperCase())
-                    .equals(CookieHelper.getCookie("phoneCodeApp" + phone))) {
-                //生成token，并保存到数据库
-                Result token = sysUserTokenService.createToken(user.getId());
-                Map<String, Object> map = new HashMap<>();
-                map.put("token", token);
-                map.put("user", user);
-                return Result.ok(map);
-            }
-            return Result.error("手机号或验证码不正确");
+        Boolean b = param.equals(redisUtils.get("phoneCodeApp" + phone));
+        if (!CheckUtil.isMobile(phone)) {
+            return Result.error("手机号格式错误");
+        }
+        if (param == null) {
+            return Result.error("验证码为空");
+        }
+        AppUserEntity user = userService.queryByUserPhone(phone);
+        if (user != null && param.equals(redisUtils.get("phoneCodeApp" + phone))) {
+            //生成token，并保存到数据库
+            Result token = sysUserTokenService.createToken(user.getId());
+            Map<String, Object> map = new HashMap<>();
+            map.put("token", token);
+            map.put("user", user);
+            return Result.ok(map);
         }
         return Result.error("手机号或验证码不能为空");
     }
@@ -151,15 +176,16 @@ public class AppLoginController extends AbstractController {
      * @Version 1.0
      */
     @PostMapping(value = "/setPassword")
-    public Result setPassword(@RequestParam String param, String phone) {
-        AppUserEntity user = userService.queryByUserPhone(phone);
-        if (user == null) {
+    public Result setPassword(@RequestBody LoginForm form) {
+        System.out.println(form.getPassword() + "------------------" + form.getPhone());
+        AppUserEntity user = userService.queryByUserPhone(form.getPhone());
+        if (user == null || !CheckUtil.isMobile(form.getPhone())) {
             return Result.error("手机号不正确");
         }
-        user.setPassword(MD5Utils.generate(param));
+        user.setPassword(MD5Utils.generate(form.getPassword()));
         Boolean br = userService.updatePassword(user);
         if (br) {
-            return Result.ok().put("result", "密码重置成功");
+            return Result.ok().put("result", true);
         }
         return Result.error("密码重置失败");
     }
@@ -171,12 +197,15 @@ public class AppLoginController extends AbstractController {
      * @Date: 2018/11/7 9:14
      * @Version 1.0
      */
-    @PostMapping("/register")
+    @GetMapping("/register")
     public Result register(@RequestParam String param, String phone, String password) {
+        if (!CheckUtil.isMobile(phone)) {
+            return Result.error("手机号格式错误");
+        }
         if (userService.queryByUserPhone(phone) != null) {
             return Result.error("手机号已注册");
         }
-        if (!(MD5Utils.md5(param.trim().toUpperCase()).equals(CookieHelper.getCookie("phoneCodeApp" + phone)))) {
+        if (!param.equals(redisUtils.get("phoneCodeApp" + phone))) {
             return Result.error("验证码错误");
         }
         AppUserEntity user = new AppUserEntity();

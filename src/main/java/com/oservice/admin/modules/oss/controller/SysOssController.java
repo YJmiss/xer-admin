@@ -96,19 +96,15 @@ public class SysOssController {
 		if (uploadFile.isEmpty()) {
 			throw new GlobalException("上传文件不能为空");
 		}
-
 		/*//上传文件
 		String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 		String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
-
 		//保存文件信息
 		SysOssEntity ossEntity = new SysOssEntity();
 		ossEntity.setUrl(url);
 		ossEntity.setCreateDate(new Date());
 		sysOssService.insert(ossEntity);
-
 		return Result.ok().put("url", url);*/
-
 		Map map = new HashMap<>();
 		try {
 			//1.第一步：定义上传工具类对象
