@@ -26,13 +26,13 @@ public class AppUserEntity implements Serializable {
     @TableId
     private String id;
     /**
-     * 账号
+     * 用户状态：0：正常，1：异常，2：删除
      */
-    private String usercode;
+    private int status;
     /**
      * 昵称
      */
-    private String username;
+    private String nickname;
     /**
      * 手机号
      */
@@ -54,16 +54,11 @@ public class AppUserEntity implements Serializable {
      */
     private String email;
     /**
-     *盐
+     *角色--0:普通用户 1：讲师
      */
-    private String salt;
-
+    private int role;
     /**
-     *登录令牌
-     */
-    private String loginToken;
-    /**
-     *刷新登录令牌
+     *登录到期时间
      */
     private String refreshToken;
 
@@ -100,28 +95,28 @@ public class AppUserEntity implements Serializable {
         this.id = id;
     }
     /**
-     * 获取：账号
+     * 获取：用户状态
      */
-    public String getUsercode() {
-        return usercode;
+    public int getStatus() {
+        return status;
     }
     /**
-     * 设置：账号
+     * 设置：用户状态
      */
-    public void setUsercode(String usercode) {
-        this.usercode = usercode;
+    public void setStatus(int status) {
+        this.status = status;
     }
     /**
      * 获取：昵称
      */
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
     /**
      * 设置：昵称
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
     /**
      * 获取：手机号
@@ -184,31 +179,19 @@ public class AppUserEntity implements Serializable {
         this.email = email;
     }
     /**
-     * 获取：盐
+     * 获取：角色
      */
-    public String getSalt() {
-        return salt;
+    public int getRole() {
+        return role;
     }
     /**
-     * 设置：盐
+     * 设置：角色
      */
-    public void setSalt(String salt) {
-        this.salt = salt;
+    public void setRole(int salt) {
+        this.role = role;
     }
     /**
-     * 获取：登录令牌
-     */
-    public String getLoginToken() {
-        return loginToken;
-    }
-    /**
-     * 设置：登录令牌
-     */
-    public void setLoginToken(String loginToken) {
-        this.loginToken = loginToken;
-    }
-    /**
-     * 获取：刷新登录令牌
+     * 获取：登录到期时间
      */
     public String getRefreshToken() {
         return refreshToken;
