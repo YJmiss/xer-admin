@@ -2,9 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseDescDao">
-    <select id="queryById" resultType="com.oservice.admin.modules.sys.entity.XryCourseDescEntity"
-            parameterType="java.lang.Long">
-    select * from xry_course_desc where course_id=#{id}
+    <!--重写查询-->
+    <select id="queryById" resultType="com.oservice.admin.modules.sys.entity.XryCourseDescEntity" parameterType="java.lang.Long">
+      select * from xry_course_desc where course_id=#{id}
     </select>
+    <!--重写修改-->
+    <update id="updateById" parameterType="com.oservice.admin.modules.sys.entity.XryCourseDescEntity">
+        update xry_course_desc set course_desc = #{courseDesc} WHERE course_id = #{courseId}
+    </update>
+    <!--重写删除-->
+    <delete id="deleteBatchIds" parameterType="java.lang.Long">
+        delete from xry_course_desc where course_id in
+        <foreach collection="courseIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
 </mapper>

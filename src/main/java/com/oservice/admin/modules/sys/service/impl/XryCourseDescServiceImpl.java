@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,6 +57,6 @@ public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryC
 
 	@Override
 	public void deleteBatch(Long[] ids) {
-        this.deleteBatchIds(Arrays.asList(ids));
+        baseMapper.deleteBatchIds(Arrays.asList(ids));
 	}
 }
