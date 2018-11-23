@@ -3,6 +3,19 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseCatalogDao">
 
+    <!--自定义分页查询-->
+    <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
+        select b.title as courseTitle,a.* from xry_course_catalog a left join xry_course b on (a.courseid = b.id) where 1=1
+        <if test="params.title != null and params.title != ''">
+            and a.title like #{params.title}
+        </if>
+        <if test="params.courseid != null">
+            and courseid = #{params.courseid}
+        </if>
+        <if test="params.limit != null">
+            limit 0,${params.limit}
+        </if>
+    </select>
     <!-- 查询课程和课程目录信息 -->
     <select id="queryCourseAndCourseCatalog" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity">
       select * from xry_course_catalog left join xry_course on xry_course_catalog.#{courseid} = xry_course.id;

@@ -33,14 +33,27 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         // 根据课程id
         String courseId = (String) params.get("courseId");
         String examineStatus = (String) params.get("examineStatus");
-        Page<XryCourseEntity> page = this.selectPage(new Query<XryCourseEntity>(params).getPage(), new EntityWrapper<XryCourseEntity>()
+        /*Page<XryCourseEntity> pageList = this.selectPage(new Query<XryCourseEntity>(params).getPage(), new EntityWrapper<XryCourseEntity>()
             .like(StringUtils.isNotBlank(title), "title", title)
             .like(StringUtils.isNotBlank(cid), "cid", cid)
             .like(StringUtils.isNotBlank(courseId), "id", courseId)
             .like(StringUtils.isNotBlank(examineStatus), "status", examineStatus)
-        );
+        );*/
+        // 重写分页查询 page limit title cid
+        Page<Map<String, Object>> pageList = new Page<>();
+        Map<String ,Object> map = new HashMap<>();
+        String page = (String) params.get("page");
+        String limit = (String) params.get("limit");
+        map.put("page",page);
+        map.put("limit",limit);
+        map.put("title","%"+title+"%");
+        map.put("cid",cid);
+        map.put("courseId",courseId);
+        map.put("examineStatus",examineStatus);
+        List<Map<String, Object>> courseList = baseMapper.pageList(map);
+        pageList.setRecords(courseList);
 
-		return new PageUtils(page);
+		return new PageUtils(pageList);
 	}
 
 	@Override
