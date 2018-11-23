@@ -149,54 +149,38 @@ public class SysOssController {
 
 	/**
 	 * 图片上传到本地
-	 * @param file
 	 * @return
 	 * @throws Exception
 	 */
 	@PostMapping("/uploadImg")
 	@RequiresPermissions("sys:oss:uploadImg")
-	public Result uploadImg(MultipartFile file, HttpServletRequest request, MultipartHttpServletRequest multipartRequest) throws Exception {
-		// realDirPath文件在项目中的存储路径
-		String realDirPath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/upload/course/";
-
-		String sqlPath = "";
-		Collection<Part> parts = multipartRequest.getParts();
-		for (Iterator<Part> iterator = parts.iterator(); iterator.hasNext();) {
-			Part part = iterator.next();
-			System.out.println("-----类型名称------->"+part.getName());
-			System.out.println("-----类型------->"+part.getContentType());
-			System.out.println("-----提交的类型名称------->"+part.getSubmittedFileName());
-			System.out.println("----流-------->"+part.getInputStream());
-
-			// 获取格式化后的文件名：20181115142427303c789.jpg
-			String fileName = OSSFactory.generateFileName(part.getSubmittedFileName(),part.getContentType());
-			// imageUrl生成在数据库的存储路径
-			String imageUrl = OSSFactory.createFileUrl2(part.getInputStream(),realDirPath,fileName);
-			// 把InputStream转成byte[]
-			byte[] fileByte = OSSFactory.inputStreamToByteArr(part.getInputStream());
-			// 读写图片到服务器
-			OSSFactory.uploadFile(fileByte, realDirPath, fileName);
-			// 读写文件到服务器的指定文件下
-			//OSSFactory.saveFileToService(file,realDirPath,fileName);
-			try {
-				// 读写文件到服务器的指定文件下
-				OSSFactory.uploadFile(fileByte, realDirPath, fileName);
-			} catch (Exception e) {
-				e.printStackTrace();
+	public Result uploadImg(HttpServletRequest request, MultipartHttpServletRequest multipartRequest) throws Exception {
+		Map map = new HashMap<>();
+		try {
+			Collection<Part> parts = multipartRequest.getParts();
+			for (Iterator<Part> iterator = parts.iterator(); iterator.hasNext();) {
+				Part part = iterator.next();
+				//1.第一步：定义上传工具类对象
+				FastDFSClient dfsClient = new FastDFSClient("classpath:fastdfs/client.conf");
+				//2.根据上传文件分析出基本后缀名
+				//String fileName = OSSFactory.generateFileName(part.getSubmittedFileName(),part.getContentType());
+				String suffix = OSSFactory.generateFileExtName(part.getContentType());
+				//3.得到文件的内容（二进制数据）
+				// 把InputStream转成byte[]
+				byte[] fileByte = OSSFactory.inputStreamToByteArr(part.getInputStream());
+				String url = dfsClient.uploadFile(fileByte, suffix);
+				url = ConfigConstant.IMAGE_URL + "/" + url;
+				System.out.println("url:" + url);
+				//上传成功的map
+				return Result.ok().put("url", url);
 			}
-			// 生成在数据库的存储的路径
-			sqlPath = OSSFactory.createSQLPath(imageUrl);
-
-			// 保存文件信息(相对路径)到数据库
-			SysOssEntity ossEntity = new SysOssEntity();
-			ossEntity.setUrl(sqlPath);
-			ossEntity.setCreateDate(new Date());
-			sysOssService.insert(ossEntity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//上传失败的map
+			map.put("error", 1);
+			map.put("message", "图片上传失败！");
 		}
-
-
-
-		return Result.ok().put("url", sqlPath);
+		return Result.ok(map);
 	}
 
 }

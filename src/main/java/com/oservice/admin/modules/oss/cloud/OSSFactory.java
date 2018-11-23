@@ -106,7 +106,7 @@ public final class OSSFactory {
         //设置上传文件的大小 12M
         upload.setSizeMax(4194304 * 3);
         // 生成图片路径+图片名   upload/image/course/20181115142427303c789.jpg
-        String imageUrl = realDirPath + "/" + fileName;
+        String imageUrl = realDirPath + fileName;
         return imageUrl;
     }
 
@@ -131,6 +131,24 @@ public final class OSSFactory {
 
         System.out.println(suffix);
         return timeStr + randomStr + suffix;
+    }
+
+    /**
+     * 生成图片后缀
+     * @param ImgType
+     * @return
+     */
+    public static String generateFileExtName(String ImgType) {
+        String suffix = "";
+        if (StringUtils.isNotBlank(ImgType)) {
+            String[] suffixs =  ImgType.split("/");
+            if ("jpeg".equals(suffixs[1]) || "jpg".equals(suffixs[1])) {
+                suffix = "jpg";
+            } else if ("png".equals(suffixs[1])) {
+                suffix = "png";
+            }
+        }
+        return suffix;
     }
 
     /**
