@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @version 1.0
  */
 @TableName("xry_openuser")
-public class XryOpenuserEntity implements Serializable {
+public class XryOpenUserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 第三方登录用户id

@@ -1,7 +1,7 @@
 package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.oservice.admin.modules.sys.entity.XryOpenuserEntity;
+import com.oservice.admin.modules.sys.entity.XryOpenUserEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @version 1.0
  */
 @Mapper
-public interface XryOpenuserDao extends BaseMapper<XryOpenuserEntity> {
+public interface XryOpenuserDao extends BaseMapper<XryOpenUserEntity> {
 
 
 }
