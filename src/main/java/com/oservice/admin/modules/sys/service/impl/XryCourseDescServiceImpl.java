@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryCourseDescDao;
-import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import org.apache.commons.lang.StringUtils;
@@ -38,7 +37,7 @@ public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryC
 
 	@Override
 	public XryCourseDescEntity queryById(Long id) {
-		return baseMapper.selectById(id);
+		return baseMapper.queryById(id);
 	}
 
 	@Override

@@ -50,11 +50,11 @@ public class XryCourseDescController extends AbstractController {
     public Result save(@RequestBody XryCourseDescEntity courseDesc){
         XryCourseDescEntity xryCourseDesc = xryCourseDescService.queryById(courseDesc.getCourseId());
         if (null != xryCourseDesc) {
+            return Result.error("所选课程已有课程描述");
+        } else {
             ValidatorUtils.validateEntity(courseDesc, AddGroup.class);
             xryCourseDescService.save(courseDesc);
             return Result.ok();
-        } else {
-            return Result.error("所选课程已有课程描述");
         }
     }
 
@@ -65,7 +65,7 @@ public class XryCourseDescController extends AbstractController {
      */
     @GetMapping("/info/{courseId}")
     @RequiresPermissions("xry:course:desc:info")
-    public Result info(@PathVariable("courseId") Long courseId){
+    public Result queryById(@PathVariable("courseId") Long courseId) {
         XryCourseDescEntity courseDesc = xryCourseDescService.queryById(courseId);
         return Result.ok().put("courseDesc", courseDesc);
     }

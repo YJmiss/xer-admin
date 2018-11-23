@@ -49,7 +49,7 @@ public class AppLoginController extends AbstractController {
     @GetMapping(value = "/sendPhoneCode")
     public Result sendPhoneCode(String tel) throws ApiException {
         if (!CheckUtil.isMobile(tel)) {
-            return Result.error("手机号格式错误");
+            return Result.error(203, "手机号格式错误");
         }
         long code = RandomUtils.nextLong(100000, 900000);
         String msg = "";
@@ -78,15 +78,15 @@ public class AppLoginController extends AbstractController {
         Boolean b = param.equals(redisUtils.get("phoneCodeApp" + phone));
         System.out.println(b);
         if (!CheckUtil.isMobile(phone)) {
-            return Result.error("手机号格式错误");
+            return Result.error(203, "手机号格式错误");
         }
         if (param == null || param.equals("")) {
-            return Result.error("验证码为空");
+            return Result.error(204, "验证码为空");
         }
         if (b) {
             return Result.ok().put("result", true);
         } else {
-            return Result.ok().put("result", false);
+            return Result.error(203, "验证码错误");
         }
     }
     /**
@@ -99,12 +99,12 @@ public class AppLoginController extends AbstractController {
     @GetMapping(value = "/checkUserPhone")
     public Result checkUserPhone(String phone) {
         if (!CheckUtil.isMobile(phone)) {
-            return Result.error("手机号格式错误");
+            return Result.error(203, "手机号格式错误");
         }
         AppUserEntity user = new AppUserEntity();
         user = userService.queryByUserPhone(phone);
         if (user == null) {
-            return Result.error().put("result", false);
+            return Result.error(204, "手机号不存在系统");
         }
         return Result.ok().put("result", true);
     }
@@ -119,7 +119,7 @@ public class AppLoginController extends AbstractController {
     @PostMapping(value = "/password/login")
     public Result loginForPassword(@RequestBody LoginForm form) {
         if (!CheckUtil.isMobile(form.getPhone())) {
-            return Result.error("手机号格式错误");
+            return Result.error(203, "手机号格式错误");
         }
         //用户信息
         AppUserEntity user = userService.queryByUserPhone(form.getPhone());
@@ -130,7 +130,7 @@ public class AppLoginController extends AbstractController {
         */
         //账号不存在、密码错误
         if (user == null || !(MD5Utils.verify(form.getPassword(), user.getPassword()))) {
-            return Result.error("账号或密码不正确");
+            return Result.error(203, "账号或密码不正确");
         }
         //生成token，并保存到数据库
         Result token = sysUserTokenService.createToken(user.getId());
@@ -151,10 +151,10 @@ public class AppLoginController extends AbstractController {
     public Result loginForSMS(@RequestParam String param, String phone) {
         Boolean b = param.equals(redisUtils.get("phoneCodeApp" + phone));
         if (!CheckUtil.isMobile(phone)) {
-            return Result.error("手机号格式错误");
+            return Result.error(203, "手机号格式错误");
         }
-        if (param == null) {
-            return Result.error("验证码为空");
+        if (param == null || param.equals("")) {
+            return Result.error(204, "验证码为空");
         }
         AppUserEntity user = userService.queryByUserPhone(phone);
         if (user != null && param.equals(redisUtils.get("phoneCodeApp" + phone))) {
@@ -165,7 +165,7 @@ public class AppLoginController extends AbstractController {
             map.put("user", user);
             return Result.ok(map);
         }
-        return Result.error("手机号或验证码不能为空");
+        return Result.error(204, "系统异常，联系管理员，查看有无宕机...");
     }
 
     /**
@@ -180,14 +180,14 @@ public class AppLoginController extends AbstractController {
         System.out.println(form.getPassword() + "------------------" + form.getPhone());
         AppUserEntity user = userService.queryByUserPhone(form.getPhone());
         if (user == null || !CheckUtil.isMobile(form.getPhone())) {
-            return Result.error("手机号不正确");
+            return Result.error(203, "手机号不正确");
         }
         user.setPassword(MD5Utils.generate(form.getPassword()));
         Boolean br = userService.updatePassword(user);
         if (br) {
             return Result.ok().put("result", true);
         }
-        return Result.error("密码重置失败");
+        return Result.error(205, "密码重置失败");
     }
 
     /**
@@ -200,13 +200,13 @@ public class AppLoginController extends AbstractController {
     @GetMapping("/register")
     public Result register(@RequestParam String param, String phone, String password) {
         if (!CheckUtil.isMobile(phone)) {
-            return Result.error("手机号格式错误");
+            return Result.error(203, "手机号格式错误");
         }
         if (userService.queryByUserPhone(phone) != null) {
-            return Result.error("手机号已注册");
+            return Result.error(300, "手机号已注册");
         }
         if (!param.equals(redisUtils.get("phoneCodeApp" + phone))) {
-            return Result.error("验证码错误");
+            return Result.error(203, "验证码错误");
         }
         AppUserEntity user = new AppUserEntity();
         user.setPassword(MD5Utils.generate(password));
