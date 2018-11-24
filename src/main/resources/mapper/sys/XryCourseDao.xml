@@ -7,16 +7,16 @@
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select * from xry_course left join xry_course_cat on (xry_course.cid = xry_course_cat.id) where 1=1
         <if test="params.title != null and params.title != ''">
-            and title like #{params.title}
+            and xry_course.title like #{params.title}
         </if>
         <if test="params.cid != null">
-            and cid = #{params.cid}
+            and xry_course.cid = #{params.cid}
         </if>
         <if test="params.courseId != null">
-            and id = #{params.courseId}
+            and xry_course.id = #{params.courseId}
         </if>
         <if test="params.examineStatus != null">
-            and status = #{params.examineStatus}
+            and xry_course.status = #{params.examineStatus}
         </if>
         <if test="params.limit != null">
             limit 0,${params.limit}

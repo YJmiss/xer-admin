@@ -12,6 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,14 +30,19 @@ public class XryVideoServiceImpl extends ServiceImpl<XryVideoDao, XryVideoEntity
         String title = (String) params.get("title");
         // 所属课程搜索
         String courseId = (String) params.get("courseId");
-        // 所属目录搜索
         String catalogId = (String) params.get("catalogId");
-        Page<XryVideoEntity> page = this.selectPage(new Query<XryVideoEntity>(params).getPage(),
-                new EntityWrapper<XryVideoEntity>().like(StringUtils.isNotBlank(title), "title", title)
-                        .like(StringUtils.isNotBlank(courseId),"course_id",courseId)
-                        .like(StringUtils.isNotBlank(catalogId),"catalog_id",catalogId)
-        );
-        return new PageUtils(page);
+        Page<Map<String, Object>> pageList = new Page<>();
+        Map<String ,Object> map = new HashMap<>();
+        String page = (String) params.get("page");
+        String limit = (String) params.get("limit");
+        map.put("page",page);
+        map.put("title","%"+title+"%");
+        map.put("limit",limit);
+        map.put("courseId",courseId);
+        map.put("catalogId",catalogId);
+        List<Map<String, Object>> courseList = baseMapper.pageList(map);
+        pageList.setRecords(courseList);
+        return new PageUtils(pageList);
     }
 
     @Override

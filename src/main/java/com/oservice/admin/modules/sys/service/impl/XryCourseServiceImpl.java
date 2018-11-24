@@ -33,12 +33,6 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         // 根据课程id
         String courseId = (String) params.get("courseId");
         String examineStatus = (String) params.get("examineStatus");
-        /*Page<XryCourseEntity> pageList = this.selectPage(new Query<XryCourseEntity>(params).getPage(), new EntityWrapper<XryCourseEntity>()
-            .like(StringUtils.isNotBlank(title), "title", title)
-            .like(StringUtils.isNotBlank(cid), "cid", cid)
-            .like(StringUtils.isNotBlank(courseId), "id", courseId)
-            .like(StringUtils.isNotBlank(examineStatus), "status", examineStatus)
-        );*/
         // 重写分页查询 page limit title cid
         Page<Map<String, Object>> pageList = new Page<>();
         Map<String ,Object> map = new HashMap<>();
