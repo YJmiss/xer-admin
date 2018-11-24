@@ -1,22 +1,18 @@
 package com.oservice.admin.config;
 
-import io.swagger.models.parameters.Parameter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -66,7 +62,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
             .title("疆恒科技学而用接口文档")
             .description("学而用接口文档")
             .termsOfServiceUrl("http://www.oservice.net")
-            .contact("YJmiss")
+                //.contact("YJmiss")
             .version("2.0.0")
             .build();
     }

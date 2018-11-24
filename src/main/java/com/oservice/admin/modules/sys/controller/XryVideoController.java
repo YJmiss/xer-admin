@@ -65,7 +65,29 @@ public class XryVideoController extends AbstractController {
         xryVideoService.save(video);
         return Result.ok();
     }
-
+    /**
+     * @Description: 上传视频
+     * @Param: [multipartFile, request]
+     * @return: com.oservice.admin.common.utils.Result
+     * @Author: YJmiss
+     * @Date: 2018/11/23
+     */
+   /* @RequestMapping(value = "/upload", method = {RequestMethod.POST, RequestMethod.GET})
+    public Result upload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
+        Map map = new HashMap<>();
+        FileEntity entity;
+        FileUploadTool fileUploadTool = new FileUploadTool();
+        try {
+            entity = fileUploadTool.createFile(multipartFile, request);
+            return Result.ok().put("url", entity.getSize());
+        }catch (Exception e){
+            e.printStackTrace();
+            //上传失败的map
+            map.put("error", 1);
+            map.put("message", "视频上传失败！");
+        }
+        return Result.ok(map);
+    }*/
     /**
      * 视频信息
      * @param id
