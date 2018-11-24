@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,4 +52,9 @@ public interface XryUserService extends IService<XryUserEntity> {
      */
     void deleteBatch(Long[] ids);
 
+    /**
+     * 构造讲师树
+     * @return
+     */
+    List<XryUserEntity> treeUser();
 }

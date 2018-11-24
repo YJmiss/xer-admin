@@ -6,12 +6,14 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.XryUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -90,5 +92,17 @@ public class XryUserController extends AbstractController {
     public Result delete(@RequestBody Long[] ids) {
         xryUserService.deleteBatch(ids);
         return Result.ok();
+    }
+
+    /**
+     * 构造讲师树
+     * @return
+     */
+    @SysLog("讲师树")
+    @GetMapping("/treeUser")
+    @RequiresPermissions("xry:user:treeUser")
+    public Result treeCourse() {
+        List<XryUserEntity> userList = xryUserService.treeUser();
+        return Result.ok().put("userList", userList);
     }
 }

@@ -11,6 +11,7 @@ import com.oservice.admin.modules.sys.service.XryUserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,5 +52,10 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
     @Override
     public void deleteBatch(Long[] ids) {
         baseMapper.deleteById(ids);
+    }
+
+    @Override
+    public List<XryUserEntity> treeUser() {
+        return baseMapper.treeUser();
     }
 }

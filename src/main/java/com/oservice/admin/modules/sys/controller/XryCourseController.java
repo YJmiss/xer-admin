@@ -138,7 +138,7 @@ public class XryCourseController extends AbstractController {
      *
      * @return
      */
-    @SysLog("删除课程")
+    @SysLog("课程树")
     @GetMapping("/treeCourse")
     @RequiresPermissions("xry:course:treeCourse")
     public Result treeCourse() {

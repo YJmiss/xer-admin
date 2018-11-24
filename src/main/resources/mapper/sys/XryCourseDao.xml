@@ -5,15 +5,19 @@
 
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
-        select * from xry_course left join xry_course_cat on (xry_course.cid = xry_course_cat.id) where 1=1
+        select a.*,b.name as catName,c.nickname
+                from xry_course a left join xry_course_cat b on  a.cid=b.id left join xry_user c on a.tid=c.id  where 1=1
         <if test="params.title != null and params.title != ''">
-            and xry_course.title like #{params.title}
+            and a.title like #{params.title}
         </if>
         <if test="params.cid != null">
-            and xry_course.cid = #{params.cid}
+            and a.cid = #{params.cid}
+        </if>
+        <if test="params.tid != null">
+            and a.tid = #{params.tid}
         </if>
         <if test="params.courseId != null">
-            and xry_course.id = #{params.courseId}
+            and a.id = #{params.courseId}
         </if>
         <if test="params.examineStatus != null">
             and xry_course.status = #{params.examineStatus}
