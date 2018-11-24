@@ -39,7 +39,7 @@ public class XryCourseEntity implements Serializable {
 	/**
 	 * 所属讲师ID
 	 */
-	private Long tid;
+	private String tid;
 	/**
 	 * 课程属性：1-收费，2-免费
 	 */
@@ -94,11 +94,11 @@ public class XryCourseEntity implements Serializable {
 		this.cid = cid;
 	}
 
-	public Long getTid() {
+	public String getTid() {
 		return tid;
 	}
 
-	public void setTid(Long tid) {
+	public void setTid(String tid) {
 		this.tid = tid;
 	}
 

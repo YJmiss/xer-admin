@@ -6,6 +6,7 @@ import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @param map
      * @return
      */
-    Page<XryCourseEntity> selectPageList(Map<String,Object> map);
+    List<Map<String, Object>> pageList(@Param("params") Map<String,Object> map);
 
     /**
      * 构造课程树

@@ -3,6 +3,23 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryVideoDao">
 
+    <!--自定义分页查询-->
+    <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.*,b.title as courseTitle,c.title as catalogTitle
+        from xry_video a left join xry_course b on  a.course_id=b.id left join xry_course_catalog c on a.catalog_id=c.id
+        <if test="params.title != null and params.title != ''">
+            and a.title like #{params.title}
+        </if>
+        <if test="params.courseId != null">
+            and a.course_id = #{params.courseId}
+        </if>
+        <if test="params.catalogId != null">
+            and a.catalog_id = #{params.catalogId}
+        </if>
+        <if test="params.limit != null">
+            limit 0,${params.limit}
+        </if>
+    </select>
     <!-- 修改视频的状态（视频审核） -->
     <update id="updateVideoStatus" parameterType="java.util.Map">
         update xry_video set status = #{flag} where id =

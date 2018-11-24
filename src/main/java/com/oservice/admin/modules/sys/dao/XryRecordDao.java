@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,8 +19,10 @@ import java.util.Map;
 public interface XryRecordDao extends BaseMapper<XryRecordEntity> {
 
     /**
-     * 记录课程审核
-     * @param params
+     * 自定义分页查询
+     * @param map
+     * @return
      */
-   void recordCourseExamine(Map<String, Object> params);
+    List<Map<String, Object>> pageList(@Param("params") Map<String,Object> map);
+    
 }

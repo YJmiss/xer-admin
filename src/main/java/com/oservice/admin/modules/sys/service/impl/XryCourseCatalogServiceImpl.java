@@ -11,10 +11,7 @@ import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统用户
@@ -30,12 +27,17 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 		String title = (String) params.get("title");
 		// 所属课程的搜索
 		String courseid =  (String) params.get("courseid");
-		Page<XryCourseCatalogEntity> page = this.selectPage(new Query<XryCourseCatalogEntity>(params).getPage(),
-				new EntityWrapper<XryCourseCatalogEntity>()
-						.like(StringUtils.isNotBlank(title), "title", title)
-						.like(StringUtils.isNotBlank(courseid), "courseid",courseid)
-		);
-		return new PageUtils(page);
+		Page<Map<String, Object>> pageList = new Page<>();
+		Map<String ,Object> map = new HashMap<>();
+		String page = (String) params.get("page");
+		String limit = (String) params.get("limit");
+		map.put("page",page);
+		map.put("limit",limit);
+		map.put("title","%"+title+"%");
+		map.put("courseid",courseid);
+		List<Map<String, Object>> courseList = baseMapper.pageList(map);
+		pageList.setRecords(courseList);
+		return new PageUtils(pageList);
 	}
 
 	@Override

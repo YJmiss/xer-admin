@@ -3,5 +3,9 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryUserDao">
 
-
+    <!-- 查询讲师树 -->
+    <select id="treeUser" resultType="com.oservice.admin.modules.sys.entity.XryUserEntity">
+      select * from xry_user where role = 1
+    </select>
+    
 </mapper>

@@ -1,20 +1,14 @@
 package com.oservice.admin.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryCourseDescDao;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.service.XryCourseDescService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统用户
@@ -28,12 +22,17 @@ public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryC
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
-		// 所属课程的搜索
-		String courseid =  (String) params.get("courseid");
-		Page<XryCourseDescEntity> page = this.selectPage(new Query<XryCourseDescEntity>(params).getPage(),
-				new EntityWrapper<XryCourseDescEntity>().like(StringUtils.isNotBlank(courseid), "courseid",courseid)
-		);
-		return new PageUtils(page);
+		String courseId =  (String) params.get("courseId");
+		Page<Map<String, Object>> pageList = new Page<>();
+		Map<String ,Object> map = new HashMap<>();
+		String page = (String) params.get("page");
+		String limit = (String) params.get("limit");
+		map.put("page",page);
+		map.put("limit",limit);
+		map.put("courseId",courseId);
+		List<Map<String, Object>> courseList = baseMapper.pageList(map);
+		pageList.setRecords(courseList);
+		return new PageUtils(pageList);
 	}
 
 	@Override

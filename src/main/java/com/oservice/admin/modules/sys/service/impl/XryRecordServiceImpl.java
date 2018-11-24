@@ -15,9 +15,7 @@ import com.oservice.admin.modules.sys.service.XryVideoService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统用户
@@ -34,13 +32,24 @@ public class XryRecordServiceImpl extends ServiceImpl<XryRecordDao, XryRecordEnt
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        String examineTitle = (String) params.get("examineTitle");
-        String examineType = (String) params.get("examineType");
-        Page<XryRecordEntity> page = this.selectPage(new Query<XryRecordEntity>(params).getPage(), new EntityWrapper<XryRecordEntity>()
-            .like(StringUtils.isNotBlank(examineTitle),"record_id",examineTitle)
-            .like(StringUtils.isNotBlank(examineType),"type",examineType)
-        );
-        return new PageUtils(page);
+        Page<Map<String, Object>> pageList = new Page<>();
+        Map<String ,Object> map = new HashMap<>();
+        String page = (String) params.get("page");
+        String limit = (String) params.get("limit");
+        String phone = (String) params.get("phone");
+        String status = (String) params.get("status");
+        String role = (String) params.get("role");
+        String socialSource = (String) params.get("socialSource");
+
+        map.put("page",page);
+        map.put("limit",limit);
+        map.put("phone","%"+phone+"%");
+        map.put("status",status);
+        map.put("role",role);
+        map.put("socialSource",socialSource);
+        List<Map<String, Object>> courseList = baseMapper.pageList(map);
+        pageList.setRecords(courseList);
+        return new PageUtils(pageList);
     }
 
     @Override
