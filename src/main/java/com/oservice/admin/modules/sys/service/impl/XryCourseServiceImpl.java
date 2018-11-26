@@ -26,8 +26,6 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         String title = (String) params.get("title");
         String cid = (String) params.get("cid");
         String tid = (String) params.get("tid");
-        String courseId = (String) params.get("courseId");
-        String examineStatus = (String) params.get("examineStatus");
         // 重写分页查询 page limit title cid
         Page<Map<String, Object>> pageList = new Page<>();
         Map<String ,Object> map = new HashMap<>();
@@ -38,15 +36,32 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         map.put("title","%"+title+"%");
         map.put("cid",cid);
         map.put("tid",tid);
-        map.put("courseId",courseId);
-        map.put("examineStatus",examineStatus);
         List<Map<String, Object>> courseList = baseMapper.pageList(map);
         pageList.setRecords(courseList);
-
 		return new PageUtils(pageList);
 	}
 
-	@Override
+    @Override
+    public PageUtils examineList(Map<String, Object> params) {
+        String catalogId = (String) params.get("catalogId");
+        String courseId = (String) params.get("courseId");
+        String examineStatus = (String) params.get("examineStatus");
+        // 重写分页查询 page limit title cid
+        Page<Map<String, Object>> pageList = new Page<>();
+        Map<String ,Object> map = new HashMap<>();
+        String page = (String) params.get("page");
+        String limit = (String) params.get("limit");
+        map.put("page",page);
+        map.put("limit",limit);
+        map.put("cid",catalogId);
+        map.put("courseId",courseId);
+        map.put("examineStatus",examineStatus);
+        List<Map<String, Object>> courseList = baseMapper.examineList(map);
+        pageList.setRecords(courseList);
+        return new PageUtils(pageList);
+    }
+
+    @Override
 	public XryCourseEntity queryById(Long id) {
 		return baseMapper.selectById(id);
 	}
