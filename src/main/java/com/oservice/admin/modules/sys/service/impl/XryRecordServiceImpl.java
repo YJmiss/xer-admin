@@ -1,18 +1,11 @@
 package com.oservice.admin.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryRecordDao;
-import com.oservice.admin.modules.sys.dao.XryVideoDao;
-import com.oservice.admin.modules.sys.entity.XryRecordEntity;
-import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.service.XryRecordService;
-import com.oservice.admin.modules.sys.service.XryVideoService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -36,17 +29,12 @@ public class XryRecordServiceImpl extends ServiceImpl<XryRecordDao, XryRecordEnt
         Map<String ,Object> map = new HashMap<>();
         String page = (String) params.get("page");
         String limit = (String) params.get("limit");
-        String phone = (String) params.get("phone");
-        String status = (String) params.get("status");
-        String role = (String) params.get("role");
-        String socialSource = (String) params.get("socialSource");
-
+        String examineType = (String) params.get("examineType");
+        String examineTitle = (String) params.get("examineTitle");
         map.put("page",page);
         map.put("limit",limit);
-        map.put("phone","%"+phone+"%");
-        map.put("status",status);
-        map.put("role",role);
-        map.put("socialSource",socialSource);
+        map.put("title","%" + examineTitle + "%");
+        map.put("type",examineType);
         List<Map<String, Object>> courseList = baseMapper.pageList(map);
         pageList.setRecords(courseList);
         return new PageUtils(pageList);

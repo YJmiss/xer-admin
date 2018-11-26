@@ -7,5 +7,19 @@
     <select id="treeUser" resultType="com.oservice.admin.modules.sys.entity.XryUserEntity">
       select * from xry_user where role = 1
     </select>
-    
+    <!--重写删除-->
+    <delete id="deleteBatchIds" parameterType="java.lang.String">
+        delete from xry_user where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+    <!--修改用户角色-->
+    <update id="" parameterType="java.util.Map">
+      update xry_user set role = #{flag} where id in
+      <foreach collection="ids" item="id" open="(" separator="," close=")">
+          #{id}
+      </foreach>
+    </update>
+
 </mapper>
