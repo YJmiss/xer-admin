@@ -57,6 +57,6 @@ public interface XryRecordService extends IService<XryRecordEntity> {
      * @param record
      * @param userId
      */
-    void recordCourseExamine(XryRecordEntity record, Long userId);
+    void recordExamine(XryRecordEntity record, Long userId);
     
 }

@@ -59,5 +59,9 @@
             #{id}
         </foreach>
     </update>
+    <!-- 修改课程的状态（课程审核） -->
+    <update id="recordExamineInfo" parameterType="java.util.Map">
+        update xry_course set status = #{params.status} where id = #{params.id}
+    </update>
 
 </mapper>

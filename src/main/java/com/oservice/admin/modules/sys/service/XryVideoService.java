@@ -56,6 +56,6 @@ public interface XryVideoService extends IService<XryVideoEntity> {
      * 视频的审核
      * @param record
      */
-    void updateVideoStatus(XryRecordEntity record);
+    void recordExamineInfo(XryRecordEntity record);
     
 }

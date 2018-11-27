@@ -33,16 +33,8 @@ public class XryCourseController extends AbstractController {
     /** 课程下架标识符常量 */
     final static Integer DEL_FROM_COURSE = 5;
     /** 课程审核通过常量 */
-    final static Integer COURSE_EXAMINE_PASS = 3;
-    /** 课程审核驳回常量 */
-    final static Integer COURSE_EXAMINE_REJECT = 4;
-    /** 课程审核的标识符 */
-    final static Integer COURSE_EXAMINE_FLAG = 1;
     @Resource
     private XryCourseService xryCourseService;
-    @Resource
-    private XryRecordService xryRecordService;
-
 
     /**
      * 查询课程列表
@@ -184,41 +176,6 @@ public class XryCourseController extends AbstractController {
         params.put("flag",DEL_FROM_COURSE);
         xryCourseService.updateCourseStatus(params);
         return Result.ok();
-    }
-
-    /**
-     * 审核系统->课程审核：3
-     * @param ids
-     * @return
-     */
-    @SysLog("审核系统->课程审核")
-    @PostMapping("/examinePass")
-    @RequiresPermissions("xry:course:examine:pass")
-    public Result examinePass(@RequestBody Long[] ids) {
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("ids",ids);
-        params.put("flag",COURSE_EXAMINE_PASS);
-        xryCourseService.updateCourseStatus(params);
-        // 记录课程审核事件
-        params.put("userId",getUserId());
-        params.put("type",COURSE_EXAMINE_FLAG);
-        /*xryRecordService.recordCourseExamine(params);*/
-        return Result.ok("审核通过");
-    }
-
-    @SysLog("审核系统->审核驳回")
-    @PostMapping("/examineReject")
-    @RequiresPermissions("xry:course:examine:reject")
-    public Result examineReject(@RequestBody Long[] ids) {
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("ids",ids);
-        params.put("flag",COURSE_EXAMINE_REJECT);
-        xryCourseService.updateCourseStatus(params);
-        // 记录课程审核事件
-        params.put("userId",getUserId());
-        params.put("type",COURSE_EXAMINE_FLAG);
-        /*xryRecordService.recordCourseExamine(params);*/
-        return Result.ok("审核驳回");
     }
     
 }

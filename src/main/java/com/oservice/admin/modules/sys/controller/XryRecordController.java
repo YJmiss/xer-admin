@@ -6,8 +6,10 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryVideoEntity;
+import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryRecordService;
 import com.oservice.admin.modules.sys.service.XryVideoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -27,16 +29,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/xry/record")
 public class XryRecordController extends AbstractController {
-    /** 课程审核通过常量 */
-    final static  Integer VIDEO_EXAMINE_PASS = 3;
-    /** 课程审核驳回常量 */
-    final static  Integer VIDEO_EXAMINE_REJECT = 4;
-    /** 视频审核的标识符 */
-    final static  Integer VIDEO_EXAMINE_FLAG = 2;
     @Resource
     private XryRecordService xryRecordService;
     @Resource
     private XryVideoService xryVideoService;
+    @Resource
+    private XryCourseService xryCourseService;
 
     /**
      * 查询记录列表
@@ -67,18 +65,25 @@ public class XryRecordController extends AbstractController {
 
     /**
      * 审核系统->视频审核
+     * 审核系统->课程审核
      * @param record
      * @return
      */
-    @SysLog("审核系统->视频审核")
-    @PostMapping("/videoExamine")
-    @RequiresPermissions("xry:record:videoExamine")
-    public Result videoExamine(@RequestBody XryRecordEntity record) {
-        // 先修改视频对象的状态
-        xryVideoService.updateVideoStatus(record);
-        // 记录课程审核信息
+    @SysLog("审核系统")
+    @PostMapping("/examine")
+    @RequiresPermissions("xry:record:examine")
+    public Result examine(@RequestBody XryRecordEntity record) {
+        Integer type = record.getType();
+        if (1 == type) {
+            // 第一步：修改课程在数据库的状态
+            xryCourseService.recordExamineInfo(record);
+        } else {
+            // 第一步：修改视频在数据库的状态
+            xryVideoService.recordExamineInfo(record);
+        }
+        // 第二步：记录视频审核信息到记录表
         Long userId = getUserId();
-        xryRecordService.recordCourseExamine(record,userId);
+        xryRecordService.recordExamine(record,userId);
         return Result.ok("操作成功");
     }
 
