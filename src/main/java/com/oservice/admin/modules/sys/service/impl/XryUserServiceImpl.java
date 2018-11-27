@@ -6,13 +6,13 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryUserDao;
+import com.oservice.admin.modules.sys.entity.SysUserEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.XryUserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统用户
@@ -25,37 +25,35 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        Page<XryUserEntity> page = this.selectPage(new Query<XryUserEntity>(params).getPage(), new EntityWrapper<>());
+        // 不用自定义查询
+        String phone = (String) params.get("phone");
+        String status = (String) params.get("status");
+        String role = (String) params.get("role");
+        String socialSource = (String) params.get("socialSource");
+        Page<XryUserEntity> page = this.selectPage(new Query<XryUserEntity>(params).getPage(),
+            new EntityWrapper<XryUserEntity>()
+                .like(StringUtils.isNotBlank(phone),"phone", phone)
+                    .like(StringUtils.isNotBlank(status),"status", status)
+                    .like(StringUtils.isNotBlank(role),"role", role)
+                    .like(StringUtils.isNotBlank(socialSource),"social_source", socialSource)
+        );
 
         return new PageUtils(page);
     }
-
+    
     @Override
-    public XryUserEntity queryById(Long id) {
-        return baseMapper.selectById(id);
-    }
-
-    @Override
-    public void save(XryUserEntity xryUserEntity) {
-        xryUserEntity.setCreated(new Date());
-        xryUserEntity.setUpdated(new Date());
-        baseMapper.insert(xryUserEntity);
-    }
-
-    @Override
-    public void update(XryUserEntity xryUserEntity) {
-        xryUserEntity.setCreated(new Date());
-        xryUserEntity.setUpdated(new Date());
-        baseMapper.updateById(xryUserEntity);
-    }
-
-    @Override
-    public void deleteBatch(Long[] ids) {
-        baseMapper.deleteById(ids);
+    public void deleteBatch(String[] ids) {
+        baseMapper.deleteBatchIds(Arrays.asList(ids));
     }
 
     @Override
     public List<XryUserEntity> treeUser() {
         return baseMapper.treeUser();
     }
+
+    @Override
+    public void updateUserRole(Map<String, Object> params) {
+        baseMapper.updateUserRole(params);
+    }
+
 }

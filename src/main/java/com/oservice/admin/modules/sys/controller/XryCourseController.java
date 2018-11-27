@@ -58,6 +58,19 @@ public class XryCourseController extends AbstractController {
     }
 
     /**
+     * 查询课程审核列表
+     * @param params
+     * @return
+     */
+    @SysLog("查询课程审核列表")
+    @GetMapping("/examineList")
+    @RequiresPermissions("xry:course:examineList")
+    public Result examineList(@RequestParam Map<String, Object> params){
+        PageUtils page = xryCourseService.examineList(params);
+        return Result.ok().put("page", page);
+    }
+
+    /**
      * 保存课程
      * @param course
      * @return

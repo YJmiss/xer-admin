@@ -10,17 +10,31 @@
         <if test="params.title != null and params.title != ''">
             and a.title like #{params.title}
         </if>
-        <if test="params.cid != null">
+        <if test="params.cid != null and params.cid != ''">
             and a.cid = #{params.cid}
         </if>
-        <if test="params.tid != null">
+        <if test="params.tid != null and params.tid != ''">
             and a.tid = #{params.tid}
         </if>
-        <if test="params.courseId != null">
+        <if test="params.limit != null and params.limit != ''">
+            limit 0,${params.limit}
+        </if>
+    </select>
+    <!--查询课程审核列表-->
+    <select id="examineList" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.*,b.name as catName,c.nickname
+            from xry_course a
+            left join xry_course_cat b on  a.cid=b.id
+            left join xry_user c on a.tid=c.id
+            where 1=1
+        <if test="params.cid != null and params.cid !=''">
+            and a.cid = #{params.cid}
+        </if>
+        <if test="params.courseId != null and params.courseId !=''">
             and a.id = #{params.courseId}
         </if>
-        <if test="params.examineStatus != null">
-            and xry_course.status = #{params.examineStatus}
+        <if test="params.examineStatus != null and params.examineStatus !=''">
+            and a.status = #{params.examineStatus}
         </if>
         <if test="params.limit != null">
             limit 0,${params.limit}

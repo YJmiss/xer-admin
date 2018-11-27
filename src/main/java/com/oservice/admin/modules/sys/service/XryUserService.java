@@ -24,37 +24,22 @@ public interface XryUserService extends IService<XryUserEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     /**
-     * 根据app用户id，查询app用户
-     *
-     * @param id
-     * @return
-     */
-    XryUserEntity queryById(Long id);
-
-    /**
-     * app用户保存
-     *
-     * @param xryUserEntity
-     */
-    void save(XryUserEntity xryUserEntity);
-
-    /**
-     * app用户修改
-     *
-     * @param xryUserEntity
-     */
-    void update(XryUserEntity xryUserEntity);
-
-    /**
      * app用户删除
      *
      * @param ids
      */
-    void deleteBatch(Long[] ids);
+    void deleteBatch(String[] ids);
 
     /**
      * 构造讲师树
      * @return
      */
     List<XryUserEntity> treeUser();
+
+    /**
+     * 修改用户角色
+     * @param params
+     */
+    void updateUserRole(Map<String, Object> params);
+
 }

@@ -3,8 +3,10 @@ package com.oservice.admin.modules.sys.dao;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统用户
@@ -20,4 +22,24 @@ public interface XryUserDao extends BaseMapper<XryUserEntity> {
      * @return
      */
     List<XryUserEntity> treeUser();
+
+    /**
+     * 自定义分页查询
+     * @param map
+     * @return
+     */
+    List<Map<String, Object>> pageList(@Param("params") Map<String,Object> map);
+
+    /**
+     * 重写删除
+     * @param ids
+     */
+    void deleteBatchIds(@Param("ids")List<String> ids);
+
+    /**
+     * 修改用户角色
+     * @param params
+     */
+    void updateUserRole(Map<String, Object> params);
+
 }

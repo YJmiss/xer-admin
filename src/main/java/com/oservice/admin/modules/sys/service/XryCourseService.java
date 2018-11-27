@@ -26,6 +26,13 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	PageUtils queryPage(Map<String, Object> params);
 
 	/**
+	 * 查询课程审核列表
+	 * @param params
+	 * @return
+	 */
+	PageUtils examineList(Map<String, Object> params);
+
+	/**
 	 * 根据课程id，查询课程
 	 * @param id
 	 * @return
