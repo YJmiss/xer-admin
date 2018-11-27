@@ -19,7 +19,7 @@ public class CoreConfig implements WebMvcConfigurer {
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
-//文件最大
+        //文件最大
         factory.setMaxFileSize("1024MB"); //KB,MB
         /// 设置总上传数据总大小
         factory.setMaxRequestSize("1024MB");
