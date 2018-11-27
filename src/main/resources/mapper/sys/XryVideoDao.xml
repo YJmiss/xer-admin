@@ -22,10 +22,7 @@
     </select>
     <!-- 修改视频的状态（视频审核） -->
     <update id="updateVideoStatus" parameterType="java.util.Map">
-        update xry_video set status = #{flag} where id =
-        <foreach collection="ids" item="id" open="(" separator="," close=")">
-            #{id}
-        </foreach>
+        update xry_video set status = #{params.status} where id = #{params.id}
     </update>
 
 </mapper>

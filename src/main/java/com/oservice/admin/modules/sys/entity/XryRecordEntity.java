@@ -38,6 +38,11 @@ public class XryRecordEntity implements Serializable {
    private Integer actionNumber;
 
     /**
+     * 记录详情
+     */
+   private String detail;
+
+    /**
      * 创建时间
      */
     private Date created;
@@ -88,5 +93,13 @@ public class XryRecordEntity implements Serializable {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 }

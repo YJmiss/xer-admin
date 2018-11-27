@@ -2,6 +2,7 @@ package com.oservice.admin.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
+import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 
 import java.util.Map;
@@ -53,8 +54,8 @@ public interface XryVideoService extends IService<XryVideoEntity> {
 
     /**
      * 视频的审核
-     * @param params
+     * @param record
      */
-    void updateVideoStatus(Map<String,Object> params);
+    void updateVideoStatus(XryRecordEntity record);
     
 }

@@ -22,6 +22,12 @@ public class XryRecordServiceImpl extends ServiceImpl<XryRecordDao, XryRecordEnt
     final static  Integer COURSE_EXAMINE_PASS = 3;
     /** 课程审核驳回常量 */
     final static  Integer COURSE_EXAMINE_REJECT = 4;
+    /** 课程审核通过常量 */
+    final static  Integer VIDEO_EXAMINE_PASS = 3;
+    /** 课程审核驳回常量 */
+    final static  Integer VIDEO_EXAMINE_REJECT = 4;
+    /** 视频审核的标识符 */
+    final static  Integer VIDEO_EXAMINE_FLAG = 2;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -61,20 +67,10 @@ public class XryRecordServiceImpl extends ServiceImpl<XryRecordDao, XryRecordEnt
     }
 
     @Override
-    public void recordCourseExamine(Map<String, Object> params) {
-        Long[] ids = (Long[]) params.get("ids");
-        Long userId = (Long) params.get("userId");
-        Integer flag = (Integer) params.get("flag");
-        Integer type = (Integer) params.get("type");
-        for (Long id : ids) {
-            XryRecordEntity xryRecordEntity = new XryRecordEntity();
-            xryRecordEntity.setRecordId(id);
-            xryRecordEntity.setUserId(userId);
-            xryRecordEntity.setType(type);
-            xryRecordEntity.setActionNumber(flag);
-            xryRecordEntity.setCreated(new Date());
-            baseMapper.insert(xryRecordEntity);
-        }
+    public void recordCourseExamine(XryRecordEntity record, Long userId) {
+        record.setUserId(userId);
+        record.setCreated(new Date());
+        baseMapper.insert(record);
     }
 
 }

@@ -26,16 +26,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/xry/video")
 public class XryVideoController extends AbstractController {
-    /** 课程审核通过常量 */
-    final static  Integer VIDEO_EXAMINE_PASS = 3;
-    /** 课程审核驳回常量 */
-    final static  Integer VIDEO_EXAMINE_REJECT = 4;
-    /** 视频审核的标识符 */
-    final static  Integer VIDEO_EXAMINE_FLAG = 2;
     @Resource
     private XryVideoService xryVideoService;
-    @Resource
-    private XryRecordService xryRecordService;
 
     /**
      * 查询视频列表
@@ -127,38 +119,4 @@ public class XryVideoController extends AbstractController {
         return Result.ok();
     }
 
-    /**
-     * 审核系统->视频审核：3
-     * @param ids
-     * @return
-     */
-    @SysLog("审核系统->视频审核")
-    @PostMapping("/examinePass")
-    @RequiresPermissions("xry:video:examine:pass")
-    public Result examinePass(@RequestBody Long[] ids) {
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("ids",ids);
-        params.put("flag",VIDEO_EXAMINE_PASS);
-        xryVideoService.updateVideoStatus(params);
-        // 记录课程审核事件
-        params.put("userId",getUserId());
-        params.put("type",VIDEO_EXAMINE_FLAG);
-        xryRecordService.recordCourseExamine(params);
-        return Result.ok("审核通过");
-    }
-
-    @SysLog("审核系统->审核驳回")
-    @PostMapping("/examineReject")
-    @RequiresPermissions("xry:video:examine:reject")
-    public Result examineReject(@RequestBody Long[] ids) {
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("ids",ids);
-        params.put("flag",VIDEO_EXAMINE_REJECT);
-        xryVideoService.updateVideoStatus(params);
-        // 记录课程审核事件
-        params.put("userId",getUserId());
-        params.put("type",VIDEO_EXAMINE_FLAG);
-        xryRecordService.recordCourseExamine(params);
-        return Result.ok("审核驳回");
-    }
 }

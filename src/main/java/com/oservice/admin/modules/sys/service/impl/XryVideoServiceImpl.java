@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryVideoDao;
+import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 import com.oservice.admin.modules.sys.service.XryVideoService;
 import org.apache.commons.lang.StringUtils;
@@ -66,7 +67,14 @@ public class XryVideoServiceImpl extends ServiceImpl<XryVideoDao, XryVideoEntity
     }
 
     @Override
-    public void updateVideoStatus(Map<String, Object> params) {
+    public void updateVideoStatus(XryRecordEntity record) {
+        Map<String, Object> params = new HashMap<>();
+        // 得到视频id
+        Long id = record.getRecordId();
+        // 得到操作类型3：通过  4：驳回
+        Integer action = record.getActionNumber();
+        params.put("id",id);
+        params.put("status",action);
         baseMapper.updateVideoStatus(params);
     }
 }

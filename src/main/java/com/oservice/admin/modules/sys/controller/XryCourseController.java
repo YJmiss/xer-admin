@@ -202,7 +202,7 @@ public class XryCourseController extends AbstractController {
         // 记录课程审核事件
         params.put("userId",getUserId());
         params.put("type",COURSE_EXAMINE_FLAG);
-        xryRecordService.recordCourseExamine(params);
+        /*xryRecordService.recordCourseExamine(params);*/
         return Result.ok("审核通过");
     }
 
@@ -217,7 +217,7 @@ public class XryCourseController extends AbstractController {
         // 记录课程审核事件
         params.put("userId",getUserId());
         params.put("type",COURSE_EXAMINE_FLAG);
-        xryRecordService.recordCourseExamine(params);
+        /*xryRecordService.recordCourseExamine(params);*/
         return Result.ok("审核驳回");
     }
     
