@@ -26,8 +26,6 @@ public class UserServiceImpl extends ServiceImpl<AppUserDao, AppUserEntity> impl
 
     @Override
     public void register(AppUserEntity user) {
-
-
         baseMapper.register(user);
     }
 

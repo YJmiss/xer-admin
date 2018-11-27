@@ -157,6 +157,23 @@ public class AppLoginController extends AbstractController {
             return Result.error(204, "验证码为空");
         }
         AppUserEntity user = userService.queryByUserPhone(phone);
+        //首次登陆+注册
+        if (user == null && param.equals(redisUtils.get("phoneCodeApp" + phone))) {
+            AppUserEntity newuser = new AppUserEntity();
+            String id = UUIDUtils.getUUID();
+            Result token = sysUserTokenService.createToken(id);
+            Map<String, Object> map = new HashMap<>();
+            newuser.setPhone(phone);
+            newuser.setId(id);
+            newuser.setCreated(DateUtils.stringToDate(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss"));
+            newuser.setUpdated(DateUtils.stringToDate(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss"));
+            newuser.setSocialSource(0);
+            userService.register(newuser);
+            map.put("token", token);
+            map.put("user", newuser);
+            return Result.ok(map);
+        }
+
         if (user != null && param.equals(redisUtils.get("phoneCodeApp" + phone))) {
             //生成token，并保存到数据库
             Result token = sysUserTokenService.createToken(user.getId());
@@ -169,7 +186,7 @@ public class AppLoginController extends AbstractController {
     }
 
     /**
-     * @Description: 重置密码
+     * @Description: 忘记密码重置密码
      * @Author:yiyx
      * @param:
      * @Date: 2018/11/7 9:14
@@ -190,6 +207,28 @@ public class AppLoginController extends AbstractController {
         return Result.error(205, "密码重置失败");
     }
 
+    /**
+     * @Description: 用户修改密码
+     * @Param: password：旧密码，newpassword：新密码
+     * @return:
+     * @Author: YJmiss
+     * @Date: 2018/11/27
+     */
+    @GetMapping(value = "/setNewPassword")
+    public Result setNewPassword(@RequestParam String password, String newpassword) {
+        //String id=getAppUserId();
+        String password1 = getAppUser().getPassword();
+        AppUserEntity user = userService.queryByUserPhone(getAppUser().getPhone());
+        if (!MD5Utils.verify(password, password1)) {
+            return Result.error(203, "密码验证错误，修改失败！");
+        }
+        user.setPassword(MD5Utils.generate(newpassword));
+        Boolean br = userService.updatePassword(user);
+        if (br) {
+            return Result.ok().put("result", true);
+        }
+        return Result.error(205, "密码修改失败");
+    }
     /**
      * @Description: 用户注册
      * @Author:yiyx
@@ -227,4 +266,5 @@ public class AppLoginController extends AbstractController {
         sysUserTokenService.logout(getAppUserId());
         return Result.ok();
     }
+
 }
