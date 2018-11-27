@@ -26,19 +26,24 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         // 不用自定义查询
+        String page = (String) params.get("page");
+        String limit = (String) params.get("limit");
         String phone = (String) params.get("phone");
         String status = (String) params.get("status");
         String role = (String) params.get("role");
         String socialSource = (String) params.get("socialSource");
-        Page<XryUserEntity> page = this.selectPage(new Query<XryUserEntity>(params).getPage(),
-            new EntityWrapper<XryUserEntity>()
-                .like(StringUtils.isNotBlank(phone),"phone", phone)
-                    .like(StringUtils.isNotBlank(status),"status", status)
-                    .like(StringUtils.isNotBlank(role),"role", role)
-                    .like(StringUtils.isNotBlank(socialSource),"social_source", socialSource)
-        );
-
-        return new PageUtils(page);
+        // 重写分页查询 page limit title cid
+        Page<Map<String, Object>> pageList = new Page<>();
+        Map<String ,Object> map = new HashMap<>();
+        map.put("page",page);
+        map.put("limit",limit);
+        map.put("phone","%" + phone + "%");
+        map.put("status",status);
+        map.put("role",role);
+        map.put("socialSource",socialSource);
+        List<Map<String, Object>> courseList = baseMapper.pageList(map);
+        pageList.setRecords(courseList);
+        return new PageUtils(pageList);
     }
     
     @Override
