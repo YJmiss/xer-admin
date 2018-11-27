@@ -67,7 +67,7 @@ public class XryVideoServiceImpl extends ServiceImpl<XryVideoDao, XryVideoEntity
     }
 
     @Override
-    public void updateVideoStatus(XryRecordEntity record) {
+    public void recordExamineInfo(XryRecordEntity record) {
         Map<String, Object> params = new HashMap<>();
         // 得到视频id
         Long id = record.getRecordId();
@@ -75,6 +75,6 @@ public class XryVideoServiceImpl extends ServiceImpl<XryVideoDao, XryVideoEntity
         Integer action = record.getActionNumber();
         params.put("id",id);
         params.put("status",action);
-        baseMapper.updateVideoStatus(params);
+        baseMapper.recordExamineInfo(params);
     }
 }

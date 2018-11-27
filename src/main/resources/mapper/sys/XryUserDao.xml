@@ -3,6 +3,25 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryUserDao">
 
+    <!--自定义分页查询-->
+    <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from xry_user  where 1=1
+        <if test="params.phone != null and params.phone != ''">
+            and phone like #{params.phone}
+        </if>
+        <if test="params.status != null and params.status != ''">
+            and status = #{params.status}
+        </if>
+        <if test="params.role != null and params.role != ''">
+            and role = #{params.role}
+        </if>
+        <if test="params.socialSource != null and params.socialSource != ''">
+            and social_source = #{params.socialSource}
+        </if>
+        <if test="params.limit != null and params.limit != ''">
+            limit 0,${params.limit}
+        </if>
+    </select>
     <!-- 查询讲师树 -->
     <select id="treeUser" resultType="com.oservice.admin.modules.sys.entity.XryUserEntity">
       select * from xry_user where role = 1

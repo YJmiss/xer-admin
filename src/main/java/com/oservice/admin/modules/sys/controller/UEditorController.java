@@ -28,13 +28,14 @@ public class UEditorController {
             writer.write(exec);
             writer.flush();
             writer.close();
-            if (!"".equals(exec) && exec.indexOf("title") > -1) {
+   /*         if (!"".equals(exec) && exec.indexOf("title") > -1) {
                 JSONObject jsonConfig = new JSONObject(exec);
-                if (jsonConfig.toMap().size() > 0) {
+              //  if (jsonConfig.toMap().size() > 0) {
                     filePath = jsonConfig.getString("title");
-                }
+              //  }
             }
             System.out.println(filePath);
+            */
         } catch (IOException e) {
             e.printStackTrace();
         }

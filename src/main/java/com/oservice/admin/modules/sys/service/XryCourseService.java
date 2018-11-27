@@ -5,6 +5,7 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -83,4 +84,10 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 * @param params
 	 */
 	void updateCourseStatus(Map<String, Object> params);
+
+	/**
+	 * 审核系统->课程审核
+	 * @param record
+	 */
+	void recordExamineInfo(XryRecordEntity record);
 }

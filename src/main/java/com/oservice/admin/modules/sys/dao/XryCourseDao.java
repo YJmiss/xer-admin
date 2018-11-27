@@ -56,9 +56,14 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
     XryCourseDescEntity queryCourseDescById(Long id);
 
     /**
-     * 课程上、下架 、审核、驳回
+     * 课程上、下架
      * @param params
      */
     void updateCourseStatus(Map<String,Object> params);
 
+    /**
+     * 课程的审核
+     * @param params
+     */
+   void recordExamineInfo(@Param("params") Map<String, Object> params);
 }

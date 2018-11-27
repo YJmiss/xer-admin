@@ -7,6 +7,7 @@ import com.oservice.admin.modules.sys.dao.XryCourseDao;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.springframework.stereotype.Service;
 
@@ -103,6 +104,17 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     @Override
     public void updateCourseStatus(Map<String,Object> params) {
         baseMapper.updateCourseStatus(params);
+    }
+
+    @Override
+    public void recordExamineInfo(XryRecordEntity record) {
+        Map<String, Object> params = new HashMap<>();
+        Long id = record.getRecordId();
+        Integer action = record.getActionNumber();
+        params.put("id",id);
+        params.put("status",action);
+        baseMapper.recordExamineInfo(params);
+
     }
 
 }

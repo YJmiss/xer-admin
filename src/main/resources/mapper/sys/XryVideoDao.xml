@@ -21,7 +21,7 @@
         </if>
     </select>
     <!-- 修改视频的状态（视频审核） -->
-    <update id="updateVideoStatus" parameterType="java.util.Map">
+    <update id="recordExamineInfo" parameterType="java.util.Map">
         update xry_video set status = #{params.status} where id = #{params.id}
     </update>
 

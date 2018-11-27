@@ -67,7 +67,7 @@ public class XryRecordServiceImpl extends ServiceImpl<XryRecordDao, XryRecordEnt
     }
 
     @Override
-    public void recordCourseExamine(XryRecordEntity record, Long userId) {
+    public void recordExamine(XryRecordEntity record, Long userId) {
         record.setUserId(userId);
         record.setCreated(new Date());
         baseMapper.insert(record);

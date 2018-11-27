@@ -28,5 +28,5 @@ public interface XryVideoDao extends BaseMapper<XryVideoEntity> {
      * 视频的审核
      * @param params
      */
-   void updateVideoStatus(@Param("params") Map<String, Object> params);
+   void recordExamineInfo(@Param("params") Map<String, Object> params);
 }
