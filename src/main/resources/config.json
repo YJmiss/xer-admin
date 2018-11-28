@@ -94,7 +94,7 @@
   /* 提交的视频表单名称 */
   "videoPathFormat": "/fileData/{time}{rand:6}",
   /* 上传保存路径,可以自定义保存路径和文件名格式 */
-  "videoUrlPrefix": "http://192.168.1.30:9001/xry",
+  "videoUrlPrefix": "http://192.168.1.27:9001/xry",
   /* 视频访问路径前缀 */
   "videoMaxSize": 1073741824,
   /* 上传大小限制，单位B，默认1024*1024*1024 1GB */

@@ -15,5 +15,12 @@
     <select id="isParentCourseCatalogById" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatEntity">
         select * from xry_course_cat where parent_id = #{id}
     </select>
+    <!--课程类目的启用、禁用-->
+    <update id="updateCourseCatStatus" parameterType="java.util.Map">
+        update xry_course_cat set status = #{status} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
 </mapper>

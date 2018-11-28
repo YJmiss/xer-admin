@@ -6,7 +6,7 @@
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.title as courseTitle,c.title as catalogTitle
-        from xry_video a left join xry_course b on  a.course_id=b.id left join xry_course_catalog c on a.catalog_id=c.id
+        from xry_video a left join xry_course b on  a.course_id=b.id left join xry_course_catalog c on a.catalog_id=c.id where 1=1
         <if test="params.title != null and params.title != ''">
             and a.title like #{params.title}
         </if>
