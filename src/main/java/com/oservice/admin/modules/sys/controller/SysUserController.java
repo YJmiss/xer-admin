@@ -30,13 +30,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/user")
 public class SysUserController extends AbstractController {
-
     @Resource
     private SysUserService sysUserService;
-
     @Resource
     private SysUserRoleService sysUserRoleService;
-
 
     /**
      * 所有用户列表
