@@ -51,5 +51,11 @@ public interface XryContentService extends IService<XryContentEntity> {
      * @param ids
      */
     void deleteBatch(Long[] ids);
+
+    /**
+     * 广告禁用、启用
+     * @param params
+     */
+    void updateContentStatus(Map<String, Object> params);
     
 }

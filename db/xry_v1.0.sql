@@ -544,7 +544,7 @@ CREATE TABLE `xry_content` (
   `title_desc` varchar(500) DEFAULT NULL COMMENT '标题描述',
   `url` varchar(500) DEFAULT NULL COMMENT '链接',
   `pic` varchar(300) DEFAULT NULL COMMENT '图片绝对路径',
-  `pic2` varchar(300) DEFAULT NULL COMMENT '图片2',
+  `course_id` varchar(300) DEFAULT NULL COMMENT 'course_id',
   `created` datetime DEFAULT NULL,
   `updated` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),

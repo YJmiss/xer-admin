@@ -43,7 +43,12 @@ public class XryContentEntity implements Serializable {
     /**
      * 图片2
      */
-    private String pic2;
+    private Long courseId;
+
+    /**
+     * 状态，0：不可用、1：可用
+     */
+    private Integer status;
     
     /**
      * 创建时间
@@ -102,12 +107,20 @@ public class XryContentEntity implements Serializable {
         this.pic = pic;
     }
 
-    public String getPic2() {
-        return pic2;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setPic2(String pic2) {
-        this.pic2 = pic2;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getCreated() {
