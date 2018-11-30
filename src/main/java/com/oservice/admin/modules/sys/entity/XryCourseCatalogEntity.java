@@ -33,11 +33,6 @@ public class XryCourseCatalogEntity implements Serializable {
 	 * 所属课程ID
 	 */
 	private Long courseid;
-
-	/**
-	 * 目录状态，1-未审核，2-审核中，3-通过审核，4-未通过，5通过审核未上架，6、通过审核已上架
-	 */
-	private Integer status;
 	
 	/**
 	 * 创建时间
@@ -88,11 +83,4 @@ public class XryCourseCatalogEntity implements Serializable {
 		this.updated = updated;
 	}
 
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
 }
