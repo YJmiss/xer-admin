@@ -7,7 +7,6 @@ import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,4 +89,11 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 * @param record
 	 */
 	void recordExamineInfo(XryRecordEntity record);
+
+	/**
+	 * 查询首页好评好课
+	 *
+	 * @return
+	 */
+	List<XryCourseEntity> getGoodCourse();
 }

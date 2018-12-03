@@ -67,6 +67,7 @@ public class ShiroConfig {
         filterMap.put("/api/appAccount/sms/login", "anon");
         filterMap.put("/api/appAccount//setPassword", "anon");
         filterMap.put("/api/appAccount/validationPhoneCode", "anon");
+        filterMap.put("/api/appContent/list", "anon");
 
         filterMap.put("/swagger/**", "anon");
         filterMap.put("/v2/api-docs", "anon");

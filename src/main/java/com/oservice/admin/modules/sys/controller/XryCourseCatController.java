@@ -13,7 +13,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,10 +25,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/xry/course/cat")
 public class XryCourseCatController extends AbstractController {
-    /** 课程类目启用标志 */
-    final static Integer COURSE_CAT_TO_USE = 1;
-    /** 课程类目禁用标志 */
-    final static Integer COURSE_CAT_TO_DISABLE = 2;
     @Resource
     private XryCourseCatService xryCourseCatService;
 
@@ -121,36 +116,4 @@ public class XryCourseCatController extends AbstractController {
         return Result.ok().put("courseCatList", courseCatList);
     }
     
-    /**
-     * 启用类目：1
-     * @param ids
-     * @return
-     */
-    @SysLog("启用类目")
-    @PostMapping("/toUse")
-    @RequiresPermissions("xry:course:cat:toUse")
-    public Result catToUse(@RequestBody Long[] ids) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("ids",ids);
-        params.put("status",COURSE_CAT_TO_USE);
-        xryCourseCatService.updateCourseCatStatus(params);
-        return Result.ok();
-    }
-    
-    /**
-     * 禁用类目：2
-     * @param ids
-     * @return
-     */
-    @SysLog("禁用类目")
-    @PostMapping("/toDisable")
-    @RequiresPermissions("xry:course:cat:toDisable")
-    public Result catToDisable(@RequestBody Long[] ids) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("ids",ids);
-        params.put("status",COURSE_CAT_TO_DISABLE);
-        xryCourseCatService.updateCourseCatStatus(params);
-        return Result.ok();
-    }
-
 }

@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryContentDao">
-
+    <select id="getContentsByCat" parameterType="int"
+            resultType="com.oservice.admin.modules.sys.entity.XryContentEntity">
+    select * from xry_content where category=#{cat}
+</select>
 
 </mapper>

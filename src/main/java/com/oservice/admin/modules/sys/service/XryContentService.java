@@ -3,8 +3,8 @@ package com.oservice.admin.modules.sys.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryContentEntity;
-import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,5 +51,11 @@ public interface XryContentService extends IService<XryContentEntity> {
      * @param ids
      */
     void deleteBatch(Long[] ids);
-    
+
+    /**
+     * 根据类目获取广告
+     *
+     * @param cat
+     */
+    List<XryContentEntity> getContentsByCat(int cat);
 }

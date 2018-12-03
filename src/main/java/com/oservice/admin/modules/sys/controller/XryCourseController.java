@@ -10,7 +10,6 @@ import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseService;
-import com.oservice.admin.modules.sys.service.XryRecordService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -171,13 +170,6 @@ public class XryCourseController extends AbstractController {
     @PostMapping("/delFromCourse")
     @RequiresPermissions("xry:course:del:from:course")
     public Result delFromCourse(@RequestBody Long[] ids) {
-        // 课程上架之前先判断课程是否已经上架 审核状态：1、2、4
-        for (Long id:ids) {
-            XryCourseEntity xryCourseEntity = xryCourseService.queryById(id);
-            if (6 != xryCourseEntity.getStatus()) {
-                return Result.error("所选课程未上架，无需进行此操作");
-            }
-        }
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("ids",ids);
         params.put("flag",DEL_FROM_COURSE);

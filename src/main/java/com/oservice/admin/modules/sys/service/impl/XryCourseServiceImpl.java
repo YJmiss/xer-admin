@@ -117,4 +117,9 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
 
     }
 
+    @Override
+    public List<XryCourseEntity> getGoodCourse() {
+        return null;
+    }
+
 }

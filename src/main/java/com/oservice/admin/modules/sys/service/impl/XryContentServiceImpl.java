@@ -6,13 +6,8 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryContentDao;
-import com.oservice.admin.modules.sys.dao.XryCourseDao;
-import com.oservice.admin.modules.sys.entity.XryContentEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryContentEntity;
 import com.oservice.admin.modules.sys.service.XryContentService;
-import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -63,5 +58,10 @@ public class XryContentServiceImpl extends ServiceImpl<XryContentDao, XryContent
 	public void deleteBatch(Long[] ids) {
         this.deleteBatchIds(Arrays.asList(ids));
     }
+
+	@Override
+	public List<XryContentEntity> getContentsByCat(int cat) {
+		return baseMapper.getContentsByCat(cat);
+	}
 
 }
