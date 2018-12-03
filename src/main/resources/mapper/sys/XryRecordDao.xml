@@ -9,7 +9,7 @@
             from  xry_record a
               left join xry_course b on  a.record_id=b.id
               left join xry_video c on a.record_id=c.id
-              left join sys_user d on a.id = d.user_id  where 1=1
+              left join sys_user d on a.user_id = d.user_id  where 1=1
         <if test="params.type != null and params.type != ''">
             and a.type like #{params.type}
         </if>

@@ -1,20 +1,15 @@
 package com.oservice.admin.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryContentDao;
 import com.oservice.admin.modules.sys.entity.XryContentEntity;
 import com.oservice.admin.modules.sys.service.XryContentService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统用户
@@ -29,10 +24,23 @@ public class XryContentServiceImpl extends ServiceImpl<XryContentDao, XryContent
 	public PageUtils queryPage(Map<String, Object> params) {
     	String category = (String)params.get("category");
 		String title = (String)params.get("title");
-        Page<XryContentEntity> page = this.selectPage(new Query<XryContentEntity>(params).getPage(), new EntityWrapper<XryContentEntity>()
-			.like(StringUtils.isNotBlank(category),"category",category)
-			.like(StringUtils.isNotBlank(title),"title",title));
-		return new PageUtils(page);
+		String courseId = (String) params.get("courseId");
+		String status = (String) params.get("status");
+		// 重写分页查询 page limit title cid
+		Page<Map<String, Object>> pageList = new Page<>();
+		Map<String ,Object> map = new HashMap<>();
+		String page = (String) params.get("page");
+		String limit = (String) params.get("limit");
+		map.put("page",page);
+		map.put("limit",limit);
+		map.put("title","%"+title+"%");
+		map.put("category",category);
+		map.put("courseId",courseId);
+		map.put("status",status);
+		List<Map<String, Object>> courseList = baseMapper.pageList(map);
+		pageList.setRecords(courseList);
+
+		return new PageUtils(pageList);
 	}
 
 	@Override
@@ -58,6 +66,11 @@ public class XryContentServiceImpl extends ServiceImpl<XryContentDao, XryContent
 	public void deleteBatch(Long[] ids) {
         this.deleteBatchIds(Arrays.asList(ids));
     }
+
+	@Override
+	public void updateContentStatus(Map<String, Object> params) {
+		baseMapper.updateContentStatus(params);
+	}
 
 	@Override
 	public List<XryContentEntity> getContentsByCat(int cat) {

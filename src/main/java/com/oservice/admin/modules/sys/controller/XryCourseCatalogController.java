@@ -6,6 +6,7 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import com.oservice.admin.modules.sys.entity.XryContentEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
 import io.swagger.annotations.Api;
@@ -110,38 +111,6 @@ public class XryCourseCatalogController extends AbstractController {
     public Result treeCourseCatalog( Long courseId) {
         List<XryCourseCatalogEntity> courseCatalogList = xryCourseCatalogService.treeCourseCatalog(courseId);
         return Result.ok().put("courseCatalogList", courseCatalogList);
-    }
-
-    /**
-     * 目录上架
-     * @param ids
-     * @return
-     */
-    @SysLog("目录上架")
-    @PostMapping("/addToCourseCatalog")
-    @RequiresPermissions("xry:course:add:to:course:catalog")
-    public Result addToCourseCatalog(@RequestBody Long[] ids) {
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("ids",ids);
-        params.put("flag",ADD_TO_COURSE_CATALOG);
-        xryCourseCatalogService.updateCourseCatalogStatus(params);
-        return Result.ok();
-    }
-
-    /**
-     * 目录下架
-     * @param ids
-     * @return
-     */
-    @SysLog("目录下架")
-    @PostMapping("/delFromCourseCatalog")
-    @RequiresPermissions("xry:course:del:from:course:catalog")
-    public Result delFromCourseCatalog(@RequestBody Long[] ids) {
-        Map<String,Object> params = new HashMap();
-        params.put("ids",ids);
-        params.put("flag",DEL_FROM_COURSE_CATALOG);
-        xryCourseCatalogService.updateCourseCatalogStatus(params);
-        return Result.ok();
     }
     
 }

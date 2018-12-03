@@ -27,12 +27,5 @@
             and courseid = #{_parameter,jdbcType=INTEGER}
         </if>
     </select>
-    <!--目录上下架-->
-    <update id="updateCourseCatalogStatus" parameterType="java.util.Map">
-        update xry_course_catalog set status = #{flag} where id in
-        <foreach collection="ids" item="id" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-    </update>
 
 </mapper>

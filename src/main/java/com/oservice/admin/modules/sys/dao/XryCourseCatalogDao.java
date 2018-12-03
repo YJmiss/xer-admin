@@ -30,10 +30,4 @@ public interface XryCourseCatalogDao extends BaseMapper<XryCourseCatalogEntity> 
      */
     List<XryCourseCatalogEntity> treeCourseCatalog(Long courseId);
 
-    /**
-     * 目录上、下架
-     * @param params
-     */
-    void updateCourseCatalogStatus(Map<String,Object> params);
-
 }

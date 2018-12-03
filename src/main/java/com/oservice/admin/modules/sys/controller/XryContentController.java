@@ -25,6 +25,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/xry/content")
 public class XryContentController extends AbstractController {
+    /** 广告启用标识 */
+    final static Integer CONTENT_TO_USE = 1;
+    /** 广告禁用标识 */
+    final static Integer CONTENT_TO_DISABLE = 0;
     @Resource
     private XryContentService xryContentService;
 
@@ -93,6 +97,38 @@ public class XryContentController extends AbstractController {
     @RequiresPermissions("xry:content:delete")
     public Result delete(@RequestBody Long[] ids) {
         xryContentService.deleteBatch(ids);
+        return Result.ok();
+    }
+
+    /**
+     * 广告禁用：1->0
+     * @param ids
+     * @return
+     */
+    @SysLog("广告禁用")
+    @PostMapping("/toDisable")
+    @RequiresPermissions("xry:content:toDisable")
+    public Result toDisable(@RequestBody Long[] ids) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("ids",ids);
+        params.put("status",CONTENT_TO_DISABLE);
+        xryContentService.updateContentStatus(params);
+        return Result.ok();
+    }
+
+    /**
+     * 广告启用：0->1
+     * @param ids
+     * @return
+     */
+    @SysLog("广告启用")
+    @PostMapping("/toUse")
+    @RequiresPermissions("xry:content:toUse")
+    public Result toUse(@RequestBody Long[] ids) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("ids",ids);
+        params.put("status",CONTENT_TO_USE);
+        xryContentService.updateContentStatus(params);
         return Result.ok();
     }
 
