@@ -1,0 +1,119 @@
+package com.oservice.admin.modules.sys.entity;
+
+import com.baomidou.mybatisplus.annotations.TableName;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * 系统用户
+ * 用户评论表的实体类
+ * @author wujunquan
+ * @version 1.0
+ */
+@TableName("xry_comment")
+public class XryCommentEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
+    /**
+     * 评论id
+     */
+    private Long id;
+    /**
+     * 被评价对（课程、讲师）象id
+     */
+    private String objId;
+    /**
+     * 评价用户id
+     */
+    private Long userId;
+
+    /**
+   * 星级评分：2、4、6、8、10'
+   */
+  private Integer starLevel;
+
+    /**
+     * 类型：0：课程评价；1：讲师评价
+     */
+    private Integer type;
+
+    /**
+     * 状态：1：正常；0：删除
+     */
+    private Integer status;
+
+    /**
+     * 评价内容
+     */
+   private String detail;
+
+    /**
+     * 创建时间
+     */
+    private Date created;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getObjId() {
+        return objId;
+    }
+
+    public void setObjId(String objId) {
+        this.objId = objId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Integer getStarLevel() {
+        return starLevel;
+    }
+
+    public void setStarLevel(Integer starLevel) {
+        this.starLevel = starLevel;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+}
