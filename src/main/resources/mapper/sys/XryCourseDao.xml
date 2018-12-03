@@ -3,6 +3,19 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseDao">
 
+    <!--查询返回的数据总数-->
+    <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
+        select  count(*) from xry_course where 1=1
+        <if test="params.title != null and params.title != ''">
+            and title like #{params.title}
+        </if>
+        <if test="params.cid != null and params.cid != ''">
+            and cid = #{params.cid}
+        </if>
+        <if test="params.tid != null and params.tid != ''">
+            and tid = #{params.tid}
+        </if>
+    </select>
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.name as catName,c.nickname

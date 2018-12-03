@@ -37,6 +37,10 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         map.put("title","%"+title+"%");
         map.put("cid",cid);
         map.put("tid",tid);
+        // 查询返回的数据总数page.totalCount
+        Long total = baseMapper.countTotal(map);
+        pageList.setTotal(total);
+        // page.list 查询返回的数据list
         List<Map<String, Object>> courseList = baseMapper.pageList(map);
         pageList.setRecords(courseList);
 		return new PageUtils(pageList);
