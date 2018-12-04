@@ -1,24 +1,20 @@
 package com.oservice.admin.modules.sys.controller;
 
 import com.oservice.admin.common.annotation.SysLog;
+import com.oservice.admin.common.utils.MessageSocket;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
-import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryMessageEntity;
-import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryMessageService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +37,9 @@ public class XryMessageController extends AbstractController {
     final static Integer CANCEL_PUBLISH = 0;
     @Resource
     private XryMessageService xryMessageService;
+    @Autowired
+    @Resource
+    private MessageSocket messageSocket;
 
     /**
      * 查询消息列表
@@ -69,6 +68,8 @@ public class XryMessageController extends AbstractController {
         ValidatorUtils.validateEntity(message, AddGroup.class);
         message.setCreated(new Date());
         xryMessageService.save(message);
+        // 发送messageSocket消息
+        // messageSocket.sendMessage(message);
         return Result.ok();
     }
 
@@ -127,7 +128,7 @@ public class XryMessageController extends AbstractController {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("ids", ids);
         params.put("flag", PUBLISH_MESSAGE);
-        params.put("publishDate",new Date());
+        params.put("publishDate", new Date());
         xryMessageService.updateMessageStatus(params);
         return Result.ok();
     }
@@ -145,10 +146,9 @@ public class XryMessageController extends AbstractController {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("ids", ids);
         params.put("flag", CANCEL_PUBLISH);
-        params.put("publishDate",new Date());
+        params.put("publishDate", new Date());
         xryMessageService.updateMessageStatus(params);
         return Result.ok();
     }
-
 
 }

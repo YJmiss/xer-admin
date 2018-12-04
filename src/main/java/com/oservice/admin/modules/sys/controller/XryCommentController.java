@@ -3,7 +3,10 @@ package com.oservice.admin.modules.sys.controller;
 import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.common.validator.ValidatorUtils;
+import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.modules.sys.entity.XryCommentEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.service.XryCommentService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
@@ -30,6 +33,8 @@ public class XryCommentController extends AbstractController {
     final static Integer HIDE_COMMENT = 0;
     /** 恢复评论显示 */
     final static Integer RECOVER_COMMENT = 1;
+    /** 成功 */
+    final static Integer SUCCESS = 1;
     @Resource
     private XryCommentService xryCommentService;
 
@@ -58,7 +63,6 @@ public class XryCommentController extends AbstractController {
         xryCommentService.deleteBatch(ids);
         return Result.ok();
     }
-
 
     /**
      * 不显示评论
@@ -92,6 +96,41 @@ public class XryCommentController extends AbstractController {
         params.put("publishDate",new Date());
         xryCommentService.updateCommentStatus(params);
         return Result.ok("操作成功");
+    }
+
+    /**
+     * app端用户评论保存
+     * @param comment
+     * @return
+     */
+    @SysLog("app端用户评论保存")
+    @PostMapping("/saveComment")
+    @RequiresPermissions("xry:comment:saveComment")
+    public Result saveComment(@RequestBody XryCommentEntity comment) {
+        ValidatorUtils.validateEntity(comment, AddGroup.class);
+        if (null != comment.getId()) {
+            // 修改保存
+            xryCommentService.update(comment);
+            return Result.ok().put("success", SUCCESS);
+        } else {
+            // 添加保存
+            comment.setUserId(getAppUserId());
+            xryCommentService.save(comment);
+            return Result.ok().put("success", SUCCESS);
+        }
+    }
+
+    /**
+     * app端查询一条评论
+     * @param id
+     * @return
+     */
+    @SysLog("app端查询一条评论")
+    @GetMapping("/queryCommentById/{id}")
+    @RequiresPermissions("xry:comment:queryCommentById")
+    public Result queryCommentById(@PathVariable("id") Long id){
+        XryCommentEntity comment = xryCommentService.queryById(id);
+        return Result.ok().put("comment", comment);
     }
 
 }

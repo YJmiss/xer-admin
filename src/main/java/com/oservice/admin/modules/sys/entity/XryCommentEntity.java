@@ -25,7 +25,7 @@ public class XryCommentEntity implements Serializable {
     /**
      * 评价用户id
      */
-    private Long userId;
+    private String userId;
 
     /**
    * 星级评分：2、4、6、8、10'
@@ -69,11 +69,11 @@ public class XryCommentEntity implements Serializable {
         this.objId = objId;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
