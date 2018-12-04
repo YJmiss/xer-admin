@@ -77,4 +77,19 @@
         update xry_course set status = #{params.status} where id = #{params.id}
     </update>
 
+    <!-- 获取索引数据 -->
+    <select id="findAllItems" resultType="com.oservice.admin.common.solr.SearcherItem">
+        SELECT
+        a.id,
+        title,
+        price,
+        image,
+        a.cid,
+        b.name AS category_name
+        FROM
+        xry_course a
+        LEFT JOIN xry_course_cat b
+        ON a.cid = b.id
+        WHERE a.status = 6
+    </select>
 </mapper>

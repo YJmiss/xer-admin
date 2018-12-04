@@ -1,6 +1,7 @@
 package com.oservice.admin.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
@@ -96,4 +97,11 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 * @return
 	 */
 	List<XryCourseEntity> getGoodCourse();
+
+	/**
+	 * 获取索引库
+	 *
+	 * @return
+	 */
+	List<SearcherItem> findAllItems();
 }

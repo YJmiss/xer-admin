@@ -1,7 +1,7 @@
 package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
@@ -73,4 +73,11 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @param params
      */
    void recordExamineInfo(@Param("params") Map<String, Object> params);
+
+    /**
+     * 获取索引数据
+     *
+     * @param
+     */
+    List<SearcherItem> findAllItems();
 }

@@ -2,6 +2,7 @@ package com.oservice.admin.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryCourseDao;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
@@ -124,6 +125,11 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     @Override
     public List<XryCourseEntity> getGoodCourse() {
         return null;
+    }
+
+    @Override
+    public List<SearcherItem> findAllItems() {
+        return baseMapper.findAllItems();
     }
 
 }

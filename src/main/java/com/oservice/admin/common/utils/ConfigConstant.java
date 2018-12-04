@@ -22,4 +22,12 @@ public class ConfigConstant {
      * 图片服务器地址
      */
     public final static String IMAGE_URL = "http://192.168.1.30:1025";
+    /**
+     * 默认显示搜索字段
+     */
+    public final static String DEFAULT_FIELD_LIST = "item_title";
+    /**
+     * 默认显示搜索记录数
+     */
+    public final static int SEARCHER_ITEM_ROWS = 60;
 }

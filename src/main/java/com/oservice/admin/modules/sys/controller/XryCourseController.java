@@ -6,11 +6,13 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import com.oservice.admin.modules.app.service.SolrJService;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,7 +36,11 @@ public class XryCourseController extends AbstractController {
     /** 课程审核通过常量 */
     @Resource
     private XryCourseService xryCourseService;
-
+    /**
+     * 搜索服务
+     */
+    @Autowired
+    private SolrJService solrJService;
     /**
      * 查询课程列表
      * @param params
@@ -176,5 +182,16 @@ public class XryCourseController extends AbstractController {
         xryCourseService.updateCourseStatus(params);
         return Result.ok();
     }
-    
+
+    /**
+     * 一件导入索引库
+     *
+     * @return
+     */
+    @SysLog("导入索引库")
+    @GetMapping("/importindex")
+    @RequiresPermissions("xry:course:importindex")
+    public Result importAllData() throws Exception {
+        return solrJService.addIndex();
+    }
 }
