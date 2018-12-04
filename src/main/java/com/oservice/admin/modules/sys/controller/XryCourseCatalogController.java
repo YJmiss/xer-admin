@@ -28,10 +28,6 @@ import java.util.Map;
 @RequestMapping("/xry/course/catalog")
 @Api(description = "课程目录管理")
 public class XryCourseCatalogController extends AbstractController {
-    /** 目录上架标识符常量 */
-   final static Integer ADD_TO_COURSE_CATALOG = 6;
-   /** 目录下架标识符常量 */
-   final static Integer DEL_FROM_COURSE_CATALOG = 5;
     @Resource
     private XryCourseCatalogService xryCourseCatalogService;
 

@@ -151,7 +151,7 @@ public class XryCourseController extends AbstractController {
      */
     @SysLog("课程上架")
     @PostMapping("/addToCourse")
-    @RequiresPermissions("xry:course:add:to:course")
+    @RequiresPermissions("xry:course:addToCourse")
     public Result addToCourse(@RequestBody Long[] ids) {
         // 课程上架之前先判断课程是否已经审核 审核状态：1、2、4
         for (Long id:ids) {
@@ -174,7 +174,7 @@ public class XryCourseController extends AbstractController {
      */
     @SysLog("课程下架")
     @PostMapping("/delFromCourse")
-    @RequiresPermissions("xry:course:del:from:course")
+    @RequiresPermissions("xry:course:delFromCourse")
     public Result delFromCourse(@RequestBody Long[] ids) {
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("ids",ids);

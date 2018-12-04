@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.sys.dao.XryMessageDao">
+
+    <!--自定义分页查询-->
+    <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.*,b.title as courseTitle, b.id as courseId, c.nickname,c.id as userId
+            from  xry_message a
+              left join xry_course b on  a.obj_id=b.id
+              left join xry_user c on a.user_id=c.id where 1=1
+        <if test="params.type != null and params.type != ''">
+            and a.type like #{params.type}
+        </if>
+        <if test="params.objId != null and params.objId != ''">
+            and a.obj_id like #{params.objId}
+        </if>
+        <if test="params.userId != null and params.userId != ''">
+            and a.user_id like #{params.userId}
+        </if>
+        <if test="params.limit != null">
+            limit 0,${params.limit}
+        </if>
+    </select>
+    <!--发布消息、取消发布-->
+    <update id="updateMessageStatus" parameterType="java.util.Map">
+        update xry_message set status = #{flag}, publish_date = #{publishDate} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    
+</mapper>
