@@ -25,4 +25,10 @@ public interface XryMessageDao extends BaseMapper<XryMessageEntity> {
      */
     List<Map<String, Object>> pageList(@Param("params") Map<String, Object> map);
     
+    /**
+     * 发布消息、取消发布
+     * @param params
+     */
+    void updateMessageStatus(Map<String, Object> params);
+
 }

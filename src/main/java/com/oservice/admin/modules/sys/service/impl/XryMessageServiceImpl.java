@@ -28,11 +28,13 @@ public class XryMessageServiceImpl extends ServiceImpl<XryMessageDao, XryMessage
         Map<String ,Object> map = new HashMap<>();
         String page = (String) params.get("page");
         String limit = (String) params.get("limit");
+        String userId = (String) params.get("userId");
         String objId = (String) params.get("objId");
         String type = (String) params.get("type");
         map.put("page",page);
         map.put("limit",limit);
         map.put("objId",objId);
+        map.put("userId",userId);
         map.put("type",type);
         List<Map<String, Object>> courseList = baseMapper.pageList(map);
         pageList.setRecords(courseList);
@@ -57,6 +59,11 @@ public class XryMessageServiceImpl extends ServiceImpl<XryMessageDao, XryMessage
     @Override
     public void deleteBatch(Long[] ids) {
         this.deleteBatchIds(Arrays.asList(ids));
+    }
+
+    @Override
+    public void updateMessageStatus(Map<String, Object> params) {
+        baseMapper.updateMessageStatus(params);
     }
 
 }

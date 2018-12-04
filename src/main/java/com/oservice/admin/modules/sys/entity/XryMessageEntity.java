@@ -30,14 +30,19 @@ public class XryMessageEntity implements Serializable {
     private Integer courseType;
 
     /**
-     * 课程id
+     * 被发送消息对象id
      */
-    private Long courseId;
+    private Long objId;
 
     /**
      * 讲师id
      */
     private String userId;
+
+    /**
+     * 发布状态（0：未发布；1：已发布）
+     */
+    private Integer status;
 
     /**
      * 发布日期
@@ -78,12 +83,12 @@ public class XryMessageEntity implements Serializable {
         this.courseType = courseType;
     }
 
-    public Long getCourseId() {
-        return courseId;
+    public Long getObjId() {
+        return objId;
     }
 
-    public void setCourseId(Long courseId) {
-        this.courseId = courseId;
+    public void setObjId(Long objId) {
+        this.objId = objId;
     }
 
     public String getUserId() {
@@ -116,5 +121,14 @@ public class XryMessageEntity implements Serializable {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

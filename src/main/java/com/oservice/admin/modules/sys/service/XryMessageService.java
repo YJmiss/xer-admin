@@ -51,5 +51,11 @@ public interface XryMessageService extends IService<XryMessageEntity> {
      * @param ids
      */
     void deleteBatch(Long[] ids);
-    
+
+    /**
+     * 发布消息、取消发布
+     * @param params
+     */
+    void updateMessageStatus(Map<String, Object> params);
+
 }
