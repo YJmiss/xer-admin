@@ -53,10 +53,9 @@ public interface XryCommentService extends IService<XryCommentEntity> {
     void deleteBatch(Long[] ids);
 
     /**
-     * 评论审核
-     * @param comment
-     * @param userId
+     * 不显示评论、恢复评论显示
+     * @param params
      */
-    void commentExamine(XryCommentEntity comment, Long userId);
+    void updateCommentStatus(Map<String, Object> params);
     
 }

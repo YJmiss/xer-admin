@@ -2,10 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryContentDao">
-    <select id="getContentsByCat" parameterType="int"
-            resultType="com.oservice.admin.modules.sys.entity.XryContentEntity">
-    select * from xry_content where category=#{cat}
-</select>
+    <select id="getContentsByCat" parameterType="int" resultType="com.oservice.admin.modules.sys.entity.XryContentEntity">
+        select * from xry_content where category=#{cat}
+    </select>
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.title as courseTitle from xry_content a left join xry_course b on  a.course_id=b.id where 1=1
@@ -25,6 +24,7 @@
             limit 0,${params.limit}
         </if>
     </select>
+    <!--修改广告状态-->
     <update id="updateContentStatus" parameterType="java.util.Map">
         update xry_content set status = #{status} where id in
         <foreach collection="ids" item="id" open="("  separator="," close=")">

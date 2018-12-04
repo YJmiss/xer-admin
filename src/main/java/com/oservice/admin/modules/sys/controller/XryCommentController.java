@@ -13,6 +13,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,6 +26,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/xry/comment")
 public class XryCommentController extends AbstractController {
+    /** 不显示评论 */
+    final static Integer HIDE_COMMENT = 0;
+    /** 恢复评论显示 */
+    final static Integer RECOVER_COMMENT = 1;
     @Resource
     private XryCommentService xryCommentService;
 
@@ -55,15 +61,36 @@ public class XryCommentController extends AbstractController {
 
 
     /**
-     * 审核系统->审核审核
-     * @param comment
+     * 不显示评论
+     * @param ids
      * @return
      */
-    @SysLog("审核系统")
-    @PostMapping("/examine")
-    @RequiresPermissions("xry:comment:examine")
-    public Result examine(@RequestBody XryCommentEntity comment) {
-        
+    @SysLog("不显示评论")
+    @PostMapping("/hideComment")
+    @RequiresPermissions("xry:comment:hideComment")
+    public Result hideComment(@RequestBody Long[] ids) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("ids", ids);
+        params.put("flag", HIDE_COMMENT);
+        params.put("publishDate",new Date());
+        xryCommentService.updateCommentStatus(params);
+        return Result.ok("操作成功");
+    }
+
+    /**
+     * 恢复评论显示
+     * @param ids
+     * @return
+     */
+    @SysLog("恢复评论显示")
+    @PostMapping("/recoverComment")
+    @RequiresPermissions("xry:comment:recoverComment")
+    public Result recoverComment(@RequestBody Long[] ids) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("ids", ids);
+        params.put("flag", RECOVER_COMMENT);
+        params.put("publishDate",new Date());
+        xryCommentService.updateCommentStatus(params);
         return Result.ok("操作成功");
     }
 

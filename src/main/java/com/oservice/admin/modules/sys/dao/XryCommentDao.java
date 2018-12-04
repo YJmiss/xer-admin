@@ -24,5 +24,11 @@ public interface XryCommentDao extends BaseMapper<XryCommentEntity> {
      * @return
      */
     List<Map<String, Object>> pageList(@Param("params") Map<String, Object> map);
+
+    /**
+     * 不显示评论、恢复评论显示
+     * @param params
+     */
+    void updateCommentStatus(Map<String, Object> params);
     
 }

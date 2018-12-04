@@ -9,15 +9,28 @@
             from  xry_comment a
               left join xry_course b on  a.obj_id=b.id
               left join xry_user c on a.user_id=c.id where 1=1
+        <if test="params.courseId != null and params.courseId != ''">
+            and a.obj_id like #{params.courseId} and a.type = 0
+        </if>
+        <if test="params.userId != null and params.userId != ''">
+            and a.obj_id like #{params.userId} and a.type = 1
+        </if>
         <if test="params.type != null and params.type != ''">
             and a.type like #{params.type}
         </if>
-        <if test="params.objId != null and params.objId != ''">
-            and b.obj_id like #{params.objId}
+        <if test="params.status != null and params.status != ''">
+            and a.status like #{params.status}
         </if>
         <if test="params.limit != null">
             limit 0,${params.limit}
         </if>
     </select>
+    <!--不显示评论、恢复评论显示-->
+    <update id="updateCommentStatus" parameterType="java.util.Map">
+        update xry_comment set status = #{flag} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
     
 </mapper>

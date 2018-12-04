@@ -127,6 +127,7 @@ public class XryMessageController extends AbstractController {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("ids", ids);
         params.put("flag", PUBLISH_MESSAGE);
+        params.put("publishDate",new Date());
         xryMessageService.updateMessageStatus(params);
         return Result.ok();
     }
@@ -144,6 +145,7 @@ public class XryMessageController extends AbstractController {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("ids", ids);
         params.put("flag", CANCEL_PUBLISH);
+        params.put("publishDate",new Date());
         xryMessageService.updateMessageStatus(params);
         return Result.ok();
     }

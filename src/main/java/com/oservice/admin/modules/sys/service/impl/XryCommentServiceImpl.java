@@ -28,12 +28,16 @@ public class XryCommentServiceImpl extends ServiceImpl<XryCommentDao, XryComment
         Map<String ,Object> map = new HashMap<>();
         String page = (String) params.get("page");
         String limit = (String) params.get("limit");
-        String objId = (String) params.get("objId");
+        String courseId = (String) params.get("courseId");
+        String userId = (String) params.get("userId");
         String type = (String) params.get("type");
+        String status  = (String) params.get("status");
         map.put("page",page);
         map.put("limit",limit);
-        map.put("objId",objId);
+        map.put("courseId",courseId);
+        map.put("userId",userId);
         map.put("type",type);
+        map.put("status",status);
         List<Map<String, Object>> commentList = baseMapper.pageList(map);
         pageList.setRecords(commentList);
         return new PageUtils(pageList);
@@ -60,10 +64,8 @@ public class XryCommentServiceImpl extends ServiceImpl<XryCommentDao, XryComment
     }
 
     @Override
-    public void commentExamine(XryCommentEntity comment, Long userId) {
-        comment.setUserId(userId);
-        comment.setCreated(new Date());
-        baseMapper.insert(comment);
+    public void updateCommentStatus(Map<String, Object> params) {
+        baseMapper.updateCommentStatus(params);
     }
 
 }
