@@ -1,9 +1,9 @@
 package com.oservice.admin.modules.sys.controller;
 
 import com.oservice.admin.common.annotation.SysLog;
-import com.oservice.admin.common.utils.MessageSocket;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.common.utils.WebSocketComponent;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
@@ -11,6 +11,8 @@ import com.oservice.admin.modules.sys.entity.XryMessageEntity;
 import com.oservice.admin.modules.sys.service.XryMessageService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
@@ -37,9 +39,6 @@ public class XryMessageController extends AbstractController {
     final static Integer CANCEL_PUBLISH = 0;
     @Resource
     private XryMessageService xryMessageService;
-    @Autowired
-    @Resource
-    private MessageSocket messageSocket;
 
     /**
      * 查询消息列表
@@ -68,8 +67,9 @@ public class XryMessageController extends AbstractController {
         ValidatorUtils.validateEntity(message, AddGroup.class);
         message.setCreated(new Date());
         xryMessageService.save(message);
-        // 发送messageSocket消息
-        // messageSocket.sendMessage(message);
+
+        // 调用发送消息的类
+        new WebSocketComponent().sendMessage(message);
         return Result.ok();
     }
 

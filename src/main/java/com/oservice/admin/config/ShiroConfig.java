@@ -59,6 +59,8 @@ public class ShiroConfig {
         filterMap.put("/app/**", "anon");
         filterMap.put("/sys/login", "anon");
         filterMap.put("/xry/ueditor/config/**", "anon");
+        filterMap.put("/messageWebSocket", "anon");
+        filterMap.put("/topic/ip", "anon");
 
         filterMap.put("/api/appAccount/sendPhoneCode", "anon");
         filterMap.put("/api/appAccount/register", "anon");
