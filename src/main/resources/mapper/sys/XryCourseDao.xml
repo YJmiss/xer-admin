@@ -79,17 +79,40 @@
 
     <!-- 获取索引数据 -->
     <select id="findAllItems" resultType="com.oservice.admin.common.solr.SearcherItem">
-        SELECT
+     SELECT
         a.id,
-        title,
-        price,
-        image,
+        a.title,
+        a.price,
+        a.image,
         a.cid,
+        c.nickname,
+        d.course_desc,
         b.name AS category_name
         FROM
-        xry_course a
-        LEFT JOIN xry_course_cat b
-        ON a.cid = b.id
-        WHERE a.status = 6
+            xry_course a,
+            xry_course_cat b,
+            xry_user c,
+            xry_course_desc d
+        WHERE
+        a.id = d.course_id and a.cid = b.id and a.tid = c.id and a.status = 6;
+    </select>
+    <!-- 通过id获取索引数据 -->
+    <select id="findItemsById" resultType="com.oservice.admin.common.solr.SearcherItem">
+     SELECT
+        a.id,
+        a.title,
+        a.price,
+        a.image,
+        a.cid,
+        c.nickname,
+        d.course_desc,
+        b.name AS category_name
+        FROM
+            xry_course a,
+            xry_course_cat b,
+            xry_user c,
+            xry_course_desc d
+        WHERE
+        a.id = d.course_id and a.cid = b.id and a.tid = c.id and a.id = #{id};
     </select>
 </mapper>

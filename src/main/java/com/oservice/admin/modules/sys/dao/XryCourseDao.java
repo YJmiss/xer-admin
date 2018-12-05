@@ -80,4 +80,11 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @param
      */
     List<SearcherItem> findAllItems();
+
+    /**
+     * 通过ID获取索引数据
+     *
+     * @param
+     */
+    SearcherItem findItemsById(Long id);
 }

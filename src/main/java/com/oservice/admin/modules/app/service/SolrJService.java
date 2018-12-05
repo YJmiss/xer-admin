@@ -13,4 +13,8 @@ public interface SolrJService {
     public Result addIndex();
 
     public SearchResult findItemsByKeywords(String keyword, Integer page, Integer rows) throws Exception;
+
+    public Boolean addIndexById(Long id);
+
+    public void deleteIndexById(Long id);
 }

@@ -6,6 +6,7 @@ import com.oservice.admin.common.utils.SearchResult;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -13,6 +14,7 @@ import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +46,9 @@ public class SolrJDao {
                 doc.addField("item_title", item.getTitle());
                 doc.addField("item_price", item.getPrice());
                 doc.addField("item_image", item.getImage());
-                doc.addField("item_category_name", item.getCategory_name());
+                doc.addField("item_category_name", item.getCategoryName());
+                doc.addField("item_nickname", item.getNickname());
+                doc.addField("item_course_desc", item.getCourseDesc());
                 //2.3)将文档添加到solrServer中
                 solrServer.add(doc);
             }
@@ -57,6 +61,39 @@ public class SolrJDao {
         }
     }
 
+    //课程上架索引同步
+    public Boolean addIndexById(Long id) {
+        try {
+            //1.查询数据库中相关信息
+            SearcherItem item = courseService.findItemsById(id);
+            //          System.out.println(item.getId());
+            //2.遍历所有的记录并同时添加到文档中
+            //2.1）构建一个文档对象
+            SolrInputDocument doc = new SolrInputDocument();
+            //2.2)在文档中添加各个域
+            doc.addField("id", item.getId());
+            doc.addField("item_title", item.getTitle());
+            doc.addField("item_price", item.getPrice());
+            doc.addField("item_image", item.getImage());
+            doc.addField("item_category_name", item.getCategoryName());
+            doc.addField("item_nickname", item.getNickname());
+            doc.addField("item_course_desc", item.getCourseDesc());
+            //2.3)将文档添加到solrServer中
+            solrServer.add(doc);
+            //3.提交
+            solrServer.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //根据ID删除索引库
+    public void deleteIndexById(Long id) throws IOException, SolrServerException {
+        solrServer.deleteById("" + id);
+        solrServer.commit();
+    }
     //完成搜索功能
     public SearchResult findItemsByKeywords(SolrQuery query) throws Exception {
         SearchResult result = new SearchResult();
@@ -86,8 +123,10 @@ public class SolrJDao {
             long price = Float.valueOf((Float) sdoc.get("item_price")).intValue();//商品价格
             String image = (String) sdoc.get("item_image");                //商品图像
             String categoryName = (String) sdoc.get("item_category_name"); //商品类别名称
+            String nickname = (String) sdoc.get("item_nickname"); //讲师名称
+            String courseDesc = (String) sdoc.get("item_course_desc"); //课程详情
             //构建对象
-            SearcherItem sItem = new SearcherItem(id, title, price, image, categoryName);
+            SearcherItem sItem = new SearcherItem(id, title, price, image, categoryName, nickname, courseDesc);
             itemList.add(sItem);
         }
         result.setItemList(itemList);

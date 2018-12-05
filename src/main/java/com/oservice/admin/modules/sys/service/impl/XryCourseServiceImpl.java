@@ -132,4 +132,9 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         return baseMapper.findAllItems();
     }
 
+    @Override
+    public SearcherItem findItemsById(Long id) {
+        return baseMapper.findItemsById(id);
+    }
+
 }

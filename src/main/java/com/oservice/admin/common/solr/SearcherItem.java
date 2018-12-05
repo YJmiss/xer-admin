@@ -14,30 +14,36 @@ public class SearcherItem implements Serializable {
     private long price;
     private String image;
     private String cid;
-    private String category_name;
+    private String categoryName;
+    private String nickname;
+    private String courseDesc;
 
     public SearcherItem() {
         super();
     }
 
-    public SearcherItem(String id, String title, long price, String image, String category_name) {
+    public SearcherItem(String id, String title, long price, String image, String categoryName, String nickname, String courseDesc) {
         super();
         this.id = id;
         this.title = title;
         this.price = price;
         this.image = image;
-        this.category_name = category_name;
+        this.categoryName = categoryName;
+        this.nickname = nickname;
+        this.courseDesc = courseDesc;
     }
 
     public SearcherItem(String id, String title, long price, String image, String cid,
-                        String category_name) {
+                        String categoryName, String nickname, String courseDesc) {
         super();
         this.id = id;
         this.title = title;
         this.price = price;
         this.image = image;
         this.cid = cid;
-        this.category_name = category_name;
+        this.categoryName = categoryName;
+        this.nickname = nickname;
+        this.courseDesc = courseDesc;
     }
 
     public String[] getImages() {
@@ -65,8 +71,24 @@ public class SearcherItem implements Serializable {
         return cid;
     }
 
-    public String getCategory_name() {
-        return category_name;
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getCourseDesc() {
+        return courseDesc;
+    }
+
+    public void setCourseDesc(String courseDesc) {
+        this.courseDesc = courseDesc;
     }
 
     public void setId(String id) {
@@ -89,7 +111,7 @@ public class SearcherItem implements Serializable {
         this.cid = cid;
     }
 
-    public void setCategory_name(String category_name) {
-        this.category_name = category_name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

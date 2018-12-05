@@ -126,6 +126,7 @@ public class XryCourseController extends AbstractController {
             if (null != xryCourseDescEntity) {
                 return Result.error("请先删除该课程下的课程描述");
             }
+            solrJService.deleteIndexById(id);
         }
         xryCourseService.deleteBatch(ids);
         return Result.ok();
@@ -153,18 +154,24 @@ public class XryCourseController extends AbstractController {
     @PostMapping("/addToCourse")
     @RequiresPermissions("xry:course:addToCourse")
     public Result addToCourse(@RequestBody Long[] ids) {
+        boolean br = false;
         // 课程上架之前先判断课程是否已经审核 审核状态：1、2、4
         for (Long id:ids) {
             XryCourseEntity xryCourseEntity = xryCourseService.queryById(id);
             if (1 == xryCourseEntity.getStatus() || 2 == xryCourseEntity.getStatus() || 4 == xryCourseEntity.getStatus()) {
                 return Result.error("所选记录中有未审核的课程，请先审核通过该课程再进行此操作");
             }
+            br = solrJService.addIndexById(id);
         }
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("ids",ids);
         params.put("flag",ADD_TO_COURSE);
         xryCourseService.updateCourseStatus(params);
-        return Result.ok();
+        if (br) {
+            return Result.ok();
+        } else {
+            return Result.ok("同步索引失败、请联系管理员！");
+        }
     }
 
     /**
@@ -180,6 +187,9 @@ public class XryCourseController extends AbstractController {
         params.put("ids",ids);
         params.put("flag",DEL_FROM_COURSE);
         xryCourseService.updateCourseStatus(params);
+        for (Long id : ids) {
+            solrJService.deleteIndexById(id);
+        }
         return Result.ok();
     }
 

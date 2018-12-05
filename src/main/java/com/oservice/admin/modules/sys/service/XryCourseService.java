@@ -99,9 +99,16 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	List<XryCourseEntity> getGoodCourse();
 
 	/**
-	 * 获取索引库
+	 * 获取索引库信息
 	 *
 	 * @return
 	 */
 	List<SearcherItem> findAllItems();
+
+	/**
+	 * 获取索引库信息通过ID
+	 *
+	 * @return
+	 */
+	SearcherItem findItemsById(Long id);
 }

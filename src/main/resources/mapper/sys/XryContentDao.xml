@@ -3,7 +3,7 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryContentDao">
     <select id="getContentsByCat" parameterType="int" resultType="com.oservice.admin.modules.sys.entity.XryContentEntity">
-        select * from xry_content where category=#{cat}
+        select * from xry_content where category=#{cat} and status=1
     </select>
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">

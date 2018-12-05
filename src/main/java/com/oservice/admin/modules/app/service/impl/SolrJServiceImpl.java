@@ -6,8 +6,11 @@ import com.oservice.admin.common.utils.SearchResult;
 import com.oservice.admin.modules.app.dao.SolrJDao;
 import com.oservice.admin.modules.app.service.SolrJService;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 /**
  * @program: oservice
@@ -50,5 +53,21 @@ public class SolrJServiceImpl implements SolrJService {
         result.setTotalPages(totalPages);
 
         return result;
+    }
+
+    @Override
+    public Boolean addIndexById(Long id) {
+        return solrJDao.addIndexById(id);
+    }
+
+    @Override
+    public void deleteIndexById(Long id) {
+        try {
+            solrJDao.deleteIndexById(id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        }
     }
 }
