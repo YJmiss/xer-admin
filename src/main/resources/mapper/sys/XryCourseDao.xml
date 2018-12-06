@@ -39,7 +39,7 @@
             from xry_course a
             left join xry_course_cat b on  a.cid=b.id
             left join xry_user c on a.tid=c.id
-            where 1=1
+            where a.status = 1 or a.status = 2
         <if test="params.cid != null and params.cid !=''">
             and a.cid = #{params.cid}
         </if>
@@ -76,7 +76,6 @@
     <update id="recordExamineInfo" parameterType="java.util.Map">
         update xry_course set status = #{params.status} where id = #{params.id}
     </update>
-
     <!-- 获取索引数据 -->
     <select id="findAllItems" resultType="com.oservice.admin.common.solr.SearcherItem">
      SELECT
@@ -115,4 +114,24 @@
         WHERE
         a.id = d.course_id and a.cid = b.id and a.tid = c.id and a.id = #{id};
     </select>
+    <!--推荐课程、取消推荐课程-->
+    <update id="updateCourseRecommend" parameterType="java.util.Map">
+        update xry_course set recommend = ${flag} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    <!--查询用户已经选择喜好的课程-->
+    <select id="listRecommendCourseCatByUserId" parameterType="java.util.Map" resultType="com.oservice.admin.modules.sys.entity.XryRecommendEntity">
+      select * from xry_recommend where user_id = #{userId}
+    </select>
+    <!--用户喜好添加-->
+    <insert id="appInsertRecommend" parameterType="java.util.Map">
+        insert xry_recommend(user_id, cat_id, course_id, course_title, created) values(#{userId}, #{courseCatId}, #{courseId}, #{courseTitle}, #{created});
+    </insert>
+    <!--用户喜好修改-->
+    <update id="appUpdateRecommend" parameterType="java.util.Map">
+      update xry_recommend set cat_id = #{courseCatId}, course_id = #{courseId},course_title = #{courseTitle} where user_id = #{userId}
+    </update>
+
 </mapper>

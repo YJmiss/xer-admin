@@ -3,10 +3,7 @@ package com.oservice.admin.modules.sys.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseEntity;
-import com.oservice.admin.modules.sys.entity.XryRecordEntity;
+import com.oservice.admin.modules.sys.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -111,4 +108,29 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 * @return
 	 */
 	SearcherItem findItemsById(Long id);
+
+	/**
+	 * 推荐课程、取消推荐课程
+	 * @param params
+	 */
+	void updateCourseRecommend(Map<String, Object> params);
+
+	/**
+	 * 查询用户已经选择喜好的课程
+	 * @return
+	 */
+	XryRecommendEntity listRecommendCourseCatByUserId(Map<String, Object> params);
+
+	/**
+	 * 用户喜好添加
+	 * @param params
+	 */
+	void appInsertRecommend(Map<String, Object> params);
+
+	/**
+	 * 用户喜好修改
+	 * @param params
+	 */
+	void appUpdateRecommend(Map<String, Object> params);
+
 }
