@@ -61,7 +61,6 @@
 			<artifactId>json</artifactId>
 			<version>20160810</version>
 		</dependency>
-
 		<!-- solr 客户端 -->
 		<dependency>
 			<groupId>org.apache.solr</groupId>

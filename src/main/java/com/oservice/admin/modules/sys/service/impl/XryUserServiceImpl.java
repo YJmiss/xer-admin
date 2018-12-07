@@ -25,6 +25,8 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        // 接收页面传过来的标识符flag
+        String flag = (String) params.get("flag");
         // 不用自定义查询
         String page = (String) params.get("page");
         String limit = (String) params.get("limit");
@@ -32,15 +34,18 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
         String status = (String) params.get("status");
         String role = (String) params.get("role");
         String socialSource = (String) params.get("socialSource");
+        String recommend = (String) params.get("recommend");
         // 重写分页查询 page limit title cid
         Page<Map<String, Object>> pageList = new Page<>();
         Map<String ,Object> map = new HashMap<>();
+        map.put("flag",flag);
         map.put("page",page);
         map.put("limit",limit);
         map.put("phone","%" + phone + "%");
         map.put("status",status);
         map.put("role",role);
         map.put("socialSource",socialSource);
+        map.put("recommend",recommend);
         List<Map<String, Object>> courseList = baseMapper.pageList(map);
         pageList.setRecords(courseList);
         return new PageUtils(pageList);
@@ -59,6 +64,11 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
     @Override
     public void updateUserRole(Map<String, Object> params) {
         baseMapper.updateUserRole(params);
+    }
+
+    @Override
+    public void updateUserRecommend(Map<String, Object> params) {
+        baseMapper.updateUserRecommend(params);
     }
 
 }

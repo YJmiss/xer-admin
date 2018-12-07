@@ -26,6 +26,10 @@ public class XryUserController extends AbstractController {
     final static Integer TEACHER_TO_NORMAL = 0;
     /** 普通用户<->讲师切换 */
     final static Integer NORMAL_TO_TEACHER = 1;
+    /** 讲师推荐 */
+    final static Integer RECOMMEND_USER = 1;
+    /**  取消推荐 */
+    final static Integer CANCEL_RECOMMEND = 0;
     @Resource
     private XryUserService xryUserService;
 
@@ -96,6 +100,38 @@ public class XryUserController extends AbstractController {
         params.put("ids",ids);
         params.put("flag",NORMAL_TO_TEACHER);
         xryUserService.updateUserRole(params);
+        return Result.ok();
+    }
+
+    /**
+     * 讲师推荐
+     * @param ids
+     * @return
+     */
+    @SysLog("讲师推荐")
+    @PostMapping("/recommendUser")
+    @RequiresPermissions("xry:user:recommendUser")
+    public Result recommendUser(@RequestBody String[] ids) {
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("ids",ids);
+        params.put("recommend",RECOMMEND_USER);
+        xryUserService.updateUserRecommend(params);
+        return Result.ok();
+    }
+
+    /**
+     * 取消推荐
+     * @param ids
+     * @return
+     */
+    @SysLog("取消推荐")
+    @PostMapping("/cancelRecommend")
+    @RequiresPermissions("xry:user:cancelRecommend")
+    public Result cancelRecommend(@RequestBody String[] ids) {
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("ids",ids);
+        params.put("recommend",CANCEL_RECOMMEND);
+        xryUserService.updateUserRecommend(params);
         return Result.ok();
     }
     

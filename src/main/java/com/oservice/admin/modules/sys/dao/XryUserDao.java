@@ -42,4 +42,11 @@ public interface XryUserDao extends BaseMapper<XryUserEntity> {
      */
     void updateUserRole(Map<String, Object> params);
 
+    /**
+     * 讲师推荐、取消推荐
+     * @param params
+     */
+    void updateUserRecommend(Map<String, Object> params);
+
+
 }
