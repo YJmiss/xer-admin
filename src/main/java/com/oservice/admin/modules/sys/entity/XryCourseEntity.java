@@ -45,13 +45,17 @@ public class XryCourseEntity implements Serializable {
 	 */
 	private Integer property;
 	/**
-	 * 课程状态，1-未审核，2-审核中，3-通过审核，4-未通过，5通过审核未上架，6、通过审核已上架
+	 * 课程状态，1-未审核，2-未通过，3-通过审核（通过审核未上架），4-通过审核已上架，5、已下架
 	 */
 	private Integer status;
 	/**
 	 * 课程价格 默认0，单位为：分
 	 */
 	private Long price;
+	/**
+	 * 是否推荐该课程
+	 */
+	private Integer recommend;
 	/**
 	 * 创建时间
 	 */
@@ -140,5 +144,13 @@ public class XryCourseEntity implements Serializable {
 
 	public void setUpdated(Date updated) {
 		this.updated = updated;
+	}
+
+	public Integer getRecommend() {
+		return recommend;
+	}
+
+	public void setRecommend(Integer recommend) {
+		this.recommend = recommend;
 	}
 }

@@ -1,5 +1,6 @@
 package com.oservice.admin.modules.sys.controller;
 
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +32,13 @@ import java.util.Map;
 @RequestMapping("/xry/course")
 public class XryCourseController extends AbstractController {
     /** 课程上架标识符常量 */
-    final static Integer ADD_TO_COURSE = 6;
+    final static Integer ADD_TO_COURSE = 4;
     /** 课程下架标识符常量 */
     final static Integer DEL_FROM_COURSE = 5;
-    /** 课程审核通过常量 */
+    /** 课程推荐 */
+    final static Integer RECOMMEND_COURSE = 1;
+    /** 取消课程推荐 */
+    final static Integer CANCEL_RECOMMEND = 0;
     @Resource
     private XryCourseService xryCourseService;
     /**
@@ -63,6 +68,7 @@ public class XryCourseController extends AbstractController {
     @GetMapping("/examineList")
     @RequiresPermissions("xry:course:examineList")
     public Result examineList(@RequestParam Map<String, Object> params){
+        // 只查询未审核和未通过的课程
         PageUtils page = xryCourseService.examineList(params);
         return Result.ok().put("page", page);
     }
@@ -146,7 +152,7 @@ public class XryCourseController extends AbstractController {
     }
 
     /**
-     * 课程上架：5
+     * 课程上架：4
      * @param ids
      * @return
      */
@@ -175,7 +181,7 @@ public class XryCourseController extends AbstractController {
     }
 
     /**
-     * 课程下架：6
+     * 课程下架：5
      * @param ids
      * @return
      */
@@ -204,4 +210,38 @@ public class XryCourseController extends AbstractController {
     public Result importAllData() throws Exception {
         return solrJService.addIndex();
     }
+
+    /**
+     * 推荐课程
+     * @param ids
+     * @return
+     */
+    @SysLog("推荐课程")
+    @PostMapping("/recommendCourse")
+    @RequiresPermissions("xry:course:recommendCourse")
+    public Result recommendCourse(@RequestBody Long[] ids) {
+        // 推荐课程时，如果课程的状态是未审核、或者未通过，不能推荐
+        Map<String,Object> params = new HashMap<>();
+        params.put("ids",ids);
+        params.put("flag",RECOMMEND_COURSE);
+        xryCourseService.updateCourseRecommend(params);
+        return Result.ok();
+    }
+
+    /**
+     * 取消推荐课程
+     * @param ids
+     * @return
+     */
+    @SysLog("取消推荐课程")
+    @PostMapping("/cancelRecommend")
+    @RequiresPermissions("xry:course:cancelRecommend")
+    public Result cancelRecommend(@RequestBody Long[] ids) {
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("ids",ids);
+        params.put("flag",CANCEL_RECOMMEND);
+        xryCourseService.updateCourseRecommend(params);
+        return Result.ok();
+    }
+
 }

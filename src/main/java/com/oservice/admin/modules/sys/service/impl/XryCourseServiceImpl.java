@@ -5,10 +5,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryCourseDao;
-import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseEntity;
-import com.oservice.admin.modules.sys.entity.XryRecordEntity;
+import com.oservice.admin.modules.sys.entity.*;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.springframework.stereotype.Service;
 
@@ -135,6 +132,26 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     @Override
     public SearcherItem findItemsById(Long id) {
         return baseMapper.findItemsById(id);
+    }
+
+    @Override
+    public void updateCourseRecommend(Map<String, Object> params) {
+        baseMapper.updateCourseRecommend(params);
+    }
+
+    @Override
+    public XryRecommendEntity listRecommendCourseCatByUserId(Map<String, Object> params) {
+        return baseMapper.listRecommendCourseCatByUserId(params);
+    }
+
+    @Override
+    public void appInsertRecommend(Map<String, Object> params) {
+        baseMapper.appInsertRecommend(params);
+    }
+
+    @Override
+    public void appUpdateRecommend(Map<String, Object> params) {
+        baseMapper.appUpdateRecommend(params);
     }
 
 }
