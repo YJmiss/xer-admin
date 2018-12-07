@@ -9,11 +9,9 @@ import com.oservice.admin.common.validator.group.QcloudGroup;
 import com.oservice.admin.common.validator.group.QiniuGroup;
 import com.oservice.admin.modules.oss.cloud.CloudStorageConfig;
 import com.oservice.admin.modules.oss.cloud.OSSFactory;
-import com.oservice.admin.modules.oss.entity.SysOssEntity;
 import com.oservice.admin.modules.oss.service.SysOssService;
 import com.oservice.admin.modules.sys.service.SysConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -21,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+import java.io.File;
 import java.util.*;
 
 /**
@@ -116,12 +115,25 @@ public class SysOssController {
 			//2.根据上传文件分析出基本后缀名
 			//2.1)得到原始文件名
 			String originalFilename = uploadFile.getOriginalFilename();
-			//2.2)得到文件后缀名
-			String extName = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-			//3.得到文件的内容（二进制数据）
+            //设置文件的保存路径
+            String fileName = UUIDUtils.generateFileName(originalFilename);
+            String filePath = ConfigConstant.IMAGE_PATH + fileName;
+            // 判断文件是否为空
+            if (!uploadFile.isEmpty()) {
+                try {
+                    // 转存文件
+                    uploadFile.transferTo(new File(filePath));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("文件的保存路径----------------" + filePath);
+            String url = ConfigConstant.IMAGE_URL + fileName;
+			/*//3.得到文件的内容（二进制数据）
 			byte[] fileContent = uploadFile.getBytes();
 			String url = dfsClient.uploadFile(fileContent, extName);
 			url = ConfigConstant.IMAGE_URL + "/" + url;
+			*/
 			System.out.println("url:" + url);
 			//上传成功的map
 			return Result.ok().put("url", url);
