@@ -54,4 +54,9 @@ public interface XryArticleService extends IService<XryArticleEntity> {
 	 */
 	void updateArticleStatus(Map<String,Object> params);
 
+	/**
+	 * 推荐文章、取消推荐文章
+	 * @param params
+	 */
+    void updateArticleRecommend(Map<String, Object> params);
 }

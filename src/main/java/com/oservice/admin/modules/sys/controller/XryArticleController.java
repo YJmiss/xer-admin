@@ -30,6 +30,10 @@ public class XryArticleController extends AbstractController {
     private static final Integer PUBLISH_ARTICLE = 1;
     /** 取消发布文章 */
     private static final Integer CANCEL_PUBLISH = 0;
+    /** 推荐文章 */
+    private static final Integer RECOMMEND_ARTICLE = 1;
+    /** 取消推荐文章 */
+    private static final Integer CANCEL_RECOMMEND = 0;
     @Resource
     private XryArticleService xryArticleService;
     /**
@@ -137,6 +141,38 @@ public class XryArticleController extends AbstractController {
         params.put("ids",ids);
         params.put("status",CANCEL_PUBLISH);
         xryArticleService.updateArticleStatus(params);
+        return Result.ok();
+    }
+
+    /**
+     * 推荐文章
+     * @param ids
+     * @return
+     */
+    @SysLog("推荐文章")
+    @PostMapping("/recommendArticle")
+    @RequiresPermissions("xry:article:recommendArticle")
+    public Result recommendArticle(@RequestBody Long[] ids){
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("ids",ids);
+        params.put("recommend",RECOMMEND_ARTICLE);
+        xryArticleService.updateArticleRecommend(params);
+        return Result.ok();
+    }
+
+    /**
+     * 取消推荐文章
+     * @param ids
+     * @return
+     */
+    @SysLog("取消推荐文章")
+    @PostMapping("/cancelRecommend")
+    @RequiresPermissions("xry:article:cancelRecommend")
+    public Result cancelRecommend(@RequestBody Long[] ids){
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("ids",ids);
+        params.put("recommend",CANCEL_RECOMMEND);
+        xryArticleService.updateArticleRecommend(params);
         return Result.ok();
     }
     

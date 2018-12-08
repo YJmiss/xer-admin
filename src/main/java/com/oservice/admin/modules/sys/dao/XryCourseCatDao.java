@@ -6,6 +6,7 @@ import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统用户
@@ -36,4 +37,9 @@ public interface XryCourseCatDao extends BaseMapper<XryCourseCatEntity> {
      */
     List<XryCourseCatEntity> isParentCourseCatalogById(Long id);
 
+    /**
+     * 查询所有的课程类目
+     * @return
+     */
+    List<Map<String, Object>> listCourseCat();
 }

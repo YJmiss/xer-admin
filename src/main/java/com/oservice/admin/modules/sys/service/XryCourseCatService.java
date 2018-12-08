@@ -70,4 +70,9 @@ public interface XryCourseCatService extends IService<XryCourseCatEntity> {
 	 */
 	List<XryCourseCatEntity> isParentCourseCatalogById(Long id);
 
+	/**
+	 * 查询所有的课程类目
+	 * @return
+	 */
+	List<Map<String, Object>> listCourseCat();
 }

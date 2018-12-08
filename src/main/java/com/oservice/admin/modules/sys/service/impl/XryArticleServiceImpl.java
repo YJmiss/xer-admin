@@ -30,10 +30,12 @@ public class XryArticleServiceImpl extends ServiceImpl<XryArticleDao, XryArticle
         String limit = (String) params.get("limit");
         String type = (String) params.get("type");
         String title = (String) params.get("title");
+        String flag = (String) params.get("flag");
         map.put("page",page);
         map.put("limit",limit);
         map.put("type",type);
         map.put("title","%" + title + "%");
+        map.put("flag",flag);
         // 查询返回的数据总数page.totalCount
         // page.list 查询返回的数据list
         List<Map<String, Object>> courseList = baseMapper.pageList(map);
@@ -66,6 +68,11 @@ public class XryArticleServiceImpl extends ServiceImpl<XryArticleDao, XryArticle
     @Override
     public void updateArticleStatus(Map<String, Object> params) {
         baseMapper.updateArticleStatus(params);
+    }
+
+    @Override
+    public void updateArticleRecommend(Map<String, Object> params) {
+        baseMapper.updateArticleRecommend(params);
     }
 
 }

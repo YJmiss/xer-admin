@@ -127,11 +127,11 @@
     </select>
     <!--用户喜好添加-->
     <insert id="appInsertRecommend" parameterType="java.util.Map">
-        insert xry_recommend(user_id, cat_id, course_id, course_title, created) values(#{userId}, #{courseCatId}, #{courseId}, #{courseTitle}, #{created});
+        insert into xry_recommend(user_id, cat_id, created) values(#{userId,jdbcType = VARCHAR}, #{catArr,jdbcType = VARCHAR}, #{created,jdbcType = DATE});
     </insert>
     <!--用户喜好修改-->
     <update id="appUpdateRecommend" parameterType="java.util.Map">
-      update xry_recommend set cat_id = #{courseCatId}, course_id = #{courseId},course_title = #{courseTitle} where user_id = #{userId}
+      update xry_recommend set cat_id = #{catArr} where user_id = #{userId,jdbcType = VARCHAR}
     </update>
 
 </mapper>

@@ -1,16 +1,21 @@
 package com.oservice.admin.modules.sys.controller;
 
 import com.oservice.admin.common.annotation.SysLog;
+import com.oservice.admin.common.utils.ListUtil;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
+import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryRecommendEntity;
+import com.oservice.admin.modules.sys.service.SysUserTokenService;
 import com.oservice.admin.modules.sys.service.XryCourseCatService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -29,41 +34,40 @@ public class XryRecommendController extends AbstractController {
     private XryCourseCatService xryCourseCatService;
     @Resource
     private XryCourseService xryCourseService;
+    @Resource
+    private SysUserTokenService sysUserTokenService;
 
     /**
-     * 类目查询
-     * @param params
+     * 所有类目查询
      * @return
      */
-    @SysLog("类目查询")
     @GetMapping("/appListCourseCat")
-    public Result appListCourseCat(@RequestParam Map<String, Object> params){
+    public Result appListCourseCat(@RequestParam String token){
         // 第一步：查询所有的课程类目
-        PageUtils courseCatPage = xryCourseCatService.queryPage(new HashMap<>());
-        List<XryCourseCatEntity> courseCatList = (List<XryCourseCatEntity>) courseCatPage.getList();
-        // 循环取出子类目
-        if (courseCatList.size() > 0) {
-            for (XryCourseCatEntity catEntity : courseCatList) {
-                catEntity.getParentId();
-            }
-        }
+        List<Map<String, Object>> catList = xryCourseCatService.listCourseCat();
+        // 构造一个存放父类目的容器
+        List<Map<String, Object>> courseCatList = ListUtil.listToTreeList(catList,"id","parent_id","catList");
         
-        return Result.ok().put("appCourseCatList", "");
+        return Result.ok().put("courseCatList", courseCatList);
     }
 
     /**
      * 根据userId查询用户已经选择喜好的课程类目
      * 不需要根据类目分类显示
-     * @param userId
+     * @param token
      * @return
      */
     @SysLog("查询用户已经选择喜好的课程类目")
-    @GetMapping("/appListCourseCatByUserId/{userId}")
-    public Result appListCourseCatByUserId(@PathVariable("userId") String userId){
+    @GetMapping("/appListCourseCatByUserId")
+    public Result appListCourseCatByUserId(@RequestParam String token){
+        SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(token);
+        if (null == tokenEntity) {
+            return Result.error(1,"token获取失败或已失效");
+        }
         Map<String, Object> params = new HashMap<>();
-        params.put("userId",userId);
+        params.put("userId",tokenEntity.getUserId());
         XryRecommendEntity recommend = xryCourseService.listRecommendCourseCatByUserId(params);
-        String[] courseCatIds = recommend.getCatId().split("~");
+        String[] courseCatIds = recommend.getCatId().split(",");
         List<XryCourseCatEntity> courseCatList = new ArrayList<>();
         if (courseCatIds.length > 0) {
             for (String courseCatId : courseCatIds) {
@@ -76,23 +80,36 @@ public class XryRecommendController extends AbstractController {
 
     /**
      * 用户设置喜好课程，添加到数据库表中
-     * @param params
+     * @param tokenJSON
      * @return
      */
     @SysLog("用户设置喜好课程类目保存")
     @PostMapping("/appInsertRecommendCourseCat")
-    public Result appInsertRecommendCourseCat(@RequestParam Map<String, Object> params){
+    public Result appInsertRecommendCourseCat(@RequestBody String tokenJSON){
+        // 从token中获取登录人信息
+        JSONObject tokenJSONObject = new JSONObject(tokenJSON);
+        String token = tokenJSONObject.getString("token");
+        JSONArray catList = (JSONArray) tokenJSONObject.get("catGroup");
+        SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(token);
+        if (null == tokenEntity) {
+            return Result.error(1,"token已过期，请重新登录！");
+        }
         // 判断用户是添加还是修改
+        Map<String,Object> params = new HashMap<>();
+        params.put("userId",tokenEntity.getUserId());
+        params.put("catArr",catList.toString());
         XryRecommendEntity recommend = xryCourseService.listRecommendCourseCatByUserId(params);
         if (null != recommend) {
             // 用户喜好修改
-            xryCourseService.appInsertRecommend(params);
+            xryCourseService.appUpdateRecommend(params);
+            System.out.println("---------------用户喜好修改成功----------------");
         } else {
             // 用户喜好添加（第一次设置）
             params.put("created",new Date());
-            xryCourseService.appUpdateRecommend(params);
+            xryCourseService.appInsertRecommend(params);
+            System.out.println("---------------用户喜好设置成功----------------");
         }
-        return Result.ok();
+        return Result.ok().put("2","操作成功");
     }
     
 }

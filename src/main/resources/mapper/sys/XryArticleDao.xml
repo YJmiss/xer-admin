@@ -8,6 +8,9 @@
         select a.*,b.name as catName,c.username
         from xry_article a left join xry_course_cat b on a.type = b.id
         left join sys_user c on a.create_user = c.user_id where 1=1
+        <if test="params.flag != null and params.flag != '' and params.flag == 1">
+            and a.status = #{params.flag}
+        </if>
         <if test="params.type != null and params.type != ''">
             and a.type = #{params.type}
         </if>
@@ -21,6 +24,13 @@
     <!--发布文章、取消发布文章-->
     <update id="updateArticleStatus" parameterType="java.util.Map">
         update xry_article set status = #{status},publish_time = #{publishTime} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    <!--推荐文章、取消推荐文章-->
+    <update id="updateArticleRecommend" parameterType="java.util.Map">
+        update xry_article set recommend = #{recommend} where id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>

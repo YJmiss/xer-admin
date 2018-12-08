@@ -31,4 +31,10 @@ public interface XryArticleDao extends BaseMapper<XryArticleEntity> {
      */
     void updateArticleStatus(@Param("params") Map<String,Object> params);
 
+    /**
+     * 推荐文章、取消推荐文章
+     * @param params
+     */
+    void updateArticleRecommend(Map<String, Object> params);
+
 }
