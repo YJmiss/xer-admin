@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.sys.dao.XryOrganizationDao">
+
+    <!--自定义分页查询-->
+    <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.*,b.nickname, b.phone from xry_organization a left join xry_user b on  a.user_id=b.id where 1=1
+        <if test="params.orgName != null and params.orgName != ''">
+            and a.org_name like #{params.orgName}
+        </if>
+        <if test="params.corporator != null and params.corporator != ''">
+            and a.corporator = #{params.corporator}
+        </if>
+        <if test="params.status != null and params.status != ''">
+            and a.status = #{params.status}
+        </if>
+        <if test="params.limit != null and params.limit != ''">
+            limit 0,${params.limit}
+        </if>
+    </select>
+    <!--机构认证-->
+    <update id="recordExamineInfo" parameterType="java.util.Map">
+      update xry_organization set status = #{params.status} where id = #{params.id}
+    </update>
+
+</mapper>

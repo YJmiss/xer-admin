@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.sys.dao.XryTeacherDao">
+
+    <!--自定义分页查询-->
+    <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.*,b.nickname,b.phone as userPhone,c.org_name as orgName, c.org_code as orgCode
+                from xry_teacher a left join xry_user b on  a.user_id=b.id left join xry_organization c on a.org_id=c.id  where 1=1
+        <if test="params.realName != null and params.realName != ''">
+            and a.real_name like #{params.realName}
+        </if>
+        <if test="params.status != null and params.status != ''">
+            and a.status = #{params.status}
+        </if>
+        <if test="params.limit != null and params.limit != ''">
+            limit 0,${params.limit}
+        </if>
+    </select>
+    <!--讲师认证-->
+    <update id="recordExamineInfo" parameterType="java.util.Map">
+      update xry_teacher set status = #{params.status} where id = #{params.id}
+    </update>
+    <!--讲师信息查询-->
+    <select id="queryById" parameterType="java.lang.Long">
+
+    </select>
+
+</mapper>

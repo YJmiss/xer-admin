@@ -9,9 +9,7 @@ import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryVideoEntity;
-import com.oservice.admin.modules.sys.service.XryCourseService;
-import com.oservice.admin.modules.sys.service.XryRecordService;
-import com.oservice.admin.modules.sys.service.XryVideoService;
+import com.oservice.admin.modules.sys.service.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +33,10 @@ public class XryRecordController extends AbstractController {
     private XryVideoService xryVideoService;
     @Resource
     private XryCourseService xryCourseService;
+    @Resource
+    private XryTeacherService xryTeacherService;
+    @Resource
+    private XryOrganizationService xryOrganizationService;
 
     /**
      * 查询记录列表
@@ -75,11 +77,17 @@ public class XryRecordController extends AbstractController {
     public Result examine(@RequestBody XryRecordEntity record) {
         Integer type = record.getType();
         if (1 == type) {
-            // 第一步：修改课程在数据库的状态
+            // 修改课程在数据库的状态
             xryCourseService.recordExamineInfo(record);
-        } else {
-            // 第一步：修改视频在数据库的状态
+        } else if (2 == type) {
+            // 修改视频在数据库的状态
             xryVideoService.recordExamineInfo(record);
+        } else if (3 == type) {
+            // 修改讲师在数据库的状态
+            xryTeacherService.recordExamineInfo(record);
+        } else {
+            // 修改机构在数据库的状态
+            xryOrganizationService.recordExamineInfo(record);
         }
         // 第二步：记录视频审核信息到记录表
         Long userId = getUserId();
