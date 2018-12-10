@@ -120,8 +120,8 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     }
 
     @Override
-    public List<XryCourseEntity> getGoodCourse() {
-        return null;
+    public List<XryGoodCourseEntity> getGoodCourse() {
+        return baseMapper.getGoodCourse();
     }
 
     @Override

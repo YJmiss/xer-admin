@@ -32,9 +32,12 @@ public class SwaggerConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
         // 注:如果是Linux的话，直接指定文件夹路径即可，不需要指定哪个盘(Linux就一个可用盘)
-        registry.addResourceHandler("/fileData/**").addResourceLocations("file:E:/fileData/");
+        registry.addResourceHandler("/fileData/**").addResourceLocations("file:D:/fileData/");
         // 注:如果是Linux的话，直接指定文件夹路径即可，不需要指定哪个盘(Linux就一个可用盘)
-        registry.addResourceHandler("/imageData/**").addResourceLocations("file:E:/imageData/");
+        registry.addResourceHandler("/imageData/**").addResourceLocations("file:D:/imageData/");
+
+        //将所有/static/** 访问都映射到classpath:/static/ 目录下
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
 
     }
 

@@ -93,7 +93,7 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 *
 	 * @return
 	 */
-	List<XryCourseEntity> getGoodCourse();
+	List<XryGoodCourseEntity> getGoodCourse();
 
 	/**
 	 * 获取索引库信息

@@ -2,10 +2,7 @@ package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.oservice.admin.common.solr.SearcherItem;
-import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseEntity;
-import com.oservice.admin.modules.sys.entity.XryRecommendEntity;
+import com.oservice.admin.modules.sys.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -112,5 +109,10 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @param params
      */
     void appUpdateRecommend(Map<String, Object> params);
+
+    /**
+     * 好评好课查询
+     */
+    List<XryGoodCourseEntity> getGoodCourse();
 
 }

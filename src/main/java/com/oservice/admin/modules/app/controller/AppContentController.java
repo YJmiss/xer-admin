@@ -3,7 +3,7 @@ package com.oservice.admin.modules.app.controller;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.XryContentEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.entity.XryGoodCourseEntity;
 import com.oservice.admin.modules.sys.service.XryContentService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import io.swagger.annotations.Api;
@@ -58,7 +58,7 @@ public class AppContentController extends AbstractController {
      */
     @GetMapping("/goodCourse/list")
     public Result getGoodCourse() {
-        List<XryCourseEntity> goodCourse = courseService.getGoodCourse();
+        List<XryGoodCourseEntity> goodCourse = courseService.getGoodCourse();
         Map<String, Object> map = new HashMap<>();
         map.put("GoodCourse", goodCourse);
         return Result.ok(map);

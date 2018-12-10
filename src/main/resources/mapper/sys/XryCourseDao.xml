@@ -134,4 +134,11 @@
       update xry_recommend set cat_id = #{courseCatId}, course_id = #{courseId},course_title = #{courseTitle} where user_id = #{userId}
     </update>
 
+    <!--获取好评好课-->
+    <select id="getGoodCourse" resultType="com.oservice.admin.modules.sys.entity.XryGoodCourseEntity">
+select a.id, a.score ,b.title,b.image,b.price from
+(select obj_id as 'id', AVG(star_level)as 'score',type,status from xry_comment group by obj_id HAVING type=0 and status=1) a
+,xry_course b
+where a.score>8.5 and b.id=a.id
+    </select>
 </mapper>

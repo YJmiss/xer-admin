@@ -61,6 +61,7 @@ public class ShiroConfig {
         filterMap.put("/xry/ueditor/config/**", "anon");
         filterMap.put("/messageWebSocket", "anon");
         filterMap.put("/topic/ip", "anon");
+        filterMap.put("/index", "anon");
 
         filterMap.put("/api/appAccount/sendPhoneCode", "anon");
         filterMap.put("/api/appAccount/register", "anon");
@@ -72,6 +73,7 @@ public class ShiroConfig {
         filterMap.put("/api/appContent/list", "anon");
         filterMap.put("/api/appSearcher/search", "anon");
         filterMap.put("/api/appContent/advertising/list", "anon");
+        filterMap.put("/api/appContent/goodCourse/list", "anon");
 
         filterMap.put("/swagger/**", "anon");
         filterMap.put("/v2/api-docs", "anon");
@@ -81,6 +83,8 @@ public class ShiroConfig {
         filterMap.put("/config.json", "anon");
         filterMap.put("/fileData/**", "anon");
         filterMap.put("/imageData/**", "anon");
+        filterMap.put("/templates/static/**", "anon");
+        filterMap.put("/static/**", "anon");
 
         filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);

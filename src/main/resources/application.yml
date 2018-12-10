@@ -7,7 +7,7 @@ server:
   port: 9001
   connection-timeout: 5000ms
   servlet:
-    context-path: /xry
+    context-path: /
 
 
 spring:
@@ -25,7 +25,7 @@ spring:
       enabled: true
   data:
     solr:
-      host: http://localhost:8080/solr
+      host: http://localhost:8000/solr
   redis:
     open: true  # 是否开启redis缓存  true开启   false关闭
     database: 0
@@ -44,6 +44,8 @@ spring:
     static-path-pattern: /static/**
   resources:
     add-mappings: false
+  thymeleaf:
+    prefix: classpath:/templates/
 
 #mybatis
 mybatis-plus:

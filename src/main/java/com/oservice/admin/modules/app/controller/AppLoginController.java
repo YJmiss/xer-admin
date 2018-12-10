@@ -56,7 +56,7 @@ public class AppLoginController extends AbstractController {
         String template = "{\"code\":\"" + code + "\",\"product\":\"" + msg + "\"}";
         boolean isTrue = sendTelMessage(ConfigConstant.TEMPLATECODE, template, tel);
         //String checkCode = MD5Utils.md5(String.valueOf(code).toUpperCase());
-        // Todo 存到redis里 有效时间：60s
+        // Todo 存到redis里 有效时间：600s
         redisUtils.set("phoneCodeApp" + tel, code, 600);
         //  CookieHelper.addCookie("phoneCodeApp" + tel, checkCode, 60);
         return Result.ok(String.valueOf(isTrue));
