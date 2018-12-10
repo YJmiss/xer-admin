@@ -6,7 +6,7 @@
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select * from xry_user  where 1=1
-        <if test="params.flag != null and params.flag != ''">
+        <if test="params.flag != null and params.flag != '' and params.flag == 1">
             and status = 0  and role = 1
         </if>
         <if test="params.phone != null and params.phone != ''">

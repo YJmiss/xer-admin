@@ -13,6 +13,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SysUserTokenDao extends BaseMapper<SysUserTokenEntity> {
 
+    /**
+     * 根据token查询记录
+     * @param token
+     * @return
+     */
     SysUserTokenEntity queryByToken(String token);
 	
 }

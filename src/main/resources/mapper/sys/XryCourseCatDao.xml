@@ -15,5 +15,9 @@
     <select id="isParentCourseCatalogById" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatEntity">
         select * from xry_course_cat where parent_id = #{id}
     </select>
+    <!--查询所有的课程类目-->
+    <select id="listCourseCat" resultType="java.util.Map">
+        select * from xry_course_cat
+    </select>
 
 </mapper>

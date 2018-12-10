@@ -24,4 +24,10 @@ public interface SysUserTokenService extends IService<SysUserTokenEntity> {
 	 */
 	void logout(String userId);
 
+	/**
+	 * 根据token查询记录
+	 * @param token
+	 * @return
+	 */
+    SysUserTokenEntity selectByToken(String token);
 }

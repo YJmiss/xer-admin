@@ -64,4 +64,9 @@ public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenDao, SysUse
 		tokenEntity.setToken(token);
 		this.updateById(tokenEntity);
 	}
+
+	@Override
+	public SysUserTokenEntity selectByToken(String token) {
+		return baseMapper.queryByToken(token);
+	}
 }
