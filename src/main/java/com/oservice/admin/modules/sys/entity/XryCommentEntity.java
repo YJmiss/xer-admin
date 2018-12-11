@@ -8,6 +8,7 @@ import java.util.Date;
 /**
  * 系统用户
  * 用户评论表的实体类
+ *
  * @author wujunquan
  * @version 1.0
  */
@@ -28,9 +29,9 @@ public class XryCommentEntity implements Serializable {
     private String userId;
 
     /**
-   * 星级评分：2、4、6、8、10'
-   */
-  private Integer starLevel;
+     * 星级评分：2、4、6、8、10'
+     */
+    private Integer starLevel;
 
     /**
      * 类型：0：课程评价；1：讲师评价
@@ -45,7 +46,17 @@ public class XryCommentEntity implements Serializable {
     /**
      * 评价内容
      */
-   private String detail;
+    private String detail;
+
+    /**
+     * 评价内容
+     */
+    private String reply;
+
+    /**
+     * 回复时间
+     */
+    private Date replyTime;
 
     /**
      * 创建时间
@@ -108,6 +119,14 @@ public class XryCommentEntity implements Serializable {
     public void setDetail(String detail) {
         this.detail = detail;
     }
+
+    public String getReply() { return reply; }
+
+    public void setReply(String reply) { this.reply = reply; }
+
+    public Date getReplyTime() { return replyTime; }
+
+    public void setReplyTime(Date replyTime) { this.replyTime = replyTime; }
 
     public Date getCreated() {
         return created;
