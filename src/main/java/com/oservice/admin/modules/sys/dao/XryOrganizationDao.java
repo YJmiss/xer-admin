@@ -39,4 +39,10 @@ public interface XryOrganizationDao extends BaseMapper<XryOrganizationEntity> {
      */
     Map<String, Object> queryById(Long id);
 
+    /**
+     * app查询机构列表
+     * @param params
+     * @return
+     */
+    List<Map<String, Object>> listByUserId(Map<String, Object> params);
 }

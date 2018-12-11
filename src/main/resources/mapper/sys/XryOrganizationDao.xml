@@ -19,15 +19,21 @@
             limit 0,${params.limit}
         </if>
     </select>
+    <!--机构认证-->
+    <update id="recordExamineInfo" parameterType="java.util.Map">
+      update xry_organization set status = #{params.status} where id = #{params.id}
+    </update>
     <!--机构信息查询-->
     <select id="queryById" parameterType="java.lang.Long" resultType="java.util.Map">
      select a.*, b.nickname as userName, b.phone as userPhone
      from xry_organization a
      LEFT JOIN xry_user b on a.user_id = b.id where a.id = #{id}
     </select>
-    <!--机构认证-->
-    <update id="recordExamineInfo" parameterType="java.util.Map">
-      update xry_organization set status = #{params.status} where id = #{params.id}
-    </update>
+    <!--app查询机构列表-->
+    <select id="listByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+     select a.*,b.nickname, b.phone
+     from xry_organization a
+     left join xry_user b on  a.user_id=b.id where a.user_id = #{userId}
+    </select>
 
 </mapper>

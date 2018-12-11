@@ -6,6 +6,7 @@ import com.oservice.admin.modules.sys.entity.XryOrganizationEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryTeacherEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,9 +33,9 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 
 	/**
 	 * 讲师保存
-	 * @param xryTeacherEntity
+	 * @param params
 	 */
-	void save(XryTeacherEntity xryTeacherEntity);
+	void save(String[] params);
 
 	/**
 	 * 讲师删除
@@ -48,5 +49,10 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 	 */
 	void recordExamineInfo(XryRecordEntity record);
 
-
+	/**
+	 * app查询讲师列表
+	 * @param params
+	 * @return
+	 */
+	List<Map<String, Object>> listByUserId(Map<String, Object> params);
 }

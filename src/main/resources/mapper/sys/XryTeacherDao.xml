@@ -28,5 +28,12 @@
      LEFT JOIN xry_user b on a.user_id = b.id
      LEFT JOIN xry_organization c on a.org_id = c.id where a.id = #{id}
     </select>
+    <!--app查询讲师列表-->
+    <select id="listByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+     select a.*, b.nickname as userName, b.phone as userPhone, c.org_name
+     from xry_teacher a
+     LEFT JOIN xry_user b on a.user_id = b.id
+     LEFT JOIN xry_organization c on a.org_id = c.id where a.user_id = #{userId}
+    </select>
 
 </mapper>

@@ -40,4 +40,10 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
      */
     Map<String, Object> queryById(Long id);
 
+    /**
+     * app查询讲师列表
+     * @param params
+     * @return
+     */
+    List<Map<String, Object>> listByUserId(Map<String, Object> params);
 }

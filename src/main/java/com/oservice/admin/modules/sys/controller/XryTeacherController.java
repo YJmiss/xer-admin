@@ -7,6 +7,7 @@ import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.modules.app.service.SolrJService;
 import com.oservice.admin.modules.sys.entity.*;
+import com.oservice.admin.modules.sys.service.SysUserTokenService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryTeacherService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,11 +30,9 @@ import java.util.Map;
 public class XryTeacherController extends AbstractController {
     @Resource
     private XryTeacherService xryTeacherService;
-    /**
-     * 搜索服务
-     */
-    @Autowired
-    private SolrJService solrJService;
+    @Resource
+    private SysUserTokenService sysUserTokenService;
+    
     /**
      * 查询讲师列表
      * @param params
@@ -44,20 +44,6 @@ public class XryTeacherController extends AbstractController {
     public Result list(@RequestParam Map<String, Object> params){
         PageUtils page = xryTeacherService.queryPage(params);
         return Result.ok().put("page", page);
-    }
-
-    /**
-     * 保存讲师
-     * @param teacher
-     * @return
-     */
-    @SysLog("保存讲师")
-    @PostMapping("/save")
-    @RequiresPermissions("xry:teacher:save")
-    public Result save(@RequestBody XryTeacherEntity teacher){
-        ValidatorUtils.validateEntity(teacher, AddGroup.class);
-        xryTeacherService.save(teacher);
-        return Result.ok();
     }
 
     /**
@@ -85,5 +71,37 @@ public class XryTeacherController extends AbstractController {
         return Result.ok();
     }
 
+    /**
+     * 保存讲师认证信息
+     * @param params
+     * @return
+     */
+    @SysLog("保存讲师认证信息")
+    @PostMapping("/appSave")
+    @RequiresPermissions("xry:teacher:appSave")
+    public Result appSave(@RequestParam String[] params){
+        //ValidatorUtils.validateEntity(teacher, AddGroup.class);
+        xryTeacherService.save(params);
+        return Result.ok();
+    }
+
+    /**
+     * app查询讲师列表
+     * @param token
+     * @return
+     */
+    @SysLog("app查询讲师列表")
+    @GetMapping("/appList")
+    @RequiresPermissions("xry:teacher:appList")
+    public Result appList(@RequestParam String token) {
+        SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(token);
+        if (null == tokenEntity) {
+            return Result.error(1,"token获取失败或已失效");
+        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId",tokenEntity.getUserId());
+        List<Map<String,Object>> orgList = xryTeacherService.listByUserId(params);
+        return Result.ok().put("orgList", orgList);
+    }
     
 }

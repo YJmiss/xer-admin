@@ -9,6 +9,7 @@ import com.oservice.admin.modules.sys.dao.XryOrganizationDao;
 import com.oservice.admin.modules.sys.entity.*;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryOrganizationService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -52,9 +53,27 @@ public class XryOrganizationServiceImpl extends ServiceImpl<XryOrganizationDao, 
     }
 
     @Override
-    public void save(XryOrganizationEntity xryOrganizationEntity) {
+    public void save(String[] params) {
+        XryOrganizationEntity xryOrganizationEntity = new XryOrganizationEntity();
+        xryOrganizationEntity.setUserId(params[1]);
+        xryOrganizationEntity.setOrgCode(params[2]);
+        xryOrganizationEntity.setOrgName(params[3]);
+        xryOrganizationEntity.setCorporator(params[4]);
+        xryOrganizationEntity.setIdCard(params[5]);
+        xryOrganizationEntity.setContact(params[6]);
+        xryOrganizationEntity.setBusinessLicense(params[7]);
+        xryOrganizationEntity.setStatus(1);
         xryOrganizationEntity.setCreated(new Date());
-        baseMapper.insert(xryOrganizationEntity);
+
+        String orgId = params[0];
+        if (StringUtils.isNotBlank(orgId)) {
+            // 修改保存
+            xryOrganizationEntity.setId(Long.valueOf(orgId));
+            baseMapper.updateById(xryOrganizationEntity);
+        } else {
+            // 添加保存
+            baseMapper.insert(xryOrganizationEntity);
+        }
     }
 
     @Override
@@ -71,6 +90,11 @@ public class XryOrganizationServiceImpl extends ServiceImpl<XryOrganizationDao, 
         params.put("id", id);
         params.put("status", action);
         baseMapper.recordExamineInfo(params);
+    }
+
+    @Override
+    public List<Map<String, Object>> listByUserId(Map<String, Object> params) {
+        return baseMapper.listByUserId(params);
     }
 
 
