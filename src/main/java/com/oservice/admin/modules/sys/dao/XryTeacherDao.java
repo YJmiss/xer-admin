@@ -33,4 +33,11 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
      */
     void recordExamineInfo(@Param("params") Map<String, Object> params);
 
+    /**
+     * 讲师信息查询
+     * @param id
+     * @return
+     */
+    Map<String, Object> queryById(Long id);
+
 }

@@ -70,7 +70,7 @@ public class XryOrganizationController extends AbstractController {
     @GetMapping("/info/{id}")
     @RequiresPermissions("xry:organization:info")
     public Result info(@PathVariable("id") Long id){
-        XryOrganizationEntity org = xryOrganizationService.queryById(id);
+        Map<String, Object> org = xryOrganizationService.queryById(id);
         return Result.ok().put("org", org);
     }
 

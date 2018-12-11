@@ -28,7 +28,7 @@ public interface XryOrganizationService extends IService<XryOrganizationEntity> 
 	 * @param id
 	 * @return
 	 */
-	XryOrganizationEntity queryById(Long id);
+	Map<String, Object> queryById(Long id);
 
 	/**
 	 * 机构保存

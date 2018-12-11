@@ -68,7 +68,7 @@ public class XryTeacherController extends AbstractController {
     @GetMapping("/info/{id}")
     @RequiresPermissions("xry:teacher:info")
     public Result info(@PathVariable("id") Long id){
-        XryTeacherEntity teacher = xryTeacherService.queryById(id);
+        Map<String, Object> teacher = xryTeacherService.queryById(id);
         return Result.ok().put("teacher", teacher);
     }
 
@@ -84,4 +84,6 @@ public class XryTeacherController extends AbstractController {
         xryTeacherService.deleteBatch(ids);
         return Result.ok();
     }
+
+    
 }

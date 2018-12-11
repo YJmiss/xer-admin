@@ -28,7 +28,7 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 	 * @param id
 	 * @return
 	 */
-	XryTeacherEntity queryById(Long id);
+	Map<String, Object> queryById(Long id);
 
 	/**
 	 * 讲师保存

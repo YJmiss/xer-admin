@@ -35,7 +35,9 @@ public class XryOrganizationServiceImpl extends ServiceImpl<XryOrganizationDao, 
         String status = (String) params.get("status");
         map.put("page", page);
         map.put("limit", limit);
-        map.put("orgName","%" + orgName + "%");
+        if (null != orgName && "" != orgName) {
+            map.put("orgName","%" + orgName + "%");
+        }
         map.put("corporator", corporator);
         map.put("status", status);
         // page.list 查询返回的数据list
@@ -45,8 +47,8 @@ public class XryOrganizationServiceImpl extends ServiceImpl<XryOrganizationDao, 
     }
 
     @Override
-    public XryOrganizationEntity queryById(Long id) {
-        return baseMapper.selectById(id);
+    public Map<String, Object> queryById(Long id) {
+        return baseMapper.queryById(id);
     }
 
     @Override

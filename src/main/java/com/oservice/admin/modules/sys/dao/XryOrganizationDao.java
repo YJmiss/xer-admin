@@ -32,4 +32,11 @@ public interface XryOrganizationDao extends BaseMapper<XryOrganizationEntity> {
      */
     void recordExamineInfo(@Param("params") Map<String, Object> params);
 
+    /**
+     * 根据机构id查询机构
+     * @param id
+     * @return
+     */
+    Map<String, Object> queryById(Long id);
+
 }
