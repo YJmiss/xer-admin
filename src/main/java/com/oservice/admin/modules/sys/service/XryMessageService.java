@@ -36,7 +36,7 @@ public interface XryMessageService extends IService<XryMessageEntity> {
      *
      * @param xryMessageEntity
      */
-    void save(XryMessageEntity xryMessageEntity);
+    Integer save(XryMessageEntity xryMessageEntity);
 
     /**
      * 消息修改
@@ -58,4 +58,16 @@ public interface XryMessageService extends IService<XryMessageEntity> {
      */
     void updateMessageStatus(Map<String, Object> params);
 
+    /**
+     * 查询出当前保存的记录并发消息到客户端
+     * @param messageId
+     */
+    Map<String, Object> seleMessageById(Long messageId);
+
+    /**
+     * 保存记录后返回自增的id
+     * @param message
+     * @return
+     */
+    Long saveAndGetId(XryMessageEntity message);
 }

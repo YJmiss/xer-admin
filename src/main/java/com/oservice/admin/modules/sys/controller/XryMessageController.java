@@ -1,14 +1,17 @@
 package com.oservice.admin.modules.sys.controller;
 
+
 import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import com.oservice.admin.config.MessageWebSocket;
 import com.oservice.admin.modules.sys.entity.XryMessageEntity;
 import com.oservice.admin.modules.sys.service.XryMessageService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
@@ -59,13 +62,17 @@ public class XryMessageController extends AbstractController {
     @SysLog("保存消息")
     @PostMapping("/save")
     @RequiresPermissions("xry:message:save")
-    public Result save(@RequestBody XryMessageEntity message) {
+    public Result save(@RequestBody XryMessageEntity message) throws Exception {
         ValidatorUtils.validateEntity(message, AddGroup.class);
         message.setCreated(new Date());
-        xryMessageService.save(message);
-
-        // 调用发送消息的类
-//        new WebSocketComponent().sendMessage(message);
+        xryMessageService.saveAndGetId(message);
+        // 保存记录后返回自增的id
+        Long messageId  = message.getId();
+        // 查询出当前保存的记录并发消息到客户端  useGeneratedKeys="true"
+        Map<String, Object> messageMap = xryMessageService.seleMessageById(messageId);
+        JSONObject json = new JSONObject(messageMap);
+        System.out.println("message字符串：" + String.valueOf(json));
+        new MessageWebSocket().sendMessage(String.valueOf(json));
         return Result.ok();
     }
 

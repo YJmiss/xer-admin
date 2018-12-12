@@ -47,8 +47,8 @@ public class XryMessageServiceImpl extends ServiceImpl<XryMessageDao, XryMessage
     }
 
     @Override
-    public void save(XryMessageEntity xryMessageEntity) {
-        baseMapper.insert(xryMessageEntity);
+    public Integer save(XryMessageEntity xryMessageEntity) {
+        return  baseMapper.insert(xryMessageEntity);
     }
 
     @Override
@@ -64,6 +64,16 @@ public class XryMessageServiceImpl extends ServiceImpl<XryMessageDao, XryMessage
     @Override
     public void updateMessageStatus(Map<String, Object> params) {
         baseMapper.updateMessageStatus(params);
+    }
+
+    @Override
+    public Map<String, Object> seleMessageById(Long id) {
+        return baseMapper.seleMessageById(id);
+    }
+
+    @Override
+    public Long saveAndGetId(XryMessageEntity message) {
+        return baseMapper.saveAndGetId(message);
     }
 
 }

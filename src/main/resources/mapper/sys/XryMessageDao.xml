@@ -10,7 +10,7 @@
               left join xry_course b on  a.obj_id=b.id
               left join xry_user c on a.user_id=c.id where 1=1
         <if test="params.type != null and params.type != ''">
-            and a.type like #{params.type}
+            and a.msg_type like #{params.type}
         </if>
         <if test="params.objId != null and params.objId != ''">
             and a.obj_id like #{params.objId}
@@ -29,5 +29,20 @@
             #{id}
         </foreach>
     </update>
+    <!--保存记录后返回自增的id-->
+    <insert id="saveAndGetId" parameterType="java.util.Map" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+      insert into xry_message (msg_type,course_type,obj_id,user_id,status,publish_date,info,created)
+        values (#{msgType},#{courseType},#{objId},#{userId},#{status},#{publishDate},#{info},#{created})
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <!--查询出当前保存的记录并发消息到客户端-->
+    <select id="seleMessageById" parameterType="java.lang.Long" resultType="java.util.Map">
+        select a.*,b.title as courseTitle, b.id as courseId, c.nickname,c.id as userId
+          from  xry_message a
+          left join xry_course b on  a.obj_id=b.id
+          left join xry_user c on a.user_id=c.id where a.id = #{messageId}
+    </select>
     
 </mapper>
