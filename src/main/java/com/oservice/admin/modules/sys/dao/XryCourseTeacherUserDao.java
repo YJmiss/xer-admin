@@ -43,4 +43,18 @@ public interface XryCourseTeacherUserDao extends BaseMapper<XryCourseTeacherUser
      * @param params
      */
     void appDelTeacherById(@Param("params") Map<String, Object> params);
+
+    /**
+     * 根据课程id查询出报名学习该课程的所有用户
+     * @param courseId
+     * @return
+     */
+    List<XryCourseTeacherUserEntity> listUserIdByCourseId(@Param("courseId") Long courseId);
+
+    /**
+     * 根据讲师id查询关注改讲师的所有用户
+     * @param teacherId
+     * @return
+     */
+    List<XryCourseTeacherUserEntity> listUserIdByTeacherId(@Param("teacherId") String teacherId);
 }

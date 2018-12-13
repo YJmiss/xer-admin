@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseDao">
+<mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseTeacherUserDao">
 
     <!--app端根据用户查询用户加入学习的课程列表-->
     <select id="appPageListCourseByUserId" parameterType="java.util.Map" resultType="java.util.Map">
@@ -39,5 +39,13 @@
           #{id}
       </foreach>
     </delete>
+    <!--根据课程id查询出报名学习该课程的所有用户-->
+    <select id="listUserIdByCourseId" parameterType="java.lang.Long" resultType="com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity">
+      select * from xry_course_teacher_user where course_id = #{courseId}
+    </select>
+    <!--根据讲师id查询关注改讲师的所有用户-->
+    <select id="listUserIdByTeacherId" parameterType="java.lang.String" resultType="com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity">
+      select * from xry_course_teacher_user where teacher_id = #{teacherId}
+    </select>
 
 </mapper>

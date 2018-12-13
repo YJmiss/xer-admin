@@ -274,7 +274,7 @@ public class XryCourseController extends AbstractController {
         params.put("userId",tokenEntity.getUserId());
         params.put("courseId",courseId);
         params.put("type",COURSE_JOIN_STUDY);
-        Integer isSuccess = xryCourseTeacherUserService.saveCourse(params);
+        Integer isSuccess = xryCourseTeacherUserService.appSaveCourse(params);
         if (1 == isSuccess) {
             return Result.ok().put("1","课程加入学习成功");
         } else {

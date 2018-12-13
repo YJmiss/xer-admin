@@ -8,10 +8,7 @@ import com.oservice.admin.modules.sys.entity.*;
 import com.oservice.admin.modules.sys.service.XryCourseTeacherUserService;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统用户
@@ -23,7 +20,7 @@ import java.util.Map;
 public class XryCourseTeacherUserServiceImpl extends ServiceImpl<XryCourseTeacherUserDao, XryCourseTeacherUserEntity> implements XryCourseTeacherUserService {
     
     @Override
-    public Integer saveCourse(Map<String, Object> params) {
+    public Integer appSaveCourse(Map<String, Object> params) {
         XryCourseTeacherUserEntity courseTeacherUser = new XryCourseTeacherUserEntity();
         courseTeacherUser.setType((Integer) params.get("type"));
         courseTeacherUser.setCourseId((Long) params.get("courseId"));
@@ -33,7 +30,7 @@ public class XryCourseTeacherUserServiceImpl extends ServiceImpl<XryCourseTeache
     }
 
     @Override
-    public Integer saveTeacher(Map<String, Object> params) {
+    public Integer appSaveTeacher(Map<String, Object> params) {
         XryCourseTeacherUserEntity courseTeacherUser = new XryCourseTeacherUserEntity();
         courseTeacherUser.setType((Integer) params.get("type"));
         courseTeacherUser.setTeacherId((String) params.get("teacherId"));
@@ -66,6 +63,34 @@ public class XryCourseTeacherUserServiceImpl extends ServiceImpl<XryCourseTeache
     @Override
     public void appDelTeacherById(Map<String, Object> params) {
         baseMapper.appDelTeacherById(params);
+    }
+
+    @Override
+    public List<String> listUserIdByCourseId(Long courseId) {
+        List<XryCourseTeacherUserEntity> courseList = baseMapper.listUserIdByCourseId(courseId);
+        List<String> userIds = null;
+        if (courseList.size() > 0) {
+            userIds = new ArrayList<>();
+            for (XryCourseTeacherUserEntity course : courseList) {
+                String userId = course.getUserId();
+                userIds.add(userId);
+            }
+        }
+        return userIds;
+    }
+
+    @Override
+    public List<String> listUserIdByTeacherId(String teacherId) {
+        List<XryCourseTeacherUserEntity> teacherList = baseMapper.listUserIdByTeacherId(teacherId);
+        List<String> userIds = null;
+        if (teacherList.size() > 0) {
+            userIds = new ArrayList<>();
+            for (XryCourseTeacherUserEntity teacher : teacherList) {
+                String userId = teacher.getUserId();
+                userIds.add(userId);
+            }
+        }
+        return userIds;
     }
 
 }

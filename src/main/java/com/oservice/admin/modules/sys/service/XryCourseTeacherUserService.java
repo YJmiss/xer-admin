@@ -21,14 +21,14 @@ public interface XryCourseTeacherUserService extends IService<XryCourseTeacherUs
      * @param params
      * @return
      */
-    Integer saveCourse(Map<String,Object> params);
+    Integer appSaveCourse(Map<String,Object> params);
 
     /**
      * app端用户关注讲师的保存方法
      * @param params
      * @return
      */
-    Integer saveTeacher(Map<String,Object> params);
+    Integer appSaveTeacher(Map<String,Object> params);
 
     /**
      * app端根据用户查询用户加入学习的课程列表
@@ -56,4 +56,16 @@ public interface XryCourseTeacherUserService extends IService<XryCourseTeacherUs
      */
     void appDelTeacherById(Map<String, Object> params);
 
+    /**
+     * 根据课程id查询出报名学习该课程的所有用户
+     * @param courseId
+     */
+    List<String> listUserIdByCourseId(Long courseId);
+
+    /**
+     * 根据讲师id查询关注改讲师的所有用户
+     * @param teacherId
+     * @return
+     */
+    List<String> listUserIdByTeacherId(String teacherId);
 }

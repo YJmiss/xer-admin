@@ -132,7 +132,7 @@ public class XryTeacherController extends AbstractController {
         params.put("userId",tokenEntity.getUserId());
         params.put("teacherId",teacherId);
         params.put("type",TEACHER_FOCUS_FLAG);
-        Integer isSuccess = xryCourseTeacherUserService.saveTeacher(params);
+        Integer isSuccess = xryCourseTeacherUserService.appSaveTeacher(params);
         if (1 == isSuccess) {
             return Result.ok().put("1","讲师关注成功");
         } else {
