@@ -22,14 +22,13 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
 
     @Override
 	public PageUtils queryPage(Map<String, Object> params) {
-        String title = (String) params.get("title");
-        String cid = (String) params.get("cid");
-        String tid = (String) params.get("tid");
-        // 重写分页查询 page limit title cid
         Page<Map<String, Object>> pageList = new Page<>();
         Map<String ,Object> map = new HashMap<>();
         String page = (String) params.get("page");
         String limit = (String) params.get("limit");
+        String title = (String) params.get("title");
+        String cid = (String) params.get("cid");
+        String tid = (String) params.get("tid");
         map.put("page",page);
         map.put("limit",limit);
         map.put("title","%"+title+"%");

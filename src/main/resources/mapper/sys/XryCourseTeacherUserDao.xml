@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseDao">
+
+    <!--app端根据用户查询用户加入学习的课程列表-->
+    <select id="appPageListCourseByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.*,b.title, b.image
+        from xry_course_teacher_user a left join xry_course b on a.course_id=b.id where a.user_id = #{params.userId}
+        <if test="params.flag != null and params.flag != ''">
+            and a.created = #{params.flag}
+        </if>
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit 0,${params.pageSize}
+        </if>
+    </select>
+    <!--app端根据用户查询用户关注的讲师列表-->
+    <select id="appPageListTeacherByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.*,b.real_name as realName, c.avatar as headImg
+        from xry_course_teacher_user a
+        left join xry_teacher b on a.teacher_id=b.id
+        left join xry_user c on b.user_id=c.id
+        where a.user_id = #{params.userId} and b.status = 3
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit 0,${params.pageSize}
+        </if>
+    </select>
+    <!--app端用户删除已经加入学习的课程-->
+    <delete id="appDelCourseById" parameterType="java.util.Map">
+      delete from xry_course_teacher_user where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+          #{id}
+        </foreach>
+    </delete>
+    <!--app端用户删除已经关注的讲师-->
+    <delete id="appDelTeacherById" parameterType="java.util.Map">
+      delete from xry_course_teacher_user where id in
+      <foreach collection="ids" item="id" open="(" separator="," close=")">
+          #{id}
+      </foreach>
+    </delete>
+
+</mapper>
