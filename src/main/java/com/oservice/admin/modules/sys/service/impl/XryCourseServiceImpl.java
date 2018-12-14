@@ -173,24 +173,14 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         Integer commentCount = baseMapper.countCommentByCourseId(courseId);
         params.put("commentCount", commentCount);
         // 4、根据课程id查询好评度
-        List<Integer> courseGoodPraiseSum = baseMapper.countGoodPraiseByCourseId(courseId);
-        Integer courseCount = 0;
-        for (Integer c : courseGoodPraiseSum) {
-            courseCount += c;
-        }
-        double courseGoodPraiseCount = (courseCount / courseGoodPraiseSum.size()) / 10;
+        double courseGoodPraiseCount = baseMapper.countGoodPraiseByCourseId(courseId);
         params.put("courseGoodPraiseCount", courseGoodPraiseCount);
         // 5、查询课程讲师信息
         String teacherId = courseDetailContent.getTid();
         XryTeacherEntity teacher = xryTeacherService.selectById(teacherId);
         params.put("teacher", teacher);
         // 5.1、查询该讲师的好评度
-        List<Integer> teacherGoodPraiseSum = baseMapper.countGoodPraiseByTeacherId(teacherId);
-        Integer teacherCount = 0;
-        for (Integer t : courseGoodPraiseSum) {
-            teacherCount += t;
-        }
-        double teacherGoodPraiseCount = (teacherCount / teacherGoodPraiseSum.size()) / 10;
+        List<Integer> teacherGoodPraiseCount = baseMapper.countGoodPraiseByTeacherId(teacherId);
         params.put("teacherGoodPraiseCount", teacherGoodPraiseCount);
         // 5.2、该讲师的课程数
         Integer teacherCourseCount = baseMapper.countCourseByTeacherId(teacherId);

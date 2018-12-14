@@ -137,7 +137,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @param courseId
      * @return
      */
-    List<Integer> countGoodPraiseByCourseId(@Param("courseId") Long courseId);
+    double countGoodPraiseByCourseId(@Param("courseId") Long courseId);
 
     /**
      * 查询该讲师的好评度

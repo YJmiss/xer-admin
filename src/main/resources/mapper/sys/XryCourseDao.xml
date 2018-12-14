@@ -150,12 +150,12 @@
         select count(*) from xry_comment where obj_id = #{courseId} and type = 0
     </select>
     <!--根据课程id查询好评度-->
-    <select id="countGoodPraiseByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        select star_level from xry_comment where obj_id = #{courseId} and type = 0
+    <select id="countGoodPraiseByCourseId" parameterType="java.lang.Long" resultType="java.lang.Double">
+        select AVG(star_level) as 'score' from xry_comment where obj_id =#{courseId} and type = 0 and status = 1
     </select>
     <!--查询该讲师的好评度-->
     <select id="countGoodPraiseByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select star_level from xry_comment where obj_id = #{teacherId} and type = 1
+        select AVG(star_level) as 'score' from xry_comment where obj_id =#{teacherId} and type = 1 and status = 1
     </select>
     <!--该讲师的课程数-->
     <select id="countCourseByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -171,7 +171,7 @@
     </select>
     <!--该机构的学生数-->
     <select id="countStudentByOrgId" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        select * from xry_course_teacher_user where course_id in (select id from xry_course where tid in (select id from xry_teacher where org_id = #{orgId} and status = 3)) and type = 1
+        select count(*) from xry_course_teacher_user where course_id in (select id from xry_course where tid in (select id from xry_teacher where org_id = #{orgId} and status = 3)) and type = 1
     </select>
 
 </mapper>
