@@ -22,10 +22,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/xry/user")
 public class XryUserController extends AbstractController {
-    /** 讲师<->普通用户切换 */
-    final static Integer TEACHER_TO_NORMAL = 0;
-    /** 普通用户<->讲师切换 */
-    final static Integer NORMAL_TO_TEACHER = 1;
     /** 讲师推荐 */
     final static Integer RECOMMEND_USER = 1;
     /**  取消推荐 */
@@ -60,47 +56,15 @@ public class XryUserController extends AbstractController {
     }
 
     /**
-     * 构造讲师树
+     * 构造用户树
      * @return
      */
-    @SysLog("讲师树")
+    @SysLog("用户树")
     @GetMapping("/treeUser")
     @RequiresPermissions("xry:user:treeUser")
-    public Result treeCourse() {
+    public Result treeUser() {
         List<XryUserEntity> userList = xryUserService.treeUser();
         return Result.ok().put("userList", userList);
-    }
-
-    /**
-     * 讲师<->普通用户切换
-     * @param ids
-     * @return
-     */
-    @SysLog("讲师<->普通用户切换")
-    @PostMapping("/updateUserRole")
-    @RequiresPermissions("xry:user:updateUserRole")
-    public Result updateUserRole(@RequestBody String[] ids) {
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("ids",ids);
-        params.put("flag",TEACHER_TO_NORMAL);
-        xryUserService.updateUserRole(params);
-        return Result.ok();
-    }
-
-    /**
-     * 普通用户<->讲师切换
-     * @param ids
-     * @return
-     */
-    @SysLog("普通用户<->讲师切换")
-    @PostMapping("/updateUserRoleTeacher")
-    @RequiresPermissions("xry:user:updateUserRoleTeacher")
-    public Result updateUserRoleTeacher(@RequestBody String[] ids) {
-        Map<String,Object> params = new HashMap<String,Object>();
-        params.put("ids",ids);
-        params.put("flag",NORMAL_TO_TEACHER);
-        xryUserService.updateUserRole(params);
-        return Result.ok();
     }
 
     /**

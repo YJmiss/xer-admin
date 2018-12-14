@@ -36,11 +36,6 @@ public interface XryUserService extends IService<XryUserEntity> {
      */
     List<XryUserEntity> treeUser();
 
-    /**
-     * 修改用户角色
-     * @param params
-     */
-    void updateUserRole(Map<String, Object> params);
 
     /**
      * 讲师推荐、取消推荐

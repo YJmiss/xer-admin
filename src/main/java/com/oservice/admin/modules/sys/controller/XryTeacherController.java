@@ -53,6 +53,18 @@ public class XryTeacherController extends AbstractController {
     }
 
     /**
+     * 构造讲师树
+     * @return
+     */
+    @SysLog("讲师树")
+    @GetMapping("/treeTeacher")
+    @RequiresPermissions("xry:teacher:treeTeacher")
+    public Result treeTeacher() {
+        List<XryTeacherEntity> teacherList = xryTeacherService.treeTeacher();
+        return Result.ok().put("teacherList", teacherList);
+    }
+
+    /**
      * 讲师信息
      * @param id
      * @return

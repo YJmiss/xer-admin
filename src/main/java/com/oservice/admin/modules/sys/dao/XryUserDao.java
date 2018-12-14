@@ -37,12 +37,6 @@ public interface XryUserDao extends BaseMapper<XryUserEntity> {
     void deleteBatchIds(@Param("ids")List<String> ids);
 
     /**
-     * 修改用户角色
-     * @param params
-     */
-    void updateUserRole(Map<String, Object> params);
-
-    /**
      * 讲师推荐、取消推荐
      * @param params
      */
