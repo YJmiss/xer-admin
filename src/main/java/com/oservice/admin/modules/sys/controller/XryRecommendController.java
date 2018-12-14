@@ -58,8 +58,8 @@ public class XryRecommendController extends AbstractController {
      * @return
      */
     @SysLog("查询用户已经选择喜好的课程类目")
-    @GetMapping("/appListCourseCatByUserId")
-    public Result appListCourseCatByUserId(@RequestParam String token){
+        @GetMapping("/appListCourseCatByUserId")
+        public Result appListCourseCatByUserId(@RequestParam String token){
         SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(token);
         if (null == tokenEntity) {
             return Result.error(1,"token获取失败或已失效");

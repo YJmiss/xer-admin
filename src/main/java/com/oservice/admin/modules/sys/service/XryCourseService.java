@@ -133,4 +133,9 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 */
 	void appUpdateRecommend(Map<String, Object> params);
 
+	/**
+	 * app端查询"课程详情"
+	 * @param courseId
+	 */
+	Map<String, Object> queryCourseDetailContentByCourseId(Long courseId);
 }
