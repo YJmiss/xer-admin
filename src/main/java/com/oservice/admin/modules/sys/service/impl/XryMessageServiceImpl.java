@@ -3,15 +3,15 @@ package com.oservice.admin.modules.sys.service.impl;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.modules.sys.dao.XryCommentDao;
 import com.oservice.admin.modules.sys.dao.XryMessageDao;
-import com.oservice.admin.modules.sys.entity.XryCommentEntity;
 import com.oservice.admin.modules.sys.entity.XryMessageEntity;
-import com.oservice.admin.modules.sys.service.XryCommentService;
 import com.oservice.admin.modules.sys.service.XryMessageService;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 系统用户
@@ -48,7 +48,7 @@ public class XryMessageServiceImpl extends ServiceImpl<XryMessageDao, XryMessage
 
     @Override
     public Integer save(XryMessageEntity xryMessageEntity) {
-        return  baseMapper.insert(xryMessageEntity);
+        return baseMapper.insert(xryMessageEntity);
     }
 
     @Override

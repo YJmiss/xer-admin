@@ -1,8 +1,6 @@
 package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.oservice.admin.modules.sys.entity.XryOrganizationEntity;
-import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryTeacherEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,6 +33,7 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
 
     /**
      * 讲师信息查询
+     *
      * @param id
      * @return
      */
@@ -42,6 +41,7 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
 
     /**
      * app查询讲师列表
+     *
      * @param params
      * @return
      */

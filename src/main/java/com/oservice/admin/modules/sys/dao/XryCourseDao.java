@@ -117,6 +117,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
      * 根据课程id查询学习人数
+     *
      * @param courseId
      * @return
      */
@@ -124,6 +125,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
      * 根据课程id查询评价人数
+     *
      * @param courseId
      * @return
      */
@@ -131,6 +133,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
      * 根据课程id查询好评度
+     *
      * @param courseId
      * @return
      */
@@ -138,6 +141,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
      * 查询该讲师的好评度
+     *
      * @param teacherId
      * @return
      */
@@ -145,6 +149,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
      * 该讲师的课程数
+     *
      * @param teacherId
      * @return
      */
@@ -152,6 +157,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
      * 该讲师的学生数（所有课程学生的总数）
+     *
      * @param teacherId
      * @return
      */
@@ -159,6 +165,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
      * 该机构的课程数
+     *
      * @param orgId
      * @return
      */
@@ -166,6 +173,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
      * 该机构的学生数
+     *
      * @param orgId
      * @return
      */

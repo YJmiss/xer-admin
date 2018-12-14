@@ -27,24 +27,26 @@
     </select>
     <!--app端用户删除已经加入学习的课程-->
     <delete id="appDelCourseById" parameterType="java.util.Map">
-      delete from xry_course_teacher_user where id in
+        delete from xry_course_teacher_user where id in
         <foreach collection="ids" item="id" open="(" separator="," close=")">
-          #{id}
+            #{id}
         </foreach>
     </delete>
     <!--app端用户删除已经关注的讲师-->
     <delete id="appDelTeacherById" parameterType="java.util.Map">
-      delete from xry_course_teacher_user where id in
-      <foreach collection="ids" item="id" open="(" separator="," close=")">
-          #{id}
-      </foreach>
+        delete from xry_course_teacher_user where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </delete>
     <!--根据课程id查询出报名学习该课程的所有用户-->
-    <select id="listUserIdByCourseId" parameterType="java.lang.Long" resultType="com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity">
+    <select id="listUserIdByCourseId" parameterType="java.lang.Long"
+            resultType="com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity">
       select * from xry_course_teacher_user where course_id = #{courseId}
     </select>
     <!--根据讲师id查询关注改讲师的所有用户-->
-    <select id="listUserIdByTeacherId" parameterType="java.lang.String" resultType="com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity">
+    <select id="listUserIdByTeacherId" parameterType="java.lang.String"
+            resultType="com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity">
       select * from xry_course_teacher_user where teacher_id = #{teacherId}
     </select>
 

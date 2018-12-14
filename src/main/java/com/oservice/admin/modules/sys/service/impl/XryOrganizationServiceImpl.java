@@ -2,12 +2,10 @@ package com.oservice.admin.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.modules.sys.dao.XryCourseDao;
 import com.oservice.admin.modules.sys.dao.XryOrganizationDao;
-import com.oservice.admin.modules.sys.entity.*;
-import com.oservice.admin.modules.sys.service.XryCourseService;
+import com.oservice.admin.modules.sys.entity.XryOrganizationEntity;
+import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.service.XryOrganizationService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -37,7 +35,7 @@ public class XryOrganizationServiceImpl extends ServiceImpl<XryOrganizationDao, 
         map.put("page", page);
         map.put("limit", limit);
         if (null != orgName && "" != orgName) {
-            map.put("orgName","%" + orgName + "%");
+            map.put("orgName", "%" + orgName + "%");
         }
         map.put("corporator", corporator);
         map.put("status", status);

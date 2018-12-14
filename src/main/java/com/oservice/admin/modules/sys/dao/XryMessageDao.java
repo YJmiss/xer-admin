@@ -1,7 +1,6 @@
 package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.oservice.admin.modules.sys.entity.XryCommentEntity;
 import com.oservice.admin.modules.sys.entity.XryMessageEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -33,6 +32,7 @@ public interface XryMessageDao extends BaseMapper<XryMessageEntity> {
 
     /**
      * 保存记录后返回自增的id
+     *
      * @param message
      * @return
      */
@@ -40,6 +40,7 @@ public interface XryMessageDao extends BaseMapper<XryMessageEntity> {
 
     /**
      * 查询出当前保存的记录并发消息到客户端
+     *
      * @param messageId
      * @return
      */

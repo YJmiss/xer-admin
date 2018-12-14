@@ -120,13 +120,21 @@ public class XryCommentEntity implements Serializable {
         this.detail = detail;
     }
 
-    public String getReply() { return reply; }
+    public String getReply() {
+        return reply;
+    }
 
-    public void setReply(String reply) { this.reply = reply; }
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
 
-    public Date getReplyTime() { return replyTime; }
+    public Date getReplyTime() {
+        return replyTime;
+    }
 
-    public void setReplyTime(Date replyTime) { this.replyTime = replyTime; }
+    public void setReplyTime(Date replyTime) {
+        this.replyTime = replyTime;
+    }
 
     public Date getCreated() {
         return created;

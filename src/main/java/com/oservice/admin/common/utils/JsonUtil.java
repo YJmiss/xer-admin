@@ -4,12 +4,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.Map.Entry;
 
 
@@ -22,6 +17,7 @@ public class JsonUtil {
 
     /**
      * 清理map
+     *
      * @author zhou-baicheng
      */
     public void clear() {
@@ -30,10 +26,11 @@ public class JsonUtil {
 
     /**
      * 添加元素 <br/>
-     * @author zhou-baicheng
-     * @param key 键
+     *
+     * @param key   键
      * @param value 值
      * @return Map
+     * @author zhou-baicheng
      */
     public Map<String, Object> put(String key, Object value) {
         jsonMap.put(key, value);
@@ -46,9 +43,10 @@ public class JsonUtil {
      * || value instanceof Double || value instanceof Float
      * || value instanceof Short || value instanceof Long || value
      * instanceof Byte);
-     * @author zhou-baicheng
+     *
      * @param value
      * @return boolean
+     * @author zhou-baicheng
      */
     private static boolean isNoQuote(Object value) {
         if (value instanceof Integer) {
@@ -72,9 +70,10 @@ public class JsonUtil {
 
     /**
      * 判断是否要加引号
-     * @author zhou-baicheng
+     *
      * @param value
      * @return boolean
+     * @author zhou-baicheng
      */
     private static boolean isQuote(Object value) {
         if (value instanceof String) {
@@ -89,8 +88,9 @@ public class JsonUtil {
 
     /**
      * 返回形如{'apple':'red','lemon':'yellow'}的字符串
-     * @author zhou-baicheng
+     *
      * @return String
+     * @author zhou-baicheng
      * @see Object#toString()
      */
     @SuppressWarnings("unchecked")
@@ -134,9 +134,10 @@ public class JsonUtil {
 
     /**
      * 数组拼接
-     * @author zhou-baicheng
+     *
      * @param array 数组
      * @return String
+     * @author zhou-baicheng
      */
     public static String arrayToStr(Object array) {
         if (!array.getClass().isArray()) {
@@ -168,9 +169,10 @@ public class JsonUtil {
 
     /**
      * list 集合 生成
-     * @author zhou-baicheng
+     *
      * @param list 集合
      * @return String
+     * @author zhou-baicheng
      */
     @SuppressWarnings("unchecked")
     public static String listToStr(List<Object> list) {
@@ -180,7 +182,7 @@ public class JsonUtil {
         StringBuffer sb = new StringBuffer();
         sb.append("[");
         Object value = null;
-        for (java.util.Iterator<Object> it = list.iterator(); it.hasNext();) {
+        for (java.util.Iterator<Object> it = list.iterator(); it.hasNext(); ) {
             value = it.next();
             if (value instanceof Map) {
                 sb.append(fromObject((Map) value).toString()).append(",");
@@ -202,9 +204,10 @@ public class JsonUtil {
 
     /**
      * 从一个bean装载数据，返回一个JsonUtil对象。 <br/>
-     * @author zhou-baicheng
+     *
      * @param bean 实体
      * @return JSONUtils
+     * @author zhou-baicheng
      */
     @SuppressWarnings("unchecked")
     public static JsonUtil fromObject(Object bean) {
@@ -234,9 +237,10 @@ public class JsonUtil {
 
     /**
      * 从Map中装载数据 <br/>
-     * @author zhou-baicheng
+     *
      * @param map map
      * @return JSONUtils
+     * @author zhou-baicheng
      */
     public static JsonUtil fromObject(Map<String, Object> map) {
         JsonUtil json = new JsonUtil();
@@ -258,17 +262,18 @@ public class JsonUtil {
 
     /**
      * 此处为方法说明
-     * @author zhou-baicheng
+     *
      * @param args aa
+     * @author zhou-baicheng
      */
     public static void main(String[] args) {
-        Map<String,Object> map1 = new HashMap<String,Object>();
+        Map<String, Object> map1 = new HashMap<String, Object>();
         map1.put("name", "张三");
         map1.put("age", 2);
-        Map<String,Object> map2 = new HashMap<String,Object>();
+        Map<String, Object> map2 = new HashMap<String, Object>();
         map2.put("name", "张三");
         map2.put("age", 22);
-        List<Map<String,Object>> list = new LinkedList<Map<String,Object>>();
+        List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
         list.add(map1);
         list.add(map2);
         List<Integer> li = new LinkedList<Integer>();
@@ -283,7 +288,7 @@ public class JsonUtil {
         util.put("dd", 1.3d);
         util.put("ff", 1.3f);
         util.put("date", new Date());
-        int[] a = new int[] { 2, 3, 4, 5 };
+        int[] a = new int[]{2, 3, 4, 5};
         util.put("arr", a);
         System.out.println(util);
     }

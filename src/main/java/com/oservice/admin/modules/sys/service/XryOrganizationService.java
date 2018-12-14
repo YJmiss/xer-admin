@@ -1,9 +1,9 @@
 package com.oservice.admin.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.modules.sys.entity.*;
+import com.oservice.admin.modules.sys.entity.XryOrganizationEntity;
+import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -28,13 +28,13 @@ public interface XryOrganizationService extends IService<XryOrganizationEntity> 
 	 * @param id
 	 * @return
 	 */
-	Map<String, Object> queryById(Long id);
+    Map<String, Object> queryById(Long id);
 
 	/**
 	 * 机构保存
-	 * @param params
+     * @param params
 	 */
-	void save(String[] params);
+    void save(String[] params);
 
 	/**
 	 * 机构删除
@@ -48,10 +48,11 @@ public interface XryOrganizationService extends IService<XryOrganizationEntity> 
 	 */
 	void recordExamineInfo(XryRecordEntity record);
 
-	/**
-	 * app查询机构列表
-	 * @param params
-	 * @return
-	 */
-	List<Map<String,Object>> listByUserId(Map<String, Object> params);
+    /**
+     * app查询机构列表
+     *
+     * @param params
+     * @return
+     */
+    List<Map<String, Object>> listByUserId(Map<String, Object> params);
 }

@@ -2,18 +2,13 @@ package com.oservice.admin.modules.sys.controller;
 
 import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.ListUtil;
-import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
-import com.oservice.admin.common.validator.ValidatorUtils;
-import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryRecommendEntity;
 import com.oservice.admin.modules.sys.service.SysUserTokenService;
 import com.oservice.admin.modules.sys.service.XryCourseCatService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -58,8 +53,8 @@ public class XryRecommendController extends AbstractController {
      * @return
      */
     @SysLog("查询用户已经选择喜好的课程类目")
-        @GetMapping("/appListCourseCatByUserId")
-        public Result appListCourseCatByUserId(@RequestParam String token){
+    @GetMapping("/appListCourseCatByUserId")
+    public Result appListCourseCatByUserId(@RequestParam String token) {
         SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(token);
         if (null == tokenEntity) {
             return Result.error(1,"token获取失败或已失效");

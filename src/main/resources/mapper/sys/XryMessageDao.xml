@@ -31,7 +31,7 @@
     </update>
     <!--保存记录后返回自增的id-->
     <insert id="saveAndGetId" parameterType="java.util.Map" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
-      insert into xry_message (msg_type,course_type,obj_id,user_id,status,publish_date,info,created)
+        insert into xry_message (msg_type,course_type,obj_id,user_id,status,publish_date,info,created)
         values (#{msgType},#{courseType},#{objId},#{userId},#{status},#{publishDate},#{info},#{created})
         <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID()

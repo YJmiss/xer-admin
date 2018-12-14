@@ -3,16 +3,10 @@ package com.oservice.admin.modules.sys.controller;
 import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
-import com.oservice.admin.common.validator.ValidatorUtils;
-import com.oservice.admin.common.validator.group.AddGroup;
-import com.oservice.admin.modules.app.service.SolrJService;
-import com.oservice.admin.modules.sys.entity.*;
+import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
 import com.oservice.admin.modules.sys.service.SysUserTokenService;
-import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryOrganizationService;
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -76,6 +70,7 @@ public class XryOrganizationController extends AbstractController {
 
     /**
      * app端保存机构信息
+     *
      * @param params
      * @return
      */
@@ -90,6 +85,7 @@ public class XryOrganizationController extends AbstractController {
 
     /**
      * app查询机构列表
+     *
      * @param token
      * @return
      */
@@ -99,11 +95,11 @@ public class XryOrganizationController extends AbstractController {
     public Result appList(@RequestParam String token) {
         SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(token);
         if (null == tokenEntity) {
-            return Result.error(1,"token获取失败或已失效");
+            return Result.error(1, "token获取失败或已失效");
         }
         Map<String, Object> params = new HashMap<>();
-        params.put("userId",tokenEntity.getUserId());
-        List<Map<String,Object>> orgList = xryOrganizationService.listByUserId(params);
+        params.put("userId", tokenEntity.getUserId());
+        List<Map<String, Object>> orgList = xryOrganizationService.listByUserId(params);
         return Result.ok().put("orgList", orgList);
     }
 

@@ -2,7 +2,6 @@ package com.oservice.admin.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.modules.sys.entity.XryOrganizationEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryTeacherEntity;
 
@@ -29,13 +28,13 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 	 * @param id
 	 * @return
 	 */
-	Map<String, Object> queryById(Long id);
+    Map<String, Object> queryById(Long id);
 
 	/**
 	 * 讲师保存
-	 * @param params
+     * @param params
 	 */
-	void save(String[] params);
+    void save(String[] params);
 
 	/**
 	 * 讲师删除

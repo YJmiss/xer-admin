@@ -2,7 +2,6 @@ package com.oservice.admin.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.modules.sys.entity.XryCommentEntity;
 import com.oservice.admin.modules.sys.entity.XryMessageEntity;
 
 import java.util.Map;
@@ -60,12 +59,14 @@ public interface XryMessageService extends IService<XryMessageEntity> {
 
     /**
      * 查询出当前保存的记录并发消息到客户端
+     *
      * @param messageId
      */
     Map<String, Object> seleMessageById(Long messageId);
 
     /**
      * 保存记录后返回自增的id
+     *
      * @param message
      * @return
      */

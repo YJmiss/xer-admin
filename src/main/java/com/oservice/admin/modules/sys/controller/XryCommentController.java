@@ -7,12 +7,7 @@ import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCommentEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseEntity;
-import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.service.XryCommentService;
-import com.oservice.admin.modules.sys.service.XryCourseService;
-import com.oservice.admin.modules.sys.service.XryRecordService;
-import com.oservice.admin.modules.sys.service.XryVideoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,25 +62,27 @@ public class XryCommentController extends AbstractController {
 
     /**
      * 查询评论
+     *
      * @param id
      * @return
      */
     @GetMapping("/info/{id}")
     @RequiresPermissions("xry:comment:info")
-    public Result info(@PathVariable("id") Long id){
+    public Result info(@PathVariable("id") Long id) {
         XryCommentEntity comment = xryCommentService.queryById(id);
         return Result.ok().put("comment", comment);
     }
 
     /**
      * 回复评论
+     *
      * @param comment
      * @return
      */
     @SysLog("回复评论")
     @PostMapping("/reply")
     @RequiresPermissions("xry:comment:reply")
-    public Result update(@RequestBody XryCommentEntity comment){
+    public Result update(@RequestBody XryCommentEntity comment) {
         ValidatorUtils.validateEntity(comment, UpdateGroup.class);
         comment.setReplyTime(new Date());
         xryCommentService.update(comment);

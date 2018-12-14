@@ -3,12 +3,8 @@ package com.oservice.admin.config;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -95,6 +91,7 @@ public class MessageWebSocket {
 
     /**
      * 在线的用户的发送消息
+     *
      * @param message
      * @param userIds
      * @throws IOException
@@ -112,7 +109,7 @@ public class MessageWebSocket {
                         if (userId.equals(sendUserId)) {
                             webSocketSet.get(sendUserId).sendMessage(message);
                         }
-                    }    
+                    }
                 }
             }
         }

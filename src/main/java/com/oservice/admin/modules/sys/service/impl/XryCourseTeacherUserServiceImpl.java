@@ -4,21 +4,25 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryCourseTeacherUserDao;
-import com.oservice.admin.modules.sys.entity.*;
+import com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity;
 import com.oservice.admin.modules.sys.service.XryCourseTeacherUserService;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 系统用户
  * 课程报名和讲师关注表接口实现类
+ *
  * @author wujunquan
  * @version 1.0
  */
 @Service("xryCourseTeacherUserService")
 public class XryCourseTeacherUserServiceImpl extends ServiceImpl<XryCourseTeacherUserDao, XryCourseTeacherUserEntity> implements XryCourseTeacherUserService {
-    
+
     @Override
     public Integer appSaveCourse(Map<String, Object> params) {
         XryCourseTeacherUserEntity courseTeacherUser = new XryCourseTeacherUserEntity();

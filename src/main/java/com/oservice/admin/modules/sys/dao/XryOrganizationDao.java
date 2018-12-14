@@ -1,8 +1,7 @@
 package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.oservice.admin.common.solr.SearcherItem;
-import com.oservice.admin.modules.sys.entity.*;
+import com.oservice.admin.modules.sys.entity.XryOrganizationEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,6 +33,7 @@ public interface XryOrganizationDao extends BaseMapper<XryOrganizationEntity> {
 
     /**
      * 根据机构id查询机构
+     *
      * @param id
      * @return
      */
@@ -41,6 +41,7 @@ public interface XryOrganizationDao extends BaseMapper<XryOrganizationEntity> {
 
     /**
      * app查询机构列表
+     *
      * @param params
      * @return
      */
