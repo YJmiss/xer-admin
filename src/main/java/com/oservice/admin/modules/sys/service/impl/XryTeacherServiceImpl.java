@@ -90,5 +90,10 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         return baseMapper.listByUserId(params);
     }
 
+    @Override
+    public List<XryTeacherEntity> treeTeacher() {
+        return baseMapper.treeTeacher();
+    }
+
 
 }

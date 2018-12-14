@@ -46,4 +46,10 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
      * @return
      */
     List<Map<String, Object>> listByUserId(Map<String, Object> params);
+
+    /**
+     * 构造讲师树
+     * @return
+     */
+    List<XryTeacherEntity> treeTeacher();
 }

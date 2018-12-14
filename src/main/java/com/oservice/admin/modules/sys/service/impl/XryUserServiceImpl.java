@@ -62,11 +62,6 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
     }
 
     @Override
-    public void updateUserRole(Map<String, Object> params) {
-        baseMapper.updateUserRole(params);
-    }
-
-    @Override
     public void updateUserRecommend(Map<String, Object> params) {
         baseMapper.updateUserRecommend(params);
     }

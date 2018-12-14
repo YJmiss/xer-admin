@@ -35,5 +35,9 @@
      LEFT JOIN xry_user b on a.user_id = b.id
      LEFT JOIN xry_organization c on a.org_id = c.id where a.user_id = #{userId}
     </select>
+    <!--构造讲师树-->
+    <select id="treeTeacher" resultType="com.oservice.admin.modules.sys.entity.XryTeacherEntity">
+        select * from xry_teacher where status = 3
+    </select>
 
 </mapper>
