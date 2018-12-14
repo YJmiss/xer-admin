@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.wechat.common.dao.WeixinAuthorizeDao">
+    <select id="selectAuthorizeBygzhType" resultType="com.oservice.admin.modules.wechat.common.entity.WeixinAuthorize">
+        select * from weixin_authorize where gzh_type=1
+    </select>
+
+    <select id="getAuthorizeList" resultType="com.oservice.admin.modules.wechat.common.entity.WeixinAuthorize">
+        select * from weixin_authorize;
+    </select>
+
+    <!--    <update id="updataAuthorizeById" parameterType="com.oservice.admin.modules.wechat.common.entity.WeixinAuthorize" >
+            update weixin_authorize set gzh_type=#{gzh_type} where id=#{id}
+        </update>-->
+    <insert id="addAuthorize" parameterType="com.oservice.admin.modules.wechat.common.entity.WeixinAuthorize">
+        insert into weixin_authorize (id,weixin_account,app_id,app_secret,gzh_type) values (#{id},#{weixinAccount},#{appId},#{appSecret},#{gzhType})
+    </insert>
+</mapper>

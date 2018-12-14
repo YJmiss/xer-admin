@@ -1,0 +1,28 @@
+package com.oservice.admin.modules.wechat.message.request;
+
+import com.oservice.admin.modules.wechat.enums.MessageType;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import lombok.Data;
+
+/**
+ * 事件类型消息基类
+ * Author: jonny
+ * Time: 2018-02-03 23:49.
+ */
+@Data
+public class EventRequestMessage extends BaseRequestMessage {
+
+    /**
+     * 事件类型
+     */
+    @XStreamAlias("Event")
+    private String event;
+
+    /**
+     * 消息类型
+     */
+    @Override
+    public String getMsgType() {
+        return MessageType.EVENT.getTypeStr();
+    }
+}

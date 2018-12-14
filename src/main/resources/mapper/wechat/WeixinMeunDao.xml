@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.wechat.common.dao.WeixinMeunDao">
+
+    <insert id="addMenu" parameterType="com.oservice.admin.modules.wechat.common.entity.WeixinMenu">
+        insert into weixin_menu (menu_id,parent_id,menu_name,menu_type,menu_key,menu_link,material_id,sort,status) values
+         (#{menuId},#{parentId},#{menuName},#{menuType},#{menuKey},#{menuLink},#{materialId},#{sort},#{status});
+    </insert>
+
+    <select id="getParentMeunList" resultType="com.oservice.admin.modules.wechat.common.entity.WeixinMenu">
+        select * from weixin_menu where parent_id='0'and status in(0,1);
+    </select>
+
+    <select id="getSonMeunList" resultType="com.oservice.admin.modules.wechat.common.entity.WeixinMenu">
+         select * from weixin_menu where parent_id not in('0') and status in(0,1);
+    </select>
+
+    <select id="getSonMenusByParentId" parameterType="String"
+            resultType="com.oservice.admin.modules.wechat.common.entity.WeixinMenu">
+        select * from weixin_menu where parent_id=#{parentID} and status=0;
+    </select>
+
+    <select id="getOkParentMeunList" resultType="com.oservice.admin.modules.wechat.common.entity.WeixinMenu">
+        select * from weixin_menu where parent_id='0'and status = 0 ;
+    </select>
+
+    <select id="getOkSonMeunList" resultType="com.oservice.admin.modules.wechat.common.entity.WeixinMenu">
+         select * from weixin_menu where parent_id not in('0') and status = 0;
+    </select>
+
+</mapper>
