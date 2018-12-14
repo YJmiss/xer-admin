@@ -31,4 +31,19 @@ public interface XryMessageDao extends BaseMapper<XryMessageEntity> {
      */
     void updateMessageStatus(Map<String, Object> params);
 
+    /**
+     * 保存记录后返回自增的id
+     * @param message
+     * @return
+     */
+    Long saveAndGetId(XryMessageEntity message);
+
+    /**
+     * 查询出当前保存的记录并发消息到客户端
+     * @param messageId
+     * @return
+     */
+    Map<String, Object> seleMessageById(Long messageId);
+
+
 }

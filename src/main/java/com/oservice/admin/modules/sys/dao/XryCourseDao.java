@@ -115,4 +115,59 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      */
     List<XryGoodCourseEntity> getGoodCourse();
 
+    /**
+     * 根据课程id查询学习人数
+     * @param courseId
+     * @return
+     */
+    Integer countStudentByCourseId(@Param("courseId") Long courseId);
+
+    /**
+     * 根据课程id查询评价人数
+     * @param courseId
+     * @return
+     */
+    Integer countCommentByCourseId(@Param("courseId") Long courseId);
+
+    /**
+     * 根据课程id查询好评度
+     * @param courseId
+     * @return
+     */
+    List<Integer> countGoodPraiseByCourseId(@Param("courseId") Long courseId);
+
+    /**
+     * 查询该讲师的好评度
+     * @param teacherId
+     * @return
+     */
+    List<Integer> countGoodPraiseByTeacherId(@Param("teacherId") String teacherId);
+
+    /**
+     * 该讲师的课程数
+     * @param teacherId
+     * @return
+     */
+    Integer countCourseByTeacherId(@Param("teacherId") String teacherId);
+
+    /**
+     * 该讲师的学生数（所有课程学生的总数）
+     * @param teacherId
+     * @return
+     */
+    Integer countStudentByTeacherId(@Param("teacherId") String teacherId);
+
+    /**
+     * 该机构的课程数
+     * @param orgId
+     * @return
+     */
+    Integer countCourseByOrgId(@Param("orgId") Long orgId);
+
+    /**
+     * 该机构的学生数
+     * @param orgId
+     * @return
+     */
+    Integer countStudentByOrgId(@Param("orgId") Long orgId);
 }

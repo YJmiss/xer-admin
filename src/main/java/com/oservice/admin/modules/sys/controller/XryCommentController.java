@@ -5,6 +5,7 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
+import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCommentEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
@@ -61,6 +62,33 @@ public class XryCommentController extends AbstractController {
     @RequiresPermissions("xry:comment:delete")
     public Result delete(@RequestBody Long[] ids) {
         xryCommentService.deleteBatch(ids);
+        return Result.ok();
+    }
+
+    /**
+     * 查询评论
+     * @param id
+     * @return
+     */
+    @GetMapping("/info/{id}")
+    @RequiresPermissions("xry:comment:info")
+    public Result info(@PathVariable("id") Long id){
+        XryCommentEntity comment = xryCommentService.queryById(id);
+        return Result.ok().put("comment", comment);
+    }
+
+    /**
+     * 回复评论
+     * @param comment
+     * @return
+     */
+    @SysLog("回复评论")
+    @PostMapping("/reply")
+    @RequiresPermissions("xry:comment:reply")
+    public Result update(@RequestBody XryCommentEntity comment){
+        ValidatorUtils.validateEntity(comment, UpdateGroup.class);
+        comment.setReplyTime(new Date());
+        xryCommentService.update(comment);
         return Result.ok();
     }
 

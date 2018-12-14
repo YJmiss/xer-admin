@@ -22,7 +22,7 @@ public class XryMessageEntity implements Serializable {
     /**
      * 消息类型（1：课程消息；2：我关注的；3：平台通知）
      */
-    private Integer type;
+    private Integer msgType;
 
     /**
      * 课程消息类型（1：开课通知；2：课程章节更新，3：其它）
@@ -67,12 +67,12 @@ public class XryMessageEntity implements Serializable {
         this.id = id;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getMsgType() {
+        return msgType;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setMsgType(Integer msgType) {
+        this.msgType = msgType;
     }
 
     public Integer getCourseType() {

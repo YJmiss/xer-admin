@@ -28,13 +28,13 @@ public interface XryOrganizationService extends IService<XryOrganizationEntity> 
 	 * @param id
 	 * @return
 	 */
-	XryOrganizationEntity queryById(Long id);
+	Map<String, Object> queryById(Long id);
 
 	/**
 	 * 机构保存
-	 * @param xryOrganizationEntity
+	 * @param params
 	 */
-	void save(XryOrganizationEntity xryOrganizationEntity);
+	void save(String[] params);
 
 	/**
 	 * 机构删除
@@ -48,5 +48,10 @@ public interface XryOrganizationService extends IService<XryOrganizationEntity> 
 	 */
 	void recordExamineInfo(XryRecordEntity record);
 
-
+	/**
+	 * app查询机构列表
+	 * @param params
+	 * @return
+	 */
+	List<Map<String,Object>> listByUserId(Map<String, Object> params);
 }

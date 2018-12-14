@@ -1,6 +1,5 @@
 package com.oservice.admin.modules.sys.controller;
 
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
@@ -8,11 +7,15 @@ import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.app.service.SolrJService;
+import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.service.SysUserTokenService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
+import com.oservice.admin.modules.sys.service.XryCourseTeacherUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,13 +42,18 @@ public class XryCourseController extends AbstractController {
     final static Integer RECOMMEND_COURSE = 1;
     /** 取消课程推荐 */
     final static Integer CANCEL_RECOMMEND = 0;
+    /** 课程加入学习的标识符 */
+    final static Integer COURSE_JOIN_STUDY = 1;
     @Resource
     private XryCourseService xryCourseService;
-    /**
-     * 搜索服务
-     */
+    @Resource
+    private SysUserTokenService sysUserTokenService;
+    @Resource
+    private XryCourseTeacherUserService xryCourseTeacherUserService;
     @Autowired
     private SolrJService solrJService;
+
+    
     /**
      * 查询课程列表
      * @param params
@@ -243,5 +251,85 @@ public class XryCourseController extends AbstractController {
         xryCourseService.updateCourseRecommend(params);
         return Result.ok();
     }
+
+    /**
+     * app端用户加入课程学习
+     * @param token 用户的token
+     * @param courseId 课程id
+     * @param isSelect 是否加入学习
+     * @return
+     */
+    @SysLog("app端用户加入课程学习")
+    @PostMapping("/appJoinCourseStudy")
+    public Result appJoinCourseStudy(@RequestParam String token, Long courseId, boolean isSelect) {
+        // 从token中获取登录人信息
+        JSONObject tokenJSONObject = new JSONObject(token);
+        String json = tokenJSONObject.getString("token");
+        SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(json);
+        if (null == tokenEntity) {
+            return Result.error(1,"token已过期，请重新登录！");
+        }
+        // 把课程id和用户id加入到数据库表中
+        Map<String,Object> params = new HashMap<>();
+        params.put("userId",tokenEntity.getUserId());
+        params.put("courseId",courseId);
+        params.put("type",COURSE_JOIN_STUDY);
+        Integer isSuccess = xryCourseTeacherUserService.appSaveCourse(params);
+        if (1 == isSuccess) {
+            return Result.ok().put("1","课程加入学习成功");
+        } else {
+            return Result.error(2,"课程加入学习失败");
+        }
+    }
+
+    /**
+     * app端根据用户查询用户加入学习的课程列表
+     * @param token
+     * @param pageNo
+     * @param pageSize
+     * @param flag 标识符（本周学习、本月学习，全部课程）
+     * @return
+     */
+    @SysLog("app端根据用户查询用户加入学习的课程列表")
+    @GetMapping("/appPageListCourseByUserId")
+    public Result appPageListCourseByUserId(@RequestParam String token, Integer pageNo, Integer pageSize, Integer flag){
+        // 从token中获取登录人信息
+        JSONObject tokenJSONObject = new JSONObject(token);
+        String json = tokenJSONObject.getString("token");
+        SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(json);
+        if (null == tokenEntity) {
+            return Result.error(1,"token已过期，请重新登录！");
+        }
+        // 把课程id和用户id加入到数据库表中
+        Map<String,Object> params = new HashMap<>();
+        params.put("userId",tokenEntity.getUserId());
+        params.put("pageNo",pageNo);
+        params.put("pageSize",pageSize);
+        params.put("flag",flag);
+        PageUtils page = xryCourseTeacherUserService.appPageListCourseByUserId(params);
+        return Result.ok().put("page", page);
+    }
+
+    /**
+     * app端用户删除已经加入学习的课程
+     * @param ids
+     * @return
+     */
+    @SysLog("app端用户删除已经加入学习的课程")
+    @PostMapping("/appDelCourseById")
+    public Result appDelCourseById(@RequestParam String token, Long[] ids){
+        // 从token中获取登录人信息
+        JSONObject tokenJSONObject = new JSONObject(token);
+        String json = tokenJSONObject.getString("token");
+        SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(json);
+        if (null == tokenEntity) {
+            return Result.error(1,"token已过期，请重新登录！");
+        }
+        Map<String,Object> params = new HashMap<>();
+        params.put("ids",ids);
+        xryCourseTeacherUserService.appDelCourseById(params);
+        return Result.ok();
+    }
+    
 
 }

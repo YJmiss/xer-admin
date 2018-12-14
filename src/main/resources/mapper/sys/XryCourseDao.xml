@@ -5,7 +5,7 @@
 
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
-        select  count(*) from xry_course where 1=1
+        select count(*) from xry_course where 1=1
         <if test="params.title != null and params.title != ''">
             and title like #{params.title}
         </if>
@@ -19,7 +19,7 @@
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.name as catName,c.nickname
-                from xry_course a left join xry_course_cat b on  a.cid=b.id left join xry_user c on a.tid=c.id  where 1=1
+        from xry_course a left join xry_course_cat b on a.cid=b.id left join xry_user c on a.tid=c.id where 1=1
         <if test="params.title != null and params.title != ''">
             and a.title like #{params.title}
         </if>
@@ -36,10 +36,10 @@
     <!--查询课程审核列表-->
     <select id="examineList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.name as catName,c.nickname
-            from xry_course a
-            left join xry_course_cat b on  a.cid=b.id
-            left join xry_user c on a.tid=c.id
-            where a.status = 1 or a.status = 2
+        from xry_course a
+        left join xry_course_cat b on a.cid=b.id
+        left join xry_user c on a.tid=c.id
+        where a.status = 1 or a.status = 2
         <if test="params.cid != null and params.cid !=''">
             and a.cid = #{params.cid}
         </if>
@@ -67,8 +67,8 @@
     </select>
     <!--课程上下架-->
     <update id="updateCourseStatus" parameterType="java.util.Map">
-      update xry_course set status = #{flag} where id in
-        <foreach collection="ids" item="id"  open="(" separator="," close=")">
+        update xry_course set status = #{flag} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>
     </update>
@@ -122,7 +122,8 @@
         </foreach>
     </update>
     <!--查询用户已经选择喜好的课程-->
-    <select id="listRecommendCourseCatByUserId" parameterType="java.util.Map" resultType="com.oservice.admin.modules.sys.entity.XryRecommendEntity">
+    <select id="listRecommendCourseCatByUserId" parameterType="java.util.Map"
+            resultType="com.oservice.admin.modules.sys.entity.XryRecommendEntity">
       select * from xry_recommend where user_id = #{userId}
     </select>
     <!--用户喜好添加-->
@@ -133,12 +134,44 @@
     <update id="appUpdateRecommend" parameterType="java.util.Map">
       update xry_recommend set cat_id = #{catArr} where user_id = #{userId,jdbcType = VARCHAR}
     </update>
-
     <!--获取好评好课-->
     <select id="getGoodCourse" resultType="com.oservice.admin.modules.sys.entity.XryGoodCourseEntity">
-select a.id, a.score ,b.title,b.image,b.price from
-(select obj_id as 'id', AVG(star_level)as 'score',type,status from xry_comment group by obj_id HAVING type=0 and status=1) a
-,xry_course b
-where a.score>8.5 and b.id=a.id
+    select a.id, a.score ,b.title,b.image,b.price from
+    (select obj_id as 'id', AVG(star_level)as 'score',type,status from xry_comment group by obj_id HAVING type=0 and status=1) a
+    ,xry_course b
+    where a.score>8.5 and b.id=a.id
     </select>
+    <!--根据课程id查询学习人数-->
+    <select id="countStudentByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select count(*) from xry_course_teacher_user where course_id = #{courseId}
+    </select>
+    <!--根据课程id查询评价人数-->
+    <select id="countCommentByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select count(*) from xry_comment where obj_id = #{courseId} and type = 0
+    </select>
+    <!--根据课程id查询好评度-->
+    <select id="countGoodPraiseByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select star_level from xry_comment where obj_id = #{courseId} and type = 0
+    </select>
+    <!--查询该讲师的好评度-->
+    <select id="countGoodPraiseByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select star_level from xry_comment where obj_id = #{teacherId} and type = 1
+    </select>
+    <!--该讲师的课程数-->
+    <select id="countCourseByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from xry_course where tid = #{teacherId} and status = 4
+    </select>
+    <!--该讲师的课程数-->
+    <select id="countStudentByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from xry_course_teacher_user where course_id in (select id from xry_course where tid = #{teacherId}) and type = 1
+    </select>
+    <!--该机构的课程数-->
+    <select id="countCourseByOrgId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select count(*) from xry_course where tid in (select id from xry_teacher where org_id = #{orgId} and status = 3)
+    </select>
+    <!--该机构的学生数-->
+    <select id="countStudentByOrgId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select * from xry_course_teacher_user where course_id in (select id from xry_course where tid in (select id from xry_teacher where org_id = #{orgId} and status = 3)) and type = 1
+    </select>
+
 </mapper>
