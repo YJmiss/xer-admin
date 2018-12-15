@@ -138,5 +138,27 @@ public interface XryCourseService extends IService<XryCourseEntity> {
      *
      * @param courseId
      */
-    Map<String, Object> queryCourseDetailContentByCourseId(Long courseId);
+    Map<String, Object> queryCourseDetailByCourseId(Long courseId);
+
+	/**
+	 * 查询课程"目录"
+	 * @param courseId
+	 * @return
+	 */
+	Map<String, Object> listCourseCatalogByCourseId(Long courseId);
+
+	/**
+	 * 查询课程"评价"
+	 * @param courseId
+	 * @return
+	 */
+	Map<String, Object> listCourseCommentByCourseId(Long courseId,Integer pageNo, Integer pageSize);
+
+	/**
+	 * 查询"相关课程"
+	 * @param courseId
+	 * @return
+	 */
+	Map<String, Object> listRelatedCourseByCourseId(Long courseId);
+
 }

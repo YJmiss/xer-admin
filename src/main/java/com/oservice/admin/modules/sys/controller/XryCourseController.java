@@ -48,8 +48,6 @@ public class XryCourseController extends AbstractController {
     @Resource
     private XryCourseService xryCourseService;
     @Resource
-    private SysUserTokenService sysUserTokenService;
-    @Resource
     private XryCourseTeacherUserService xryCourseTeacherUserService;
     @Autowired
     private SolrJService solrJService;
@@ -256,24 +254,17 @@ public class XryCourseController extends AbstractController {
     /**
      * app端用户加入课程学习
      *
-     * @param token    用户的token
      * @param courseId 课程id
      * @param isSelect 是否加入学习
      * @return
      */
     @SysLog("app端用户加入课程学习")
     @PostMapping("/appJoinCourseStudy")
-    public Result appJoinCourseStudy(@RequestParam String token, Long courseId, boolean isSelect) {
+    public Result appJoinCourseStudy(@RequestParam Long courseId, boolean isSelect) {
         // 从token中获取登录人信息
-        JSONObject tokenJSONObject = new JSONObject(token);
-        String json = tokenJSONObject.getString("token");
-        SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(json);
-        if (null == tokenEntity) {
-            return Result.error(1, "token已过期，请重新登录！");
-        }
         // 把课程id和用户id加入到数据库表中
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", tokenEntity.getUserId());
+        params.put("userId", getUserId());
         params.put("courseId", courseId);
         params.put("type", COURSE_JOIN_STUDY);
         Integer isSuccess = xryCourseTeacherUserService.appSaveCourse(params);
@@ -286,8 +277,6 @@ public class XryCourseController extends AbstractController {
 
     /**
      * app端根据用户查询用户加入学习的课程列表
-     *
-     * @param token
      * @param pageNo
      * @param pageSize
      * @param flag     标识符（本周学习、本月学习，全部课程）
@@ -295,17 +284,10 @@ public class XryCourseController extends AbstractController {
      */
     @SysLog("app端根据用户查询用户加入学习的课程列表")
     @GetMapping("/appPageListCourseByUserId")
-    public Result appPageListCourseByUserId(@RequestParam String token, Integer pageNo, Integer pageSize, Integer flag) {
-        // 从token中获取登录人信息
-        JSONObject tokenJSONObject = new JSONObject(token);
-        String json = tokenJSONObject.getString("token");
-        SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(json);
-        if (null == tokenEntity) {
-            return Result.error(1, "token已过期，请重新登录！");
-        }
+    public Result appPageListCourseByUserId(@RequestParam Integer pageNo, Integer pageSize, Integer flag) {
         // 把课程id和用户id加入到数据库表中
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", tokenEntity.getUserId());
+        params.put("userId", getAppUserId());
         params.put("pageNo", pageNo);
         params.put("pageSize", pageSize);
         params.put("flag", flag);
@@ -321,16 +303,10 @@ public class XryCourseController extends AbstractController {
      */
     @SysLog("app端用户删除已经加入学习的课程")
     @PostMapping("/appDelCourseById")
-    public Result appDelCourseById(@RequestParam String token, Long[] ids) {
-        // 从token中获取登录人信息
-        JSONObject tokenJSONObject = new JSONObject(token);
-        String json = tokenJSONObject.getString("token");
-        SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(json);
-        if (null == tokenEntity) {
-            return Result.error(1, "token已过期，请重新登录！");
-        }
+    public Result appDelCourseById(@RequestParam Long[] ids) {
         Map<String, Object> params = new HashMap<>();
         params.put("ids", ids);
+        params.put("userId", getAppUserId());
         xryCourseTeacherUserService.appDelCourseById(params);
         return Result.ok();
     }

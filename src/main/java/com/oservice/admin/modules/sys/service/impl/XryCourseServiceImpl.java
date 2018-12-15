@@ -6,9 +6,11 @@ import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryCourseDao;
 import com.oservice.admin.modules.sys.entity.*;
+import com.oservice.admin.modules.sys.service.XryCourseCatService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryOrganizationService;
 import com.oservice.admin.modules.sys.service.XryTeacherService;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,13 +33,13 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
 	public PageUtils queryPage(Map<String, Object> params) {
         Page<Map<String, Object>> pageList = new Page<>();
         Map<String ,Object> map = new HashMap<>();
-        String page = (String) params.get("page");
-        String limit = (String) params.get("limit");
+        String pageNo = (String) params.get("page");
+        String pageSize = (String) params.get("limit");
         String title = (String) params.get("title");
         String cid = (String) params.get("cid");
         String tid = (String) params.get("tid");
-        map.put("page",page);
-        map.put("limit",limit);
+        map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
+        map.put("pageSize",pageSize);
         map.put("title","%"+title+"%");
         map.put("cid",cid);
         map.put("tid",tid);
@@ -161,17 +163,17 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     }
 
     @Override
-    public Map<String, Object> queryCourseDetailContentByCourseId(Long courseId) {
+    public Map<String, Object> queryCourseDetailByCourseId(Long courseId) {
         Map<String, Object> params = new HashMap<>();
         // 1、查询课程信息（课程标题、课程详情、课程价格）
         XryCourseEntity courseDetailContent = baseMapper.selectById(courseId);
         params.put("detailContent", courseDetailContent);
         // 2、根据课程id查询学习人数
         Integer courseStudentCount = baseMapper.countStudentByCourseId(courseId);
-        params.put("studentCount", courseStudentCount);
+        params.put("courseStudentCount", courseStudentCount);
         // 3、根据课程id查询评价人数
-        Integer commentCount = baseMapper.countCommentByCourseId(courseId);
-        params.put("commentCount", commentCount);
+        Integer courseCommentCount = baseMapper.countCommentByCourseId(courseId);
+        params.put("courseCommentCount", courseCommentCount);
         // 4、根据课程id查询好评度
         double courseGoodPraiseCount = baseMapper.countGoodPraiseByCourseId(courseId);
         params.put("courseGoodPraiseCount", courseGoodPraiseCount);
@@ -180,14 +182,14 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         XryTeacherEntity teacher = xryTeacherService.selectById(teacherId);
         params.put("teacher", teacher);
         // 5.1、查询该讲师的好评度
-        List<Integer> teacherGoodPraiseCount = baseMapper.countGoodPraiseByTeacherId(teacherId);
-        params.put("teacherGoodPraiseCount", teacherGoodPraiseCount);
+//        double teacherGoodPraiseCount = baseMapper.countGoodPraiseByTeacherId(teacherId);
+//        params.put("teacherGoodPraiseCount", teacherGoodPraiseCount);
         // 5.2、该讲师的课程数
         Integer teacherCourseCount = baseMapper.countCourseByTeacherId(teacherId);
         params.put("teacherCourseCount", teacherCourseCount);
         // 5.3、该讲师的学生数（所有课程学生的总数）
-        Integer studentCourseCount = baseMapper.countStudentByTeacherId(teacherId);
-        params.put("studentCourseCount", studentCourseCount);
+        Integer teacherStudentCount = baseMapper.countStudentByTeacherId(teacherId);
+        params.put("teacherStudentCount", teacherStudentCount);
         // 6、查询讲师所属机构
         if (null != teacher) {
             Long orgId = teacher.getOrgId();
@@ -203,6 +205,89 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
                 params.put("orgStudentCount", orgStudentCount);
             }
         }
+        JSONObject json = new JSONObject(params);
+        System.out.println(json);
+        return params;
+    }
+
+    @Override
+    public Map<String, Object> listCourseCatalogByCourseId(Long courseId) {
+        Map<String, Object> params = new HashMap<>();
+        // 1、根据课程id查询出所有目录
+        List<Map<String, Object>> courseCatalogList = baseMapper.listCourseCatalogByCourseId(courseId);
+        // 2、根据目录id查询视频
+        if (courseCatalogList.size() > 0) {
+            for (Map<String, Object> courseCatalog : courseCatalogList) {
+                Long cataLogId = (Long) courseCatalog.get("id");
+                List<Map<String, Object>> videoList = baseMapper.listVideoByCourseCatalogId(cataLogId);
+                courseCatalog.put("videoList", videoList);
+            }
+        }
+        params.put("courseCatalogList", courseCatalogList);
+        JSONObject json = new JSONObject(params);
+        System.out.println(json);
+        return params;
+    }
+
+    @Override
+    public Map<String, Object> listCourseCommentByCourseId(Long courseId,Integer pageNo, Integer pageSize) {
+        Map<String, Object> params = new HashMap<>();
+        // 根据课程id查询评价信息
+        Map<String, Object> map = new HashMap<>();
+        map.put("pageNo", pageNo);
+        map.put("pageSize", pageSize);
+        map.put("courseId", courseId);
+        List<Map<String, Object>> courseCommentList = baseMapper.listCourseCommentByCourseId(map);
+        params.put("courseCommentList", courseCommentList);
+        JSONObject json = new JSONObject(params);
+        System.out.println(json);
+        return params;
+    }
+
+    @Override
+    public Map<String, Object> listRelatedCourseByCourseId(Long courseId) {
+        Map<String, Object> params = new HashMap<>();
+        // 1、根据课程id查询出课程类目（课程中所属类目是子类目）
+        XryCourseEntity courseEntity = baseMapper.selectById(courseId);
+        // 查询出的类目id是子类目的id
+        Long courseCatId = courseEntity.getCid();
+        // 1.1、查询出该类目下管理员设置推荐的课程
+        List<Map<String, Object>> relatedCourseList = new ArrayList<>();
+        List<Map<String, Object>> recommendCourseList = baseMapper.listCourseCatBySubCatId(courseCatId);
+        if (recommendCourseList.size() > 0) {
+            for (Map<String, Object> rc : recommendCourseList) {
+                // 2、查询课程章节
+                Integer catalogCount = baseMapper.countCatalogByCourseCatId((Long) rc.get("cid"));
+                rc.put("catalogCount", catalogCount);
+                // 3、查询学习人数
+                Integer studentCount = baseMapper.countStudentByCourseCatId((Long) rc.get("cid"));
+                rc.put("studentCount", studentCount);
+            }
+            relatedCourseList.addAll(recommendCourseList);
+        }
+        // 1.2、如果该类目下的课程有管理员设置推荐的课程，则首先选择
+        if (recommendCourseList.size() < 10) {
+            Integer courseCount = 10 - recommendCourseList.size();
+            Map<String, Object> map = new HashMap<>();
+            map.put("courseCatId", courseCatId);
+            map.put("courseCount", courseCount);
+            List<Map<String, Object>> courseCountList = baseMapper.listCourseCatBySubCatIdAndCount(map);
+            if (courseCountList.size() > 0) {
+                for (Map<String, Object> cc : courseCountList) {
+                    // 2、查询课程章节
+                    Integer catalogCount = baseMapper.countCatalogByCourseCatId((Long) cc.get("cid"));
+                    cc.put("catalogCount", catalogCount);
+                    // 3、查询学习人数
+                    Integer studentCount = baseMapper.countStudentByCourseCatId((Long) cc.get("cid"));
+                    cc.put("studentCount", studentCount);
+                }
+                relatedCourseList.addAll(courseCountList);
+            }
+        }
+        params.put("relatedCourseList",relatedCourseList);
+
+        JSONObject json = new JSONObject(params);
+        System.out.println(json);
         return params;
     }
 
