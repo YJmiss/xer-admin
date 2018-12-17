@@ -237,7 +237,7 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         Map<String, Object> params = new HashMap<>();
         // 根据课程id查询评价信息
         Map<String, Object> map = new HashMap<>();
-        map.put("pageNo", pageNo);
+        map.put("pageNo", (pageNo - 1) * pageSize);
         map.put("pageSize", pageSize);
         map.put("courseId", courseId);
         List<Map<String, Object>> courseCommentList = baseMapper.listCourseCommentByCourseId(map);
