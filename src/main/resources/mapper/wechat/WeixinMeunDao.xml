@@ -29,4 +29,11 @@
          select * from weixin_menu where parent_id not in('0') and status = 0;
     </select>
 
+    <select id="getMenuById" parameterType="String"
+            resultType="com.oservice.admin.modules.wechat.common.entity.WeixinMenu">
+        select * from weixin_menu where menu_id=#{id};
+    </select>
+    <update id="updateByMenuId" parameterType="com.oservice.admin.modules.wechat.common.entity.WeixinMenu">
+        update weixin_menu set status=#{status} where menu_id=#{menuId}
+    </update>
 </mapper>

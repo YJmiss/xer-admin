@@ -101,7 +101,7 @@ public class WeixinMenuController {
             menu.setStatus(status);
         }
         menu.setStatus(status);
-        Boolean br = meunService.updataMenuById(menu);
+        Boolean br = meunService.updateByMenuId(menu);
         if (br) {
             return Result.ok();
         } else {

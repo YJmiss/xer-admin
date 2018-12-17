@@ -32,7 +32,7 @@ public interface WeixinMeunService {
      *
      * @param
      */
-    Boolean updataMenuById(WeixinMenu wxMenu);
+    Boolean updateByMenuId(WeixinMenu wxMenu);
 
     /**
      * 获取菜单信息

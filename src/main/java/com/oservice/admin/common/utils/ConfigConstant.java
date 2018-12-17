@@ -30,7 +30,7 @@ public class ConfigConstant {
     /**
      * 默认显示搜索记录数
      */
-    public final static int SEARCHER_ITEM_ROWS = 60;
+    public final static int SEARCHER_ITEM_ROWS = 20;
     /**
      * 图片上传配置
      */

@@ -35,17 +35,14 @@ public class WeixinMeunServiceImpl extends ServiceImpl<WeixinMeunDao, WeixinMenu
     }
 
     @Override
-    public Boolean updataMenuById(WeixinMenu wxMenu) {
-        Integer integer = baseMapper.updateById(wxMenu);
-        if (integer == 1 || integer == null) {
-            return false;
-        }
-        return true;
+    public Boolean updateByMenuId(WeixinMenu wxMenu) {
+        Boolean br = baseMapper.updateByMenuId(wxMenu);
+        return br;
     }
 
     @Override
     public WeixinMenu getMenuById(String id) {
-        return baseMapper.selectById(id);
+        return baseMapper.getMenuById(id);
     }
 
     @Override

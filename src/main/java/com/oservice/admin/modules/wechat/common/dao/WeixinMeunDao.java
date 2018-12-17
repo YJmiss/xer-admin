@@ -19,6 +19,7 @@ public interface WeixinMeunDao extends BaseMapper<WeixinMenu> {
 
     List<WeixinMenu> getOkParentMeunList();
 
-    List<WeixinMenu> getOkSonMeunList();
+    WeixinMenu getMenuById(String id);
 
+    Boolean updateByMenuId(WeixinMenu wxMenu);
 }
