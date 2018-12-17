@@ -11,7 +11,6 @@ import com.oservice.admin.modules.sys.service.XryTeacherService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +25,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/xry/teacher")
 public class XryTeacherController extends AbstractController {
-    /**
-     * 讲师关注的数据库标识符
-     */
+    /** 讲师推荐 */
+    final static Integer RECOMMEND_TEACHER= 1;
+    /**  取消推荐 */
+    final static Integer CANCEL_RECOMMEND = 0;
+    /** 讲师关注的数据库标识符 */
     private static final Integer TEACHER_FOCUS_FLAG = 2;
     @Resource
     private XryTeacherService xryTeacherService;
@@ -84,6 +85,38 @@ public class XryTeacherController extends AbstractController {
     @RequiresPermissions("xry:teacher:delete")
     public Result delete(@RequestBody Long[] ids){
         xryTeacherService.deleteBatch(ids);
+        return Result.ok();
+    }
+
+    /**
+     * 讲师推荐
+     * @param ids
+     * @return
+     */
+    @SysLog("讲师推荐")
+    @PostMapping("/recommendTeacher")
+    @RequiresPermissions("xry:teacher:recommendTeacher")
+    public Result recommendTeacher(@RequestBody String[] ids) {
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("ids",ids);
+        params.put("recommend",RECOMMEND_TEACHER);
+        xryTeacherService.updateTeacherRecommend(params);
+        return Result.ok();
+    }
+
+    /**
+     * 取消推荐
+     * @param ids
+     * @return
+     */
+    @SysLog("取消推荐")
+    @PostMapping("/cancelRecommend")
+    @RequiresPermissions("xry:teacher:cancelRecommend")
+    public Result cancelRecommend(@RequestBody String[] ids) {
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("ids",ids);
+        params.put("recommend",CANCEL_RECOMMEND);
+        xryTeacherService.updateTeacherRecommend(params);
         return Result.ok();
     }
 

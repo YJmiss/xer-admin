@@ -60,4 +60,10 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 	 * @return
 	 */
     List<XryTeacherEntity> treeTeacher();
+
+	/**
+	 * 讲师推荐、取消推荐
+	 * @param params
+	 */
+	void updateTeacherRecommend(Map<String, Object> params);
 }

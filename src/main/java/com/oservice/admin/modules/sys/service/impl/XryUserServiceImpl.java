@@ -1,15 +1,12 @@
 package com.oservice.admin.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.common.utils.Query;
 import com.oservice.admin.modules.sys.dao.XryUserDao;
-import com.oservice.admin.modules.sys.entity.SysUserEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.XryUserService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,27 +22,26 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        // 接收页面传过来的标识符flag
-        String flag = (String) params.get("flag");
-        // 不用自定义查询
-        String page = (String) params.get("page");
-        String limit = (String) params.get("limit");
+        String pageNo = (String) params.get("page");
+        String pageSize = (String) params.get("limit");
         String phone = (String) params.get("phone");
         String status = (String) params.get("status");
         String role = (String) params.get("role");
         String socialSource = (String) params.get("socialSource");
         String recommend = (String) params.get("recommend");
-        // 重写分页查询 page limit title cid
         Page<Map<String, Object>> pageList = new Page<>();
         Map<String ,Object> map = new HashMap<>();
-        map.put("flag",flag);
-        map.put("page",page);
-        map.put("limit",limit);
+        map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
+        map.put("pageSize",pageSize);
         map.put("phone","%" + phone + "%");
         map.put("status",status);
         map.put("role",role);
         map.put("socialSource",socialSource);
         map.put("recommend",recommend);
+        // 查询返回的数据总数page.totalCount
+       Long total = baseMapper.countTotal(map);
+       pageList.setTotal(total);
+       // page.list 查询返回的数据list
         List<Map<String, Object>> courseList = baseMapper.pageList(map);
         pageList.setRecords(courseList);
         return new PageUtils(pageList);
@@ -59,11 +55,6 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
     @Override
     public List<XryUserEntity> treeUser() {
         return baseMapper.treeUser();
-    }
-
-    @Override
-    public void updateUserRecommend(Map<String, Object> params) {
-        baseMapper.updateUserRecommend(params);
     }
 
 }

@@ -2,8 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryContentDao">
-    <select id="getContentsByCat" parameterType="int" resultType="com.oservice.admin.modules.sys.entity.XryContentEntity">
-        select * from xry_content where category=#{cat} and status=1
+
+    <!--查询返回的数据总数-->
+    <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from xry_content a left join xry_course b on  a.course_id=b.id where 1=1
+        <if test="params.title != null and params.title != ''">
+            and a.title like #{params.title}
+        </if>
+        <if test="params.category != null and params.category != ''">
+            and a.category = #{params.category}
+        </if>
+        <if test="params.courseId != null and params.courseId != ''">
+            and a.course_id = #{params.courseId}
+        </if>
+        <if test="params.status != null and params.status != ''">
+            and a.status = #{params.status}
+        </if>
     </select>
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
@@ -20,8 +34,8 @@
         <if test="params.status != null and params.status != ''">
             and a.status = #{params.status}
         </if>
-        <if test="params.limit != null and params.limit != ''">
-            limit 0,${params.limit}
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit ${params.pageNo},${params.pageSize}
         </if>
     </select>
     <!--修改广告状态-->
@@ -31,5 +45,9 @@
             #{id}
         </foreach>
     </update>
+    <!--        -->
+    <select id="getContentsByCat" parameterType="int" resultType="com.oservice.admin.modules.sys.entity.XryContentEntity">
+        select * from xry_content where category=#{cat} and status=1
+    </select>
 
 </mapper>

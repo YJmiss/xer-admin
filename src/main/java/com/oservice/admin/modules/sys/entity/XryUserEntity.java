@@ -73,11 +73,6 @@ public class XryUserEntity implements Serializable {
     private String openUserId;
 
     /**
-     * 是否推荐（0：否  1：是）
-     */
-    private Integer recommend;
-
-    /**
      * 创建时间
      */
     private Date created;
@@ -283,11 +278,5 @@ public class XryUserEntity implements Serializable {
         this.updated = updated;
     }
 
-    public Integer getRecommend() {
-        return recommend;
-    }
 
-    public void setRecommend(Integer recommend) {
-        this.recommend = recommend;
-    }
 }

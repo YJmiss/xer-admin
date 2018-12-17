@@ -26,18 +26,22 @@ public class XryCommentServiceImpl extends ServiceImpl<XryCommentDao, XryComment
     public PageUtils queryPage(Map<String, Object> params) {
         Page<Map<String, Object>> pageList = new Page<>();
         Map<String ,Object> map = new HashMap<>();
-        String page = (String) params.get("page");
-        String limit = (String) params.get("limit");
+        String pageNo = (String) params.get("page");
+        String pageSize = (String) params.get("limit");
         String courseId = (String) params.get("courseId");
         String userId = (String) params.get("userId");
         String type = (String) params.get("type");
         String status  = (String) params.get("status");
-        map.put("page",page);
-        map.put("limit",limit);
+        map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
+        map.put("pageSize",pageSize);
         map.put("courseId",courseId);
         map.put("userId",userId);
         map.put("type",type);
         map.put("status",status);
+        // 查询返回的数据总数page.totalCount
+        Long total = baseMapper.countTotal(map);
+        pageList.setTotal(total);
+        // page.list 查询返回的数据list
         List<Map<String, Object>> commentList = baseMapper.pageList(map);
         pageList.setRecords(commentList);
         return new PageUtils(pageList);

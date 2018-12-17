@@ -31,16 +31,10 @@ public interface XryUserService extends IService<XryUserEntity> {
     void deleteBatch(String[] ids);
 
     /**
-     * 构造讲师树
+     * 构造用户树
      * @return
      */
     List<XryUserEntity> treeUser();
-
-
-    /**
-     * 讲师推荐、取消推荐
-     * @param params
-     */
-    void updateUserRecommend(Map<String, Object> params);
+    
 
 }

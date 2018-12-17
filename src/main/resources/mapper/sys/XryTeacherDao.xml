@@ -17,7 +17,7 @@
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.nickname,b.phone as userPhone,c.org_name as orgName, c.org_code as orgCode
-                from xry_teacher a left join xry_user b on  a.user_id=b.id left join xry_organization c on a.org_id=c.id  where 1=1
+          from xry_teacher a left join xry_user b on  a.user_id=b.id left join xry_organization c on a.org_id=c.id  where 1=1
         <if test="params.realName != null and params.realName != ''">
             and a.real_name like #{params.realName}
         </if>
@@ -50,5 +50,12 @@
     <select id="treeTeacher" resultType="com.oservice.admin.modules.sys.entity.XryTeacherEntity">
         select * from xry_teacher where status = 3
     </select>
+    <!--讲师推荐、取消推荐-->
+    <update id="updateTeacherRecommend" parameterType="java.util.Map">
+        update xry_teacher set recommend = #{recommend} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
 </mapper>

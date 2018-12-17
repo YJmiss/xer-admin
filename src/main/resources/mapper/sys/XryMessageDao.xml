@@ -3,6 +3,20 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryMessageDao">
 
+    <!--查询返回的数据总数-->
+    <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from  xry_message a left join xry_course b on  a.obj_id=b.id
+          left join xry_user c on a.user_id=c.id where 1=1
+        <if test="params.type != null and params.type != ''">
+            and a.msg_type like #{params.type}
+        </if>
+        <if test="params.objId != null and params.objId != ''">
+            and a.obj_id like #{params.objId}
+        </if>
+        <if test="params.userId != null and params.userId != ''">
+            and a.user_id like #{params.userId}
+        </if>
+    </select>
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.title as courseTitle, b.id as courseId, c.nickname,c.id as userId
@@ -18,8 +32,8 @@
         <if test="params.userId != null and params.userId != ''">
             and a.user_id like #{params.userId}
         </if>
-        <if test="params.limit != null">
-            limit 0,${params.limit}
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit ${params.pageNo},${params.pageSize}
         </if>
     </select>
     <!--发布消息、取消发布-->

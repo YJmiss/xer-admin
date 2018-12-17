@@ -17,11 +17,14 @@ import java.util.Map;
 @Mapper
 public interface XryUserDao extends BaseMapper<XryUserEntity> {
 
+
     /**
-     * 构造讲师树
+     * 查询返回的数据总数page.totalCount
+     * @param map
      * @return
      */
-    List<XryUserEntity> treeUser();
+    Long countTotal(@Param("params") Map<String, Object> map);
+
 
     /**
      * 自定义分页查询
@@ -37,10 +40,9 @@ public interface XryUserDao extends BaseMapper<XryUserEntity> {
     void deleteBatchIds(@Param("ids")List<String> ids);
 
     /**
-     * 讲师推荐、取消推荐
-     * @param params
+     * 构造用户树
+     * @return
      */
-    void updateUserRecommend(Map<String, Object> params);
-
+    List<XryUserEntity> treeUser();
 
 }

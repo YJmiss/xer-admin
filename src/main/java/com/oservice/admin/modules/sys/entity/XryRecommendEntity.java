@@ -34,6 +34,11 @@ public class XryRecommendEntity implements Serializable {
 	private String catId;
 
 	/**
+	 * 是否推荐（0：否  1：是）
+	 */
+	private Integer recommend;
+
+	/**
 	 * 创建时间
 	 */
 	private Date created;
@@ -61,6 +66,14 @@ public class XryRecommendEntity implements Serializable {
 	public void setCatId(String catId) {
 		this.catId = catId;
 	}
+
+	public Integer getRecommend() {
+	        return recommend;
+	    }
+
+	    public void setRecommend(Integer recommend) {
+	        this.recommend = recommend;
+	    }
 
 	public Date getCreated() {
 		return created;

@@ -22,6 +22,13 @@ import java.util.Map;
 public interface XryContentDao extends BaseMapper<XryContentEntity> {
 
     /**
+     * 查询返回的数据总数page.totalCount
+     * @param map
+     * @return
+     */
+    Long countTotal(@Param("params") Map<String, Object> map);
+
+    /**
      * 自定义分页查询
      * @param map
      * @return
@@ -33,6 +40,13 @@ public interface XryContentDao extends BaseMapper<XryContentEntity> {
      * @param params
      */
     void updateContentStatus(Map<String, Object> params);
+
+    /**
+     * 
+     * @param cat
+     * @return
+     */
     List<XryContentEntity> getContentsByCat(int cat);
+
 
 }

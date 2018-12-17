@@ -15,7 +15,7 @@ import java.util.*;
 
 /**
  * 系统用户
- * 课程表的接口实现类
+ * 文章表的接口实现类
  * @author wujunquan
  * @version 1.0
  */
@@ -26,17 +26,19 @@ public class XryArticleServiceImpl extends ServiceImpl<XryArticleDao, XryArticle
 	public PageUtils queryPage(Map<String, Object> params) {
         Page<Map<String, Object>> pageList = new Page<>();
         Map<String ,Object> map = new HashMap<>();
-        String page = (String) params.get("page");
-        String limit = (String) params.get("limit");
+        String pageNo = (String) params.get("page");
+        String pageSize = (String) params.get("limit");
         String type = (String) params.get("type");
         String title = (String) params.get("title");
         String flag = (String) params.get("flag");
-        map.put("page",page);
-        map.put("limit",limit);
+        map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
+        map.put("pageSize",pageSize);
         map.put("type",type);
         map.put("title","%" + title + "%");
         map.put("flag",flag);
         // 查询返回的数据总数page.totalCount
+        Long total = baseMapper.countTotal(map);
+        pageList.setTotal(total);
         // page.list 查询返回的数据list
         List<Map<String, Object>> courseList = baseMapper.pageList(map);
         pageList.setRecords(courseList);

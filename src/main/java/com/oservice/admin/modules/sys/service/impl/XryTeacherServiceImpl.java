@@ -37,8 +37,8 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         Long total = baseMapper.countTotal(map);
         pageList.setTotal(total);
         // page.list 查询返回的数据list
-        List<Map<String, Object>> courseList = baseMapper.pageList(map);
-        pageList.setRecords(courseList);
+        List<Map<String, Object>> teacherList = baseMapper.pageList(map);
+        pageList.setRecords(teacherList);
 		return new PageUtils(pageList);
 	}
 
@@ -97,6 +97,11 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
     public List<XryTeacherEntity> treeTeacher() {
         return baseMapper.treeTeacher();
     }
+
+    @Override
+    public void updateTeacherRecommend(Map<String, Object> params) {
+            baseMapper.updateTeacherRecommend(params);
+        }
 
 
 }
