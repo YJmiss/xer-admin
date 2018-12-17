@@ -2,13 +2,8 @@ package com.oservice.admin.modules.app.controller;
 
 import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.Result;
-import com.oservice.admin.modules.app.service.SolrJService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
-import com.oservice.admin.modules.sys.service.SysUserTokenService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
-import com.oservice.admin.modules.sys.service.XryCourseTeacherUserService;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,20 +39,20 @@ public class AppCourseController extends AbstractController {
         }
         Map<String, Object> detail = new HashMap<>();
         // 1、查询"课程详情"
-//        Map<String, Object> courseDetailContent = xryCourseService.queryCourseDetailByCourseId(courseId);
-//        detail.put("courseDetailContent", courseDetailContent);
+        Map<String, Object> courseDetailContent = xryCourseService.queryCourseDetailByCourseId(courseId);
+        detail.put("courseDetailContent", courseDetailContent);
         // 2、查询课程"目录"
-//        Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseId(courseId);
-//        detail.put("courseCatalogList", courseCatalogList);
+        Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseId(courseId);
+        detail.put("courseCatalogList", courseCatalogList);
         // 3、查询课程"评价"
-//        Map<String, Object> courseCommentList = xryCourseService.listCourseCommentByCourseId(courseId, pageNo, pageSize);
-//        detail.put("courseCommentList", courseCommentList);
+        Map<String, Object> courseCommentList = xryCourseService.listCourseCommentByCourseId(courseId, pageNo, pageSize);
+        detail.put("courseCommentList", courseCommentList);
         // 4、查询"相关课程"
-//        Map<String, Object> relatedCourseList = xryCourseService.listRelatedCourseByCourseId(courseId);
-//        detail.put("relatedCourseList", relatedCourseList);
+        Map<String, Object> relatedCourseList = xryCourseService.listRelatedCourseByCourseId(courseId);
+        detail.put("relatedCourseList", relatedCourseList);
         // 5、转成json字符串
-        JSONObject courseDetail = new JSONObject(detail);
-        return Result.ok().put("courseDetail", courseDetail);
+        //JSONObject courseDetail = new JSONObject(detail);
+        return Result.ok(detail);
     }
 
 
