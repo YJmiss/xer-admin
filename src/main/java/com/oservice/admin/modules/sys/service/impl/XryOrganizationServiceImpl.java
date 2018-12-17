@@ -24,22 +24,24 @@ public class XryOrganizationServiceImpl extends ServiceImpl<XryOrganizationDao, 
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        // 重写分页查询 page limit title cid
         Page<Map<String, Object>> pageList = new Page<>();
         Map<String, Object> map = new HashMap<>();
-        String page = (String) params.get("page");
-        String limit = (String) params.get("limit");
+        String pageNo = (String) params.get("page");
+        String pageSize = (String) params.get("limit");
         String orgName = (String) params.get("orgName");
         String corporator = (String) params.get("corporator");
         String status = (String) params.get("status");
-        map.put("page", page);
-        map.put("limit", limit);
+        map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
+        map.put("pageSize",pageSize);
         if (null != orgName && "" != orgName) {
             map.put("orgName", "%" + orgName + "%");
         }
         map.put("corporator", corporator);
         map.put("status", status);
-        // page.list 查询返回的数据list
+        // 查询返回的数据总数page.totalCount
+       Long total = baseMapper.countTotal(map);
+       pageList.setTotal(total);
+       // page.list 查询返回的数据list
         List<Map<String, Object>> courseList = baseMapper.pageList(map);
         pageList.setRecords(courseList);
         return new PageUtils(pageList);

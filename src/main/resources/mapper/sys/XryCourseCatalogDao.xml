@@ -3,17 +3,27 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseCatalogDao">
 
+    <!--查询返回的数据总数-->
+    <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from xry_course_catalog where 1=1
+        <if test="params.title != null and params.title != ''">
+            and title like #{params.title}
+        </if>
+        <if test="params.courseid != null and params.title != ''">
+            and courseid = #{params.courseid}
+        </if>
+    </select>
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select b.title as courseTitle,a.* from xry_course_catalog a left join xry_course b on (a.courseid = b.id) where 1=1
         <if test="params.title != null and params.title != ''">
             and a.title like #{params.title}
         </if>
-        <if test="params.courseid != null">
-            and courseid = #{params.courseid}
+        <if test="params.courseid != null and params.courseid != ''">
+            and a.courseid = #{params.courseid}
         </if>
-        <if test="params.limit != null">
-            limit 0,${params.limit}
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit ${params.pageNo},${params.pageSize}
         </if>
     </select>
     <!-- 查询课程和课程目录信息 -->

@@ -3,6 +3,19 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryRecordDao">
 
+    <!--查询返回的数据总数-->
+    <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from  xry_record a
+          left join xry_course b on  a.record_id=b.id
+          left join xry_video c on a.record_id=c.id
+          left join sys_user d on a.user_id = d.user_id  where 1=1
+        <if test="params.type != null and params.type != ''">
+            and a.type like #{params.type}
+        </if>
+        <if test="params.title != null and params.title != ''">
+            and (b.title like #{params.title} or  c.title like #{params.title})
+        </if>
+    </select>
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.title as courseTitle, b.id as courseId, c.title as videoTitle,c.id as videoId, d.username
@@ -16,8 +29,8 @@
         <if test="params.title != null and params.title != ''">
             and (b.title like #{params.title} or  c.title like #{params.title})
         </if>
-        <if test="params.limit != null">
-            limit 0,${params.limit}
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit ${params.pageNo},${params.pageSize}
         </if>
     </select>
     

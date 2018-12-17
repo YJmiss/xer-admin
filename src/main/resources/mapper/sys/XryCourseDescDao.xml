@@ -3,6 +3,13 @@
 
 <mapper namespace="com.oservice.admin.modules.sys.dao.XryCourseDescDao">
 
+    <!--查询返回的数据总数-->
+    <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from xry_course_desc where 1=1
+        <if test="params.courseId != null and params.courseId != ''">
+            and course_id = #{params.courseId}
+        </if>
+    </select>
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select * from xry_course_desc a left join xry_course b on (a.course_id = b.id) where 1=1
@@ -10,7 +17,7 @@
             and a.course_id = #{params.courseId}
         </if>
         <if test="params.limit != null">
-            limit 0,${params.limit}
+            limit ${params.pageNo},${params.limit}
         </if>
     </select>
     <!--重写查询-->
