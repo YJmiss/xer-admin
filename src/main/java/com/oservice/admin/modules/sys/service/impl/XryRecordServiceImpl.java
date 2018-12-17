@@ -33,14 +33,18 @@ public class XryRecordServiceImpl extends ServiceImpl<XryRecordDao, XryRecordEnt
     public PageUtils queryPage(Map<String, Object> params) {
         Page<Map<String, Object>> pageList = new Page<>();
         Map<String ,Object> map = new HashMap<>();
-        String page = (String) params.get("page");
-        String limit = (String) params.get("limit");
+        String pageNo = (String) params.get("page");
+        String pageSize = (String) params.get("limit");
         String examineType = (String) params.get("examineType");
         String examineTitle = (String) params.get("examineTitle");
-        map.put("page",page);
-        map.put("limit",limit);
+        map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
+        map.put("pageSize",pageSize);
         map.put("title","%" + examineTitle + "%");
         map.put("type",examineType);
+        // 查询返回的数据总数page.totalCount
+        Long total = baseMapper.countTotal(map);
+        pageList.setTotal(total);
+        // page.list 查询返回的数据list
         List<Map<String, Object>> courseList = baseMapper.pageList(map);
         pageList.setRecords(courseList);
         return new PageUtils(pageList);

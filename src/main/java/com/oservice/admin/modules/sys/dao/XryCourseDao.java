@@ -27,6 +27,13 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
     Long countTotal(@Param("params") Map<String,Object> map);
 
     /**
+     * 查询返回的数据总数
+     * @param map
+     * @return
+     */
+    Long examineCountTotal(@Param("params") Map<String,Object> map);
+
+    /**
      * 自定义分页查询
      * @param map
      * @return

@@ -18,6 +18,13 @@ import java.util.Map;
 public interface XryCourseDescDao extends BaseMapper<XryCourseDescEntity> {
 
     /**
+     * 查询返回的数据总数page.totalCount
+     * @param map
+     * @return
+     */
+    Long countTotal(@Param("params") Map<String, Object> map);
+
+    /**
      * 自定义分页查询
      * @param map
      * @return
@@ -42,4 +49,5 @@ public interface XryCourseDescDao extends BaseMapper<XryCourseDescEntity> {
      * @param courseIds
      */
     void deleteBatchIds(@Param("courseIds")List<Long> courseIds);
+
 }

@@ -16,7 +16,14 @@ import java.util.Map;
  */
 @Mapper
 public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
-    
+
+    /**
+     * 
+     * @param map
+     * @return
+     */
+    Long countTotal(@Param("params") Map<String, Object> map);
+
     /**
      * 自定义分页查询
      * @param map
@@ -52,4 +59,6 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
      * @return
      */
     List<XryTeacherEntity> treeTeacher();
+
+
 }
