@@ -5,8 +5,7 @@
 
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
-        select count(*)
-          from xry_course a left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id where 1=1
+        select count(*) from xry_course a left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id where 1=1
         <if test="params.title != null and params.title != ''">
             and title like #{params.title}
         </if>
@@ -195,7 +194,7 @@
     <select id="listCourseCommentByCourseId" parameterType="java.util.Map" resultType="java.util.Map">
       select a.*, b.nickname,b.phone,b.avatar from xry_comment a LEFT JOIN xry_user b on a.user_id = b.id
       WHERE a.obj_id = #{params.courseId} and a.status = 1 and a.type = 0
-      limit ${(params.pageNo - 1) * params.pageSize},${params.pageSize} order by a.created desc
+      order by a.created desc limit ${params.pageNo},${params.pageSize}
     </select>
     <!--查询课程"目录"-->
     <select id="listCourseCatalogByCourseId" parameterType="java.lang.Long" resultType="java.util.Map">
