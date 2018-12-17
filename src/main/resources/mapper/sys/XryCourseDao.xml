@@ -5,7 +5,8 @@
 
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
-        select count(*) from xry_course a left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id where 1=1
+        select count(*) from xry_course a left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id
+        where 1=1
         <if test="params.title != null and params.title != ''">
             and title like #{params.title}
         </if>
@@ -19,7 +20,7 @@
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.name as catName,c.real_name as realName
-          from xry_course a left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id where 1=1
+        from xry_course a left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id where 1=1
         <if test="params.title != null and params.title != ''">
             and a.title like #{params.title}
         </if>
@@ -36,8 +37,8 @@
     <!--查询返回的数据总数-->
     <select id="examineCountTotal" parameterType="java.util.Map" resultType="java.lang.Long">
         select count(*) from xry_course a
-            left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id
-            where a.status = 1 or a.status = 2
+        left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id
+        where a.status = 1 or a.status = 2
         <if test="params.cid != null and params.cid !=''">
             and a.cid = #{params.cid}
         </if>
@@ -203,6 +204,51 @@
     <!--根据目录id查询视频-->
     <select id="listVideoByCourseCatalogId" parameterType="java.lang.Long" resultType="java.util.Map">
       select * from xry_video where catalog_id = #{cataLogId} and status = 3
+    </select>
+    <!--app端课程中心接口-->
+    <select id="appListCourseCenter" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.* from xry_course a left join xry_course_cat b on a.cid = b.id where b.flag = 0
+        <if test="params.catId != null and params.catId != ''">
+            and b.id = #{params.catId}
+        </if>
+        <if test="params.type != null and params.type != ''">
+
+        </if>
+        <if test="params.priceTag != null and params.priceTag != ''">
+            <!-- 价格输入值 -->
+            <if test="params.priceTag == 0">
+                and a.property = 1 and a.price between #{params.customPriceStart} and #{params.customPriceEnd}
+            </if>
+            <!-- 价格免费 -->
+            <if test="params.priceTag == 1">
+                and a.property = 0
+            </if>
+            <!-- 有价格区间 -->
+            <if test="params.priceTag != 0 and params.priceTag != 1">
+                and a.property = 1 and a.price between #{params.priceTagStart} and #{params.priceTagEnd}
+            </if>
+        </if>
+        <if test="params.sort != null and params.sort != ''">
+            <!-- 综合排序 -->
+            <if test="params.sort == 1">
+
+            </if>
+            <!-- 好评率排序 -->
+            <if test="params.sort == 1">
+            </if>
+            <!-- 人气排序 -->
+            <if test="params.sort == 1">
+            </if>
+            <!-- 价格升序 -->
+            <if test="params.sort == 1">
+            </if>
+            <!-- 价格降序 -->
+            <if test="params.sort == 1">
+            </if>
+        </if>
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit #{params.pageNo},#{params.pageSize}
+        </if>
     </select>
 
 </mapper>

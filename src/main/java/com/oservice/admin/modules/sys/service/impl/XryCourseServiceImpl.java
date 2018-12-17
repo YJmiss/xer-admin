@@ -185,8 +185,8 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         XryTeacherEntity teacher = xryTeacherService.selectById(teacherId);
         params.put("teacher", teacher);
         // 5.1、查询该讲师的好评度
-//        double teacherGoodPraiseCount = baseMapper.countGoodPraiseByTeacherId(teacherId);
-//        params.put("teacherGoodPraiseCount", teacherGoodPraiseCount);
+        double teacherGoodPraiseCount = baseMapper.countGoodPraiseByTeacherId(teacherId);
+        params.put("teacherGoodPraiseCount", teacherGoodPraiseCount);
         // 5.2、该讲师的课程数
         Integer teacherCourseCount = baseMapper.countCourseByTeacherId(teacherId);
         params.put("teacherCourseCount", teacherCourseCount);
@@ -208,8 +208,6 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
                 params.put("orgStudentCount", orgStudentCount);
             }
         }
-        JSONObject json = new JSONObject(params);
-        System.out.println(json);
         return params;
     }
 
@@ -227,8 +225,6 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
             }
         }
         params.put("courseCatalogList", courseCatalogList);
-        JSONObject json = new JSONObject(params);
-        System.out.println(json);
         return params;
     }
 
@@ -242,8 +238,6 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         map.put("courseId", courseId);
         List<Map<String, Object>> courseCommentList = baseMapper.listCourseCommentByCourseId(map);
         params.put("courseCommentList", courseCommentList);
-        JSONObject json = new JSONObject(params);
-        System.out.println(json);
         return params;
     }
 
@@ -288,10 +282,55 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
             }
         }
         params.put("relatedCourseList",relatedCourseList);
-
-        JSONObject json = new JSONObject(params);
-        System.out.println(json);
         return params;
+    }
+
+    @Override
+    public List<Map<String, Object>> appListCourseCenter(JSONObject json) {
+        // 1、取出app传过来的参数
+        Integer sort = json.getInt("sort");
+        Integer catId = json.getInt("catId");
+        Integer type = json.getInt("type");
+        Integer pageNo = json.getInt("pageNo");
+        Integer pageSize = json.getInt("pageSize");
+        // 价格区间选择
+        Long priceTagStart = 0L;Long priceTagEnd = 0L;
+        Integer priceTag = json.getInt("priceTag");
+        Long customPriceStart = 0L;Long customPriceEnd = 0L;
+        if (0 == priceTag) {    // 没选中标签
+            JSONObject customPrice = json.getJSONObject("customPrice");
+            customPriceStart = customPrice.getLong("customPriceStart");
+            customPriceEnd = customPrice.getLong("customPriceEnd");
+        } else if (1 == priceTag){    // 免费
+            priceTagStart = 0L; priceTagEnd = 0L;                
+        } else if (2 == priceTag) {     // 0-50
+            priceTagStart = 0L;priceTagEnd = 50L;
+        } else if (3 == priceTag) {     // 50-100
+            priceTagStart = 50L;priceTagEnd = 100L;
+        } else if (4 == priceTag) {    // 100-500
+            priceTagStart = 100L;priceTagEnd = 500L;
+        } else if (5 == priceTag) {    // 500-1000
+            priceTagStart = 500L;priceTagEnd = 1000L;
+        } else if (6 == priceTag) {   //  1000以上
+            priceTagStart = 1000L;priceTagEnd = 100000000L;
+        }
+        // 2、使用map传参数
+        Map<String, Object> params = new HashMap<>();
+        params.put("sort", sort);
+        params.put("catId", catId);
+        params.put("type", type);
+        params.put("pageNo", pageNo);
+        params.put("pageSize", pageSize);
+        // 价格区间
+        params.put("priceTag", priceTag);
+        params.put("priceTagStart", priceTagStart);
+        params.put("priceTagEnd", priceTagEnd);
+        // 价格输入
+        params.put("customPriceStart", customPriceStart);
+        params.put("customPriceEnd", customPriceEnd);
+        List<Map<String, Object>> courseList = baseMapper.appListCourseCenter(params);
+        System.out.println(new JSONObject(courseList));
+        return courseList;
     }
 
 }

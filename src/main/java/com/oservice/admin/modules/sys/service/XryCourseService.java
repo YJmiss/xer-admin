@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.*;
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
@@ -161,4 +162,10 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 */
 	Map<String, Object> listRelatedCourseByCourseId(Long courseId);
 
+	/**
+	 * app端课程中心接口
+	 * @param params
+	 * @return
+	 */
+	List<Map<String, Object>> appListCourseCenter(JSONObject params);
 }

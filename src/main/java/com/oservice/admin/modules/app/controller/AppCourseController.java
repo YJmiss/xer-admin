@@ -4,6 +4,7 @@ import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.service.XryCourseService;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +30,7 @@ public class AppCourseController extends AbstractController {
 
     /**
      * app端课程详情查询
+     *
      * @param courseId
      * @return
      */
@@ -55,5 +58,19 @@ public class AppCourseController extends AbstractController {
         return Result.ok(detail);
     }
 
+    /**
+     * app端课程中心接口
+     *
+     * @param params
+     * @return
+     */
+    @SysLog("app端课程中心接口")
+    @GetMapping("/appListCourseCenter")
+    public Result appListCourseCenter(@RequestParam String params) {
+        JSONObject json = new JSONObject(params);
+        List<Map<String, Object>> courseList = xryCourseService.appListCourseCenter(json);
+
+        return Result.ok().put("courseList",courseList);
+    }
 
 }
