@@ -29,8 +29,8 @@
         <if test="params.tid != null and params.tid != ''">
             and a.tid = #{params.tid}
         </if>
-        <if test="params.limit != null and params.limit != ''">
-            limit 0,${params.limit}
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit ${params.pageNo},${params.pageSize}
         </if>
     </select>
     <!--查询课程审核列表-->
@@ -151,11 +151,11 @@
     </select>
     <!--根据课程id查询好评度-->
     <select id="countGoodPraiseByCourseId" parameterType="java.lang.Long" resultType="java.lang.Double">
-        select AVG(star_level) as 'score' from xry_comment where obj_id =#{courseId} and type = 0 and status = 1
+        select ifnull(avg(star_level),0) as 'score' from xry_comment where obj_id =#{courseId} and type = 0 and status = 1
     </select>
     <!--查询该讲师的好评度-->
-    <select id="countGoodPraiseByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select AVG(star_level) as 'score' from xry_comment where obj_id =#{teacherId} and type = 1 and status = 1
+    <select id="countGoodPraiseByTeacherId" parameterType="java.lang.String" resultType="java.lang.Double">
+        select ifnull(avg(star_level),0) as 'score' from xry_comment where obj_id =#{teacherId} and type = 1 and status = 1
     </select>
     <!--该讲师的课程数-->
     <select id="countCourseByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -172,6 +172,36 @@
     <!--该机构的学生数-->
     <select id="countStudentByOrgId" parameterType="java.lang.Long" resultType="java.lang.Integer">
         select count(*) from xry_course_teacher_user where course_id in (select id from xry_course where tid in (select id from xry_teacher where org_id = #{orgId} and status = 3)) and type = 1
+    </select>
+    <!--查询出该类目下管理员设置推荐的课程-->
+    <select id="listCourseCatBySubCatId" parameterType="java.lang.Long" resultType="java.util.Map">
+      select * from xry_course where cid = #{courseCatId} and recommend = 1 and status = 4 limit 0,10
+    </select>
+    <!--查询推荐列表，不足10条的随机课程列表-->
+    <select id="listCourseCatBySubCatIdAndCount" parameterType="java.util.Map" resultType="java.util.Map">
+      select * from xry_course where cid = #{params.courseCatId} and recommend = 0 and status = 4 limit 0,${params.courseCount}
+    </select>
+    <!--查询课程章节根据课程类目id-->
+    <select id="countCatalogByCourseCatId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+      select count(*) from xry_course_catalog where courseid in (select id from xry_course where cid = #{courseCatId} and status = 4)
+    </select>
+    <!--查询学习人数根据课程类目id-->
+    <select id="countStudentByCourseCatId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+      select count(*) from xry_course_teacher_user where course_id in (select id from xry_course where cid = #{courseCatId} and status = 4)
+    </select>
+    <!--根据课程id查询评价信息-->
+    <select id="listCourseCommentByCourseId" parameterType="java.util.Map" resultType="java.util.Map">
+      select a.*, b.nickname,b.phone,b.avatar from xry_comment a LEFT JOIN xry_user b on a.user_id = b.id
+      WHERE a.obj_id = #{params.courseId} and a.status = 1 and a.type = 0
+      limit ${(params.pageNo - 1) * params.pageSize},${params.pageSize} order by a.created desc
+    </select>
+    <!--查询课程"目录"-->
+    <select id="listCourseCatalogByCourseId" parameterType="java.lang.Long" resultType="java.util.Map">
+      select * from xry_course_catalog where courseid = #{courseId}
+    </select>
+    <!--根据目录id查询视频-->
+    <select id="listVideoByCourseCatalogId" parameterType="java.lang.Long" resultType="java.util.Map">
+      select * from xry_video where catalog_id = #{cataLogId} and status = 3
     </select>
 
 </mapper>

@@ -145,7 +145,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @param teacherId
      * @return
      */
-    List<Integer> countGoodPraiseByTeacherId(@Param("teacherId") String teacherId);
+    double countGoodPraiseByTeacherId(@Param("teacherId") String teacherId);
 
     /**
      * 该讲师的课程数
@@ -178,4 +178,53 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @return
      */
     Integer countStudentByOrgId(@Param("orgId") Long orgId);
+
+    /**
+     * 查询课程"目录"
+     * @param courseId
+     * @return
+     */
+    List<Map<String, Object>> listCourseCatalogByCourseId(@Param("courseId") Long courseId);
+
+    /**
+     * 查询出该类目下所有课程
+     * @param courseCatId
+     * @return
+     */
+    List<Map<String, Object>> listCourseCatBySubCatId(@Param("courseCatId") Long courseCatId);
+
+    /**
+     * 查询推荐列表，不足10条的随机课程列表
+     * @param map
+     * @return
+     */
+    List<Map<String, Object>> listCourseCatBySubCatIdAndCount(@Param("params") Map<String, Object> map);
+
+    /**
+     * 查询课程章节
+     * @param courseCatId
+     * @return
+     */
+    Integer countCatalogByCourseCatId(@Param("courseCatId") Long courseCatId);
+
+    /**
+     * 查询学习人数
+     * @param courseCatId
+     * @return
+     */
+    Integer countStudentByCourseCatId(@Param("courseCatId") Long courseCatId);
+
+    /**
+     * 根据课程id查询评价信息
+     * @param map
+     * @return
+     */
+    List<Map<String, Object>> listCourseCommentByCourseId(@Param("params") Map<String, Object> map);
+
+    /**
+     * 根据目录id查询视频
+     * @param cataLogId
+     * @return
+     */
+    List<Map<String, Object>> listVideoByCourseCatalogId(@Param("cataLogId") Long cataLogId);
 }

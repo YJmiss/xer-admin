@@ -49,18 +49,13 @@ public class XryRecommendController extends AbstractController {
     /**
      * 根据userId查询用户已经选择喜好的课程类目
      * 不需要根据类目分类显示
-     * @param token
      * @return
      */
     @SysLog("查询用户已经选择喜好的课程类目")
     @GetMapping("/appListCourseCatByUserId")
-    public Result appListCourseCatByUserId(@RequestParam String token) {
-        SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(token);
-        if (null == tokenEntity) {
-            return Result.error(1,"token获取失败或已失效");
-        }
+    public Result appListCourseCatByUserId() {
         Map<String, Object> params = new HashMap<>();
-        params.put("userId",tokenEntity.getUserId());
+        params.put("userId",getAppUserId());
         XryRecommendEntity recommend = xryCourseService.listRecommendCourseCatByUserId(params);
         String[] courseCatIds = recommend.getCatId().split(",");
         List<XryCourseCatEntity> courseCatList = new ArrayList<>();
@@ -81,17 +76,11 @@ public class XryRecommendController extends AbstractController {
     @SysLog("用户设置喜好课程类目保存")
     @PostMapping("/appInsertRecommendCourseCat")
     public Result appInsertRecommendCourseCat(@RequestBody String tokenJSON){
-        // 从token中获取登录人信息
         JSONObject tokenJSONObject = new JSONObject(tokenJSON);
-        String token = tokenJSONObject.getString("token");
         JSONArray catList = (JSONArray) tokenJSONObject.get("catGroup");
-        SysUserTokenEntity tokenEntity = sysUserTokenService.selectByToken(token);
-        if (null == tokenEntity) {
-            return Result.error(1,"token已过期，请重新登录！");
-        }
         // 判断用户是添加还是修改
         Map<String,Object> params = new HashMap<>();
-        params.put("userId",tokenEntity.getUserId());
+        params.put("userId",getAppUserId());
         params.put("catArr",catList.toString());
         XryRecommendEntity recommend = xryCourseService.listRecommendCourseCatByUserId(params);
         if (null != recommend) {

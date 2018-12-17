@@ -75,4 +75,5 @@ public interface XryCourseCatService extends IService<XryCourseCatEntity> {
 	 * @return
 	 */
 	List<Map<String, Object>> listCourseCat();
+
 }
