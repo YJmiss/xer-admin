@@ -50,6 +50,10 @@ public class XryTeacherEntity implements Serializable {
 	 */
 	private Long orgId;
 	/**
+	 * 关注人数
+	 */
+	private Integer attentionCount;
+	/**
 	 *  认证状态(1：认证中 2：未通过： 3：已通过）
 	 */
 	private Integer status;
@@ -128,6 +132,14 @@ public class XryTeacherEntity implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Integer getAttentionCount() {
+		return attentionCount;
+	}
+
+	public void setAttentionCount(Integer attentionCount) {
+		this.attentionCount = attentionCount;
 	}
 
 	public Date getCreated() {

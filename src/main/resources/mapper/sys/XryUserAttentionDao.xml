@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.sys.dao.XryUserAttentionDao">
+
+    <!--app端根据用户查询用户关注的讲师列表-->
+    <select id="appPageListTeacherByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.*,b.real_name as realName, c.avatar as headImg
+        from xry_user_attention a
+        left join xry_teacher b on a.obj_id=b.id
+        left join xry_user c on b.user_id=c.id
+        where a.user_id = #{params.userId} and a.obj_type = 0 and a.obj_status = 0 and b.status = 3
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit ${params.pageNo},${params.pageSize}
+        </if>
+    </select>
+    <!--app端用户删除已经关注的讲师-->
+    <delete id="appDelTeacherById" parameterType="java.util.Map">
+        delete from xry_user_attention where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--根据讲师id查询关注改讲师的所有用户-->
+    <select id="listUserIdByTeacherId" parameterType="java.lang.String" resultType="com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity">
+      select * from xry_course_teacher_user where teacher_id = #{teacherId}
+    </select>
+
+</mapper>

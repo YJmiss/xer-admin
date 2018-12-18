@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -231,10 +232,10 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
 
     /**
      * 根据目录id查询视频
-     * @param cataLogId
+     * @param catalogId
      * @return
      */
-    List<Map<String, Object>> listVideoByCourseCatalogId(@Param("cataLogId") Long cataLogId);
+    List<Map<String, Object>> listVideoByCourseCatalogId(@Param("catalogId") Long catalogId);
 
     /**
      * app端课程中心接口
@@ -242,4 +243,11 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @return
      */
     List<Map<String, Object>> appListCourseCenter(@Param("params") Map<String, Object> params);
+
+    /**
+     * 根据课程id查询课程章节
+     * @param courseId
+     * @return
+     */
+    Integer countCatalogByCourseId(@Param("courseId") Long courseId);
 }

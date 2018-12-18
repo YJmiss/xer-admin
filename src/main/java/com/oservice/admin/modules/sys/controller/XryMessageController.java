@@ -9,8 +9,9 @@ import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.config.MessageWebSocket;
 import com.oservice.admin.modules.sys.entity.XryMessageEntity;
-import com.oservice.admin.modules.sys.service.XryCourseTeacherUserService;
 import com.oservice.admin.modules.sys.service.XryMessageService;
+import com.oservice.admin.modules.sys.service.XryUserApplicantService;
+import com.oservice.admin.modules.sys.service.XryUserAttentionService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,9 @@ public class XryMessageController extends AbstractController {
     @Resource
     private XryMessageService xryMessageService;
     @Resource
-    private XryCourseTeacherUserService xryCourseTeacherUserService;
+    private XryUserApplicantService xryUserApplicantService;
+    @Resource
+    private XryUserAttentionService xryUserAttentionService;
 
     /**
      * 查询消息列表
@@ -79,12 +82,12 @@ public class XryMessageController extends AbstractController {
             // 指定发送消息->课程消息
             // 查询出报名学习该课程的所有用户
             Long courseId = message.getLong("obj_id");
-            List<String> userIds = xryCourseTeacherUserService.listUserIdByCourseId(courseId);
+            List<String> userIds = xryUserApplicantService.listUserIdByCourseId(courseId);
             new MessageWebSocket().sendToUser(String.valueOf(message), userIds);
         } else if (2 == msgType) {
             // 指定发送消息->讲师关注
             String teacherId = message.getString("user_id");
-            List<String> userIds = xryCourseTeacherUserService.listUserIdByTeacherId(teacherId);
+            List<String> userIds = xryUserAttentionService.listUserIdByTeacherId(teacherId);
             new MessageWebSocket().sendToUser(String.valueOf(message), userIds);
         } else {
             //广播发送消息->平台消息

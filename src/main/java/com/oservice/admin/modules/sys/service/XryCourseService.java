@@ -167,5 +167,5 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 * @param params
 	 * @return
 	 */
-	List<Map<String, Object>> appListCourseCenter(JSONObject params);
+	List<Map<String, Object>> appListCourseCenter(String params);
 }
