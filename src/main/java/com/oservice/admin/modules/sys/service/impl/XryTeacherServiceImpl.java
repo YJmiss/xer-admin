@@ -115,8 +115,8 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
 
     @Override
     public void updateTeacherRecommend(Map<String, Object> params) {
-            baseMapper.updateTeacherRecommend(params);
-        }
+        baseMapper.updateTeacherRecommend(params);
+    }
 
     @Override
     public void updateTeacherAttention(String teacherId, Integer flag) {
@@ -129,6 +129,11 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         }
         teacher.setAttentionCount(attentionCount);
         baseMapper.updateById(teacher);
+    }
+
+    @Override
+    public List<Map<String, Object>> appListStarTeacherByUserId(Map<String, Object> params) {
+        return baseMapper.appListStarTeacherByUserId(params);
     }
 
 

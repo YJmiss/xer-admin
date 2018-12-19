@@ -62,6 +62,19 @@ public class AppTeacherController extends AbstractController {
     }
 
     /**
+     * app查询'明星讲师'列表:固定6个
+     * @return
+     */
+    @SysLog("app查询'明星讲师'列表")
+    @GetMapping("/appListStarTeacherByUserId")
+    public Result appListStarTeacherByUserId() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("pageSize",6);
+        List<Map<String, Object>> starTeacherList = xryTeacherService.appListStarTeacherByUserId(params);
+        return Result.ok().put("starTeacherList", starTeacherList);
+    }
+
+    /**
      * app端讲师关注
      *
      * @param teacherId 讲师id

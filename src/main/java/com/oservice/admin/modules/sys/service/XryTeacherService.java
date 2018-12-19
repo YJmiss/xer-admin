@@ -73,4 +73,11 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 	 * @param flag
 	 */
     void updateTeacherAttention(String teacherId, Integer flag);
+
+	/**
+	 * app查询'明星讲师'列表:固定6个
+	 * @param params
+	 * @return
+	 */
+	List<Map<String, Object>> appListStarTeacherByUserId(Map<String, Object> params);
 }

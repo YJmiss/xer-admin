@@ -80,4 +80,11 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
      * @return
      */
     Integer countStudentByTeacherId(@Param("teacherId") String teacherId);
+
+    /**
+     * app查询'明星讲师'列表:固定6个
+     * @param params
+     * @return
+     */
+    List<Map<String, Object>> appListStarTeacherByUserId(@Param("params") Map<String, Object> params);
 }

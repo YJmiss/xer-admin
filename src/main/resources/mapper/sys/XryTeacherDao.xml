@@ -6,7 +6,8 @@
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
         select count(*)
-          from xry_teacher a left join xry_user b on  a.user_id=b.id left join xry_organization c on a.org_id=c.id  where 1=1
+        from xry_teacher a left join xry_user b on a.user_id=b.id left join xry_organization c on a.org_id=c.id where
+        1=1
         <if test="params.realName != null and params.realName != ''">
             and a.real_name like #{params.realName}
         </if>
@@ -17,7 +18,8 @@
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.nickname,b.phone as userPhone,c.org_name as orgName, c.org_code as orgCode
-          from xry_teacher a left join xry_user b on  a.user_id=b.id left join xry_organization c on a.org_id=c.id  where 1=1
+        from xry_teacher a left join xry_user b on a.user_id=b.id left join xry_organization c on a.org_id=c.id where
+        1=1
         <if test="params.realName != null and params.realName != ''">
             and a.real_name like #{params.realName}
         </if>
@@ -59,8 +61,13 @@
         select count(*) from xry_course where tid = #{teacherId} and status = 4
     </select>
     <!--该讲师的学生数-->
-   <select id="countStudentByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    <select id="countStudentByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
        select count(*) from xry_user_applicant where obj_id in (select id from xry_course where tid = #{teacherId}) and obj_type = 0 and obj_status = 0
    </select>
+    <!--app查询'明星讲师'列表:固定6个-->
+    <select id="appListStarTeacherByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+      select xt.*,ifnull((xua.obj_id),0) as 'attentionCount',xu.avatar from xry_teacher xt left join xry_user_attention xua on xt.id = xua.obj_id
+        left join xry_user xu on xu.id = xt.user_id where xua.obj_type = 0 and xua.obj_status = 0 order by attentionCount desc limit 0,${params.pageSize}
+    </select>
 
 </mapper>
