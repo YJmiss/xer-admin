@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigInteger;
 import java.util.*;
 
 /**
@@ -219,8 +220,8 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         // 2、根据目录id查询视频
         if (courseCatalogList.size() > 0) {
             for (Map<String, Object> courseCatalog : courseCatalogList) {
-                Long cataLogId = (Long) courseCatalog.get("id");
-                List<Map<String, Object>> videoList = baseMapper.listVideoByCourseCatalogId(cataLogId);
+                Long catalogId = (Long) courseCatalog.get("id");
+                List<Map<String, Object>> videoList = baseMapper.listVideoByCourseCatalogId(catalogId);
                 courseCatalog.put("videoList", videoList);
             }
         }
@@ -286,7 +287,8 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     }
 
     @Override
-    public List<Map<String, Object>> appListCourseCenter(JSONObject json) {
+    public List<Map<String, Object>> appListCourseCenter(String tokenParams) {
+        JSONObject json = new JSONObject(tokenParams);
         // 1、取出app传过来的参数
         Integer sort = json.getInt("sort");
         Integer catId = json.getInt("catId");
@@ -329,7 +331,17 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         params.put("customPriceStart", customPriceStart);
         params.put("customPriceEnd", customPriceEnd);
         List<Map<String, Object>> courseList = baseMapper.appListCourseCenter(params);
-        System.out.println(new JSONObject(courseList));
+        if (courseList.size() > 0) {
+            for (Map<String, Object> map : courseList) {
+                Long courseId = Long.valueOf(String.valueOf(map.get("id")));
+                // 1、查询学习人数
+                Integer courseStudentCount = baseMapper.countStudentByCourseId(courseId);
+                map.put("courseStudentCount", courseStudentCount);
+                // 2、查询课程章节
+                Integer catalogCount = baseMapper.countCatalogByCourseId(courseId);
+                map.put("catalogCount", catalogCount);
+            }
+        }
         return courseList;
     }
 

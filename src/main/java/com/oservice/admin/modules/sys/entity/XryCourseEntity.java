@@ -57,6 +57,10 @@ public class XryCourseEntity implements Serializable {
 	 */
 	private Integer recommend;
 	/**
+	 * 报名人数
+	 */
+	private Integer applicantCount;
+	/**
 	 * 创建时间
 	 */
 	private Date created;
@@ -128,6 +132,14 @@ public class XryCourseEntity implements Serializable {
 
 	public void setPrice(Long price) {
 		this.price = price;
+	}
+
+	public Integer getApplicantCount() {
+		return applicantCount;
+	}
+
+	public void setApplicantCount(Integer applicantCount) {
+		this.applicantCount = applicantCount;
 	}
 
 	public Date getCreated() {

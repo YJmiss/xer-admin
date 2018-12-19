@@ -203,11 +203,14 @@
     </select>
     <!--根据目录id查询视频-->
     <select id="listVideoByCourseCatalogId" parameterType="java.lang.Long" resultType="java.util.Map">
-      select * from xry_video where catalog_id = #{cataLogId} and status = 3
+      select * from xry_video where catalog_id = #{catalogId} and status = 3
     </select>
     <!--app端课程中心接口-->
     <select id="appListCourseCenter" parameterType="java.util.Map" resultType="java.util.Map">
-        select a.* from xry_course a left join xry_course_cat b on a.cid = b.id where b.flag = 0
+        select a.* ,ifnull(xry.star_level,0) as 'starLevel' from xry_course a
+            left join xry_course_cat b on a.cid = b.id
+            left join xry_comment xry on a.id = xry.obj_id
+            where b.flag = 0 and xry.type = 0
         <if test="params.catId != null and params.catId != ''">
             and b.id = #{params.catId}
         </if>
@@ -234,21 +237,29 @@
 
             </if>
             <!-- 好评率排序 -->
-            <if test="params.sort == 1">
+            <if test="params.sort == 2">
+                order by starLevel desc
             </if>
             <!-- 人气排序 -->
-            <if test="params.sort == 1">
+            <if test="params.sort == 3">
+                order by joinCourseCount desc
             </if>
             <!-- 价格升序 -->
-            <if test="params.sort == 1">
+            <if test="params.sort == 4">
+                order by a.price asc
             </if>
             <!-- 价格降序 -->
-            <if test="params.sort == 1">
+            <if test="params.sort == 5">
+                 order by a.price desc
             </if>
         </if>
         <if test="params.pageSize != null and params.pageSize != ''">
             limit #{params.pageNo},#{params.pageSize}
         </if>
+    </select>
+    <!--根据课程id查询课程章节-->
+    <select id="countCatalogByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+      select count(*) from xry_course_catalog where courseid = #{courseId}
     </select>
 
 </mapper>
