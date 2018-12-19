@@ -40,10 +40,8 @@
      LEFT JOIN xry_organization c on a.org_id = c.id where a.id = #{id}
     </select>
     <!--app查询讲师列表-->
-    <select id="appPageListByUserId" parameterType="java.util.Map" resultType="java.util.Map">
-     select a.*, b.nickname as userName, b.phone as userPhone, c.org_name
-         from xry_teacher a LEFT JOIN xry_user b on a.user_id = b.id
-         LEFT JOIN xry_organization c on a.org_id = c.id where a.user_id = #{userId}
+    <select id="appPageListTeacherByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+     select a.*, b.nickname as userName, b.phone as userPhone from xry_teacher a LEFT JOIN xry_user b on a.user_id = b.id where a.user_id = #{userId}
     </select>
     <!--构造讲师树-->
     <select id="treeTeacher" resultType="com.oservice.admin.modules.sys.entity.XryTeacherEntity">
@@ -56,5 +54,13 @@
             #{id}
         </foreach>
     </update>
+    <!--该讲师的课程数-->
+    <select id="countCourseByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from xry_course where tid = #{teacherId} and status = 4
+    </select>
+    <!--该讲师的学生数-->
+   <select id="countStudentByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
+       select count(*) from xry_user_applicant where obj_id in (select id from xry_course where tid = #{teacherId}) and obj_type = 0 and obj_status = 0
+   </select>
 
 </mapper>

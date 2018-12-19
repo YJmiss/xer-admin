@@ -6,10 +6,12 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryTeacherDao;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryTeacherEntity;
+import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryTeacherService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -64,7 +66,7 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         String teacherId = params[0];
         if (StringUtils.isNotBlank(teacherId)) {
             // 修改保存
-            xryTeacherEntity.setId(Long.valueOf(teacherId));
+            xryTeacherEntity.setId(String.valueOf(teacherId));
             baseMapper.updateById(xryTeacherEntity);
         } else {
             // 添加保存
@@ -89,8 +91,21 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
     }
 
     @Override
-    public List<Map<String, Object>> appPageListByUserId(Map<String, Object> params) {
-        return baseMapper.appPageListByUserId(params);
+    public List<Map<String, Object>> appPageListTeacherByUserId(Map<String, Object> params) {
+        // 1、查询讲师信息
+        List<Map<String, Object>> attentionTeacherList = baseMapper.appPageListTeacherByUserId(params);
+        if (attentionTeacherList.size() > 0) {
+            for (Map<String, Object> attentionTeacher : attentionTeacherList) {
+                String teacherId = String.valueOf(attentionTeacher.get("id"));
+                // 2、查询讲师的课程数
+                Integer teacherCourseCount = baseMapper.countCourseByTeacherId(teacherId);
+                attentionTeacher.put("teacherCourseCount", teacherCourseCount);
+                // 3、查询讲师的学生数
+                Integer teacherStudentCount = baseMapper.countStudentByTeacherId(teacherId);
+                attentionTeacher.put("teacherStudentCount", teacherStudentCount);
+            }
+        }
+        return attentionTeacherList;
     }
 
     @Override

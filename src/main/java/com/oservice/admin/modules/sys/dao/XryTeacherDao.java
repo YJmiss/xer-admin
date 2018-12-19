@@ -52,7 +52,7 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
      * @param params
      * @return
      */
-    List<Map<String, Object>> appPageListByUserId(Map<String, Object> params);
+    List<Map<String, Object>> appPageListTeacherByUserId(Map<String, Object> params);
 
     /**
      * 构造讲师树
@@ -66,4 +66,18 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
      */
     void updateTeacherRecommend(Map<String, Object> params);
 
+    /**
+     * 讲师的课程数
+     * @param teacherId
+     * @return
+     */
+    Integer countCourseByTeacherId(@Param("teacherId") String teacherId);
+
+    /**
+     * 该讲师的学生数（所有课程学生的总数）
+     *
+     * @param teacherId
+     * @return
+     */
+    Integer countStudentByTeacherId(@Param("teacherId") String teacherId);
 }

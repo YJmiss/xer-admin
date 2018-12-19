@@ -25,16 +25,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/appTeacher")
 public class AppTeacherController extends AbstractController {
-    /** 课程加入学习的标识符 */
-    final static Integer COURSE_JOIN_STUDY = 1;
     /** 讲师关注的数据库标识符 */
     private static final Integer TEACHER_FOCUS_FLAG = 2;
     @Resource
     private XryTeacherService xryTeacherService;
     @Resource
-    private SysUserTokenService sysUserTokenService;
-    @Resource
-    private XryUserAttentionService xryUserAttentionService;   // 关注表
+    private XryUserAttentionService xryUserAttentionService;  
 
 
     /**
@@ -51,18 +47,18 @@ public class AppTeacherController extends AbstractController {
     }
 
     /**
-     * app查询讲师列表
+     * app查询"我的关注"列表
      * @return
      */
-    @SysLog("app查询讲师列表")
-    @GetMapping("/appPageListByUserId")
-    public Result appPageListByUserId(@RequestParam Integer pageNo, Integer pageSize) {
+    @SysLog("app查询'我的关注'列表")
+    @GetMapping("/appPageListTeacherByUserId")
+    public Result appPageListTeacherByUserId(@RequestParam Integer pageNo, Integer pageSize) {
         Map<String, Object> params = new HashMap<>();
         params.put("pageNo", (pageNo - 1) * pageSize);
         params.put("pageSize", pageSize);
         params.put("userId", getAppUserId());
-        List<Map<String, Object>> orgList = xryTeacherService.appPageListByUserId(params);
-        return Result.ok().put("orgList", orgList);
+        List<Map<String, Object>> attentionTeacherList = xryTeacherService.appPageListTeacherByUserId(params);
+        return Result.ok().put("attentionTeacherList", attentionTeacherList);
     }
 
     /**
@@ -79,33 +75,10 @@ public class AppTeacherController extends AbstractController {
         params.put("userId", getAppUserId());
         params.put("teacherId", teacherId);
         params.put("type", TEACHER_FOCUS_FLAG);
-        Integer isSuccess = xryUserAttentionService.appSaveTeacher(params);
+        xryUserAttentionService.appSaveTeacher(params);
         // 给对应的讲师计数+1
         xryTeacherService.updateTeacherAttention(teacherId, 1);
-        if (1 == isSuccess) {
-            return Result.ok().put("1", "讲师关注成功");
-        } else {
-            return Result.error(2, "讲师关注失败");
-        }
-    }
-
-    /**
-     * app端根据用户查询用户关注的讲师列表
-     *
-     * @param pageNo
-     * @param pageSize
-     * @return
-     */
-    @SysLog("app端根据用户查询用户关注的讲师列表")
-    @GetMapping("/appPageListTeacherByUserId")
-    public Result appPageListTeacherByUserId(Integer pageNo, Integer pageSize) {
-        // 把课程id和用户id加入到数据库表中
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", getAppUserId());
-        params.put("pageNo", (pageNo - 1) * pageSize);
-        params.put("pageSize", pageSize);
-        PageUtils page = xryUserAttentionService.appPageListTeacherByUserId(params);
-        return Result.ok().put("page", page);
+        return Result.ok();
     }
 
     /**

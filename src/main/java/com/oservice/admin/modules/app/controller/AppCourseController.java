@@ -30,8 +30,6 @@ public class AppCourseController extends AbstractController {
     private XryCourseService xryCourseService;
     @Resource
     private XryUserApplicantService xryUserApplicantService;   // 报名表
-    @Resource
-    private XryUserAttentionService xryUserAttentionService;   // 关注表
 
     /**
      * app端用户加入课程学习
