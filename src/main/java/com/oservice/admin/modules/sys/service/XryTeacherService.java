@@ -53,7 +53,7 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 	 * @param params
 	 * @return
 	 */
-	List<Map<String, Object>> listByUserId(Map<String, Object> params);
+	List<Map<String, Object>> appPageListByUserId(Map<String, Object> params);
 
 	/**
 	 * 构造讲师树

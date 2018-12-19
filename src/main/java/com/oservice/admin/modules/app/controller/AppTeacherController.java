@@ -46,7 +46,6 @@ public class AppTeacherController extends AbstractController {
     @SysLog("保存讲师认证信息")
     @PostMapping("/appSave")
     public Result appSave(@RequestParam String[] params) {
-        //ValidatorUtils.validateEntity(teacher, AddGroup.class);
         xryTeacherService.save(params);
         return Result.ok();
     }
@@ -56,11 +55,13 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app查询讲师列表")
-    @GetMapping("/appList")
-    public Result appList() {
+    @GetMapping("/appPageListByUserId")
+    public Result appPageListByUserId(@RequestParam Integer pageNo, Integer pageSize) {
         Map<String, Object> params = new HashMap<>();
+        params.put("pageNo", (pageNo - 1) * pageSize);
+        params.put("pageSize", pageSize);
         params.put("userId", getAppUserId());
-        List<Map<String, Object>> orgList = xryTeacherService.listByUserId(params);
+        List<Map<String, Object>> orgList = xryTeacherService.appPageListByUserId(params);
         return Result.ok().put("orgList", orgList);
     }
 

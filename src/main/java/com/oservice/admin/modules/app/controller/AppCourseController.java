@@ -63,7 +63,7 @@ public class AppCourseController extends AbstractController {
      * app端根据用户查询用户加入学习的课程列表
      * @param pageNo
      * @param pageSize
-     * @param flag     标识符（本周学习、本月学习，全部课程）
+     * @param flag 标识符（本周学习、本月学习，全部课程）
      * @return
      */
     @SysLog("app端根据用户查询用户加入学习的课程列表")
@@ -72,7 +72,7 @@ public class AppCourseController extends AbstractController {
         // 把课程id和用户id加入到数据库表中
         Map<String, Object> params = new HashMap<>();
         params.put("userId", getAppUserId());
-        params.put("pageNo", pageNo);
+        params.put("pageNo", (pageNo - 1) * pageSize);
         params.put("pageSize", pageSize);
         params.put("flag", flag);
         PageUtils page = xryUserApplicantService.appPageListCourseByUserId(params);
@@ -120,8 +120,6 @@ public class AppCourseController extends AbstractController {
         // 4、查询"相关课程"
         Map<String, Object> relatedCourseList = xryCourseService.listRelatedCourseByCourseId(courseId);
         detail.put("relatedCourseList", relatedCourseList);
-        // 5、转成json字符串
-        //JSONObject courseDetail = new JSONObject(detail);
         return Result.ok(detail);
     }
 
@@ -135,7 +133,6 @@ public class AppCourseController extends AbstractController {
     @GetMapping("/appListCourseCenter")
     public Result appListCourseCenter(@RequestParam String params) {
         List<Map<String, Object>> courseList = xryCourseService.appListCourseCenter(params);
-
         return Result.ok().put("courseList",courseList);
     }
 

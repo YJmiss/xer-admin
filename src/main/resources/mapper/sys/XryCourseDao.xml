@@ -232,9 +232,9 @@
             </if>
         </if>
         <if test="params.sort != null and params.sort != ''">
-            <!-- 综合排序 -->
+            <!-- 综合排序：人气、好评-->
             <if test="params.sort == 1">
-
+                order by starLevel desc,a.applicant_count desc,a.price asc
             </if>
             <!-- 好评率排序 -->
             <if test="params.sort == 2">
@@ -242,7 +242,7 @@
             </if>
             <!-- 人气排序 -->
             <if test="params.sort == 3">
-                order by joinCourseCount desc
+                order by a.applicant_count desc
             </if>
             <!-- 价格升序 -->
             <if test="params.sort == 4">

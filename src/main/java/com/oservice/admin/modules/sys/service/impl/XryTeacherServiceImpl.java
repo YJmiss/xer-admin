@@ -89,8 +89,8 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
     }
 
     @Override
-    public List<Map<String, Object>> listByUserId(Map<String, Object> params) {
-        return baseMapper.listByUserId(params);
+    public List<Map<String, Object>> appPageListByUserId(Map<String, Object> params) {
+        return baseMapper.appPageListByUserId(params);
     }
 
     @Override
