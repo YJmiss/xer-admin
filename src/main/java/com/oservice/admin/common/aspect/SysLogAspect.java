@@ -6,6 +6,7 @@ import com.oservice.admin.common.utils.HttpContextUtils;
 import com.oservice.admin.common.utils.IPUtils;
 import com.oservice.admin.modules.sys.entity.SysLogEntity;
 import com.oservice.admin.modules.sys.entity.SysUserEntity;
+import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.SysLogService;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -85,7 +86,11 @@ public class SysLogAspect {
 		//用户名
         String username = "";
         if (SecurityUtils.getSubject().getPrincipal() != null) {
-            username = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getUsername();
+            try {
+                username = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getUsername();
+            } catch (Exception e) {
+                username = ((XryUserEntity) SecurityUtils.getSubject().getPrincipal()).getNickname();
+            }
         }
 		sysLog.setUsername(username);
 
