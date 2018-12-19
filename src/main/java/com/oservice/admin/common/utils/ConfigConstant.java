@@ -35,4 +35,8 @@ public class ConfigConstant {
      * 图片上传配置
      */
     public final static String IMAGE_PATH = "D:\\imageData\\";
+    /**
+     * 订单ID前缀
+     */
+    public final static String ORDERID = "XRYORDERID";
 }

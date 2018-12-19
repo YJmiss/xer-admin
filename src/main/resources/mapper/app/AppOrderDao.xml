@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.app.dao.AppOrderDao">
+    <insert id="addOrder" parameterType="com.oservice.admin.modules.app.entity.XryOrderEntity">
+        insert into xry_order ( order_id,total_fee, payment_type,status,create_time,update_time,user_id,buyer_phone )
+        VALUES(#{orderId},#{totalFee},#{paymentType},#{status},#{createTime},#{updateTime},#{userId},#{buyerPhone})
+    </insert>
+
+</mapper>
