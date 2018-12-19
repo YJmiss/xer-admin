@@ -22,8 +22,8 @@
         </foreach>
     </delete>
     <!--根据讲师id查询关注改讲师的所有用户-->
-    <select id="listUserIdByTeacherId" parameterType="java.lang.String" resultType="com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity">
-      select * from xry_course_teacher_user where teacher_id = #{teacherId}
+    <select id="listUserIdByTeacherId" parameterType="java.lang.String" resultType="com.oservice.admin.modules.sys.entity.XryUserAttentionEntity">
+      select * from xry_user_attention where obj_id = #{teacherId} and obj_type = 0 and obj_status = 0
     </select>
 
 </mapper>

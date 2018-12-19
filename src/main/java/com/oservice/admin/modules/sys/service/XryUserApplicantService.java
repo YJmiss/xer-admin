@@ -2,7 +2,6 @@ package com.oservice.admin.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity;
 import com.oservice.admin.modules.sys.entity.XryUserApplicantEntity;
 
 import java.util.List;

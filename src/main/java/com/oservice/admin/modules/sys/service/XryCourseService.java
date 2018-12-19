@@ -168,4 +168,11 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 * @return
 	 */
 	List<Map<String, Object>> appListCourseCenter(String params);
+
+	/**
+	 * 修改课程加入学习的计数
+	 * @param courseId
+	 * @param flag
+	 */
+    void updateCourseApplicationCount(Long courseId, Integer flag);
 }

@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryUserApplicantDao;
-import com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity;
 import com.oservice.admin.modules.sys.entity.XryUserApplicantEntity;
 import com.oservice.admin.modules.sys.service.XryUserApplicantService;
 import org.springframework.stereotype.Service;

@@ -145,7 +145,7 @@
     </select>
     <!--根据课程id查询学习人数-->
     <select id="countStudentByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        select count(*) from xry_course_teacher_user where course_id = #{courseId}
+        select count(*) from xry_user_applicant where obj_id = #{courseId} and obj_type = 0 and obj_status = 0
     </select>
     <!--根据课程id查询评价人数-->
     <select id="countCommentByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
@@ -165,7 +165,7 @@
     </select>
     <!--该讲师的课程数-->
     <select id="countStudentByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select count(*) from xry_course_teacher_user where course_id in (select id from xry_course where tid = #{teacherId}) and type = 1
+        select count(*) from xry_user_applicant where obj_id in (select id from xry_course where tid = #{teacherId}) and obj_type = 0 and obj_status = 0
     </select>
     <!--该机构的课程数-->
     <select id="countCourseByOrgId" parameterType="java.lang.Long" resultType="java.lang.Integer">
@@ -173,7 +173,7 @@
     </select>
     <!--该机构的学生数-->
     <select id="countStudentByOrgId" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        select count(*) from xry_course_teacher_user where course_id in (select id from xry_course where tid in (select id from xry_teacher where org_id = #{orgId} and status = 3)) and type = 1
+        select count(*) from xry_user_applicant where obj_id in (select id from xry_course where tid in (select id from xry_teacher where org_id = #{orgId} and status = 3)) and obj_type = 0 and obj_status = 0
     </select>
     <!--查询出该类目下管理员设置推荐的课程-->
     <select id="listCourseCatBySubCatId" parameterType="java.lang.Long" resultType="java.util.Map">
@@ -189,7 +189,7 @@
     </select>
     <!--查询学习人数根据课程类目id-->
     <select id="countStudentByCourseCatId" parameterType="java.lang.Long" resultType="java.lang.Integer">
-      select count(*) from xry_course_teacher_user where course_id in (select id from xry_course where cid = #{courseCatId} and status = 4)
+      select count(*) from xry_user_applicant where obj_id in (select id from xry_course where cid = #{courseCatId} and status = 4) and obj_type = 0 and obj_status = 0
     </select>
     <!--根据课程id查询评价信息-->
     <select id="listCourseCommentByCourseId" parameterType="java.util.Map" resultType="java.util.Map">

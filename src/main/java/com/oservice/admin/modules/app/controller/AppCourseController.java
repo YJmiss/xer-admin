@@ -46,11 +46,13 @@ public class AppCourseController extends AbstractController {
         // 从token中获取登录人信息
         // 把课程id和用户id加入到数据库表中
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", getUserId());
+        params.put("userId", getAppUserId());
         params.put("courseId", courseId);
         params.put("type", COURSE_JOIN_STUDY);
         Integer isSuccess = xryUserApplicantService.appSaveCourse(params);
         if (1 == isSuccess) {
+            // 给课程计数+1
+            xryCourseService.updateCourseApplicationCount(courseId, 1);
             return Result.ok().put("1", "课程加入学习成功");
         } else {
             return Result.error(2, "课程加入学习失败");

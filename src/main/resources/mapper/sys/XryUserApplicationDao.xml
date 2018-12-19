@@ -23,8 +23,8 @@
         and user_id = #{params.userId}
     </delete>
     <!--根据课程id查询出报名学习该课程的所有用户-->
-    <select id="listUserIdByCourseId" parameterType="java.lang.Long" resultType="com.oservice.admin.modules.sys.entity.XryCourseTeacherUserEntity">
-      select * from xry_course_teacher_user where course_id = #{courseId}
+    <select id="listUserIdByCourseId" parameterType="java.lang.Long" resultType="com.oservice.admin.modules.sys.entity.XryUserApplicantEntity">
+      select * from xry_user_applicant where obj_id = #{courseId} and obj_type = 0 and obj_status = 0
     </select>
     <!--查询课程"目录"-->
     <select id="listCourseCatalogByCourseId" parameterType="java.lang.Long" resultType="java.util.Map">
