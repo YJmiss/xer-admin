@@ -20,7 +20,7 @@ public class XryTeacherEntity implements Serializable {
 	/**
 	 * 讲师ID
 	 */
-	private Long id;
+	private String id;
 	/**
 	 * 讲师认证的用户
 	 */
@@ -62,11 +62,11 @@ public class XryTeacherEntity implements Serializable {
 	 */
 	private Date created;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

@@ -163,7 +163,7 @@
     <select id="countCourseByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(*) from xry_course where tid = #{teacherId} and status = 4
     </select>
-    <!--该讲师的课程数-->
+    <!--该讲师的学生数-->
     <select id="countStudentByTeacherId" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(*) from xry_user_applicant where obj_id in (select id from xry_course where tid = #{teacherId}) and obj_type = 0 and obj_status = 0
     </select>
@@ -260,6 +260,9 @@
     <!--根据课程id查询课程章节-->
     <select id="countCatalogByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
       select count(*) from xry_course_catalog where courseid = #{courseId}
+    </select>
+    <select id="selectCourseAndDescById" parameterType="java.util.Map" resultType="java.util.Map">
+      select xc.*, xcd.course_desc from xry_course xc left join xry_course_desc xcd on xcd.course_id = xc.id where xc.id = #{courseId}
     </select>
 
 </mapper>
