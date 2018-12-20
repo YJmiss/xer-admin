@@ -57,6 +57,12 @@ public class XryTeacherEntity implements Serializable {
 	 *  认证状态(1：认证中 2：未通过： 3：已通过）
 	 */
 	private Integer status;
+
+	/**
+	 * 讲师简介
+	 */
+	private String briefIntro;
+
 	/**
 	 * 创建时间
 	 */
@@ -141,6 +147,10 @@ public class XryTeacherEntity implements Serializable {
 	public void setAttentionCount(Integer attentionCount) {
 		this.attentionCount = attentionCount;
 	}
+
+	public String getBriefIntro() { return briefIntro; }
+
+	public void setBriefIntro(String briefIntro) { this.briefIntro = briefIntro; }
 
 	public Date getCreated() {
 		return created;

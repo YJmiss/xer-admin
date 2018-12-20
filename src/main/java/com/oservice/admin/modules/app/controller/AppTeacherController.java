@@ -62,6 +62,19 @@ public class AppTeacherController extends AbstractController {
     }
 
     /**
+     * app查询'明星讲师'列表:固定6个
+     * @return
+     */
+    @SysLog("app查询'明星讲师'列表")
+    @GetMapping("/appListStarTeacherByUserId")
+    public Result appListStarTeacherByUserId() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("pageSize",6);
+        List<Map<String, Object>> starTeacherList = xryTeacherService.appListStarTeacherByUserId(params);
+        return Result.ok().put("starTeacherList", starTeacherList);
+    }
+
+    /**
      * app端讲师关注
      *
      * @param teacherId 讲师id
@@ -96,6 +109,24 @@ public class AppTeacherController extends AbstractController {
         // 给对应的讲师计数-1
         xryTeacherService.updateTeacherAttention(teacherId, 2);
         return Result.ok();
+    }
+
+    /**
+     * app端讲师主页
+     * @param teacherId
+     * @return
+     */
+    @SysLog("app端讲师主页")
+    @PostMapping("/appQueryTeacherDetailByTeacherId")
+    public Result appQueryTeacherDetailByTeacherId(@RequestParam String teacherId){
+        // 1、讲师详情
+        Map<String, Object> teacherDetail = xryTeacherService.appQueryTeacherDetailByTeacherId(teacherId);
+        // 她/他主讲的课程
+        List<Map<String, Object>> teacherRelatedList = xryTeacherService.listTeacherCourseByTeacherId(teacherId);
+        Map<String, Object> params = new HashMap<>();
+        params.put("teacherDetail", teacherDetail);
+        params.put("teacherRelatedList", teacherRelatedList);
+        return Result.ok().put("teacherDetail", params);
     }
 
 

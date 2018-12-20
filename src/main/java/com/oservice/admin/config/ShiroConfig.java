@@ -76,6 +76,7 @@ public class ShiroConfig {
         filterMap.put("/api/appContent/advertising/list", "anon");
         filterMap.put("/api/appContent/goodCourse/list", "anon");
         filterMap.put("/api/appCourse/appQueryCourseDetailByCourseId", "anon");
+        filterMap.put("/api/appTeacher/appQueryTeacherDetailByTeacherId", "anon");
 
         filterMap.put("/swagger/**", "anon");
         filterMap.put("/v2/api-docs", "anon");
