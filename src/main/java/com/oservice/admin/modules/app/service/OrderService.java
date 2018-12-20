@@ -23,12 +23,13 @@ public interface OrderService {
     /**
      * 付款成功
      *
-     * @param
+     * @param orderId :订单号
+     * @param money : 实付款金额
      */
-    void payOrder(String orderId);
+    void payOrder(String orderId, String money);
 
     /**
-     * 超出时间未付款致交易关闭
+     * 未付款或支付失败致交易关闭
      *
      * @param
      */

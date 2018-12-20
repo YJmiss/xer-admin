@@ -1,11 +1,14 @@
 package com.oservice.admin.modules.app.entity;
 
+import com.baomidou.mybatisplus.annotations.TableName;
+
 /**
  * @program: oservice
  * @description: 订单对应课程表
  * @author: YJmiss
  * @create: 2018-12-19 09:58
  **/
+@TableName("xry_order_course")
 public class XryOrderCourseEntity {
     /*
      `id` varchar(20) COLLATE utf8_bin NOT NULL,

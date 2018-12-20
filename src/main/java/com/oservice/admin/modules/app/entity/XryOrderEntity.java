@@ -1,5 +1,7 @@
 package com.oservice.admin.modules.app.entity;
 
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.util.Date;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Date;
  * @author: YJmiss
  * @create: 2018-12-19 09:24
  **/
+@TableName("xry_order")
 public class XryOrderEntity {
     /*`
     order_id` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '订单id',

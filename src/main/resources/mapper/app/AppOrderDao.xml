@@ -6,5 +6,7 @@
         insert into xry_order ( order_id,total_fee, payment_type,status,create_time,update_time,user_id,buyer_phone )
         VALUES(#{orderId},#{totalFee},#{paymentType},#{status},#{createTime},#{updateTime},#{userId},#{buyerPhone})
     </insert>
-
+    <update id="closeOrder" parameterType="String">
+        update xry_order
+    </update>
 </mapper>

@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Query;
-import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.common.utils.UUIDUtils;
 import com.oservice.admin.modules.app.dao.AppOrderDao;
 import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
@@ -32,8 +31,6 @@ import java.util.Map;
  **/
 @Service("orderService")
 public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> implements OrderService {
-    @Resource
-    private RedisUtils jedisClient;
     @Resource
     private XryCourseService xryCourseService;
     @Resource
@@ -69,20 +66,32 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
             orderCourseEntity.setCourseId(a);
             orderCourseEntity.setOrderId(id);
             orderCoursesList.add(orderCourseEntity);
+
         }
         order.setTotalFee(totalFee);
-        Integer insert = baseMapper.addOrder(order);
+        baseMapper.addOrder(order);
         orderCourseService.createOrderCourse(orderCoursesList);
     }
 
     @Override
-    public void payOrder(String orderId) {
-
+    public void payOrder(String orderId, String money) {
+        XryOrderEntity order = new XryOrderEntity();
+        order.setOrderId(orderId);
+        order.setStatus(2);
+        order.setUpdateTime(new Date());
+        order.setPaymentTime(new Date());
+        order.setEndTime(new Date());
+        order.setPayment(money);
     }
 
     @Override
     public void closeOrder(String orderId) {
-
+        XryOrderEntity order = new XryOrderEntity();
+        order.setOrderId(orderId);
+        order.setStatus(3);
+        order.setUpdateTime(new Date());
+        order.setCloseTime(new Date());
+        baseMapper.updateById(order);
     }
 
     @Override

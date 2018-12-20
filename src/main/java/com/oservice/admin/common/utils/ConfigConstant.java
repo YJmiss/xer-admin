@@ -22,7 +22,7 @@ public class ConfigConstant {
      * 图片服务器地址
      */
     // public final static String IMAGE_URL = "http://192.168.1.30:1025";图片服务器地址
-    public final static String IMAGE_URL = "http://192.168.1.27:9001/xry/imageData/";
+    public final static String IMAGE_URL = "http://192.168.1.30:9001/xry/imageData/";
     /**
      * 默认显示搜索字段
      */

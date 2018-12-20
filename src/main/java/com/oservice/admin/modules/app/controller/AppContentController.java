@@ -42,10 +42,12 @@ public class AppContentController extends AbstractController {
     public Result getContentList() {
         List<XryContentEntity> contentsByCat1 = contentService.getContentsByCat(1);
         List<XryContentEntity> contentsByCat2 = contentService.getContentsByCat(2);
+        List<XryContentEntity> contentsByCat3 = contentService.getContentsByCat(3);
 
         Map<String, Object> map = new HashMap<>();
         map.put("Advertising1", contentsByCat1);
         map.put("Advertising2", contentsByCat2);
+        map.put("Advertising3", contentsByCat3);
         return Result.ok(map);
     }
 
@@ -63,4 +65,6 @@ public class AppContentController extends AbstractController {
         map.put("GoodCourse", goodCourse);
         return Result.ok(map);
     }
+
+
 }
