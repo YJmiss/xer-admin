@@ -73,8 +73,17 @@ public class ShiroConfig {
         filterMap.put("/api/appAccount/validationPhoneCode", "anon");
         filterMap.put("/api/appSearcher/search", "anon");
         filterMap.put("/api/appContent/**", "anon");
-        filterMap.put("/api/appCourse/appQueryCourseDetailByCourseId", "anon");
-        filterMap.put("/api/appTeacher/appQueryTeacherDetailByTeacherId", "anon");
+        
+        filterMap.put("/api/appTeacher/appQueryTeacherDetailByTeacherId", "anon");   // 讲师主页
+        filterMap.put("/api/appTeacher/appListStarTeacherByUserId", "anon");  // 明星讲师
+        filterMap.put("/api/appTeacher/appTeacherAttentionByTeacherId", "anon");  // 讲师关注
+
+        filterMap.put("/api/appCourse/appQueryCourseDetailByCourseId", "anon");     // 课程详情
+        filterMap.put("/api/appCourse/appListCourseCatalogByCourseId", "anon");     // 课程目录列表
+        filterMap.put("/api/appCourse/appQueryCourseCommentByCourseId", "anon");     // 课程评论
+        filterMap.put("/api/appCourse/appQuerySimilarityCourseByCourseId", "anon");     // 相关课程列表
+        filterMap.put("/api/appCourse/appListCourseCenter", "anon");     // 课程中心
+        filterMap.put("/api/appCourse/appCourseApplicantByCourseId", "anon");  // 课程报名
 
         filterMap.put("/swagger/**", "anon");
         filterMap.put("/v2/api-docs", "anon");

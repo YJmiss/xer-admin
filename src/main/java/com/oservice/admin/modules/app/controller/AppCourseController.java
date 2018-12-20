@@ -43,12 +43,11 @@ public class AppCourseController extends AbstractController {
      * app端用户加入课程学习
      *
      * @param courseId 课程id
-     * @param isSelect 是否加入学习
      * @return
      */
     @SysLog("app端用户加入课程学习")
-    @PostMapping("/appJoinCourseStudy")
-    public Result appJoinCourseStudy(@RequestParam Long courseId, boolean isSelect) {
+    @PostMapping("/appCourseApplicantByCourseId")
+    public Result appCourseApplicantByCourseId(@RequestParam Long courseId) {
         // 从token中获取登录人信息
         // 把课程id和用户id加入到数据库表中
         Map<String, Object> params = new HashMap<>();
@@ -73,7 +72,7 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端根据用户查询用户加入学习的课程列表")
-    @GetMapping("/appPageListCourseByUserId")
+    @PostMapping("/appPageListCourseByUserId")
     public Result appPageListCourseByUserId(@RequestParam Integer pageNo, Integer pageSize, Integer flag) {
         // 把课程id和用户id加入到数据库表中
         Map<String, Object> params = new HashMap<>();
@@ -108,18 +107,15 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端课程详情查询")
-    @GetMapping("/appQueryCourseDetailByCourseId")
+    @PostMapping("/appQueryCourseDetailByCourseId")
     public Result appQueryCourseDetailByCourseId(@RequestParam Long courseId) {
         if (null == courseId) {
             return Result.error(1, "查询出错");
         }
         Map<String, Object> detail = new HashMap<>();
-        // 1、查询"课程详情"
+        // 查询"课程详情"
         Map<String, Object> courseDetailContent = xryCourseService.queryCourseDetailByCourseId(courseId);
         detail.put("courseDetailContent", courseDetailContent);
-        // 2、查询课程"目录"
-        Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseId(courseId);
-        detail.put("courseCatalogList", courseCatalogList);
         try {
             String id = null;
             if (id == null || id.equals("")) {
@@ -152,19 +148,31 @@ public class AppCourseController extends AbstractController {
     }
 
     /**
+     * app端课程目录查询
+     *
+     * @param courseId
+     * @return
+     */
+    @SysLog("app端课程目录查询")
+    @PostMapping("/appListCourseCatalogByCourseId")
+    public Result appListCourseCatalogByCourseId(@RequestParam Long courseId) {
+        // 查询课程"目录"
+        Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseId(courseId);
+        return Result.ok(courseCatalogList);
+    }
+
+    /**
      * app端课程详情评价查询
      *
      * @param courseId
      * @return
      */
     @SysLog("app端课程详情评价查询")
-    @GetMapping("/appQueryCourseCommentByCourseId")
+    @PostMapping("/appQueryCourseCommentByCourseId")
     public Result appQueryCourseCommentByCourseId(@RequestParam Long courseId, Integer pageNo, Integer pageSize) {
-        Map<String, Object> detail = new HashMap<>();
-        // 3、查询课程"评价"
+        // 查询课程"评价"
         Map<String, Object> courseCommentList = xryCourseService.listCourseCommentByCourseId(courseId, pageNo, pageSize);
-        detail.put("courseCommentList", courseCommentList);
-        return Result.ok(detail);
+        return Result.ok(courseCommentList);
     }
 
     /**
@@ -174,13 +182,11 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端相关课程查询")
-    @GetMapping("/appQuerySimilarityCourseByCourseId")
+    @PostMapping("/appQuerySimilarityCourseByCourseId")
     public Result appQuerySimilarityCourseByCourseId(@RequestParam Long courseId) {
-        Map<String, Object> detail = new HashMap<>();
-        // 4、查询"相关课程"
+        // 查询"相关课程"
         Map<String, Object> relatedCourseList = xryCourseService.listRelatedCourseByCourseId(courseId);
-        detail.put("relatedCourseList", relatedCourseList);
-        return Result.ok(detail);
+        return Result.ok(relatedCourseList);
     }
 
     /**
@@ -190,7 +196,7 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端课程中心接口")
-    @GetMapping("/appListCourseCenter")
+    @PostMapping("/appListCourseCenter")
     public Result appListCourseCenter(@RequestParam String params) {
         List<Map<String, Object>> courseList = xryCourseService.appListCourseCenter(params);
         return Result.ok().put("courseList",courseList);

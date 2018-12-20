@@ -80,12 +80,11 @@ public class AppTeacherController extends AbstractController {
      * app端讲师关注
      *
      * @param teacherId 讲师id
-     * @param isSelect  是否关注
      * @return
      */
     @SysLog("app端讲师关注")
-    @PostMapping("/appJoinCourseStudy")
-    public Result appJoinCourseStudy(String teacherId, boolean isSelect) {
+    @PostMapping("/appTeacherAttentionByTeacherId")
+    public Result appTeacherAttentionByTeacherId(String teacherId) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", getAppUserId());
         params.put("teacherId", teacherId);
