@@ -2,13 +2,10 @@ package com.oservice.admin.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryArticleDao;
-import com.oservice.admin.modules.sys.dao.XryCourseDao;
-import com.oservice.admin.modules.sys.entity.*;
+import com.oservice.admin.modules.sys.entity.XryArticleEntity;
 import com.oservice.admin.modules.sys.service.XryArticleService;
-import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -75,6 +72,11 @@ public class XryArticleServiceImpl extends ServiceImpl<XryArticleDao, XryArticle
     @Override
     public void updateArticleRecommend(Map<String, Object> params) {
         baseMapper.updateArticleRecommend(params);
+    }
+
+    @Override
+    public List<XryArticleEntity> getrecommendArticle() {
+        return baseMapper.getrecommendArticle();
     }
 
 }

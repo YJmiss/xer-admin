@@ -48,5 +48,7 @@
             #{id}
         </foreach>
     </update>
-
+    <select id="getrecommendArticle" resultType="com.oservice.admin.modules.sys.entity.XryArticleEntity">
+        select * from xry_article where recommend=1
+    </select>
 </mapper>

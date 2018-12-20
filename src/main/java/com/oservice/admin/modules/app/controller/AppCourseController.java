@@ -1,15 +1,19 @@
 package com.oservice.admin.modules.app.controller;
 
 import com.oservice.admin.common.annotation.SysLog;
+import com.oservice.admin.common.exception.GlobalException;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
+import com.oservice.admin.modules.app.service.OrderCourseService;
+import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryUserApplicantService;
-import com.oservice.admin.modules.sys.service.XryUserAttentionService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +34,10 @@ public class AppCourseController extends AbstractController {
     private XryCourseService xryCourseService;
     @Resource
     private XryUserApplicantService xryUserApplicantService;   // 报名表
+    @Resource
+    private OrderService orderService;
+    @Resource
+    private OrderCourseService orderCourseService;
 
     /**
      * app端用户加入课程学习
@@ -101,7 +109,7 @@ public class AppCourseController extends AbstractController {
      */
     @SysLog("app端课程详情查询")
     @GetMapping("/appQueryCourseDetailByCourseId")
-    public Result appQueryCourseDetailByCourseId(@RequestParam Long courseId, Integer pageNo, Integer pageSize) {
+    public Result appQueryCourseDetailByCourseId(@RequestParam Long courseId) {
         if (null == courseId) {
             return Result.error(1, "查询出错");
         }
@@ -112,9 +120,63 @@ public class AppCourseController extends AbstractController {
         // 2、查询课程"目录"
         Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseId(courseId);
         detail.put("courseCatalogList", courseCatalogList);
+        try {
+            String id = null;
+            if (id == null || id.equals("")) {
+                detail.put("identifying", false);
+            } else {
+                List<String> orderId = orderService.getOrderIdByUserId(id);
+                if (orderId.size() > 0) {
+                    List<Long> courseIds = new ArrayList<>();
+                    for (String order : orderId) {
+                        List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(order);
+                        for (XryOrderCourseEntity courses : orderCourses) {
+                            long courseId1 = courses.getCourseId();
+                            courseIds.add(courseId1);
+                        }
+                    }
+                    if (courseIds.contains(courseId)) {
+                        detail.put("identifying", true);
+                    } else {
+                        detail.put("identifying", false);
+                    }
+                } else {
+                    detail.put("identifying", false);
+                }
+            }
+
+        } catch (GlobalException e) {
+            detail.put("identifying", false);
+        }
+        return Result.ok(detail);
+    }
+
+    /**
+     * app端课程详情评价查询
+     *
+     * @param courseId
+     * @return
+     */
+    @SysLog("app端课程详情评价查询")
+    @GetMapping("/appQueryCourseCommentByCourseId")
+    public Result appQueryCourseCommentByCourseId(@RequestParam Long courseId, Integer pageNo, Integer pageSize) {
+        Map<String, Object> detail = new HashMap<>();
         // 3、查询课程"评价"
         Map<String, Object> courseCommentList = xryCourseService.listCourseCommentByCourseId(courseId, pageNo, pageSize);
         detail.put("courseCommentList", courseCommentList);
+        return Result.ok(detail);
+    }
+
+    /**
+     * app端相关课程查询
+     *
+     * @param courseId
+     * @return
+     */
+    @SysLog("app端相关课程查询")
+    @GetMapping("/appQuerySimilarityCourseByCourseId")
+    public Result appQuerySimilarityCourseByCourseId(@RequestParam Long courseId) {
+        Map<String, Object> detail = new HashMap<>();
         // 4、查询"相关课程"
         Map<String, Object> relatedCourseList = xryCourseService.listRelatedCourseByCourseId(courseId);
         detail.put("relatedCourseList", relatedCourseList);

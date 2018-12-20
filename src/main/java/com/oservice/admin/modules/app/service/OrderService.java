@@ -3,6 +3,7 @@ package com.oservice.admin.modules.app.service;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,5 +43,11 @@ public interface OrderService {
      */
     PageUtils queryPage(Map<String, Object> params);
 
+    /**
+     * 查询用户已购买的订单
+     *
+     * @param
+     */
+    List<String> getOrderIdByUserId(String id);
 
 }

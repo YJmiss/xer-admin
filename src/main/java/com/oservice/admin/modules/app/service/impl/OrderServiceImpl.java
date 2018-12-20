@@ -104,4 +104,9 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
         return new PageUtils(page);
     }
 
+    @Override
+    public List<String> getOrderIdByUserId(String id) {
+        return null;
+    }
+
 }

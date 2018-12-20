@@ -2,7 +2,6 @@ package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.oservice.admin.modules.sys.entity.XryArticleEntity;
-import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -44,5 +43,10 @@ public interface XryArticleDao extends BaseMapper<XryArticleEntity> {
      */
     void updateArticleRecommend(Map<String, Object> params);
 
-
+    /**
+     * 推荐文章
+     *
+     * @param
+     */
+    List<XryArticleEntity> getrecommendArticle();
 }

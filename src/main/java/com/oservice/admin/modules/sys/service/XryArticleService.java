@@ -1,9 +1,8 @@
 package com.oservice.admin.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.modules.sys.entity.*;
+import com.oservice.admin.modules.sys.entity.XryArticleEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -59,4 +58,11 @@ public interface XryArticleService extends IService<XryArticleEntity> {
 	 * @param params
 	 */
     void updateArticleRecommend(Map<String, Object> params);
+
+	/**
+	 * 推荐文章
+	 *
+	 * @param
+	 */
+	List<XryArticleEntity> getrecommendArticle();
 }

@@ -2,8 +2,10 @@ package com.oservice.admin.modules.app.controller;
 
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
+import com.oservice.admin.modules.sys.entity.XryArticleEntity;
 import com.oservice.admin.modules.sys.entity.XryContentEntity;
 import com.oservice.admin.modules.sys.entity.XryGoodCourseEntity;
+import com.oservice.admin.modules.sys.service.XryArticleService;
 import com.oservice.admin.modules.sys.service.XryContentService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import io.swagger.annotations.Api;
@@ -30,7 +32,8 @@ public class AppContentController extends AbstractController {
     private XryContentService contentService;
     @Resource
     private XryCourseService courseService;
-
+    @Resource
+    private XryArticleService articleService;
     /**
      * @Description: 首页轮播，中部广告信息
      * @Param:
@@ -66,5 +69,16 @@ public class AppContentController extends AbstractController {
         return Result.ok(map);
     }
 
-
+    /**
+     * @Description: 获取分类页面推荐文章
+     * @Param:
+     * @return:
+     * @Author: YJmiss
+     * @Date: 2018/12/20
+     */
+    @GetMapping("/recommendArticle/list")
+    public Result recommendArticle() {
+        List<XryArticleEntity> articles = articleService.getrecommendArticle();
+        return Result.ok().put("recommendArticle", articles);
+    }
 }
