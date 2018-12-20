@@ -37,7 +37,7 @@ public class XryRecommendController extends AbstractController {
      * @return
      */
     @GetMapping("/appListCourseCat")
-    public Result appListCourseCat(@RequestParam String token){
+    public Result appListCourseCat(){
         // 第一步：查询所有的课程类目
         List<Map<String, Object>> catList = xryCourseCatService.listCourseCat();
         // 构造一个存放父类目的容器

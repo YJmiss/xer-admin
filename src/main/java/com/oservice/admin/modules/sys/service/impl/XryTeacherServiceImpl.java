@@ -136,5 +136,24 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         return baseMapper.appListStarTeacherByUserId(params);
     }
 
+    @Override
+    public Map<String, Object> appQueryTeacherDetailByTeacherId(String teacherId) {
+        return baseMapper.appQueryTeacherDetailByTeacherId(teacherId);
+    }
+
+    @Override
+    public List<Map<String, Object>> listTeacherCourseByTeacherId(String teacherId) {
+        List<Map<String, Object>> teacherCourseList = baseMapper.listTeacherCourseByTeacherId(teacherId);
+        if (teacherCourseList.size() > 0) {
+            for (Map<String, Object> map : teacherCourseList) {
+                Long courseId = Long.valueOf(String.valueOf(map.get("id")));
+                // 根据课程id查询该课程的学生人数
+                Integer courseStudentCount = baseMapper.countStudentByCourseId(courseId);
+                map.put("courseStudentCount", courseStudentCount);
+            }
+        }
+        return teacherCourseList;
+    }
+
 
 }

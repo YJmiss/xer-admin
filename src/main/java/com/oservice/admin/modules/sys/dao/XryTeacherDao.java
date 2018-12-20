@@ -87,4 +87,25 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
      * @return
      */
     List<Map<String, Object>> appListStarTeacherByUserId(@Param("params") Map<String, Object> params);
+
+    /**
+     * app端讲师主页
+     * @param teacherId
+     * @return
+     */
+    Map<String, Object> appQueryTeacherDetailByTeacherId(@Param("teacherId") String teacherId);
+
+    /**
+     * 她/他主讲的课程
+     * @param teacherId
+     * @return
+     */
+    List<Map<String, Object>> listTeacherCourseByTeacherId(@Param("teacherId") String teacherId);
+
+    /**
+     * 根据课程id查询该课程的学生人数
+     * @param courseId
+     * @return
+     */
+    Integer countStudentByCourseId(@Param("courseId") Long courseId);
 }

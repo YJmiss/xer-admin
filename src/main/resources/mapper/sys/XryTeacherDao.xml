@@ -66,8 +66,20 @@
    </select>
     <!--app查询'明星讲师'列表:固定6个-->
     <select id="appListStarTeacherByUserId" parameterType="java.util.Map" resultType="java.util.Map">
-      select xt.*,ifnull((xua.obj_id),0) as 'attentionCount',xu.avatar from xry_teacher xt left join xry_user_attention xua on xt.id = xua.obj_id
+      select xt.*,ifnull(xua.obj_id,0) as 'attentionCount',xu.avatar from xry_teacher xt left join xry_user_attention xua on xt.id = xua.obj_id
         left join xry_user xu on xu.id = xt.user_id where xua.obj_type = 0 and xua.obj_status = 0 order by attentionCount desc limit 0,${params.pageSize}
+    </select>
+    <!--app端讲师主页-->
+    <select id="appQueryTeacherDetailByTeacherId" parameterType="java.lang.String" resultType="java.util.Map">
+      select xt.*,xu.avatar,xo.org_name,xo.org_code from xry_teacher xt left join xry_user xu on xt.user_id = xu.id
+        left join xry_organization xo on xo.id = xt.org_id where xt.id = #{teacherId}
+    </select>
+    <select id="listTeacherCourseByTeacherId" parameterType="java.lang.String" resultType="java.util.Map">
+      select * from xry_course where tid = #{teacherId} and status = 4 order by recommend desc 
+    </select>
+    <!--根据课程id查询该课程的学生人数-->
+    <select id="countStudentByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+      select count(*) from xry_user_applicant where obj_id = #{courseId} and obj_type = 0 and obj_status = 0
     </select>
 
 </mapper>

@@ -111,5 +111,23 @@ public class AppTeacherController extends AbstractController {
         return Result.ok();
     }
 
+    /**
+     * app端讲师主页
+     * @param teacherId
+     * @return
+     */
+    @SysLog("app端讲师主页")
+    @PostMapping("/appQueryTeacherDetailByTeacherId")
+    public Result appQueryTeacherDetailByTeacherId(@RequestParam String teacherId){
+        // 1、讲师详情
+        Map<String, Object> teacherDetail = xryTeacherService.appQueryTeacherDetailByTeacherId(teacherId);
+        // 她/他主讲的课程
+        List<Map<String, Object>> teacherRelatedList = xryTeacherService.listTeacherCourseByTeacherId(teacherId);
+        Map<String, Object> params = new HashMap<>();
+        params.put("teacherDetail", teacherDetail);
+        params.put("teacherRelatedList", teacherRelatedList);
+        return Result.ok().put("teacherDetail", params);
+    }
+
 
 }
