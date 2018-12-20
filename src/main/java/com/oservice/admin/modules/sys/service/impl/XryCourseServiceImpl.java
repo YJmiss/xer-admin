@@ -358,4 +358,9 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         baseMapper.updateById(course);
     }
 
+    @Override
+    public Integer countCourseByCatId(Long id) {
+        return baseMapper.countCourseByCatId(id);
+    }
+
 }

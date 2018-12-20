@@ -9,10 +9,12 @@ import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatService;
+import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +27,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/xry/course/cat")
 public class XryCourseCatController extends AbstractController {
+    /** 禁用类目 */
+    final static Integer DISABLED_COURSE_CAT = 2;
+    /** 启用类目 */
+    final static Integer USE_COURSE_CAT = 1;
     @Resource
     private XryCourseCatService xryCourseCatService;
+    @Resource
+    private XryCourseService xryCourseService;
 
     /**
      * 查询课程列表
@@ -115,5 +123,46 @@ public class XryCourseCatController extends AbstractController {
         List<XryCourseCatEntity> courseCatList = xryCourseCatService.treeCourseCat();
         return Result.ok().put("courseCatList", courseCatList);
     }
+
+    /**
+     * 禁用类目
+     * @param ids
+     * @return
+     */
+    @SysLog("禁用类目")
+    @PostMapping("/toDisable")
+    @RequiresPermissions("xry:course:cat:toDisable")
+    public Result catToDisable(@RequestBody Long[] ids){
+        // 查询（子）类目下是否有课程的
+        for (Long id : ids) {
+            Integer courseCount = xryCourseService.countCourseByCatId(id);
+            if (courseCount > 0) {
+                return Result.error("所选类目下有课程，不能禁用");
+            } else {
+                Map<String, Object> params = new HashMap<>();
+                params.put("ids", ids);
+                params.put("status", DISABLED_COURSE_CAT);
+                xryCourseCatService.updateCourseCatStatusByCatId(params);
+            }
+        }
+        return Result.ok();
+    }
+
+    /**
+     * 启用类目
+     * @param ids
+     * @return
+     */
+    @SysLog("启用类目")
+    @PostMapping("/toUse")
+    @RequiresPermissions("xry:course:cat:toUse")
+    public Result catToUse(@RequestBody Long[] ids){
+        Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+        params.put("status", USE_COURSE_CAT);
+        xryCourseCatService.updateCourseCatStatusByCatId(params);
+        return Result.ok();
+    }
+
     
 }

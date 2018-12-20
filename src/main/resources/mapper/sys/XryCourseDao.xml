@@ -264,5 +264,8 @@
     <select id="selectCourseAndDescById" parameterType="java.util.Map" resultType="java.util.Map">
       select xc.*, xcd.course_desc from xry_course xc left join xry_course_desc xcd on xcd.course_id = xc.id where xc.id = #{courseId}
     </select>
+    <select id="countCourseByCatId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+      select count(*) from xry_course where cid = #{catId}
+    </select>
 
 </mapper>

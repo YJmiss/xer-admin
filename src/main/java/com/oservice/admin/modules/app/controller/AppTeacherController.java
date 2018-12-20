@@ -6,6 +6,7 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
 import com.oservice.admin.modules.sys.service.*;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/appTeacher")
+@Api(description = "APP讲师控制器")
 public class AppTeacherController extends AbstractController {
     /** 讲师关注的数据库标识符 */
     private static final Integer TEACHER_FOCUS_FLAG = 2;
@@ -51,7 +53,7 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app查询'我的关注'列表")
-    @GetMapping("/appPageListTeacherByUserId")
+    @PostMapping("/appPageListTeacherByUserId")
     public Result appPageListTeacherByUserId(@RequestParam Integer pageNo, Integer pageSize) {
         Map<String, Object> params = new HashMap<>();
         params.put("pageNo", (pageNo - 1) * pageSize);
@@ -66,7 +68,7 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app查询'明星讲师'列表")
-    @GetMapping("/appListStarTeacherByUserId")
+    @PostMapping("/appListStarTeacherByUserId")
     public Result appListStarTeacherByUserId() {
         Map<String, Object> params = new HashMap<>();
         params.put("pageSize",6);
@@ -126,7 +128,7 @@ public class AppTeacherController extends AbstractController {
         Map<String, Object> params = new HashMap<>();
         params.put("teacherDetail", teacherDetail);
         params.put("teacherRelatedList", teacherRelatedList);
-        return Result.ok().put("teacherDetail", params);
+        return Result.ok().put("teacherMainPage", params);
     }
 
 

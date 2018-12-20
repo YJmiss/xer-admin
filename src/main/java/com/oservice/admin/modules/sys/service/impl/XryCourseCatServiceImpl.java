@@ -82,4 +82,9 @@ public class XryCourseCatServiceImpl extends ServiceImpl<XryCourseCatDao, XryCou
 	public List<Map<String, Object>> listCourseCat() {
 		return baseMapper.listCourseCat();
 	}
+
+	@Override
+	public void updateCourseCatStatusByCatId(Map<String, Object> params) {
+		baseMapper.updateCourseCatStatusByCatId(params);
+	}
 }

@@ -175,4 +175,11 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 * @param flag
 	 */
     void updateCourseApplicationCount(Long courseId, Integer flag);
+
+	/**
+	 * 根据类目id查询课程数量
+	 * @param id
+	 * @return
+	 */
+	Integer countCourseByCatId(Long id);
 }

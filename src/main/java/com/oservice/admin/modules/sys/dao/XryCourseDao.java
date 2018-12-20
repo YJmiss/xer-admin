@@ -257,4 +257,11 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @return
      */
     Map<String, Object> selectCourseAndDescById(@Param("courseId") Long courseId);
+
+    /**
+     * 根据类目id查询课程数量
+     * @param catId
+     * @return
+     */
+    Integer countCourseByCatId(@Param("catId") Long catId);
 }

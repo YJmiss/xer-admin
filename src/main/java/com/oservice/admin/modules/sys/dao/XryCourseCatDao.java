@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -42,4 +43,10 @@ public interface XryCourseCatDao extends BaseMapper<XryCourseCatEntity> {
      * @return
      */
     List<Map<String, Object>> listCourseCat();
+
+    /**
+     * 修改类目状态
+     * @param params
+     */
+    void updateCourseCatStatusByCatId(@Param("params") Map<String, Object> params);
 }

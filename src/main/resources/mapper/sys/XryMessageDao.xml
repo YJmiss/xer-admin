@@ -6,7 +6,7 @@
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
         select count(*) from  xry_message a left join xry_course b on  a.obj_id=b.id
-          left join xry_user c on a.user_id=c.id where 1=1
+          left join xry_teacher c on a.user_id=c.id where 1=1
         <if test="params.type != null and params.type != ''">
             and a.msg_type like #{params.type}
         </if>
@@ -19,10 +19,10 @@
     </select>
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
-        select a.*,b.title as courseTitle, b.id as courseId, c.nickname,c.id as userId
+        select a.*,b.title as courseTitle, b.id as courseId, c.real_name as realName,c.id as teacherId
             from  xry_message a
               left join xry_course b on  a.obj_id=b.id
-              left join xry_user c on a.user_id=c.id where 1=1
+              left join xry_teacher c on a.user_id=c.id where 1=1
         <if test="params.type != null and params.type != ''">
             and a.msg_type like #{params.type}
         </if>
