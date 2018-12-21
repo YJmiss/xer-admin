@@ -29,6 +29,8 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     private XryTeacherService xryTeacherService;
     @Resource
     private XryOrganizationService xryOrganizationService;
+    @Resource
+    private XryCourseCatService xryCourseCatService;
 
     @Override
 	public PageUtils queryPage(Map<String, Object> params) {

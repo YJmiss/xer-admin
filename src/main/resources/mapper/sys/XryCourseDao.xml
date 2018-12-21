@@ -24,8 +24,11 @@
         <if test="params.title != null and params.title != ''">
             and a.title like #{params.title}
         </if>
-        <if test="params.cid != null and params.cid != ''">
-            and a.cid = #{params.cid}
+        <if test="params.cids != null and params.cids != ''">
+            and cid in
+            <foreach collection="params.cids" item="cid" open="(" separator="," close="">
+                #{cid}
+            </foreach>
         </if>
         <if test="params.tid != null and params.tid != ''">
             and a.tid = #{params.tid}

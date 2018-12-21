@@ -8,18 +8,13 @@ import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
-import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
-import com.oservice.admin.modules.sys.entity.XryUserEntity;
-import com.oservice.admin.modules.sys.service.ShiroService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryUserApplicantService;
 import io.swagger.annotations.Api;
-import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,9 +31,7 @@ import java.util.Map;
 @RequestMapping("/api/appCourse")
 @Api(description = "APP课程控制器")
 public class AppCourseController extends AbstractController {
-    /**
-     * 课程加入学习的标识符
-     */
+    /** 课程加入学习的标识符 */
     final static Integer COURSE_JOIN_STUDY = 1;
     @Resource
     private XryCourseService xryCourseService;
@@ -48,8 +41,6 @@ public class AppCourseController extends AbstractController {
     private OrderService orderService;
     @Resource
     private OrderCourseService orderCourseService;
-    @Resource
-    private ShiroService shiroService;
 
     /**
      * app端用户加入课程学习
@@ -59,6 +50,7 @@ public class AppCourseController extends AbstractController {
      */
     @SysLog("app端用户加入课程学习")
     @PostMapping("/appCourseApplicantByCourseId")
+    @ApiOperation(value="用户报名学习课程",notes="courseId是加入学习的课程id，必填")
     public Result appCourseApplicantByCourseId(@RequestParam Long courseId) {
         // 从token中获取登录人信息
         // 把课程id和用户id加入到数据库表中
@@ -78,14 +70,14 @@ public class AppCourseController extends AbstractController {
 
     /**
      * app端根据用户查询用户加入学习的课程列表
-     *
      * @param pageNo
      * @param pageSize
-     * @param flag     标识符（本周学习、本月学习，全部课程）
+     * @param flag 标识符（本周学习、本月学习，全部课程）
      * @return
      */
     @SysLog("app端根据用户查询用户加入学习的课程列表")
     @PostMapping("/appPageListCourseByUserId")
+    @ApiOperation(value="查询用户已报名学习课程列表",notes="pageNo：页码，必填；pageSize：单页的列表数量，必填；flag：标识符，用来标识本周学习、本月学习、全部课程，必填")
     public Result appPageListCourseByUserId(@RequestParam Integer pageNo, Integer pageSize, Integer flag) {
         // 把课程id和用户id加入到数据库表中
         Map<String, Object> params = new HashMap<>();
@@ -105,6 +97,7 @@ public class AppCourseController extends AbstractController {
      */
     @SysLog("app端用户删除已经加入学习的课程")
     @PostMapping("/appDelCourseById")
+    @ApiOperation(value="用户取消已报名学习课程",notes="ids：是取消学习的课程id，Long数组（批量操作课程id），必填")
     public Result appDelCourseById(@RequestParam Long[] ids) {
         Map<String, Object> params = new HashMap<>();
         params.put("ids", ids);
@@ -120,8 +113,9 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端课程详情查询")
-    @GetMapping("/appQueryCourseDetailByCourseId")
-    public Result appQueryCourseDetailByCourseId(@RequestParam Long courseId, HttpServletRequest request) {
+    @PostMapping("/appQueryCourseDetailByCourseId")
+    @ApiOperation(value="课程详情->课程详细信息",notes="courseId：是课程id，必填")
+    public Result appQueryCourseDetailByCourseId(@RequestParam Long courseId) {
         if (null == courseId) {
             return Result.error(1, "查询出错");
         }
@@ -130,21 +124,11 @@ public class AppCourseController extends AbstractController {
         Map<String, Object> courseDetailContent = xryCourseService.queryCourseDetailByCourseId(courseId);
         detail.put("courseDetailContent", courseDetailContent);
         try {
-            String accessToken = request.getHeader("token");
-            String userId = "";
-            if (StringUtils.isNotBlank(accessToken)) {
-                SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
-                //token失效
-                if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-                    throw new IncorrectCredentialsException("token失效，请重新登录");
-                }
-                XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
-                userId = getAppUser() != null ? getAppUser().getId() : users != null ? users.getId() : "";
-            }
-            if (userId == null || userId.equals("")) {
+            String id = null;
+            if (id == null || id.equals("")) {
                 detail.put("identifying", false);
             } else {
-                List<String> orderId = orderService.getOrderIdByUserId(userId);
+                List<String> orderId = orderService.getOrderIdByUserId(id);
                 if (orderId.size() > 0) {
                     List<Long> courseIds = new ArrayList<>();
                     for (String order : orderId) {
@@ -178,6 +162,7 @@ public class AppCourseController extends AbstractController {
      */
     @SysLog("app端课程目录查询")
     @PostMapping("/appListCourseCatalogByCourseId")
+    @ApiOperation(value="课程详情->课程所有目录列表",notes="courseId：是课程id，必填")
     public Result appListCourseCatalogByCourseId(@RequestParam Long courseId) {
         // 查询课程"目录"
         Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseId(courseId);
@@ -192,6 +177,7 @@ public class AppCourseController extends AbstractController {
      */
     @SysLog("app端课程详情评价查询")
     @PostMapping("/appQueryCourseCommentByCourseId")
+    @ApiOperation(value="课程详情->课程评论列表",notes="courseId：是课程id，必填；pageNo：页码，必填；pageSize：单页的列表数量，必填")
     public Result appQueryCourseCommentByCourseId(@RequestParam Long courseId, Integer pageNo, Integer pageSize) {
         // 查询课程"评价"
         Map<String, Object> courseCommentList = xryCourseService.listCourseCommentByCourseId(courseId, pageNo, pageSize);
@@ -206,6 +192,7 @@ public class AppCourseController extends AbstractController {
      */
     @SysLog("app端相关课程查询")
     @PostMapping("/appQuerySimilarityCourseByCourseId")
+    @ApiOperation(value="课程详情->相关课程列表",notes="courseId：是课程id，必填")
     public Result appQuerySimilarityCourseByCourseId(@RequestParam Long courseId) {
         // 查询"相关课程"
         Map<String, Object> relatedCourseList = xryCourseService.listRelatedCourseByCourseId(courseId);
@@ -220,9 +207,10 @@ public class AppCourseController extends AbstractController {
      */
     @SysLog("app端课程中心接口")
     @PostMapping("/appListCourseCenter")
+    @ApiOperation(value="课程中心分类筛选接口",notes="params：分类信息json对象，params包含筛选所必须的参数，必填")
     public Result appListCourseCenter(@RequestParam String params) {
         List<Map<String, Object>> courseList = xryCourseService.appListCourseCenter(params);
-        return Result.ok().put("courseList", courseList);
+        return Result.ok().put("courseList",courseList);
     }
 
 }

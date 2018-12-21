@@ -26,5 +26,9 @@
             #{id}
         </foreach>   
     </select>
+    <!--是父类目，查询出所有子类目-->
+    <select id="listCourseCatByParentCatId" parameterType="java.lang.Long" resultType="java.lang.Long">
+      select id from xry_course_cat where parent_id = #{courseCatId}
+    </select>
 
 </mapper>

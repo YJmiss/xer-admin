@@ -7,6 +7,7 @@ import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
 import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +43,9 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("保存讲师认证信息")
-    @GetMapping("/appSave")
-    public Result appSave(@RequestParam String[] params) {
+    @PostMapping("/appSaveTeacher")
+    @ApiOperation(value="用户申请为讲师、信息保存到数据库",notes="params：分类信息json对象，params包含讲师信息的参数，必填")
+    public Result appSaveTeacher(@RequestParam String[] params) {
         xryTeacherService.save(params);
         return Result.ok();
     }
@@ -53,7 +55,8 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app查询'我的关注'列表")
-    @GetMapping("/appPageListTeacherByUserId")
+    @PostMapping("/appPageListTeacherByUserId")
+    @ApiOperation(value="查询用户已关注的讲师列表",notes="pageNo：页码，必填；pageSize：单个页面的列表数量，必填")
     public Result appPageListTeacherByUserId(@RequestParam Integer pageNo, Integer pageSize) {
         Map<String, Object> params = new HashMap<>();
         params.put("pageNo", (pageNo - 1) * pageSize);
@@ -68,7 +71,8 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app查询'明星讲师'列表")
-    @GetMapping("/appListStarTeacherByUserId")
+    @PostMapping("/appListStarTeacherByUserId")
+    @ApiOperation(value="首页明星讲师列表",notes="不需要任何参数")
     public Result appListStarTeacherByUserId() {
         Map<String, Object> params = new HashMap<>();
         params.put("pageSize",6);
@@ -83,8 +87,9 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app端讲师关注")
-    @GetMapping("/appTeacherAttentionByTeacherId")
-    public Result appTeacherAttentionByTeacherId(String teacherId) {
+    @PostMapping("/appTeacherAttentionByTeacherId")
+    @ApiOperation(value="用户关注讲师的操作接口",notes="teacherId：是被关注的讲师id，必填")
+    public Result appTeacherAttentionByTeacherId(@RequestParam String teacherId) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", getAppUserId());
         params.put("teacherId", teacherId);
@@ -102,7 +107,8 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app端用户取消已经关注的讲师")
-    @GetMapping("/appDelTeacherById")
+    @PostMapping("/appDelTeacherById")
+    @ApiOperation(value="用户取消已经关注的讲师的操作接口",notes="attentionId：是用户关注表中对应讲师的id，必填；teacherId：是被关注的讲师id，必填")
     public Result appDelTeacherById(@RequestParam Long attentionId, String teacherId) {
         Map<String, Object> params = new HashMap<>();
         params.put("attentionId", attentionId);
@@ -118,7 +124,8 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app端讲师主页")
-    @GetMapping("/appQueryTeacherDetailByTeacherId")
+    @PostMapping("/appQueryTeacherDetailByTeacherId")
+    @ApiOperation(value="进入讲师主页的接口",notes="teacherId：讲师的id，必填")
     public Result appQueryTeacherDetailByTeacherId(@RequestParam String teacherId){
         // 1、讲师详情
         Map<String, Object> teacherDetail = xryTeacherService.appQueryTeacherDetailByTeacherId(teacherId);
