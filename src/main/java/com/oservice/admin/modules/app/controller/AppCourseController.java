@@ -8,11 +8,17 @@ import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
+import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryUserEntity;
+import com.oservice.admin.modules.sys.service.ShiroService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryUserApplicantService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +34,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/appCourse")
 public class AppCourseController extends AbstractController {
-    /** 课程加入学习的标识符 */
+    /**
+     * 课程加入学习的标识符
+     */
     final static Integer COURSE_JOIN_STUDY = 1;
     @Resource
     private XryCourseService xryCourseService;
@@ -38,6 +46,8 @@ public class AppCourseController extends AbstractController {
     private OrderService orderService;
     @Resource
     private OrderCourseService orderCourseService;
+    @Resource
+    private ShiroService shiroService;
 
     /**
      * app端用户加入课程学习
@@ -66,9 +76,10 @@ public class AppCourseController extends AbstractController {
 
     /**
      * app端根据用户查询用户加入学习的课程列表
+     *
      * @param pageNo
      * @param pageSize
-     * @param flag 标识符（本周学习、本月学习，全部课程）
+     * @param flag     标识符（本周学习、本月学习，全部课程）
      * @return
      */
     @SysLog("app端根据用户查询用户加入学习的课程列表")
@@ -107,8 +118,8 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端课程详情查询")
-    @PostMapping("/appQueryCourseDetailByCourseId")
-    public Result appQueryCourseDetailByCourseId(@RequestParam Long courseId) {
+    @GetMapping("/appQueryCourseDetailByCourseId")
+    public Result appQueryCourseDetailByCourseId(@RequestParam Long courseId, HttpServletRequest request) {
         if (null == courseId) {
             return Result.error(1, "查询出错");
         }
@@ -117,11 +128,21 @@ public class AppCourseController extends AbstractController {
         Map<String, Object> courseDetailContent = xryCourseService.queryCourseDetailByCourseId(courseId);
         detail.put("courseDetailContent", courseDetailContent);
         try {
-            String id = null;
-            if (id == null || id.equals("")) {
+            String accessToken = request.getHeader("token");
+            String userId = "";
+            if (StringUtils.isNotBlank(accessToken)) {
+                SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+                //token失效
+                if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                    throw new IncorrectCredentialsException("token失效，请重新登录");
+                }
+                XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+                userId = getAppUser() != null ? getAppUser().getId() : users != null ? users.getId() : "";
+            }
+            if (userId == null || userId.equals("")) {
                 detail.put("identifying", false);
             } else {
-                List<String> orderId = orderService.getOrderIdByUserId(id);
+                List<String> orderId = orderService.getOrderIdByUserId(userId);
                 if (orderId.size() > 0) {
                     List<Long> courseIds = new ArrayList<>();
                     for (String order : orderId) {
@@ -199,7 +220,7 @@ public class AppCourseController extends AbstractController {
     @PostMapping("/appListCourseCenter")
     public Result appListCourseCenter(@RequestParam String params) {
         List<Map<String, Object>> courseList = xryCourseService.appListCourseCenter(params);
-        return Result.ok().put("courseList",courseList);
+        return Result.ok().put("courseList", courseList);
     }
 
 }

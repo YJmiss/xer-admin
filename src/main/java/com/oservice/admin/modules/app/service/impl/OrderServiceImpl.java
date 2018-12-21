@@ -106,7 +106,6 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
 
     @Override
     public List<String> getOrderIdByUserId(String id) {
-        return null;
+        return baseMapper.getOrderIdByUserId(id);
     }
-
 }

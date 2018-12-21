@@ -74,6 +74,7 @@ public class OAuth2Realm extends AuthorizingRealm {
         if (user == null) {
             return new SimpleAuthenticationInfo(users, accessToken, getName());
         }
+        //      XryUserEntity acount = (XryUserEntity) SecurityUtils.getSubject().getPrincipal();
         return null;
     }
 }
