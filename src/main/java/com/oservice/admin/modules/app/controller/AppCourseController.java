@@ -10,6 +10,7 @@ import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryUserApplicantService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,6 +28,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/appCourse")
+@Api(description = "APP课程控制器")
 public class AppCourseController extends AbstractController {
     /** 课程加入学习的标识符 */
     final static Integer COURSE_JOIN_STUDY = 1;
@@ -46,7 +48,7 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端用户加入课程学习")
-    @PostMapping("/appCourseApplicantByCourseId")
+    @GetMapping("/appCourseApplicantByCourseId")
     public Result appCourseApplicantByCourseId(@RequestParam Long courseId) {
         // 从token中获取登录人信息
         // 把课程id和用户id加入到数据库表中
@@ -72,7 +74,7 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端根据用户查询用户加入学习的课程列表")
-    @PostMapping("/appPageListCourseByUserId")
+    @GetMapping("/appPageListCourseByUserId")
     public Result appPageListCourseByUserId(@RequestParam Integer pageNo, Integer pageSize, Integer flag) {
         // 把课程id和用户id加入到数据库表中
         Map<String, Object> params = new HashMap<>();
@@ -91,7 +93,7 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端用户删除已经加入学习的课程")
-    @PostMapping("/appDelCourseById")
+    @GetMapping("/appDelCourseById")
     public Result appDelCourseById(@RequestParam Long[] ids) {
         Map<String, Object> params = new HashMap<>();
         params.put("ids", ids);
@@ -107,7 +109,7 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端课程详情查询")
-    @PostMapping("/appQueryCourseDetailByCourseId")
+    @GetMapping("/appQueryCourseDetailByCourseId")
     public Result appQueryCourseDetailByCourseId(@RequestParam Long courseId) {
         if (null == courseId) {
             return Result.error(1, "查询出错");
@@ -154,7 +156,7 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端课程目录查询")
-    @PostMapping("/appListCourseCatalogByCourseId")
+    @GetMapping("/appListCourseCatalogByCourseId")
     public Result appListCourseCatalogByCourseId(@RequestParam Long courseId) {
         // 查询课程"目录"
         Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseId(courseId);
@@ -168,7 +170,7 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端课程详情评价查询")
-    @PostMapping("/appQueryCourseCommentByCourseId")
+    @GetMapping("/appQueryCourseCommentByCourseId")
     public Result appQueryCourseCommentByCourseId(@RequestParam Long courseId, Integer pageNo, Integer pageSize) {
         // 查询课程"评价"
         Map<String, Object> courseCommentList = xryCourseService.listCourseCommentByCourseId(courseId, pageNo, pageSize);
@@ -182,7 +184,7 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端相关课程查询")
-    @PostMapping("/appQuerySimilarityCourseByCourseId")
+    @GetMapping("/appQuerySimilarityCourseByCourseId")
     public Result appQuerySimilarityCourseByCourseId(@RequestParam Long courseId) {
         // 查询"相关课程"
         Map<String, Object> relatedCourseList = xryCourseService.listRelatedCourseByCourseId(courseId);
@@ -196,7 +198,7 @@ public class AppCourseController extends AbstractController {
      * @return
      */
     @SysLog("app端课程中心接口")
-    @PostMapping("/appListCourseCenter")
+    @GetMapping("/appListCourseCenter")
     public Result appListCourseCenter(@RequestParam String params) {
         List<Map<String, Object>> courseList = xryCourseService.appListCourseCenter(params);
         return Result.ok().put("courseList",courseList);
