@@ -8,13 +8,22 @@ import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
+import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryUserEntity;
+import com.oservice.admin.modules.sys.service.ShiroService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryUserApplicantService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +50,8 @@ public class AppCourseController extends AbstractController {
     private OrderService orderService;
     @Resource
     private OrderCourseService orderCourseService;
+    @Resource
+    private ShiroService shiroService;
 
     /**
      * app端用户加入课程学习
@@ -115,7 +126,7 @@ public class AppCourseController extends AbstractController {
     @SysLog("app端课程详情查询")
     @PostMapping("/appQueryCourseDetailByCourseId")
     @ApiOperation(value="课程详情->课程详细信息",notes="courseId：是课程id，必填")
-    public Result appQueryCourseDetailByCourseId(@RequestParam Long courseId) {
+    public Result appQueryCourseDetailByCourseId(@RequestParam Long courseId, HttpServletRequest request) {
         if (null == courseId) {
             return Result.error(1, "查询出错");
         }
@@ -124,11 +135,21 @@ public class AppCourseController extends AbstractController {
         Map<String, Object> courseDetailContent = xryCourseService.queryCourseDetailByCourseId(courseId);
         detail.put("courseDetailContent", courseDetailContent);
         try {
-            String id = null;
-            if (id == null || id.equals("")) {
+            String accessToken = request.getHeader("token");
+            String userId = "";
+            if (StringUtils.isNotBlank(accessToken)) {
+                SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+                //token失效
+                if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                    throw new IncorrectCredentialsException("token失效，请重新登录");
+                }
+                XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+                userId = getAppUser() != null ? getAppUser().getId() : users != null ? users.getId() : "";
+            }
+            if (userId == null || userId.equals("")) {
                 detail.put("identifying", false);
             } else {
-                List<String> orderId = orderService.getOrderIdByUserId(id);
+                List<String> orderId = orderService.getOrderIdByUserId(userId);
                 if (orderId.size() > 0) {
                     List<Long> courseIds = new ArrayList<>();
                     for (String order : orderId) {
