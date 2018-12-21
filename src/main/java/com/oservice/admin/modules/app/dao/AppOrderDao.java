@@ -11,4 +11,8 @@ public interface AppOrderDao extends BaseMapper<XryOrderEntity> {
     Integer addOrder(XryOrderEntity order);
 
     List<String> getOrderIdByUserId(String id);
+
+    List<XryOrderEntity> selectByUserId(String id);
+
+    void deleteOrderByorId(String orderId);
 }

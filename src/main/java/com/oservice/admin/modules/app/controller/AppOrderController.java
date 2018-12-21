@@ -8,6 +8,7 @@ import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,6 +55,7 @@ public class AppOrderController extends AbstractController {
     /**
      * 生成订单
      */
+    @ApiOperation(value = "生成订单", notes = "从购物车提交订单")
     @PostMapping("/createOrder")
     public Result createOrder(@RequestBody long[] ids) {
         orderService.createOrder(ids, getAppUser());
@@ -64,8 +66,9 @@ public class AppOrderController extends AbstractController {
     }
 
     /**
-     * 未付款订单（交易关闭）
+     * 生成未付款订单
      */
+    @ApiOperation(value = "用户离开支付页面订单状态为：待支付", notes = "待支付订单，用户可以在我的待支付订单里面查看")
     @GetMapping("/closeOrder")
     public Result closeOrder(String orderId) {
         orderService.closeOrder(orderId);
@@ -75,5 +78,40 @@ public class AppOrderController extends AbstractController {
     /**
      * 订单支付
      */
+
+
+    /**
+     * 查询订单
+     */
+
+    /**
+     * 生成取消订单
+     */
+    @ApiOperation(value = "用户取消订单，订单状态为关闭订单", notes = "用户点击取消订单")
+    @GetMapping("/cancelOrder")
+    public Result cancelOrder(String orderId) {
+        orderService.cancelOrder(orderId);
+        return Result.ok();
+    }
+
+    /**
+     * 删除订单
+     */
+    @ApiOperation(value = "用户在交易关闭页面删除订单", notes = "只能在交易关闭页面请求此接口")
+    @GetMapping("/deleteOrder")
+    public Result deleteOrder(String orderId) {
+        orderService.deleteOrder(orderId);
+        return Result.ok();
+    }
+
+    /**
+     * APP用户订单列表
+     */
+    @ApiOperation(value = "进入我的订单页面请求接口", notes = "列表所有订单")
+    @GetMapping("/orderList")
+    public Result orderList() {
+        Map<String, Object> orderByUserId = orderService.getOrderByUserId(getAppUserId());
+        return Result.ok().put("list", orderByUserId);
+    }
 
 }

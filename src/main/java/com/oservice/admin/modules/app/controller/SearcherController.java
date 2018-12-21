@@ -5,6 +5,7 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.utils.SearchResult;
 import com.oservice.admin.modules.app.service.SolrJService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,8 @@ public class SearcherController {
     @Autowired
     private SolrJService solrJService;
 
-    //商品搜索功能
+    //搜索功能
+    @ApiOperation(value = "课程搜索接口", notes = "keyword：关键字 每页显示20条数据")
     @GetMapping("/search")
     public Result searchItems(String keyword, @RequestParam(defaultValue = "1")
             Integer page) {

@@ -2,6 +2,8 @@ package com.oservice.admin.modules.app.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 
+import java.io.Serializable;
+
 /**
  * @program: oservice
  * @description: 订单对应课程表
@@ -9,7 +11,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * @create: 2018-12-19 09:58
  **/
 @TableName("xry_order_course")
-public class XryOrderCourseEntity {
+public class XryOrderCourseEntity implements Serializable {
     /*
      `id` varchar(20) COLLATE utf8_bin NOT NULL,
      `course_id` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '课程id',

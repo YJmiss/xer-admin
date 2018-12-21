@@ -57,10 +57,16 @@ public class CartServiceImpl implements CartService {
     @Override
     public void deleteCourse(XryUserEntity user, long courseId) {
         List<AppCartEntity> appCartEntities = JsonUtil.jsonToList(redisUtils.get("APPCART" + user.getId()), AppCartEntity.class);
+        List<AppCartEntity> appCartEntities1 = new ArrayList<>();
         if (appCartEntities.size() > 0) {
             for (AppCartEntity cartEntity : appCartEntities) {
                 if (courseId == cartEntity.getId()) {
-                    appCartEntities.remove(cartEntity);
+                    appCartEntities1.add(cartEntity);
+                }
+            }
+            if (appCartEntities1.size() > 0) {
+                for (AppCartEntity cart : appCartEntities1) {
+                    appCartEntities.remove(cart);
                 }
             }
             redisUtils.set("APPCART" + user.getId(), appCartEntities);

@@ -15,26 +15,26 @@ public class SearcherItem implements Serializable {
     private String image;
     private String cid;
     private String categoryName;
-    private String nickname;
+    private String realName;
     private String courseDesc;
 
     public SearcherItem() {
         super();
     }
 
-    public SearcherItem(String id, String title, long price, String image, String categoryName, String nickname, String courseDesc) {
+    public SearcherItem(String id, String title, long price, String image, String categoryName, String realName, String courseDesc) {
         super();
         this.id = id;
         this.title = title;
         this.price = price;
         this.image = image;
         this.categoryName = categoryName;
-        this.nickname = nickname;
+        this.realName = realName;
         this.courseDesc = courseDesc;
     }
 
     public SearcherItem(String id, String title, long price, String image, String cid,
-                        String categoryName, String nickname, String courseDesc) {
+                        String categoryName, String realName, String courseDesc) {
         super();
         this.id = id;
         this.title = title;
@@ -42,7 +42,7 @@ public class SearcherItem implements Serializable {
         this.image = image;
         this.cid = cid;
         this.categoryName = categoryName;
-        this.nickname = nickname;
+        this.realName = realName;
         this.courseDesc = courseDesc;
     }
 
@@ -75,12 +75,12 @@ public class SearcherItem implements Serializable {
         return categoryName;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setNickname(String realName) {
+        this.realName = realName;
     }
 
     public String getCourseDesc() {

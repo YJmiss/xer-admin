@@ -37,6 +37,7 @@ public class SolrJServiceImpl implements SolrJService {
         query.setQuery(keyword);
         //2.2)设置查询的默认字段列表
         query.set("df", ConfigConstant.DEFAULT_FIELD_LIST);
+        // query.set("df", "item_nickname");
         //2.3)设置分页查询
         query.setStart((page - 1) * rows);
         query.setRows(rows);

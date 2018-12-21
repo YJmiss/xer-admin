@@ -50,4 +50,25 @@ public interface OrderService {
      */
     List<String> getOrderIdByUserId(String id);
 
+    /**
+     * 未付款或支付失败致交易关闭
+     *
+     * @param
+     */
+    void cancelOrder(String orderId);
+
+    /**
+     * 未付款或支付失败致交易关闭
+     *
+     * @param
+     */
+    void deleteOrder(String orderId);
+
+    /**
+     * 列表用户订单
+     *
+     * @param
+     */
+    Map<String, Object> getOrderByUserId(String id);
+
 }

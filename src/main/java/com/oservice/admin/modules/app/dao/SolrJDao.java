@@ -47,7 +47,7 @@ public class SolrJDao {
                 doc.addField("item_price", item.getPrice());
                 doc.addField("item_image", item.getImage());
                 doc.addField("item_category_name", item.getCategoryName());
-                doc.addField("item_nickname", item.getNickname());
+                doc.addField("item_nickname", item.getRealName());
                 doc.addField("item_course_desc", item.getCourseDesc());
                 //2.3)将文档添加到solrServer中
                 solrServer.add(doc);
@@ -76,7 +76,7 @@ public class SolrJDao {
             doc.addField("item_price", item.getPrice());
             doc.addField("item_image", item.getImage());
             doc.addField("item_category_name", item.getCategoryName());
-            doc.addField("item_nickname", item.getNickname());
+            doc.addField("item_nickname", item.getRealName());
             doc.addField("item_course_desc", item.getCourseDesc());
             //2.3)将文档添加到solrServer中
             solrServer.add(doc);
@@ -123,10 +123,10 @@ public class SolrJDao {
             long price = Float.valueOf((Float) sdoc.get("item_price")).intValue();//商品价格
             String image = (String) sdoc.get("item_image");                //商品图像
             String categoryName = (String) sdoc.get("item_category_name"); //商品类别名称
-            String nickname = (String) sdoc.get("item_nickname"); //讲师名称
+            String realName = (String) sdoc.get("item_nickname"); //讲师名称
             String courseDesc = (String) sdoc.get("item_course_desc"); //课程详情
             //构建对象
-            SearcherItem sItem = new SearcherItem(id, title, price, image, categoryName, nickname, courseDesc);
+            SearcherItem sItem = new SearcherItem(id, title, price, image, categoryName, realName, courseDesc);
             itemList.add(sItem);
         }
         result.setItemList(itemList);

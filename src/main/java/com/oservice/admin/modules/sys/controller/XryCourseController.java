@@ -162,7 +162,7 @@ public class XryCourseController extends AbstractController {
         // 课程上架之前先判断课程是否已经审核 审核状态：1、2、4
         for (Long id:ids) {
             XryCourseEntity xryCourseEntity = xryCourseService.queryById(id);
-            if (1 == xryCourseEntity.getStatus() || 2 == xryCourseEntity.getStatus() || 4 == xryCourseEntity.getStatus()) {
+            if (1 == xryCourseEntity.getStatus() || 2 == xryCourseEntity.getStatus()) {
                 return Result.error("所选记录中有未审核的课程，请先审核通过该课程再进行此操作");
             }
             br = solrJService.addIndexById(id);

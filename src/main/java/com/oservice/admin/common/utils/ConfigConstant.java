@@ -21,12 +21,12 @@ public class ConfigConstant {
     /**
      * 图片服务器地址
      */
-    // public final static String IMAGE_URL = "http://192.168.1.30:1025";图片服务器地址
+    // public final static String IMAGE_URL = "http://192.168.1.30:9001/xry/imageData/";图片服务器地址
     public final static String IMAGE_URL = "http://192.168.1.30:9001/xry/imageData/";
     /**
      * 默认显示搜索字段
      */
-    public final static String DEFAULT_FIELD_LIST = "item_title";
+    public final static String DEFAULT_FIELD_LIST = "product_keywords";
     /**
      * 默认显示搜索记录数
      */

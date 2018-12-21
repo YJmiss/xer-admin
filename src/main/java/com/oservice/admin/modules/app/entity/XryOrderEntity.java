@@ -2,6 +2,7 @@ package com.oservice.admin.modules.app.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Date;
  * @create: 2018-12-19 09:24
  **/
 @TableName("xry_order")
-public class XryOrderEntity {
+public class XryOrderEntity implements Serializable {
     /*`
     order_id` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '订单id',
     `payment` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '实付金额。精确到2位小数;单位:元。如:200.07，表示:200元7分',

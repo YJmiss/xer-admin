@@ -8,6 +8,7 @@ import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.service.SysUserTokenService;
 import com.taobao.api.ApiException;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,7 @@ public class AppLoginController extends AbstractController {
      * @Date: 2018/11/7 9:14
      * @Version 1.0
      */
+    @ApiOperation(value = "短信验证码", notes = "短信验证码有效时间为60秒")
     @GetMapping(value = "/sendPhoneCode")
     public Result sendPhoneCode(String tel) throws ApiException {
         if (!CheckUtil.isMobile(tel)) {
@@ -57,7 +59,7 @@ public class AppLoginController extends AbstractController {
         boolean isTrue = sendTelMessage(ConfigConstant.TEMPLATECODE, template, tel);
         //String checkCode = MD5Utils.md5(String.valueOf(code).toUpperCase());
         // Todo 存到redis里 有效时间：600s
-        redisUtils.set("phoneCodeApp" + tel, code, 600);
+        redisUtils.set("phoneCodeApp" + tel, code, 60);
         //  CookieHelper.addCookie("phoneCodeApp" + tel, checkCode, 60);
         return Result.ok(String.valueOf(isTrue));
     }
@@ -69,6 +71,7 @@ public class AppLoginController extends AbstractController {
      * @Date: 2018/1/12 9:36
      * @Version 1.0
      */
+    @ApiOperation(value = "校验手机验证码是否正确", notes = "用来校验手机验证码是否正确，正确放回：true")
     @GetMapping(value = "/validationPhoneCode")
     public Result validationPhoneCode
     (@RequestParam String param, String phone) {
@@ -96,6 +99,7 @@ public class AppLoginController extends AbstractController {
      * @Date: 2018/11/7 9:14
      * @Version 1.0
      */
+    @ApiOperation(value = "校验手机是否当前APP用户", notes = "用来校验手机号是否为系统用，正确放回：true")
     @GetMapping(value = "/checkUserPhone")
     public Result checkUserPhone(String phone) {
         if (!CheckUtil.isMobile(phone)) {
@@ -116,6 +120,7 @@ public class AppLoginController extends AbstractController {
      * @Date: 2018/11/7 9:14
      * @Version 1.0
      */
+    @ApiOperation(value = "手机号+密码登录接口", notes = "用户登录认证正确放回用户信息以及token")
     @PostMapping(value = "/password/login")
     public Result loginForPassword(@RequestBody LoginForm form) {
         if (!CheckUtil.isMobile(form.getPhone())) {
@@ -147,6 +152,7 @@ public class AppLoginController extends AbstractController {
      * @Date: 2018/11/7 9:14
      * @Version 1.0
      */
+    @ApiOperation(value = "手机号+短信验证码登录接口", notes = "用户登录认证正确放回用户信息以及token")
     @GetMapping(value = "/sms/login")
     public Result loginForSMS(@RequestParam String param, String phone) {
         Boolean b = param.equals(redisUtils.get("phoneCodeApp" + phone));
@@ -192,6 +198,7 @@ public class AppLoginController extends AbstractController {
      * @Date: 2018/11/7 9:14
      * @Version 1.0
      */
+    @ApiOperation(value = "APP端用户忘记密码重置密码", notes = "短信验证通过后请求此接口")
     @PostMapping(value = "/setPassword")
     public Result setPassword(@RequestBody LoginForm form) {
         System.out.println(form.getPassword() + "------------------" + form.getPhone());
@@ -214,6 +221,7 @@ public class AppLoginController extends AbstractController {
      * @Author: YJmiss
      * @Date: 2018/11/27
      */
+    @ApiOperation(value = "APP端用户修改密码接口", notes = "此接口在用户登入平台修改个人信息时候调用")
     @GetMapping(value = "/setNewPassword")
     public Result setNewPassword(@RequestParam String password, String newpassword) {
         //String id=getAppUserId();
@@ -236,6 +244,7 @@ public class AppLoginController extends AbstractController {
      * @Date: 2018/11/7 9:14
      * @Version 1.0
      */
+    @ApiOperation(value = "APP端用户注册接口", notes = "此接口在用户注册时候调用")
     @GetMapping("/register")
     public Result register(@RequestParam String param, String phone, String password) {
         if (!CheckUtil.isMobile(phone)) {
@@ -261,6 +270,7 @@ public class AppLoginController extends AbstractController {
     /**
      * 退出登陸
      */
+    @ApiOperation(value = "APP端用户退出登录", notes = "此接口在用户退出登录时调用")
     @PostMapping("/logout")
     public Result logout() {
         sysUserTokenService.logout(getAppUserId());

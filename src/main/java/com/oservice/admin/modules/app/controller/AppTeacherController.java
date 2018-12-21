@@ -1,15 +1,15 @@
 package com.oservice.admin.modules.app.controller;
 
 import com.oservice.admin.common.annotation.SysLog;
-import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
-import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
-import com.oservice.admin.modules.sys.service.*;
+import com.oservice.admin.modules.sys.service.XryTeacherService;
+import com.oservice.admin.modules.sys.service.XryUserAttentionService;
 import io.swagger.annotations.Api;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.json.JSONObject;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.HashMap;

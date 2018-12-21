@@ -18,10 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: oservice
@@ -88,7 +85,7 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
     public void closeOrder(String orderId) {
         XryOrderEntity order = new XryOrderEntity();
         order.setOrderId(orderId);
-        order.setStatus(3);
+        order.setStatus(1);
         order.setUpdateTime(new Date());
         order.setCloseTime(new Date());
         baseMapper.updateById(order);
@@ -107,5 +104,32 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
     @Override
     public List<String> getOrderIdByUserId(String id) {
         return baseMapper.getOrderIdByUserId(id);
+    }
+
+    @Override
+    public void cancelOrder(String orderId) {
+        XryOrderEntity order = new XryOrderEntity();
+        order.setOrderId(orderId);
+        order.setStatus(3);
+        order.setUpdateTime(new Date());
+        order.setCloseTime(new Date());
+        baseMapper.updateById(order);
+    }
+
+    @Override
+    public void deleteOrder(String orderId) {
+        baseMapper.deleteOrderByorId(orderId);
+    }
+
+    @Override
+    public Map<String, Object> getOrderByUserId(String id) {
+        Map<String, Object> map = new HashMap<>();
+        List<XryOrderEntity> orders = baseMapper.selectByUserId(id);
+        map.put("order", orders);
+        for (XryOrderEntity order : orders) {
+            List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(order.getOrderId());
+            map.put(order.getOrderId(), orderCourses);
+        }
+        return map;
     }
 }
