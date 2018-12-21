@@ -31,11 +31,17 @@ public class XryVideoServiceImpl extends ServiceImpl<XryVideoDao, XryVideoEntity
         String title = (String) params.get("title");
         String courseId = (String) params.get("courseId");
         String catalogId = (String) params.get("catalogId");
+        String status = (String) params.get("status");
         map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
         map.put("pageSize",pageSize);
-        map.put("title","%"+title+"%");
+        if (null != title && "" != title) {
+            map.put("title","%"+title+"%");
+        }
         map.put("courseId",courseId);
         map.put("catalogId",catalogId);
+        if (null != status && "" != status) {
+            map.put("status", Integer.valueOf(status));
+        }
         // 查询返回的数据总数page.totalCount
         Long total = baseMapper.countTotal(map);
         pageList.setTotal(total);

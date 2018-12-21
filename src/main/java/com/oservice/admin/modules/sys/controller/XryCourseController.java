@@ -107,6 +107,8 @@ public class XryCourseController extends AbstractController {
     @RequiresPermissions("xry:course:update")
     public Result update(@RequestBody XryCourseEntity course){
         ValidatorUtils.validateEntity(course, UpdateGroup.class);
+        // 所有修改后的课程都需要重新审核
+        course.setStatus(1);
         xryCourseService.update(course);
         return Result.ok();
     }

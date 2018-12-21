@@ -103,6 +103,8 @@ public class XryVideoController extends AbstractController {
     public Result update(@RequestBody XryVideoEntity video) {
         ValidatorUtils.validateEntity(video, UpdateGroup.class);
         xryVideoService.update(video);
+        // 视频修改后重置为未审核
+        video.setStatus(1);
         return Result.ok();
     }
 

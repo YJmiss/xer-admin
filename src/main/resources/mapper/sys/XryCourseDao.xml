@@ -6,15 +6,18 @@
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
         select count(*) from xry_course a left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id
-        where 1=1
+          where 1=1
         <if test="params.title != null and params.title != ''">
-            and title like #{params.title}
+            and a.title like #{params.title}
         </if>
         <if test="params.cid != null and params.cid != ''">
-            and cid = #{params.cid}
+            and a.cid = #{params.cid}
         </if>
         <if test="params.tid != null and params.tid != ''">
-            and tid = #{params.tid}
+            and a.tid = #{params.tid}
+        </if>
+        <if test="params.status != null and params.status != '' and params.status == 4">
+            and a.status = #{params.status}
         </if>
     </select>
     <!--自定义分页查询-->
@@ -24,11 +27,17 @@
         <if test="params.title != null and params.title != ''">
             and a.title like #{params.title}
         </if>
-        <if test="params.cid != null and params.cid != ''">
-            and a.cid = #{params.cid}
+        <if test="params.cids != null and params.cids != ''">
+            and cid in
+            <foreach collection="params.cids" item="cid" open="(" separator="," close="">
+                #{cid}
+            </foreach>
         </if>
         <if test="params.tid != null and params.tid != ''">
             and a.tid = #{params.tid}
+        </if>
+        <if test="params.status != null and params.status != '' and params.status == 4">
+            and a.status = #{params.status}
         </if>
         <if test="params.pageSize != null and params.pageSize != ''">
             limit ${params.pageNo},${params.pageSize}

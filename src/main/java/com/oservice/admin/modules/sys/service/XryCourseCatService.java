@@ -81,4 +81,11 @@ public interface XryCourseCatService extends IService<XryCourseCatEntity> {
 	 * @param params
 	 */
     void updateCourseCatStatusByCatId(Map<String, Object> params);
+
+	/**
+	 * 是父类目，查询出所有子类目
+	 * @param courseCatId
+	 * @return
+	 */
+	String[] listCourseCatByParentCatId(Long courseCatId);
 }

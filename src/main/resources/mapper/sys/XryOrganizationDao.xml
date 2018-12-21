@@ -13,7 +13,7 @@
             and a.corporator = #{params.corporator}
         </if>
         <if test="params.status != null and params.status != ''">
-            and a.status = #{params.status}
+            and a.status != 2
         </if>
     </select>
     <!--自定义分页查询-->
