@@ -5,8 +5,8 @@
 
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
-        select count(*) from  xry_comment a left join xry_course b on  a.obj_id=b.id left join xry_teacher c on a.obj_id = c.id
-          left join xry_teacher d on a.user_id=d.id where 1=1
+        select count(*) from  xry_comment a left join xry_course b on a.obj_id=b.id left join xry_teacher d on a.obj_id=d.id
+          left join xry_user c on a.user_id = c.id where 1=1
         <if test="params.courseId != null and params.courseId != ''">
             and a.obj_id like #{params.courseId} and a.type = 0
         </if>
@@ -23,8 +23,8 @@
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.title as courseTitle, b.id as courseId, c.nickname,c.id as userId,d.real_name as realName,d.id as teacherId
-            from  xry_comment a left join xry_course b on  a.obj_id=b.id left join xry_user c on a.obj_id = c.id
-            left join xry_teacher d on a.user_id=d.id where 1=1
+          from  xry_comment a left join xry_course b on a.obj_id=b.id left join xry_teacher d on a.obj_id=d.id
+          left join xry_user c on a.user_id = c.id where 1=1
         <if test="params.courseId != null and params.courseId != ''">
             and a.obj_id like #{params.courseId} and a.type = 0
         </if>

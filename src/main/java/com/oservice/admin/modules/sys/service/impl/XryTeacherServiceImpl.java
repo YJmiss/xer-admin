@@ -29,12 +29,29 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         Map<String ,Object> map = new HashMap<>();
         String pageNo = (String) params.get("page");
         String pageSize = (String) params.get("limit");
+        String userPhone = (String) params.get("userPhone");
         String realName = (String) params.get("realName");
-        String status = (String) params.get("status");
+        String recommend = (String) params.get("recommend");
+        String flag = (String) params.get("status");
+        String flag2 = (String) params.get("teacherListStatus");
         map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
         map.put("pageSize",pageSize);
-        map.put("realName","%"+realName+"%");
-        map.put("status",status);
+        if (null != realName && "" != realName) {
+            map.put("realName","%"+realName+"%");
+        }
+        map.put("recommend",recommend);
+        if (null != flag && "" != flag) {
+            Integer status = Integer.valueOf(flag);
+            map.put("status", status);
+        }
+        // 讲师列表
+        if (null != flag2 && "" != flag2) {
+            Integer status = Integer.valueOf(flag2);
+            map.put("status", status);
+        }
+        if (null != userPhone && "" != userPhone) {
+            map.put("userPhone","%"+userPhone+"%");
+        }
         // 查询返回的数据总数page.totalCount
         Long total = baseMapper.countTotal(map);
         pageList.setTotal(total);
