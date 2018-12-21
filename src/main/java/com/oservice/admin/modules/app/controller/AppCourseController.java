@@ -13,6 +13,7 @@ import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.ShiroService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryUserApplicantService;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/appCourse")
+@Api(description = "APP课程控制器")
 public class AppCourseController extends AbstractController {
     /**
      * 课程加入学习的标识符

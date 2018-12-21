@@ -42,7 +42,7 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("保存讲师认证信息")
-    @PostMapping("/appSave")
+    @GetMapping("/appSave")
     public Result appSave(@RequestParam String[] params) {
         xryTeacherService.save(params);
         return Result.ok();
@@ -53,7 +53,7 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app查询'我的关注'列表")
-    @PostMapping("/appPageListTeacherByUserId")
+    @GetMapping("/appPageListTeacherByUserId")
     public Result appPageListTeacherByUserId(@RequestParam Integer pageNo, Integer pageSize) {
         Map<String, Object> params = new HashMap<>();
         params.put("pageNo", (pageNo - 1) * pageSize);
@@ -68,7 +68,7 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app查询'明星讲师'列表")
-    @PostMapping("/appListStarTeacherByUserId")
+    @GetMapping("/appListStarTeacherByUserId")
     public Result appListStarTeacherByUserId() {
         Map<String, Object> params = new HashMap<>();
         params.put("pageSize",6);
@@ -83,7 +83,7 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app端讲师关注")
-    @PostMapping("/appTeacherAttentionByTeacherId")
+    @GetMapping("/appTeacherAttentionByTeacherId")
     public Result appTeacherAttentionByTeacherId(String teacherId) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", getAppUserId());
@@ -102,7 +102,7 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app端用户取消已经关注的讲师")
-    @PostMapping("/appDelTeacherById")
+    @GetMapping("/appDelTeacherById")
     public Result appDelTeacherById(@RequestParam Long attentionId, String teacherId) {
         Map<String, Object> params = new HashMap<>();
         params.put("attentionId", attentionId);
@@ -118,7 +118,7 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("app端讲师主页")
-    @PostMapping("/appQueryTeacherDetailByTeacherId")
+    @GetMapping("/appQueryTeacherDetailByTeacherId")
     public Result appQueryTeacherDetailByTeacherId(@RequestParam String teacherId){
         // 1、讲师详情
         Map<String, Object> teacherDetail = xryTeacherService.appQueryTeacherDetailByTeacherId(teacherId);
