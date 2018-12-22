@@ -233,8 +233,10 @@ public class AppLoginController extends AbstractController {
         user.setPassword(MD5Utils.generate(newpassword));
         Boolean br = userService.updatePassword(user);
         if (br) {
+            sysUserTokenService.logout(getAppUserId());
             return Result.ok().put("result", true);
         }
+        //TODO: sysUserTokenService.logout(getAppUserId());  清除token
         return Result.error(205, "密码修改失败");
     }
     /**

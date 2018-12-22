@@ -16,7 +16,6 @@ import com.oservice.admin.modules.sys.service.XryUserApplicantService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -141,10 +140,11 @@ public class AppCourseController extends AbstractController {
                 SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
                 //token失效
                 if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-                    throw new IncorrectCredentialsException("token失效，请重新登录");
+                    return Result.error(204, "token失效，请重新登录");
+                    //throw new IncorrectCredentialsException("token失效，请重新登录");
                 }
                 XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
-                userId = getAppUser() != null ? getAppUser().getId() : users != null ? users.getId() : "";
+                userId = users.getId();
             }
             if (userId == null || userId.equals("")) {
                 detail.put("identifying", false);

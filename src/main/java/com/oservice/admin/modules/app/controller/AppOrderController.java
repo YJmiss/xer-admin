@@ -33,7 +33,7 @@ public class AppOrderController extends AbstractController {
     @Resource
     private CartService cartService;
     /**
-     * 列表所有订单
+     * 后台列表所有订单
      */
     @ResponseBody
     @GetMapping("/list")
@@ -81,12 +81,6 @@ public class AppOrderController extends AbstractController {
         return Result.ok();
     }
 
-
-
-
-    /**
-     * 查询订单
-     */
 
     /**
      * 生成取消订单
