@@ -10,4 +10,8 @@
         values (#{id},#{courseId},#{orderId},#{title},#{price},#{picPath})
     </insert>
 
+    <delete id="deleteOrderCourseByorID">
+        delete from xry_order_course where order_id=#{orserId};
+    </delete>
+
 </mapper>

@@ -25,4 +25,12 @@ public interface OrderCourseService {
      * @param
      */
     void createOrderCourse(List<XryOrderCourseEntity> list);
+
+    /**
+     * 删除订单对应详情
+     *
+     * @param
+     */
+    void deleteOrderCourseByorID(String orderId);
+
 }

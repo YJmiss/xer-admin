@@ -19,4 +19,20 @@
     <delete id="deleteOrderByorId">
         delete from xry_order where order_id=#{orderId};
     </delete>
+
+    <select id="getunpaidOrderByUserId" resultType="com.oservice.admin.modules.app.entity.XryOrderEntity"
+            parameterType="string">
+         select * from xry_order where user_id =#{id} and status=1;
+    </select>
+
+    <select id="getPaidOrderByUserId" resultType="com.oservice.admin.modules.app.entity.XryOrderEntity"
+            parameterType="string">
+        select * from xry_order where user_id =#{id} and status=2;
+    </select>
+
+    <select id="getCloseOrderByUserId" resultType="com.oservice.admin.modules.app.entity.XryOrderEntity"
+            parameterType="string">
+        select * from xry_order where user_id =#{id} and status=3;
+    </select>
+
 </mapper>

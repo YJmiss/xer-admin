@@ -66,6 +66,12 @@ public class AppOrderController extends AbstractController {
     }
 
     /**
+     * 订单支付成功
+     * TODO:用户付款成功后调用服务：cartService.payOrder(String orderId, String money) orderId:订单号/money:实际付款金额
+     *
+     */
+
+    /**
      * 生成未付款订单
      */
     @ApiOperation(value = "用户离开支付页面订单状态为：待支付", notes = "待支付订单，用户可以在我的待支付订单里面查看")
@@ -75,9 +81,7 @@ public class AppOrderController extends AbstractController {
         return Result.ok();
     }
 
-    /**
-     * 订单支付
-     */
+
 
 
     /**
@@ -114,4 +118,33 @@ public class AppOrderController extends AbstractController {
         return Result.ok().put("list", orderByUserId);
     }
 
+    /**
+     * APP用户未支付订单列表
+     */
+    @ApiOperation(value = "进入我的订单页面点击未付款选项请求接口", notes = "列表所有未付款订单")
+    @GetMapping("/unpaidorderList")
+    public Result unpaidorderList() {
+        Map<String, Object> orderByUserId = orderService.getUnpaidOrderByUserId(getAppUserId());
+        return Result.ok().put("list", orderByUserId);
+    }
+
+    /**
+     * APP用户交易成功订单列表
+     */
+    @ApiOperation(value = "进入我的订单页面点击交易成功选项请求接口", notes = "列表交易成功订单")
+    @GetMapping("/paidorderList")
+    public Result paidorderList() {
+        Map<String, Object> orderByUserId = orderService.getPaidOrderByUserId(getAppUserId());
+        return Result.ok().put("list", orderByUserId);
+    }
+
+    /**
+     * APP用户交易关闭订单列表
+     */
+    @ApiOperation(value = "进入我的订单页面点击交易关闭选项请求接口", notes = "列表交易关闭订单")
+    @GetMapping("/closeorderList")
+    public Result closeorderList() {
+        Map<String, Object> orderByUserId = orderService.getCloseOrderByUserId(getAppUserId());
+        return Result.ok().put("list", orderByUserId);
+    }
 }

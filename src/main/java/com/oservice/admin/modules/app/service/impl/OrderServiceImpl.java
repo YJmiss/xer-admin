@@ -79,6 +79,7 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
         order.setPaymentTime(new Date());
         order.setEndTime(new Date());
         order.setPayment(money);
+        baseMapper.updateById(order);
     }
 
     @Override
@@ -119,6 +120,7 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
     @Override
     public void deleteOrder(String orderId) {
         baseMapper.deleteOrderByorId(orderId);
+        orderCourseService.deleteOrderCourseByorID(orderId);
     }
 
     @Override
@@ -127,6 +129,42 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
         List<XryOrderEntity> orders = baseMapper.selectByUserId(id);
         map.put("order", orders);
         for (XryOrderEntity order : orders) {
+            List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(order.getOrderId());
+            map.put(order.getOrderId(), orderCourses);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> getUnpaidOrderByUserId(String id) {
+        Map<String, Object> map = new HashMap<>();
+        List<XryOrderEntity> paidOrders = baseMapper.getunpaidOrderByUserId(id);
+        map.put("order", paidOrders);
+        for (XryOrderEntity order : paidOrders) {
+            List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(order.getOrderId());
+            map.put(order.getOrderId(), orderCourses);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> getPaidOrderByUserId(String id) {
+        Map<String, Object> map = new HashMap<>();
+        List<XryOrderEntity> paidOrders = baseMapper.getPaidOrderByUserId(id);
+        map.put("order", paidOrders);
+        for (XryOrderEntity order : paidOrders) {
+            List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(order.getOrderId());
+            map.put(order.getOrderId(), orderCourses);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> getCloseOrderByUserId(String id) {
+        Map<String, Object> map = new HashMap<>();
+        List<XryOrderEntity> paidOrders = baseMapper.getCloseOrderByUserId(id);
+        map.put("order", paidOrders);
+        for (XryOrderEntity order : paidOrders) {
             List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(order.getOrderId());
             map.put(order.getOrderId(), orderCourses);
         }

@@ -58,7 +58,7 @@ public interface OrderService {
     void cancelOrder(String orderId);
 
     /**
-     * 未付款或支付失败致交易关闭
+     * 删除订单
      *
      * @param
      */
@@ -70,5 +70,26 @@ public interface OrderService {
      * @param
      */
     Map<String, Object> getOrderByUserId(String id);
+
+    /**
+     * 列表用户未付款订单
+     *
+     * @param
+     */
+    Map<String, Object> getUnpaidOrderByUserId(String id);
+
+    /**
+     * 列表用户交易成功订单
+     *
+     * @param
+     */
+    Map<String, Object> getPaidOrderByUserId(String id);
+
+    /**
+     * 列表用户交易关闭订单
+     *
+     * @param
+     */
+    Map<String, Object> getCloseOrderByUserId(String id);
 
 }

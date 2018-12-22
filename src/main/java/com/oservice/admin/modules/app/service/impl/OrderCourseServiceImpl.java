@@ -28,4 +28,9 @@ public class OrderCourseServiceImpl extends ServiceImpl<OrderCourseDao, XryOrder
         }
     }
 
+    @Override
+    public void deleteOrderCourseByorID(String orderId) {
+        baseMapper.deleteOrderCourseByorID(orderId);
+    }
+
 }

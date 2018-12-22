@@ -15,4 +15,11 @@ public interface AppOrderDao extends BaseMapper<XryOrderEntity> {
     List<XryOrderEntity> selectByUserId(String id);
 
     void deleteOrderByorId(String orderId);
+
+    List<XryOrderEntity> getunpaidOrderByUserId(String id);
+
+    List<XryOrderEntity> getPaidOrderByUserId(String id);
+
+    List<XryOrderEntity> getCloseOrderByUserId(String id);
+
 }

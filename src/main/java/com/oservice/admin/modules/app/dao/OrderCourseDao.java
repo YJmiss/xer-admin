@@ -21,4 +21,11 @@ public interface OrderCourseDao extends BaseMapper<XryOrderCourseEntity> {
      * @param
      */
     Integer addOrderCourses(XryOrderCourseEntity courses);
+
+    /**
+     * 删除订单详情
+     *
+     * @param
+     */
+    void deleteOrderCourseByorID(String orderId);
 }
