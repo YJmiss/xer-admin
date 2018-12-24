@@ -8,9 +8,12 @@ import com.oservice.admin.modules.sys.entity.XryGoodCourseEntity;
 import com.oservice.admin.modules.sys.service.XryArticleService;
 import com.oservice.admin.modules.sys.service.XryContentService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
+import com.oservice.admin.modules.sys.service.XryMessageService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -34,6 +37,8 @@ public class AppContentController extends AbstractController {
     private XryCourseService courseService;
     @Resource
     private XryArticleService articleService;
+    @Resource
+    private XryMessageService xryMessageService;
     /**
      * @Description: 首页轮播，中部广告信息
      * @Param:
@@ -80,5 +85,20 @@ public class AppContentController extends AbstractController {
     public Result recommendArticle() {
         List<XryArticleEntity> articles = articleService.getrecommendArticle();
         return Result.ok().put("recommendArticle", articles);
+    }
+
+    /**
+     * 首页右上角消息数量查询
+     * @return
+     */
+    @GetMapping("/Message/countMessage")
+    @ApiOperation(value = "首页右上角消息数量查询", notes = "flag：记录用户已读消息、未读消息的标识符")
+    public Result countMessage(@RequestParam Integer flag) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", getAppUserId());
+        params.put("flag", 0);
+        Integer messageCount = xryMessageService.countMessageByUserId(params);
+
+        return Result.ok();
     }
 }

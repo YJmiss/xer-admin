@@ -62,4 +62,9 @@ public class XryUserApplicantServiceImpl extends ServiceImpl<XryUserApplicantDao
         return userIds;
     }
 
+    @Override
+    public List<Map<String, Object>> listUserIdByMsgId(Long id) {
+        return baseMapper.listUserIdByMsgId(id);
+    }
+
 }

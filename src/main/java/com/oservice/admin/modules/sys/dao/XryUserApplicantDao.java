@@ -37,4 +37,11 @@ public interface XryUserApplicantDao extends BaseMapper<XryUserApplicantEntity> 
      * @return
      */
     List<XryUserApplicantEntity> listUserIdByCourseId(Long courseId);
+
+    /**
+     * 查询出消息发送的用户id
+     * @param id
+     * @return
+     */
+    List<Map<String, Object>> listUserIdByMsgId(@Param("msgId") Long id);
 }

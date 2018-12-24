@@ -342,11 +342,11 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         params.put("pageSize", pageSize);
         // 价格区间
         params.put("priceTag", priceTag);
-        params.put("priceTagStart", priceTagStart);
-        params.put("priceTagEnd", priceTagEnd);
+        params.put("priceTagStart", priceTagStart * 100);
+        params.put("priceTagEnd", priceTagEnd  * 100);
         // 自填写输入价格
-        params.put("customPriceStart", customPriceStart);
-        params.put("customPriceEnd", customPriceEnd);
+        params.put("customPriceStart", customPriceStart * 100);
+        params.put("customPriceEnd", customPriceEnd * 100);
         List<Map<String, Object>> courseList = baseMapper.appListCourseCenter(params);
         if (courseList.size() > 0) {
             for (Map<String, Object> map : courseList) {
