@@ -216,7 +216,7 @@
         select a.* ,ifnull(xry.star_level,0) as 'starLevel' from xry_course a
         left join xry_course_cat b on a.cid = b.id
         left join xry_comment xry on a.id = xry.obj_id
-        where b.flag = 0
+        where a.status = 4 and b.flag = 0
         <if test="params.catId != 0">
             and b.id = #{params.catId}
         </if>

@@ -71,4 +71,11 @@ public interface XryMessageService extends IService<XryMessageEntity> {
      * @return
      */
     Long saveAndGetId(XryMessageEntity message);
+
+    /**
+     * 首页右上角消息数量查询
+     * @param params
+     * @return
+     */
+    Integer countMessageByUserId(Map<String, Object> params);
 }

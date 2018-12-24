@@ -80,4 +80,9 @@ public class XryMessageServiceImpl extends ServiceImpl<XryMessageDao, XryMessage
         return baseMapper.saveAndGetId(message);
     }
 
+    @Override
+    public Integer countMessageByUserId(Map<String, Object> params) {
+        return baseMapper.countMessageByUserId(params);
+    }
+
 }

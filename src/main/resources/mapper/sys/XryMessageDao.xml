@@ -58,5 +58,10 @@
           left join xry_course b on  a.obj_id=b.id
           left join xry_user c on a.user_id=c.id where a.id = #{messageId}
     </select>
+    <!--首页右上角消息数量查询-->
+    <select id="countMessageByUserId" parameterType="java.util.Map" resultType="java.lang.Integer">
+      select count(*) from xry_message xm left join xry_user_applicant xua on xm.obj_id = xua.obj_id
+      where xua.user_id = #{parasm.userId} and xua.obj_type = 0 and xua.obj_status = 0
+    </select>
     
 </mapper>

@@ -53,5 +53,10 @@ public interface XryMessageDao extends BaseMapper<XryMessageEntity> {
      */
     Map<String, Object> seleMessageById(Long messageId);
 
-
+    /**
+     * 首页右上角消息数量查询
+     * @param params
+     * @return
+     */
+    Integer countMessageByUserId(@Param("params") Map<String, Object> params);
 }
