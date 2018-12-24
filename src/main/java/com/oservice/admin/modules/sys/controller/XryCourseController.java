@@ -127,10 +127,6 @@ public class XryCourseController extends AbstractController {
             if (null != xryCourseCatalogEntity) {
                 return Result.error("请先删除该课程下的课程目录");
             }
-            XryCourseDescEntity xryCourseDescEntity = xryCourseService.queryCourseDescById(id);
-            if (null != xryCourseDescEntity) {
-                return Result.error("请先删除该课程下的课程描述");
-            }
             solrJService.deleteIndexById(id);
         }
         xryCourseService.deleteBatch(ids);
