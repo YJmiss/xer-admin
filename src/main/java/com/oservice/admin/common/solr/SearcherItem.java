@@ -17,12 +17,13 @@ public class SearcherItem implements Serializable {
     private String categoryName;
     private String realName;
     private String courseDesc;
-
+    private Integer applicantCount;
+    private Integer feedback;
     public SearcherItem() {
         super();
     }
 
-    public SearcherItem(String id, String title, long price, String image, String categoryName, String realName, String courseDesc) {
+    public SearcherItem(String id, String title, long price, String image, String categoryName, String realName, String courseDesc, Integer applicantCount, Integer feedback) {
         super();
         this.id = id;
         this.title = title;
@@ -31,6 +32,8 @@ public class SearcherItem implements Serializable {
         this.categoryName = categoryName;
         this.realName = realName;
         this.courseDesc = courseDesc;
+        this.applicantCount = applicantCount;
+        this.feedback = feedback;
     }
 
     public SearcherItem(String id, String title, long price, String image, String cid,
@@ -49,6 +52,22 @@ public class SearcherItem implements Serializable {
     public String[] getImages() {
         return this.image.split(",");
 
+    }
+
+    public Integer getApplicantCount() {
+        return applicantCount;
+    }
+
+    public void setApplicantCount(Integer applicantCount) {
+        this.applicantCount = applicantCount;
+    }
+
+    public Integer getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(Integer feedback) {
+        this.feedback = feedback;
     }
 
     public String getId() {

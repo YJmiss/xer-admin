@@ -100,7 +100,7 @@
     <select id="findAllItems" resultType="com.oservice.admin.common.solr.SearcherItem">
      SELECT
         a.id, a.title, a.price, a.image, a.cid, c.real_name,
-        d.course_desc, b.name AS category_name
+        d.course_desc, b.name AS category_name ,a.applicant_count
         FROM
             xry_course a,
             xry_course_cat b,
@@ -113,7 +113,7 @@
     <select id="findItemsById" resultType="com.oservice.admin.common.solr.SearcherItem">
      SELECT
         a.id, a.title, a.price, a.image, a.cid, c.real_name,
-        d.course_desc, b.name AS category_name
+        d.course_desc, b.name AS category_name, a.applicant_count
         FROM
             xry_course a,
             xry_course_cat b,
@@ -280,4 +280,9 @@
         insert into xry_course (id,title,image,cid,tid,property,status,price,created,updated) values
         (#{id},#{title},#{image},#{cid},#{tid},#{property},#{status},#{price},#{created},#{updated})
     </insert>
+    <select id="getFeedback" resultType="double" parameterType="java.lang.Long">
+        select a.score from
+        (select obj_id, AVG(star_level)as 'score',type,status from xry_comment group by obj_id HAVING type=0 and status=1 and obj_id=#{courseId}) a;
+    </select>
+
 </mapper>

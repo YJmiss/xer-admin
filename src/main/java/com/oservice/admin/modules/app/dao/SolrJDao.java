@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,8 @@ public class SolrJDao {
             for (SearcherItem item : allItems) {
                 //2.1）构建一个文档对象
                 SolrInputDocument doc = new SolrInputDocument();
+                //TODO:获取好评百分数
+                Integer feedback = courseService.getFeedback(Long.parseLong(item.getId()));
                 //2.2)在文档中添加各个域
                 doc.addField("id", item.getId());
                 doc.addField("item_title", item.getTitle());
@@ -49,6 +52,8 @@ public class SolrJDao {
                 doc.addField("item_category_name", item.getCategoryName());
                 doc.addField("item_nickname", item.getRealName());
                 doc.addField("item_course_desc", item.getCourseDesc());
+                doc.addField("applicantCount", item.getApplicantCount());
+                doc.addField("feedback", feedback);
                 //2.3)将文档添加到solrServer中
                 solrServer.add(doc);
             }
@@ -66,6 +71,8 @@ public class SolrJDao {
         try {
             //1.查询数据库中相关信息
             SearcherItem item = courseService.findItemsById(id);
+            //TODO:获得好评百分数
+            Integer feedback = courseService.getFeedback(Long.parseLong(item.getId()));
             //          System.out.println(item.getId());
             //2.遍历所有的记录并同时添加到文档中
             //2.1）构建一个文档对象
@@ -78,6 +85,8 @@ public class SolrJDao {
             doc.addField("item_category_name", item.getCategoryName());
             doc.addField("item_nickname", item.getRealName());
             doc.addField("item_course_desc", item.getCourseDesc());
+            doc.addField("applicantCount", item.getApplicantCount());
+            doc.addField("feedback", feedback);
             //2.3)将文档添加到solrServer中
             solrServer.add(doc);
             //3.提交
@@ -125,11 +134,36 @@ public class SolrJDao {
             String categoryName = (String) sdoc.get("item_category_name"); //商品类别名称
             String realName = (String) sdoc.get("item_nickname"); //讲师名称
             String courseDesc = (String) sdoc.get("item_course_desc"); //课程详情
+            Integer applicantCount = (Integer) sdoc.get("applicantCount");//报名人数
+            Integer feedback = (Integer) sdoc.get("feedback");//好评百分数
             //构建对象
-            SearcherItem sItem = new SearcherItem(id, title, price, image, categoryName, realName, courseDesc);
+            SearcherItem sItem = new SearcherItem(id, title, price, image, categoryName, realName, courseDesc, applicantCount, feedback);
             itemList.add(sItem);
         }
         result.setItemList(itemList);
         return result;
+    }
+
+    /**
+     * @Description: 修改索引字段信息
+     * @Param:
+     * @return:
+     * @Author: YJmiss
+     * @Date: 2018/12/24
+     */
+    public void update(Long id, Object fieldValue, int state) throws IOException, SolrServerException {
+        HashMap<String, Object> oper = new HashMap<String, Object>();
+        oper.put("set", fieldValue);
+        SolrInputDocument doc = new SolrInputDocument();
+        doc.addField("id", id);
+        if (state == 1) {
+            doc.addField("applicantCount", oper);
+        }
+        if (state == 0) {
+            doc.addField("feedback", oper);
+        }
+        // HttpSolrClient client = new HttpSolrClient("");
+        solrServer.add(doc);
+        solrServer.commit();
     }
 }

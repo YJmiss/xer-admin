@@ -181,4 +181,12 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 * @return
 	 */
 	Integer countCourseByCatId(Long id);
+
+	/**
+	 * 根据类目id查询课程好评百分数
+	 *
+	 * @param courseId
+	 * @return
+	 */
+	Integer getFeedback(Long courseId);
 }

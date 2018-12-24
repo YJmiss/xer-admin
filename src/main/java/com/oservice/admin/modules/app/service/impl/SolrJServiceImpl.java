@@ -43,6 +43,18 @@ public class SolrJServiceImpl implements SolrJService {
             query.set("defType", "dismax");
             query.set("qf", "item_title^10 item_category_name^6 item_nickname^6 item_course_desc 0.8"); //设置权重，标题>类别=作者>内容
         }
+        if (sortData == 1) {      //好评升序
+            query.setSort("feedback", SolrQuery.ORDER.asc);
+        }
+        if (sortData == 2) {      //好评降序
+            query.setSort("feedback", SolrQuery.ORDER.desc);
+        }
+        if (sortData == 3) {      //人气升序
+            query.setSort("applicantCount", SolrQuery.ORDER.asc);
+        }
+        if (sortData == 4) {      //人气降序
+            query.setSort("applicantCount", SolrQuery.ORDER.desc);
+        }
         if (sortData == 6) {        //价格降序
             query.setSort("item_price", SolrQuery.ORDER.desc);
         }

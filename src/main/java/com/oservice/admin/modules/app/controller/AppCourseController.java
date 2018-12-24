@@ -4,11 +4,13 @@ import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.exception.GlobalException;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.modules.app.dao.SolrJDao;
 import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.ShiroService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
@@ -16,10 +18,12 @@ import com.oservice.admin.modules.sys.service.XryUserApplicantService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +52,8 @@ public class AppCourseController extends AbstractController {
     private OrderCourseService orderCourseService;
     @Resource
     private ShiroService shiroService;
-
+    @Resource
+    private SolrJDao solrJDao;
     /**
      * app端用户加入课程学习
      *
@@ -69,6 +74,27 @@ public class AppCourseController extends AbstractController {
         if (1 == isSuccess) {
             // 给课程计数+1
             xryCourseService.updateCourseApplicationCount(courseId, 1);
+            //TODO:后续测试用户在加入学习的时候更新solr索引人气字段
+            XryCourseEntity course = xryCourseService.queryById(courseId);
+            /*
+            //获取评论百分数
+            Integer feedback = xryCourseService.getFeedback(courseId);
+            try {
+                solrJDao.update(courseId,feedback,0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SolrServerException e) {
+                e.printStackTrace();
+            }
+            */
+            //得到课程的学习数，
+            try {
+                solrJDao.update(courseId, course.getApplicantCount(), 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SolrServerException e) {
+                e.printStackTrace();
+            }
             return Result.ok().put("1", "课程加入学习成功");
         } else {
             return Result.error(2, "课程加入学习失败");

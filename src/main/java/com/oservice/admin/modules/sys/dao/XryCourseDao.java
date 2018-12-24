@@ -271,4 +271,11 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      */
     Integer insertCourse(XryCourseEntity course);
 
+    /**
+     * 获取对应课程好评率
+     *
+     * @param courseId
+     * @return
+     */
+    Double getFeedback(Long courseId);
 }

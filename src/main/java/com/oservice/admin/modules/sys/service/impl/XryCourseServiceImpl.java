@@ -380,4 +380,17 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         return baseMapper.countCourseByCatId(id);
     }
 
+
+    @Override
+    public Integer getFeedback(Long courseId) {
+        Double feed = baseMapper.getFeedback(courseId);
+        Integer feedback = 0;
+        if (feed == null) {
+            return feedback;
+        }
+        feed *= 10;
+        feedback = Integer.parseInt(new java.text.DecimalFormat("0").format(feed));
+        return feedback;
+    }
+
 }
