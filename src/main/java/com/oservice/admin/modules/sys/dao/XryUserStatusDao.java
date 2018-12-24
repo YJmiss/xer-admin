@@ -18,5 +18,5 @@ import java.util.Map;
 @Mapper
 public interface XryUserStatusDao extends BaseMapper<XryUserStatusEntity> {
 
-   
+
 }

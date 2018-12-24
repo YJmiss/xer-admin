@@ -78,7 +78,18 @@ public class XryMessageController extends AbstractController {
         messageEntity.setCreated(new Date());
         xryMessageService.saveAndGetId(messageEntity);
         // 保存记录后返回自增的id
-//        Long messageId = messageEntity.getId();
+        Long messageId = messageEntity.getId();
+        // 向存储消息状态的表xry_user_status添加消息
+        List<Map<String, Object>> userApplicantList = xryUserApplicantService.listUserIdByMsgId(messageId);
+        if (userApplicantList.size() > 0) {
+            for (Map<String, Object> map : userApplicantList) {
+                XryUserStatusEntity userStatus = new XryUserStatusEntity();
+                userStatus.setMsgStatus(0);
+                userStatus.setUserId(String.valueOf(map.get("user_id")));
+                userStatus.setMsgId(messageId);
+                xryUserStatusService.insert(userStatus);
+            }
+        }
         return Result.ok();
     }
 
@@ -141,19 +152,7 @@ public class XryMessageController extends AbstractController {
         params.put("publishDate", new Date());
         xryMessageService.updateMessageStatus(params);
         for (Long id : ids) {
-            // 第二步：向存储消息状态的表xry_user_status添加消息
-            // 查询出消息发送的用户id
-            List<Map<String, Object>> userApplicantList = xryUserApplicantService.listUserIdByMsgId(id);
-            if (userApplicantList.size() > 0) {
-                for (Map<String, Object> map : userApplicantList) {
-                    XryUserStatusEntity userStatus = new XryUserStatusEntity();
-                    userStatus.setMsgStatus(0);
-                    userStatus.setUserId(String.valueOf(map.get("user_id")));
-                    userStatus.setMsgId(id);
-                    xryUserStatusService.insert(userStatus);
-                }
-            }
-            // 第三步：向指定的用户发布次条消息
+            // 第二步：向指定的用户发布次条消息
             JSONObject message = new JSONObject(xryMessageService.seleMessageById(id));
             // 指定发送消息（课程消息、讲师关注）
             Integer msgType = message.getInt("msg_type");

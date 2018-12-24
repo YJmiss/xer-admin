@@ -5,8 +5,8 @@
 
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
-        select count(*) from  xry_message a left join xry_course b on  a.obj_id=b.id
-          left join xry_teacher c on a.user_id=c.id where 1=1
+        select count(*) from xry_message a left join xry_course b on a.obj_id=b.id
+        left join xry_teacher c on a.user_id=c.id where 1=1
         <if test="params.type != null and params.type != ''">
             and a.msg_type like #{params.type}
         </if>
@@ -20,9 +20,9 @@
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.title as courseTitle, b.id as courseId, c.real_name as realName,c.id as teacherId
-            from  xry_message a
-              left join xry_course b on  a.obj_id=b.id
-              left join xry_teacher c on a.user_id=c.id where 1=1
+        from xry_message a
+        left join xry_course b on a.obj_id=b.id
+        left join xry_teacher c on a.user_id=c.id where 1=1
         <if test="params.type != null and params.type != ''">
             and a.msg_type like #{params.type}
         </if>
@@ -60,8 +60,15 @@
     </select>
     <!--首页右上角消息数量查询-->
     <select id="countMessageByUserId" parameterType="java.util.Map" resultType="java.lang.Integer">
-      select count(*) from xry_message xm left join xry_user_applicant xua on xm.obj_id = xua.obj_id
-      where xua.user_id = #{parasm.userId} and xua.obj_type = 0 and xua.obj_status = 0
+        select count(*) from xry_message xm left join xry_user_applicant xua on xm.obj_id = xua.obj_id where 1=1
+        <if test="params.userId != null and params.userId != ''">
+            and xua.user_id = #{params.userId}
+        </if>
+        <!-- userId为空，只查询平台消息-->
+        <if test="params.userId == null and params.userId == ''">
+            and xm.msg_type = 3
+        </if>
+        and xua.obj_type = 0 and xua.obj_status = 0
     </select>
-    
+
 </mapper>

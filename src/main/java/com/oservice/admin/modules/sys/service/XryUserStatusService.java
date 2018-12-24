@@ -15,5 +15,9 @@ import java.util.Map;
  */
 public interface XryUserStatusService extends IService<XryUserStatusEntity> {
 
-    
+    /**
+     * 用户读消息，根据消息id
+     * @param params
+     */
+    void updateUserMessageStatusByUserId(Map<String, Object> params);
 }

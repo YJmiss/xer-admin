@@ -5,10 +5,7 @@ import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.XryArticleEntity;
 import com.oservice.admin.modules.sys.entity.XryContentEntity;
 import com.oservice.admin.modules.sys.entity.XryGoodCourseEntity;
-import com.oservice.admin.modules.sys.service.XryArticleService;
-import com.oservice.admin.modules.sys.service.XryContentService;
-import com.oservice.admin.modules.sys.service.XryCourseService;
-import com.oservice.admin.modules.sys.service.XryMessageService;
+import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +36,9 @@ public class AppContentController extends AbstractController {
     private XryArticleService articleService;
     @Resource
     private XryMessageService xryMessageService;
+    @Resource
+    private XryUserStatusService xryUserStatusService;
+
     /**
      * @Description: 首页轮播，中部广告信息
      * @Param:
@@ -88,17 +88,35 @@ public class AppContentController extends AbstractController {
     }
 
     /**
-     * 首页右上角消息数量查询
+     * 首页右上角未读消息数量查询
      * @return
      */
-    @GetMapping("/Message/countMessage")
-    @ApiOperation(value = "首页右上角消息数量查询", notes = "flag：记录用户已读消息、未读消息的标识符")
-    public Result countMessage(@RequestParam Integer flag) {
+    @GetMapping("/message/countMessage")
+    @ApiOperation(value = "首页右上角未读消息数量查询", notes = "用户不登录的情况下，显示平台消息")
+    public Result countMessage() {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", getAppUserId());
-        params.put("flag", 0);
+        // 查询用户未读消息
         Integer messageCount = xryMessageService.countMessageByUserId(params);
+        return Result.ok(String.valueOf(messageCount));
+    }
 
+
+
+    /**
+     * 用户读消息
+     * @param objId
+     * @param flag
+     * @return
+     */
+    @GetMapping("/message/ReadMessage")
+    @ApiOperation(value = "用户读消息，根据消息id", notes = "objId：记录用户已读消息、未读消息的对象id，必填；flag：标识符，必填")
+    public Result ReadMessage(@RequestParam String objId, Integer flag) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("flag", flag);
+        params.put("objId", objId);
+        params.put("userId", getAppUserId());
+        xryUserStatusService.updateUserMessageStatusByUserId(params);
         return Result.ok();
     }
 }

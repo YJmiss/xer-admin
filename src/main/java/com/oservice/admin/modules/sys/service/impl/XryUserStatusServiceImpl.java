@@ -6,6 +6,8 @@ import com.oservice.admin.modules.sys.entity.XryUserStatusEntity;
 import com.oservice.admin.modules.sys.service.XryUserStatusService;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * 系统用户
  * 用户消息状态表的接口实现类
@@ -16,4 +18,8 @@ import org.springframework.stereotype.Service;
 public class XryUserStatusServiceImpl extends ServiceImpl<XryUserStatusDao, XryUserStatusEntity> implements XryUserStatusService {
 
 
+    @Override
+    public void updateUserMessageStatusByUserId(Map<String, Object> params) {
+        
+    }
 }
