@@ -2,6 +2,7 @@ package com.oservice.admin.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.oservice.admin.common.utils.DateUtils;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryTeacherDao;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
@@ -38,23 +39,29 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         String flag2 = (String) params.get("teacherListStatus");
         map.put("pageNo", (new Integer(pageNo) - 1) * new Integer(pageSize));
         map.put("pageSize", pageSize);
-        if (null != realName && "" != realName) {
+        if (null != realName && "".equals(realName)) {
             map.put("realName", "%" + realName + "%");
         }
         map.put("recommend", recommend);
-        if (null != flag && "" != flag) {
+        if (null != flag && "".equals(flag)) {
             Integer status = Integer.valueOf(flag);
             map.put("status", status);
         }
         // 讲师列表
-        if (null != flag2 && "" != flag2) {
+        if (null != flag2 && "".equals(flag2)) {
             Integer status = Integer.valueOf(flag2);
             map.put("status", status);
         }
-        if (null != userPhone && "" != userPhone) {
+        if (null != userPhone && "".equals(userPhone)) {
             map.put("userPhone", "%" + userPhone + "%");
         }
-        if (null != created && "" != created) {
+        if (null != created && !"".equals(created)) {
+            String createTime[] = created.split("T")[0].split("-");
+            Integer timeYear = Integer.valueOf(createTime[0]);
+            Integer timeMonth = Integer.valueOf(createTime[1]);
+            Integer timeDay = Integer.valueOf(createTime[2]) + 1;
+            created = timeYear + "-" +timeMonth + "-" + timeDay;
+            System.out.println("created接收到日期为：" + created);
             map.put("created", "%" + created + "%");
         }
         // 查询返回的数据总数page.totalCount
