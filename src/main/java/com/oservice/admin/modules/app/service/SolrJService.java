@@ -12,7 +12,7 @@ import com.oservice.admin.common.utils.SearchResult;
 public interface SolrJService {
     public Result addIndex();
 
-    public SearchResult findItemsByKeywords(String keyword, Integer page, Integer rows) throws Exception;
+    public SearchResult findItemsByKeywords(String keyword, Integer page, Integer rows, Integer sortData) throws Exception;
 
     public Boolean addIndexById(Long id);
 

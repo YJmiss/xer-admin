@@ -29,7 +29,7 @@ public class SolrJServiceImpl implements SolrJService {
     }
 
     @Override
-    public SearchResult findItemsByKeywords(String keyword, Integer page, Integer rows) throws Exception {
+    public SearchResult findItemsByKeywords(String keyword, Integer page, Integer rows, Integer sortData) throws Exception {
         //1.构建一个SolrQuery对象
         SolrQuery query = new SolrQuery();
         //2.添加查询条件
@@ -38,6 +38,18 @@ public class SolrJServiceImpl implements SolrJService {
         //2.2)设置查询的默认字段列表
         query.set("df", ConfigConstant.DEFAULT_FIELD_LIST);
         // query.set("df", "item_nickname");
+        //设置默认排序 TODO：添加一个综合排排序的字段 and 人气排序的字段，and 好评率字段，到索引库  query.set("sort","对应字段名称：desc");
+        if (sortData == 0) {
+            query.set("defType", "dismax");
+            query.set("qf", "item_title^10 item_category_name^6 item_nickname^6 item_course_desc 0.8"); //设置权重，标题>类别=作者>内容
+        }
+        if (sortData == 6) {        //价格降序
+            query.setSort("item_price", SolrQuery.ORDER.desc);
+        }
+        if (sortData == 5) {        //价格升序
+            query.setSort("item_price", SolrQuery.ORDER.asc);
+        }
+        //    query.set("sort","item_price:desc");
         //2.3)设置分页查询
         query.setStart((page - 1) * rows);
         query.setRows(rows);

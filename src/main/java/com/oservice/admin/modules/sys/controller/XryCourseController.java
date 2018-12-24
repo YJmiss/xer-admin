@@ -73,18 +73,17 @@ public class XryCourseController extends AbstractController {
 
     /**
      * 保存课程
-     * @param course
+     * @param params
      * @return
      */
     @SysLog("保存课程")
     @PostMapping("/save")
     @RequiresPermissions("xry:course:save")
-    public Result save(@RequestBody XryCourseEntity course){
-        ValidatorUtils.validateEntity(course, AddGroup.class);
-        xryCourseService.save(course);
+    public Result save(@RequestBody Map<String, Object> params) {
+        ValidatorUtils.validateEntity(params, AddGroup.class);
+        xryCourseService.save(params);
         return Result.ok();
     }
-
     /**
      * 课程信息
      * @param id

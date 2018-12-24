@@ -6,7 +6,6 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryContentDao;
 import com.oservice.admin.modules.sys.entity.XryContentEntity;
 import com.oservice.admin.modules.sys.service.XryContentService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -52,10 +51,11 @@ public class XryContentServiceImpl extends ServiceImpl<XryContentDao, XryContent
 	}
 
 	@Override
-    public void save(XryContentEntity xryContentEntity) {
+	public void save(XryContentEntity xryContentEntity) {
         xryContentEntity.setCreated(new Date());
         xryContentEntity.setUpdated(new Date());
-        baseMapper.insert(xryContentEntity);
+
+		baseMapper.insert(xryContentEntity);
 	}
 
 	@Override

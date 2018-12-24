@@ -273,5 +273,8 @@
     <select id="countCourseByCatId" parameterType="java.lang.Long" resultType="java.lang.Integer">
       select count(*) from xry_course where cid = #{catId}
     </select>
-
+    <insert id="insertCourse" parameterType="com.oservice.admin.modules.sys.entity.XryCourseEntity">
+        insert into xry_course (id,title,image,cid,tid,property,status,price,created,updated) values
+        (#{id},#{title},#{image},#{cid},#{tid},#{property},#{status},#{price},#{created},#{updated})
+    </insert>
 </mapper>

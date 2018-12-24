@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.*;
-import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
@@ -40,9 +39,9 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 
 	/**
 	 * 课程保存
-	 * @param xryCourseEntity
+	 * @param params
 	 */
-	void save(XryCourseEntity xryCourseEntity);
+	void save(Map<String, Object> params);
 
 	/**
 	 * 课程修改

@@ -29,12 +29,12 @@ public class SearcherController {
     @ApiOperation(value = "课程搜索接口", notes = "keyword：关键字 每页显示20条数据")
     @GetMapping("/search")
     public Result searchItems(String keyword, @RequestParam(defaultValue = "1")
-            Integer page) {
+            Integer page, @RequestParam(defaultValue = "0") Integer sortData) {
         //对 get 提交的字符串转换转码处理
         //  keyword = new String(keyword.getBytes("iso-8859-1"),"utf-8");
         SearchResult result = null;
         try {
-            result = solrJService.findItemsByKeywords(keyword, page, ConfigConstant.SEARCHER_ITEM_ROWS);
+            result = solrJService.findItemsByKeywords(keyword, page, ConfigConstant.SEARCHER_ITEM_ROWS, sortData);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.error(500, "搜索系统错误/联系管理员处理");

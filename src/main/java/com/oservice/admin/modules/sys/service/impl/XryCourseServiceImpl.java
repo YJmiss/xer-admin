@@ -2,19 +2,17 @@ package com.oservice.admin.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
+import com.oservice.admin.common.utils.UUIDUtils;
 import com.oservice.admin.modules.sys.dao.XryCourseDao;
 import com.oservice.admin.modules.sys.entity.*;
-import com.oservice.admin.modules.sys.service.XryCourseCatService;
-import com.oservice.admin.modules.sys.service.XryCourseService;
-import com.oservice.admin.modules.sys.service.XryOrganizationService;
-import com.oservice.admin.modules.sys.service.XryTeacherService;
+import com.oservice.admin.modules.sys.service.*;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigInteger;
 import java.util.*;
 
 /**
@@ -31,6 +29,8 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     private XryOrganizationService xryOrganizationService;
     @Resource
     private XryCourseCatService xryCourseCatService;
+    @Resource
+    private XryCourseDescService xryCourseDescService;
 
     @Override
 	public PageUtils queryPage(Map<String, Object> params) {
@@ -90,10 +90,19 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
 	}
 
 	@Override
-    public void save(XryCourseEntity xryCourseEntity) {
-        xryCourseEntity.setCreated(new Date());
-        xryCourseEntity.setUpdated(new Date());
-        baseMapper.insert(xryCourseEntity);
+    public void save(Map<String, Object> params) {
+        ObjectMapper obj = new ObjectMapper();
+        XryCourseEntity course = obj.convertValue(params.get("course"), XryCourseEntity.class);
+        XryCourseDescEntity courseDesc = obj.convertValue(params.get("courseDesc"), XryCourseDescEntity.class);
+        //XryCourseEntity course = (XryCourseEntity) params.get("course");
+        // courseDesc =(XryCourseDescEntity) params.get("courseDesc");
+        course.setCreated(new Date());
+        course.setUpdated(new Date());
+        long next = UUIDUtils.next();
+        course.setId(next);
+        courseDesc.setCourseId(next);
+        baseMapper.insertCourse(course);
+        xryCourseDescService.save(courseDesc);
 	}
 
 	@Override

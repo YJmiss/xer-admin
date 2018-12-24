@@ -5,9 +5,7 @@ import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.modules.sys.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.json.JSONObject;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -264,4 +262,13 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @return
      */
     Integer countCourseByCatId(@Param("catId") Long catId);
+
+    /**
+     * 重写添加课程
+     *
+     * @param course
+     * @return
+     */
+    Integer insertCourse(XryCourseEntity course);
+
 }
