@@ -17,6 +17,7 @@ import java.util.*;
 /**
  * 系统用户
  * 讲师表的接口实现类
+ *
  * @author wujunquan
  * @version 1.0
  */
@@ -24,22 +25,23 @@ import java.util.*;
 public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacherEntity> implements XryTeacherService {
 
     @Override
-	public PageUtils queryPage(Map<String, Object> params) {
+    public PageUtils queryPage(Map<String, Object> params) {
         Page<Map<String, Object>> pageList = new Page<>();
-        Map<String ,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         String pageNo = (String) params.get("page");
         String pageSize = (String) params.get("limit");
         String userPhone = (String) params.get("userPhone");
         String realName = (String) params.get("realName");
         String recommend = (String) params.get("recommend");
         String flag = (String) params.get("status");
+        String created = (String) params.get("created");
         String flag2 = (String) params.get("teacherListStatus");
-        map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
-        map.put("pageSize",pageSize);
+        map.put("pageNo", (new Integer(pageNo) - 1) * new Integer(pageSize));
+        map.put("pageSize", pageSize);
         if (null != realName && "" != realName) {
-            map.put("realName","%"+realName+"%");
+            map.put("realName", "%" + realName + "%");
         }
-        map.put("recommend",recommend);
+        map.put("recommend", recommend);
         if (null != flag && "" != flag) {
             Integer status = Integer.valueOf(flag);
             map.put("status", status);
@@ -50,7 +52,10 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
             map.put("status", status);
         }
         if (null != userPhone && "" != userPhone) {
-            map.put("userPhone","%"+userPhone+"%");
+            map.put("userPhone", "%" + userPhone + "%");
+        }
+        if (null != created && "" != created) {
+            map.put("created", "%" + created + "%");
         }
         // 查询返回的数据总数page.totalCount
         Long total = baseMapper.countTotal(map);
@@ -58,15 +63,15 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         // page.list 查询返回的数据list
         List<Map<String, Object>> teacherList = baseMapper.pageList(map);
         pageList.setRecords(teacherList);
-		return new PageUtils(pageList);
-	}
+        return new PageUtils(pageList);
+    }
 
     @Override
     public Map<String, Object> queryById(Long id) {
         return baseMapper.queryById(id);
-	}
+    }
 
-	@Override
+    @Override
     public void save(String[] params) {
         XryTeacherEntity xryTeacherEntity = new XryTeacherEntity();
         xryTeacherEntity.setUserId(params[1]);
@@ -89,10 +94,10 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
             // 添加保存
             baseMapper.insert(xryTeacherEntity);
         }
-	}
+    }
 
-	@Override
-	public void deleteBatch(Long[] ids) {
+    @Override
+    public void deleteBatch(Long[] ids) {
         this.deleteBatchIds(Arrays.asList(ids));
     }
 
@@ -102,8 +107,8 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         Map<String, Object> params = new HashMap<>();
         Long id = record.getRecordId();
         Integer action = record.getActionNumber();
-        params.put("id",id);
-        params.put("status",action);
+        params.put("id", id);
+        params.put("status", action);
         baseMapper.recordExamineInfo(params);
     }
 

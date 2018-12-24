@@ -6,7 +6,8 @@
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
         select count(*)
-          from xry_teacher a left join xry_user b on a.user_id=b.id left join xry_organization c on a.org_id=c.id where 1=1
+        from xry_teacher a left join xry_user b on a.user_id=b.id left join xry_organization c on a.org_id=c.id where
+        1=1
         <if test="params.status != null and params.status != '' and params.status == 3">
             and a.status = #{params.status}
         </if>
@@ -16,6 +17,9 @@
         <if test="params.userPhone != null and params.userPhone != ''">
             and b.phone like #{params.userPhone}
         </if>
+        <if test="params.created != null and params.created != ''">
+            and date(a.created) like #{params.created}
+        </if>
         <if test="params.recommend != null and params.recommend != ''">
             and a.recommend = #{params.recommend}
         </if>
@@ -23,7 +27,8 @@
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.nickname,b.phone as userPhone,c.org_name as orgName, c.org_code as orgCode
-          from xry_teacher a left join xry_user b on a.user_id=b.id left join xry_organization c on a.org_id=c.id where 1=1
+        from xry_teacher a left join xry_user b on a.user_id=b.id left join xry_organization c on a.org_id=c.id where
+        1=1
         <if test="params.status != null and params.status != ''">
             and a.status = #{params.status}
         </if>
@@ -31,8 +36,11 @@
             and a.real_name like #{params.realName}
         </if>
         <if test="params.userPhone != null and params.userPhone != ''">
-           and b.phone like #{params.userPhone}
-       </if>
+            and b.phone like #{params.userPhone}
+        </if>
+        <if test="params.created != null and params.created != ''">
+            and date(a.created) like #{params.created}
+        </if>
         <if test="params.recommend != null and params.recommend != ''">
             and a.recommend = #{params.recommend}
         </if>
