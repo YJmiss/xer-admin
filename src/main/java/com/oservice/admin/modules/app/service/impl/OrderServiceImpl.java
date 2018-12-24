@@ -105,19 +105,27 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
         String status = (String) params.get("status");
         Date createTime1 = null;
         Date createTime2 = null;
-        if (!time.equals("")) {
-            time = time.substring(0, time.indexOf("T"));
-            String time1 = time + " 00:00:00";
-            String time2 = time + " 23:59:59";
-            createTime1 = DateUtils.stringToDate(time1, "yyyy-MM-dd HH:mm:ss");
-            createTime2 = DateUtils.stringToDate(time2, "yyyy-MM-dd HH:mm:ss");
+//        if (!time.equals("")) {
+//            time = time.substring(0, time.indexOf("T"));
+//            String time1 = time + " 00:00:00";
+//            String time2 = time + " 23:59:59";
+//            createTime1 = DateUtils.stringToDate(time1, "yyyy-MM-dd HH:mm:ss");
+//            createTime2 = DateUtils.stringToDate(time2, "yyyy-MM-dd HH:mm:ss");
+//        }
+        if (null != time && !"".equals(time)) {
+            String createTime[] = time.split("T")[0].split("-");
+            Integer timeYear = Integer.valueOf(createTime[0]);
+            Integer timeMonth = Integer.valueOf(createTime[1]);
+            Integer timeDay = Integer.valueOf(createTime[2]) + 1;
+            time = timeYear + "-" +timeMonth + "-" + timeDay;
+            map.put("created", "%" + time + "%");
         }
         map.put("pageNo", (new Integer(pageNo) - 1) * new Integer(pageSize));
         map.put("pageSize", pageSize);
         map.put("orderId", orderId);
         map.put("phone", phone);
-        map.put("createTime1", createTime1);
-        map.put("createTime2", createTime2);
+//        map.put("createTime1", createTime1);
+//        map.put("createTime2", createTime2);
         map.put("status", status);
         // 查询返回的数据总数page.totalCount
         Long total = baseMapper.countTotal1(map);

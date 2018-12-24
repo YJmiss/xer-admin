@@ -44,8 +44,8 @@
         <if test="params.phone != null and params.phone != ''">
             and buyer_phone = #{params.phone}
         </if>
-        <if test="params.createTime1 != null and params.createTime != ''">
-            and create_time between #{params.createTime1} and #{params.createTime2}
+        <if test="params.created != null and params.created != ''">
+            and created like #{params.created}
         </if>
         <if test="params.status != null and params.status != ''">
             and status = #{params.status}
@@ -61,8 +61,8 @@
         <if test="params.phone != null and params.phone != ''">
             and buyer_phone = #{params.phone}
         </if>
-        <if test="params.createTime != null and params.createTime != ''">
-            and create_time between #{params.createTime1} and #{params.createTime2}
+        <if test="params.created != null and params.created != ''">
+            and created like #{params.created}
         </if>
         <if test="params.status != null and params.status != ''">
             and status = #{params.status}
