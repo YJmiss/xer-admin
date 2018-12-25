@@ -58,17 +58,42 @@
           left join xry_course b on  a.obj_id=b.id
           left join xry_user c on a.user_id=c.id where a.id = #{messageId}
     </select>
-    <!--首页右上角消息数量查询-->
-    <select id="countMessageByUserId" parameterType="java.util.Map" resultType="java.lang.Integer">
-        select count(*) from xry_message xm left join xry_user_applicant xua on xm.obj_id = xua.obj_id where 1=1
+    <!--首页右上角消息数量查询->课程消息-->
+    <select id="countCourseMessageByUserId" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*) from xry_message xm left join xry_user_applicant xua on xm.obj_id = xua.obj_id where xm.msg_type = 1
         <if test="params.userId != null and params.userId != ''">
             and xua.user_id = #{params.userId}
         </if>
-        <!-- userId为空，只查询平台消息-->
-        <if test="params.userId == null and params.userId == ''">
-            and xm.msg_type = 3
-        </if>
-        and xua.obj_type = 0 and xua.obj_status = 0
+        and xua.obj_type = 0 and xua.obj_status = 0 and xm.read_status = 0
     </select>
+    <!-- 首页右上角消息数量查询->讲师消息 -->
+    <select id="countTeacherMessageByUserId" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*) from xry_message xm left join xry_user_attention xua on xm.obj_id = xua.obj_id where xm.msg_type = 1
+        <if test="params.userId != null and params.userId != ''">
+            and xua.user_id = #{params.userId}
+        </if>
+        and xua.obj_type = 0 and xua.obj_status = 0 and xm.read_status = 0
+    </select>
+    <!-- 首页右上角消息数量查询->平台消息 -->
+    <select id="countSystemMessage" resultType="java.lang.Integer">
+        select count(*) from xry_message where msg_type = 3 and read_status = 0
+    </select>
+    <!-- 查询用户课程消息列表，包括已读和未读 -->
+    <select id="listCourseMessageByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.*,b.title as courseTitle, b.id as courseId from xry_message a left join xry_course b on a.obj_id = b.id
+        left join xry_user_applicant c on a.obj_id = c.obj_id where c.user_id = #{params.userId} and a.msg_type = 1 and c.obj_type = 0
+        and c.obj_status = 0 order by a.read_status asc
+    </select>
+    <!-- 查询用户讲师消息列表，包括已读和未读 -->
+    <select id="listTeacherMessageByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.*,b.real_name as realName, b.id as teacherId from xry_message a left join xry_teacher b on a.obj_id = b.id
+        left join xry_user_attention c on a.obj_id = c.obj_id where c.user_id = #{params.userId} and a.msg_type = 2 and c.obj_type = 0
+        and c.obj_status = 0 order by a.read_status asc
+    </select>
+    <!-- 查询平台消息列表 -->
+    <select id="listTeacherMessageByUserId" resultType="java.util.Map">
+        select * from xry_message where msg_type = 3 order by read_status asc
+    </select>
+
 
 </mapper>

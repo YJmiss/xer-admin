@@ -81,8 +81,33 @@ public class XryMessageServiceImpl extends ServiceImpl<XryMessageDao, XryMessage
     }
 
     @Override
-    public Integer countMessageByUserId(Map<String, Object> params) {
-        return baseMapper.countMessageByUserId(params);
+    public Integer countCourseMessageByUserId(Map<String, Object> params) {
+        return baseMapper.countCourseMessageByUserId(params);
+    }
+
+    @Override
+    public Integer countTeacherMessageByUserId(Map<String, Object> params) {
+        return baseMapper.countTeacherMessageByUserId(params);
+    }
+
+    @Override
+    public Integer countSystemMessage() {
+        return baseMapper.countSystemMessage();
+    }
+
+    @Override
+    public List<Map<String, Object>> listCourseMessageByUserId(Map<String, Object> params) {
+        return baseMapper.listCourseMessageByUserId(params);
+    }
+
+    @Override
+    public List<Map<String, Object>> listTeacherMessageByUserId(Map<String, Object> params) {
+        return baseMapper.listTeacherMessageByUserId(params);
+    }
+
+    @Override
+    public List<Map<String, Object>> listSystemMessage() {
+        return baseMapper.listSystemMessage();
     }
 
 }

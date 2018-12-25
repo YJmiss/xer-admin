@@ -73,7 +73,7 @@ public class ShiroConfig {
         filterMap.put("/api/appAccount/validationPhoneCode", "anon");
         filterMap.put("/api/appSearcher/search", "anon");
         filterMap.put("/api/appContent/**", "anon");
-        
+
         filterMap.put("/api/appTeacher/appQueryTeacherDetailByTeacherId", "anon");   // 讲师主页
         filterMap.put("/api/appTeacher/appListStarTeacherByUserId", "anon");  // 明星讲师
         filterMap.put("/api/appTeacher/appTeacherAttentionByTeacherId", "anon");  // 讲师关注
