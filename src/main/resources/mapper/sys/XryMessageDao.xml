@@ -91,7 +91,7 @@
         and c.obj_status = 0 order by a.read_status asc
     </select>
     <!-- 查询平台消息列表 -->
-    <select id="listTeacherMessageByUserId" resultType="java.util.Map">
+    <select id="listSystemMessage" resultType="java.util.Map">
         select * from xry_message where msg_type = 3 order by read_status asc
     </select>
 

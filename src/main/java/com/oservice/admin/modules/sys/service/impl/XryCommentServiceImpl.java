@@ -9,6 +9,7 @@ import com.oservice.admin.modules.sys.entity.XryCommentEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.service.XryCommentService;
 import com.oservice.admin.modules.sys.service.XryRecordService;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -70,6 +71,26 @@ public class XryCommentServiceImpl extends ServiceImpl<XryCommentDao, XryComment
     @Override
     public void updateCommentStatus(Map<String, Object> params) {
         baseMapper.updateCommentStatus(params);
+    }
+
+    @Override
+    public void insertCommentByUserId(String params, String userId) {
+        JSONObject json = new JSONObject(params);
+        // 取出app传过来的参数
+        String objId = json.getString("objId");
+        Integer type = json.getInt("type");
+        Integer starLevel = json.getInt("starLevel");
+        String detail = json.getString("detail");
+
+        XryCommentEntity comment = new XryCommentEntity();
+        comment.setObjId(objId);
+        comment.setType(type);
+        comment.setStatus(1);
+        comment.setUserId(userId);
+        comment.setStarLevel(starLevel);
+        comment.setDetail(detail);
+        comment.setCreated(new Date());
+        baseMapper.insert(comment);
     }
 
 }

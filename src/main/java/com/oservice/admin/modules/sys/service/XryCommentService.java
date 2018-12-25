@@ -57,5 +57,11 @@ public interface XryCommentService extends IService<XryCommentEntity> {
      * @param params
      */
     void updateCommentStatus(Map<String, Object> params);
-    
+
+    /**
+     * app端用户评论保存
+     * @param params
+     * @param userId
+     */
+    void insertCommentByUserId(String params, String userId);
 }

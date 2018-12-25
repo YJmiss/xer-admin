@@ -1,9 +1,12 @@
 package com.oservice.admin.modules.app.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.*;
 import com.oservice.admin.modules.sys.service.*;
+import com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +42,7 @@ public class AppContentController extends AbstractController {
     private XryMessageService xryMessageService;
     @Resource
     private ShiroService shiroService;
+    
     /**
      * @Description: 首页轮播，中部广告信息
      * @Param:
@@ -95,6 +100,8 @@ public class AppContentController extends AbstractController {
     public Result countIndexMessage(HttpServletRequest request) throws Exception {
         Map<String, Object> params = new HashMap<>();
         String userId = "";
+        Integer courseMessageCount = 0;
+        Integer teacherMessageCount = 0;
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
@@ -104,15 +111,15 @@ public class AppContentController extends AbstractController {
             }
             XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
             userId = users.getId();
+            params.put("userId", userId);
+            // 1、查询用户课程未读消息数（课程消息、我关注的、平台消息）
+            courseMessageCount = xryMessageService.countCourseMessageByUserId(params);
+            teacherMessageCount = xryMessageService.countTeacherMessageByUserId(params);
         }
-        params.put("userId", userId);
-        // 1、查询用户课程未读消息数（课程消息、我关注的、平台消息）
-        Integer courseMessageCount = xryMessageService.countCourseMessageByUserId(params);
-        Integer teacherMessageCount = xryMessageService.countTeacherMessageByUserId(params);
         Integer systemMessageCount = xryMessageService.countSystemMessage();
         // 2、未读消息总数
         Integer messageCount = courseMessageCount + teacherMessageCount + systemMessageCount;
-        return Result.ok(String.valueOf(messageCount));
+        return Result.ok().put("messageSum", messageCount);
     }
     
     /**
@@ -124,6 +131,10 @@ public class AppContentController extends AbstractController {
     public Result queryCourseMessageListAndCount(HttpServletRequest request) {
         Map<String, Object> params = new HashMap<>();
         String userId = "";
+        Integer courseMessageCount = 0;
+        Integer teacherMessageCount = 0;
+        List<Map<String, Object>> courseMessageList = null;
+
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
@@ -133,20 +144,31 @@ public class AppContentController extends AbstractController {
             }
             XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
             userId = users.getId();
+            params.put("userId", userId);
+            // 1、查询用户课程未读消息数（课程消息、我关注的、平台消息），可传参，也可再次查询
+            courseMessageCount = xryMessageService.countCourseMessageByUserId(params);
+            teacherMessageCount = xryMessageService.countTeacherMessageByUserId(params);
+            // 2、查询用户课程消息列表，包括已读和未读
+            courseMessageList = xryMessageService.listCourseMessageByUserId(params);
         }
-        params.put("userId", userId);
-        // 1、查询用户课程未读消息数（课程消息、我关注的、平台消息），可传参，也可再次查询
-        Integer courseMessageCount = xryMessageService.countCourseMessageByUserId(params);
-        Integer teacherMessageCount = xryMessageService.countTeacherMessageByUserId(params);
         Integer systemMessageCount = xryMessageService.countSystemMessage();
-        Map<String, Object> map = new HashMap<>();
-        map.put("courseMessageCount", courseMessageCount);
-        map.put("teacherMessageCount", teacherMessageCount);
-        map.put("systemMessageCount", systemMessageCount);
-        // 2、查询用户课程消息列表，包括已读和未读
-        List<Map<String, Object>> courseMessageList = xryMessageService.listCourseMessageByUserId(params);
-        map.put("courseMessageList", courseMessageList);
-        return Result.ok(map);
+        List<Map<String, Object>> messageList = new ArrayList<>();
+        Map<String, Object> courseMessageMap = new HashMap<>();
+        courseMessageMap.put("messageTitle", "课程消息");
+        courseMessageMap.put("messageCount", courseMessageCount);
+        courseMessageMap.put("courseMessageList", courseMessageList);
+        messageList.add(courseMessageMap);
+
+        Map<String, Object> teacherMessageMap = new HashMap<>();
+        teacherMessageMap.put("messageTitle", "我关注的");
+        teacherMessageMap.put("messageCount", teacherMessageCount);
+        messageList.add(teacherMessageMap);
+
+        Map<String, Object> systemMessageMap = new HashMap<>();
+        systemMessageMap.put("messageTitle", "平台消息");
+        systemMessageMap.put("messageCount", systemMessageCount);
+        messageList.add(systemMessageMap);
+        return Result.ok().put("messageList", messageList);
     }
 
     /**
