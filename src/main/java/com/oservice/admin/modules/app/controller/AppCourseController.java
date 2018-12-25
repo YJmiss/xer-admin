@@ -86,14 +86,14 @@ public class AppCourseController extends AbstractController {
             //TODO:后续测试用户在加入学习的时候更新solr索引人气字段
             XryCourseEntity course = xryCourseService.queryById(courseId);
             //获取评论百分数
-            Integer feedback = xryCourseService.getFeedback(courseId);
+           /*  Integer feedback = xryCourseService.getFeedback(courseId);
             try {
-                solrJDao.update(courseId,feedback,0);
+                solrJDao.update(courseId,course.getApplicantCount(),0);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (SolrServerException e) {
                 e.printStackTrace();
-            }
+            }*/
             //得到课程的学习数，
             try {
                 solrJDao.update(courseId, course.getApplicantCount(), 1);
