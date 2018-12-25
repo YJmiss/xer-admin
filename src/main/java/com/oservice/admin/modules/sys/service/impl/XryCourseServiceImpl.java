@@ -364,8 +364,11 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
 
     @Override
     public void updateCourseApplicationCount(Long courseId, Integer flag) {
-        XryCourseEntity course = new XryCourseEntity();
+        XryCourseEntity course = baseMapper.selectById(courseId);
         Integer applicantCount = course.getApplicantCount();
+        if (null == applicantCount) {
+            applicantCount = 0;
+        }
         if (1 == flag) {   // 计数+1
             applicantCount = applicantCount + 1;
         } else {   // 计数-1

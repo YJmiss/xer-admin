@@ -63,20 +63,28 @@ public class AppCourseController extends AbstractController {
     @SysLog("app端用户加入课程学习")
     @PostMapping("/appCourseApplicantByCourseId")
     @ApiOperation(value="用户报名学习课程",notes="courseId是加入学习的课程id，必填")
-    public Result appCourseApplicantByCourseId(@RequestParam Long courseId) {
-        // 从token中获取登录人信息
-        // 把课程id和用户id加入到数据库表中
+    public Result appCourseApplicantByCourseId(@RequestParam Long courseId, HttpServletRequest request) {
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", getAppUserId());
-        params.put("courseId", courseId);
-        params.put("type", COURSE_JOIN_STUDY);
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            //token失效
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        params.put("userId", userId);
+        params.put("objId", courseId);
+        params.put("objType", COURSE_JOIN_STUDY);
         Integer isSuccess = xryUserApplicantService.appSaveCourse(params);
         if (1 == isSuccess) {
             // 给课程计数+1
             xryCourseService.updateCourseApplicationCount(courseId, 1);
             //TODO:后续测试用户在加入学习的时候更新solr索引人气字段
             XryCourseEntity course = xryCourseService.queryById(courseId);
-            /*
             //获取评论百分数
             Integer feedback = xryCourseService.getFeedback(courseId);
             try {
@@ -86,7 +94,6 @@ public class AppCourseController extends AbstractController {
             } catch (SolrServerException e) {
                 e.printStackTrace();
             }
-            */
             //得到课程的学习数，
             try {
                 solrJDao.update(courseId, course.getApplicantCount(), 1);

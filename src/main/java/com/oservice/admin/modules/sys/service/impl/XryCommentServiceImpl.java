@@ -3,15 +3,20 @@ package com.oservice.admin.modules.sys.service.impl;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
+import com.oservice.admin.modules.app.dao.SolrJDao;
 import com.oservice.admin.modules.sys.dao.XryCommentDao;
 import com.oservice.admin.modules.sys.dao.XryRecordDao;
 import com.oservice.admin.modules.sys.entity.XryCommentEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.service.XryCommentService;
+import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryRecordService;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -22,6 +27,10 @@ import java.util.*;
  */
 @Service("xryCommentService")
 public class XryCommentServiceImpl extends ServiceImpl<XryCommentDao, XryCommentEntity> implements XryCommentService {
+    @Resource
+    private XryCourseService xryCourseService;
+    @Resource
+    private SolrJDao solrJDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -74,7 +83,7 @@ public class XryCommentServiceImpl extends ServiceImpl<XryCommentDao, XryComment
     }
 
     @Override
-    public void insertCommentByUserId(String params, String userId) {
+    public void insertCommentByUserId(String params, String userId)  {
         JSONObject json = new JSONObject(params);
         // 取出app传过来的参数
         String objId = json.getString("objId");
@@ -91,6 +100,19 @@ public class XryCommentServiceImpl extends ServiceImpl<XryCommentDao, XryComment
         comment.setDetail(detail);
         comment.setCreated(new Date());
         baseMapper.insert(comment);
+
+        if (0 == type) {
+            //获取评论百分数
+            Long courseId = Long.valueOf(objId);
+            Integer feedback = xryCourseService.getFeedback(courseId);
+            try {
+                solrJDao.update(courseId,feedback,0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SolrServerException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
