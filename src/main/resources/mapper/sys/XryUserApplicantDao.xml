@@ -37,7 +37,7 @@
     <!--查询出消息发送的用户id-->
     <select id="listUserIdByMsgId" parameterType="java.lang.Long" resultType="java.util.Map">
       select xua.* from xry_user_applicant xua left join xry_message xm on xua.obj_id = xm.obj_id
-      where xm.id = #{msgId} and xua.obj_type = 0 and xua.obj_status and xm.status = 1
+      where xm.id = #{msgId} and xua.obj_type = 0 and xua.obj_status = 0
     </select>
 
 </mapper>

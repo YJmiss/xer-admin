@@ -45,6 +45,11 @@ public class XryMessageEntity implements Serializable {
     private Integer status;
 
     /**
+     * 是否已读（0：未读  1：已读）
+     */
+    private Integer readStatus;
+
+    /**
      * 发布日期
      */
     private Date publishDate;
@@ -123,12 +128,19 @@ public class XryMessageEntity implements Serializable {
         this.created = created;
     }
 
-
     public Integer getStatus() {
         return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getReadStatus() {
+        return readStatus;
+    }
+
+    public void setReadStatus(Integer readStatus) {
+        this.readStatus = readStatus;
     }
 }

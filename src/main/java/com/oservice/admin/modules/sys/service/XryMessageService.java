@@ -3,7 +3,9 @@ package com.oservice.admin.modules.sys.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryMessageEntity;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,9 +75,42 @@ public interface XryMessageService extends IService<XryMessageEntity> {
     Long saveAndGetId(XryMessageEntity message);
 
     /**
-     * 首页右上角消息数量查询
+     * 查询用户课程未读消息数
      * @param params
      * @return
      */
-    Integer countMessageByUserId(Map<String, Object> params);
+    Integer countCourseMessageByUserId(Map<String, Object> params);
+
+    /**
+     * 查询用户我关注的讲师未读消息数
+     * @param params
+     * @return
+     */
+    Integer countTeacherMessageByUserId(@Param("params") Map<String, Object> params);
+
+    /**
+     * 查询系统未读消息数
+     * @return
+     */
+    Integer countSystemMessage();
+
+    /**
+     * 查询用户课程消息列表，包括已读和未读
+     * @param params
+     * @return
+     */
+    List<Map<String, Object>> listCourseMessageByUserId(Map<String, Object> params);
+
+    /**
+     * 查询用户讲师消息列表，包括已读和未读
+     * @param params
+     * @return
+     */
+    List<Map<String, Object>> listTeacherMessageByUserId(Map<String, Object> params);
+
+    /**
+     * 查询平台消息列表
+     * @return
+     */
+    List<Map<String, Object>> listSystemMessage();
 }

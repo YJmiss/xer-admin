@@ -9,12 +9,9 @@ import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.config.MessageWebSocket;
 import com.oservice.admin.modules.sys.entity.XryMessageEntity;
-import com.oservice.admin.modules.sys.entity.XryUserApplicantEntity;
-import com.oservice.admin.modules.sys.entity.XryUserStatusEntity;
 import com.oservice.admin.modules.sys.service.XryMessageService;
 import com.oservice.admin.modules.sys.service.XryUserApplicantService;
 import com.oservice.admin.modules.sys.service.XryUserAttentionService;
-import com.oservice.admin.modules.sys.service.XryUserStatusService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +44,6 @@ public class XryMessageController extends AbstractController {
     private XryUserApplicantService xryUserApplicantService;
     @Resource
     private XryUserAttentionService xryUserAttentionService;
-    @Resource
-    private XryUserStatusService xryUserStatusService;
 
     /**
      * 查询消息列表
@@ -141,19 +136,7 @@ public class XryMessageController extends AbstractController {
         params.put("publishDate", new Date());
         xryMessageService.updateMessageStatus(params);
         for (Long id : ids) {
-            // 第二步：向存储消息状态的表xry_user_status添加消息
-            // 查询出消息发送的用户id
-            List<Map<String, Object>> userApplicantList = xryUserApplicantService.listUserIdByMsgId(id);
-            if (userApplicantList.size() > 0) {
-                for (Map<String, Object> map : userApplicantList) {
-                    XryUserStatusEntity userStatus = new XryUserStatusEntity();
-                    userStatus.setMsgStatus(0);
-                    userStatus.setUserId(String.valueOf(map.get("user_id")));
-                    userStatus.setMsgId(id);
-                    xryUserStatusService.insert(userStatus);
-                }
-            }
-            // 第三步：向指定的用户发布次条消息
+            // 第二步：向指定的用户发布次条消息
             JSONObject message = new JSONObject(xryMessageService.seleMessageById(id));
             // 指定发送消息（课程消息、讲师关注）
             Integer msgType = message.getInt("msg_type");
