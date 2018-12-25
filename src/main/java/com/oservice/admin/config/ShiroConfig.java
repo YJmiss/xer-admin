@@ -63,6 +63,8 @@ public class ShiroConfig {
         filterMap.put("/topic/ip", "anon");
         filterMap.put("/index", "anon");
         filterMap.put("/xry/recommend/**","anon");
+        filterMap.put("/xry/wechat", "anon");
+        filterMap.put("/wechat", "anon");
 
         filterMap.put("/api/appAccount/sendPhoneCode", "anon");
         filterMap.put("/api/appAccount/register", "anon");

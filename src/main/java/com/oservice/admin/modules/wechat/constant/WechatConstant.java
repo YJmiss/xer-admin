@@ -145,4 +145,17 @@ public class WechatConstant {
     public static final String MENU_SCAN_CODE_WAIT_MSG = "scancode_waitmsg";
 
     public static final String MENU_SCAN_CODE_PUSH = "scancode_push";
+
+    /**
+     * 菜单创建（POST） 限100（次/天）
+     */
+    public static final String CREATE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
+    /**
+     * 查询菜单数据
+     */
+    public static final String GET_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
+    /**
+     * 删除菜单
+     */
+    public static final String DELETE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
 }

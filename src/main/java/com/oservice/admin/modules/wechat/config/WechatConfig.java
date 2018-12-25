@@ -1,7 +1,9 @@
 package com.oservice.admin.modules.wechat.config;
 
+import com.oservice.admin.modules.wechat.common.service.WeixinAuthorizeService;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 
 /**
@@ -11,6 +13,8 @@ import java.io.Serializable;
  */
 @Repository
 public class WechatConfig implements Serializable {
+    @Resource
+    private WeixinAuthorizeService weixinAuthorizeService;
 
     private String appId;
 
@@ -21,19 +25,19 @@ public class WechatConfig implements Serializable {
     private String encodingAESKey;
 
     public String getAppId() {
-        return appId;
+        return weixinAuthorizeService.getAuthorize(1).getAppId();
     }
 
     public String getAppsecret() {
-        return appsecret;
+        return weixinAuthorizeService.getAuthorize(1).getAppSecret();
     }
 
     public String getToken() {
-        return token;
+        return "miss0you";
     }
 
     public String getEncodingAESKey() {
-        return encodingAESKey;
+        return "q3ZRrY518TCWE1FaMmOhsiTxKQnlsI6P9vUjdgNR54I";
     }
 
     public void setAppId(String appId) {

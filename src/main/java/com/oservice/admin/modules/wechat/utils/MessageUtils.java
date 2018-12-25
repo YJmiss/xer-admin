@@ -1,5 +1,7 @@
 package com.oservice.admin.modules.wechat.utils;
 
+import com.oservice.admin.modules.wechat.bean.*;
+import com.oservice.admin.modules.wechat.common.service.WeixinMeunService;
 import com.oservice.admin.modules.wechat.enums.MessageType;
 import com.oservice.admin.modules.wechat.message.request.BaseRequestMessage;
 import com.oservice.admin.modules.wechat.message.response.*;
@@ -12,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Writer;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +27,9 @@ import java.util.regex.Pattern;
  * Created by liujie on 2016/8/6 9:25.
  */
 public class MessageUtils {
-
+    @Resource
+    private static WeixinMeunService weixinMeunService;
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageUtils.class);
 
     /**
@@ -289,4 +295,107 @@ public class MessageUtils {
         xstream.processAnnotations(message.getClass());
         return xstream.toXML(message);
     }
+
+
+//    public static String initText(String toUserName, String fromUserName, String content) {
+//        TextMessage text = new TextMessage();
+//        text.setFromUserName(toUserName);
+//        text.setToUserName(fromUserName);
+//        text.setMsgType("");
+//        text.setCreateTime(new Date());
+//        text.setContent(content);
+//        return textMessageToXml(text);
+//    }
+
+    /**
+     * @Description: 初始化微信关注消息
+     * @Author: xiewl
+     * @param:
+     * @Date: 2018/9/11 13:55
+     * @Version 1.0
+     */
+    public static String initTextMsg(String openId, HttpServletRequest req) {
+        // 获取配置服务器地址
+        StringBuffer url = req.getRequestURL();
+        String reqUrl = url.delete(url.length() - req.getRequestURI().length(), url.length()).append("/").toString();
+        String jumpUrl = "<a   style='color:0044BB' href='" + reqUrl + "web-static/html/app/wechat/bindWeChat.html?openId=" + openId + "'>绑定红猫账号</a>";
+        StringBuilder contentBuffer = new StringBuilder();
+        contentBuffer.append("你已经成功关注了红猫plus微信公众号啦！");
+        contentBuffer.append("请点击" + jumpUrl + "以便于及时接收工作通知！");
+        return contentBuffer.toString();
+    }
+
+
+    /**
+     * @Description: 组装菜单数据{menu.setButton(new Button[] { mainBtn1, mainBtn2, btn33 });}
+     * @Author: Administrator
+     * @param:
+     * @Date: 2018/9/20 14:35
+     * @Version 1.0
+     */
+    public static Menu getMenu() {
+
+        // Map<WeixinMenu, List<WeixinMenu>> menus = weixinMeunService.getMenus();
+
+        ViewButton btn11 = new ViewButton();
+        btn11.setName("车辆估价");
+        btn11.setType("view");
+        btn11.setUrl("http://ygst.ywsoftware.com/smc/Evaluation.html");
+
+        ViewButton btn12 = new ViewButton();
+        btn12.setName("车型查询");
+        btn12.setType("view");
+        btn12.setUrl("http://ygst.ywsoftware.com/smc/FindVehicle.html");
+
+        ViewButton btn21 = new ViewButton();
+        btn21.setName("关于我们");
+        btn21.setType("view");
+        btn21.setUrl("http://m.semache.com/web/AboutUs.html");
+
+        ViewButton btn22 = new ViewButton();
+        btn22.setName("账号绑定");
+        btn22.setType("view");
+        btn22.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6a5237acedbd681a&redirect_uri=http://df8d1a61.ngrok.io/api/webChat/redirect&response_type=code&scope=snsapi_base&state=1#wechat_redirect");
+
+
+        CommonButton btn31 = new CommonButton();
+        btn31.setName("A1");
+        btn31.setType("click");
+        btn31.setKey("31");
+
+        CommonButton btn33 = new CommonButton();
+        btn33.setName("A2");
+        btn33.setType("click");
+        btn33.setKey("33");
+
+        CommonButton btn34 = new CommonButton();
+        btn34.setName("A3");
+        btn34.setType("click");
+        btn34.setKey("34");
+
+        CommonButton btn35 = new CommonButton();
+        btn35.setName("A4");
+        btn35.setType("click");
+        btn35.setKey("35");
+
+
+        ComplexButton mainBtn1 = new ComplexButton();
+        mainBtn1.setName("二手车");
+        mainBtn1.setSub_button(new Button[]{btn11, btn12});
+
+        ComplexButton mainBtn2 = new ComplexButton();
+        mainBtn2.setName("个人中心");
+        mainBtn2.setSub_button(new Button[]{btn22, btn21});
+
+
+        ComplexButton mainBtn3 = new ComplexButton();
+        mainBtn3.setName("更多");
+        mainBtn3.setSub_button(new Button[]{btn31, btn33, btn34, btn35});
+
+        Menu menu = new Menu();
+        menu.setButton(new Button[]{mainBtn1, mainBtn2, mainBtn3});
+
+        return menu;
+    }
+
 }
