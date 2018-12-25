@@ -41,7 +41,7 @@ import java.util.Map;
 @Api(description = "APP课程控制器")
 public class AppCourseController extends AbstractController {
     /** 课程加入学习的标识符 */
-    final static Integer COURSE_JOIN_STUDY = 1;
+    final static Integer COURSE_JOIN_STUDY = 0;
     @Resource
     private XryCourseService xryCourseService;
     @Resource
