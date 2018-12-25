@@ -5,14 +5,17 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +32,13 @@ import java.util.Map;
 @Api(description = "APP讲师控制器")
 public class AppTeacherController extends AbstractController {
     /** 讲师关注的数据库标识符 */
-    private static final Integer TEACHER_FOCUS_FLAG = 2;
+    private static final Integer TEACHER_FOCUS_FLAG = 0;
     @Resource
     private XryTeacherService xryTeacherService;
     @Resource
-    private XryUserAttentionService xryUserAttentionService;  
+    private XryUserAttentionService xryUserAttentionService;
+    @Resource
+    private ShiroService shiroService;
 
 
     /**
@@ -43,9 +48,9 @@ public class AppTeacherController extends AbstractController {
      * @return
      */
     @SysLog("保存讲师认证信息")
-    @PostMapping("/appSaveTeacher")
+    @PostMapping("/appTeacherCertificate")
     @ApiOperation(value="用户申请为讲师、信息保存到数据库",notes="params：分类信息json对象，params包含讲师信息的参数，必填")
-    public Result appSaveTeacher(@RequestParam String[] params) {
+    public Result appTeacherCertificate(@RequestParam String[] params) {
         xryTeacherService.save(params);
         return Result.ok();
     }
@@ -89,10 +94,22 @@ public class AppTeacherController extends AbstractController {
     @SysLog("app端讲师关注")
     @PostMapping("/appTeacherAttentionByTeacherId")
     @ApiOperation(value="用户关注讲师的操作接口",notes="teacherId：是被关注的讲师id，必填")
-    public Result appTeacherAttentionByTeacherId(@RequestParam String teacherId) {
+    public Result appTeacherAttentionByTeacherId(@RequestParam String teacherId, HttpServletRequest request) {
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", getAppUserId());
-        params.put("teacherId", teacherId);
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            //token失效
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+                //throw new IncorrectCredentialsException("token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        params.put("userId", userId);
+        params.put("objId", teacherId);
         params.put("type", TEACHER_FOCUS_FLAG);
         xryUserAttentionService.appSaveTeacher(params);
         // 给对应的讲师计数+1

@@ -149,14 +149,19 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
 
     @Override
     public void updateTeacherAttention(String teacherId, Integer flag) {
-        XryTeacherEntity teacher = new XryTeacherEntity();
+        XryTeacherEntity teacher = baseMapper.selectById(teacherId);
+        // 人气数
         Integer attentionCount = teacher.getAttentionCount();
-        if (1 == flag) {  // +1
+        // 实时报名人数
+        Integer attentionSum = teacher.getAttentionSum();
+        if (1 == flag) {
+            attentionSum = attentionSum + 1;
             attentionCount = attentionCount + 1;
         } else {
-            attentionCount = attentionCount - 1;
+            attentionSum = attentionSum - 1;
         }
         teacher.setAttentionCount(attentionCount);
+        teacher.setAttentionSum(attentionSum);
         baseMapper.updateById(teacher);
     }
 

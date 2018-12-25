@@ -86,7 +86,7 @@ public interface XryMessageDao extends BaseMapper<XryMessageEntity> {
      * @param params
      * @return
      */
-    List<Map<String, Object>> listTeacherMessageByUserId(Map<String, Object> params);
+    List<Map<String, Object>> listTeacherMessageByUserId(@Param("params") Map<String, Object> params);
 
     /**
      * 查询平台消息列表

@@ -87,13 +87,12 @@
     <!-- 查询用户讲师消息列表，包括已读和未读 -->
     <select id="listTeacherMessageByUserId" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.real_name as realName, b.id as teacherId from xry_message a left join xry_teacher b on a.obj_id = b.id
-        left join xry_user_attention c on a.obj_id = c.obj_id where c.user_id = #{params.userId} and a.msg_type = 2 and c.obj_type = 0
+        left join xry_user_attention c on a.user_id = c.obj_id where c.user_id = #{params.userId} and a.msg_type = 2 and c.obj_type = 0
         and c.obj_status = 0 order by a.read_status asc
     </select>
     <!-- 查询平台消息列表 -->
     <select id="listSystemMessage" resultType="java.util.Map">
         select * from xry_message where msg_type = 3 order by read_status asc
     </select>
-
-
+    
 </mapper>

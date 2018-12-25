@@ -50,9 +50,15 @@ public class XryTeacherEntity implements Serializable {
 	 */
 	private Long orgId;
 	/**
-	 * 关注人数
+	 * 人气数（不可删减）
 	 */
 	private Integer attentionCount;
+
+	/**
+	 * 实时关注数（可删减）
+	 */
+	private Integer attentionSum;
+
 	/**
 	 *  认证状态(1：认证中 2：未通过： 3：已通过）
 	 */
@@ -146,6 +152,14 @@ public class XryTeacherEntity implements Serializable {
 
 	public void setAttentionCount(Integer attentionCount) {
 		this.attentionCount = attentionCount;
+	}
+
+	public Integer getAttentionSum() {
+		return attentionSum;
+	}
+
+	public void setAttentionSum(Integer attentionSum) {
+		this.attentionSum = attentionSum;
 	}
 
 	public String getBriefIntro() { return briefIntro; }

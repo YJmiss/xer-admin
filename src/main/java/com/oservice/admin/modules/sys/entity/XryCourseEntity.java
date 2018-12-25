@@ -57,9 +57,15 @@ public class XryCourseEntity implements Serializable {
 	 */
 	private Integer recommend;
 	/**
-	 * 报名人数
+	 * 课程人气数（不可删减，只可增加）
 	 */
 	private Integer applicantCount;
+
+	/**
+	 * 实时报名人数（可删减）
+	 */
+	private Integer applicantSum;
+	
 	/**
 	 * 创建时间
 	 */
@@ -140,6 +146,14 @@ public class XryCourseEntity implements Serializable {
 
 	public void setApplicantCount(Integer applicantCount) {
 		this.applicantCount = applicantCount;
+	}
+
+	public Integer getApplicantSum() {
+		return applicantSum;
+	}
+
+	public void setApplicantSum(Integer applicantSum) {
+		this.applicantSum = applicantSum;
 	}
 
 	public Date getCreated() {
