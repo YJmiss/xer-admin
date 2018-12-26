@@ -49,6 +49,12 @@ public class XryUserEntity implements Serializable {
      * 头像图片
      */
     private String avatar;
+
+    /**
+     * 性别（1：男  2：女）
+     */
+    private Integer sex;
+    
     /**
      * 邮箱
      */
@@ -278,5 +284,11 @@ public class XryUserEntity implements Serializable {
         this.updated = updated;
     }
 
+    public Integer getSex() {
+        return sex;
+    }
 
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
 }

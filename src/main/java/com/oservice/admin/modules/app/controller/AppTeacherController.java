@@ -63,11 +63,21 @@ public class AppTeacherController extends AbstractController {
     @SysLog("app查询'我的关注'列表")
     @PostMapping("/appPageListTeacherByUserId")
     @ApiOperation(value="查询用户已关注的讲师列表",notes="pageNo：页码，必填；pageSize：单个页面的列表数量，必填")
-    public Result appPageListTeacherByUserId(@RequestParam Integer pageNo, Integer pageSize) {
+    public Result appPageListTeacherByUserId(@RequestParam Integer pageNo, @RequestParam Integer pageSize, HttpServletRequest request) {
         Map<String, Object> params = new HashMap<>();
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
         params.put("pageNo", (pageNo - 1) * pageSize);
         params.put("pageSize", pageSize);
-        params.put("userId", getAppUserId());
+        params.put("userId", userId);
         List<Map<String, Object>> attentionTeacherList = xryTeacherService.appPageListTeacherByUserId(params);
         return Result.ok().put("attentionTeacherList", attentionTeacherList);
     }

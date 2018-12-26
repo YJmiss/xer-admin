@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.DateUtils;
 import com.oservice.admin.common.utils.PageUtils;
+import com.oservice.admin.modules.sys.dao.XryCourseCatDao;
 import com.oservice.admin.modules.sys.dao.XryCourseDao;
 import com.oservice.admin.modules.sys.dao.XryTeacherDao;
+import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryTeacherEntity;
 import com.oservice.admin.modules.sys.service.XryCourseService;
@@ -27,6 +29,8 @@ import java.util.*;
 public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacherEntity> implements XryTeacherService {
     @Resource
     private XryCourseDao xryCourseDao;
+    @Resource
+    private XryCourseCatDao xryCourseCatDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -128,11 +132,23 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         List<Map<String, Object>> attentionTeacherList = baseMapper.appPageListTeacherByUserId(params);
         if (attentionTeacherList.size() > 0) {
             for (Map<String, Object> attentionTeacher : attentionTeacherList) {
-                String teacherId = String.valueOf(attentionTeacher.get("id"));
-                // 2、查询讲师的课程数
+                String teacherId = String.valueOf(attentionTeacher.get("teacherId"));
+                // 1、根据讲师id查询出讲师所上的课程
+                List<Map<String, Object>> courseCatList = baseMapper.listCourseByTeacherId(teacherId);
+                if (courseCatList.size() > 0) {
+                    for (Map<String, Object> map : courseCatList) {
+                        Long subCourseCatId = Long.valueOf(String.valueOf(map.get("cid")));
+                        // 根据子类目的id查询出父类目的信息（父类目的id）
+                        XryCourseCatEntity subCourseCat = xryCourseCatDao.selectById(subCourseCatId);
+                        Long parentCatId = subCourseCat.getParentId();
+                        XryCourseCatEntity parentCourseCat = xryCourseCatDao.selectById(parentCatId);
+                        attentionTeacher.put("parentCourseCatName", parentCourseCat.getName());
+                    }
+                }
+                // 3、查询讲师的课程数
                 Integer teacherCourseCount = baseMapper.countCourseByTeacherId(teacherId);
                 attentionTeacher.put("teacherCourseCount", teacherCourseCount);
-                // 3、查询讲师的学生数
+                // 4、查询讲师的学生数
                 Integer teacherStudentCount = baseMapper.countStudentByTeacherId(teacherId);
                 attentionTeacher.put("teacherStudentCount", teacherStudentCount);
             }

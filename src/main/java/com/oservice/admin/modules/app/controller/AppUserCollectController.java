@@ -1,6 +1,5 @@
 package com.oservice.admin.modules.app.controller;
 
-import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
@@ -37,8 +36,6 @@ public class AppUserCollectController extends AbstractController {
     private ShiroService shiroService;
     @Resource
     private XryUserCollectService xryUserCollectService;
-    @Resource
-    private XryCourseService xryCourseService;
 
     /**
      * app端用户收藏

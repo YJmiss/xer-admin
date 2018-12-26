@@ -54,7 +54,7 @@ public interface XryCourseCatService extends IService<XryCourseCatEntity> {
 	 *
 	 * @return
 	 */
-	List<XryCourseCatEntity> treeCourseCat();
+	List<XryCourseCatEntity> treeCourseCat(Integer flag);
 
 	/**
 	 * 查询课程信息

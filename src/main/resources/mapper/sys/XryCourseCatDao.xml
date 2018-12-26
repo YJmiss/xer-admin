@@ -5,7 +5,10 @@
 
     <!-- 查询课程类目树 -->
     <select id="treeCourseCat" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatEntity">
-      select * from xry_course_cat
+      select * from xry_course_cat where 1=1
+      <if test="flag != null and flag == 1">
+        and parent_id = 0
+      </if>
     </select>
     <!--查询课程信息-->
     <select id="listCourseByCourseCatalogId" resultType="com.oservice.admin.modules.sys.entity.XryCourseEntity">

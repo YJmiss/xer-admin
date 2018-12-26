@@ -22,7 +22,7 @@ public interface XryCourseCatDao extends BaseMapper<XryCourseCatEntity> {
      * 查询类目树
      * @return
      */
-    List<XryCourseCatEntity> treeCourseCat();
+    List<XryCourseCatEntity> treeCourseCat(@Param("flag") Integer flag);
 
     /**
      * 查询课程信息

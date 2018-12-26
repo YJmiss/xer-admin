@@ -1,21 +1,18 @@
 package com.oservice.admin.modules.app.controller;
 
-import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryRecommendEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
-import com.oservice.admin.modules.sys.service.ShiroService;
-import com.oservice.admin.modules.sys.service.XryCourseCatService;
-import com.oservice.admin.modules.sys.service.XryCourseService;
-import com.oservice.admin.modules.sys.service.XryTeacherService;
+import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -44,6 +41,8 @@ public class AppUserCenterController extends AbstractController {
      private ShiroService shiroService;
      @Resource
      private XryTeacherService xryTeacherService;
+     @Resource
+     private XryUserService xryUserService;
 
     /**
      * 根据userId查询用户已经选择喜好的课程类目
@@ -94,6 +93,52 @@ public class AppUserCenterController extends AbstractController {
         Integer userApplicantCount = xryTeacherService.countUserApplicantByUserId(userId);
 
         return Result.ok().put("userApplicantCount", userApplicantCount);
+    }
+
+    /**
+     * 个人中心修改个人资料接口
+     * @param params
+     * @param request
+     * @return
+     */
+    @GetMapping("/userCenter/updateUserInfoByUserId")
+    @ApiOperation(value = "个人中心修改个人资料接口", notes = "params：携带昵称、性别、邮箱信息的参数；需要在请求头里加token参数")
+    public Result updateUserInfoByUserId(@RequestParam String params, HttpServletRequest request) {
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        xryUserService.updateUserInfoByUserId(params, userId);
+        return Result.ok();
+    }
+
+    /**
+     * 个人中心头像上传
+     * @param newHeadImg
+     * @param request
+     * @return
+     */
+    @GetMapping("/userCenter/updateUserHeadImgByUserId")
+    @ApiOperation(value = "个人中心头像上传接口", notes = "newHeadImg：是头像的URL；需要在请求头里加token参数")
+    public Result updateUserHeadImgByUserId(@RequestParam String newHeadImg, HttpServletRequest request) {
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        xryUserService.updateUserHeadImgByUserId(newHeadImg, userId);
+        return Result.ok();
     }
 
 }
