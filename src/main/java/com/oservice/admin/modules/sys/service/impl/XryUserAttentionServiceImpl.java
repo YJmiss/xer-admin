@@ -62,5 +62,10 @@ public class XryUserAttentionServiceImpl extends ServiceImpl<XryUserAttentionDao
         return userIds;
     }
 
+    @Override
+    public List<XryUserAttentionEntity> countAttentionByTeacherId(String teacherId) {
+        return baseMapper.countAttentionByTeacherId(teacherId);
+    }
+
 
 }

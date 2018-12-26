@@ -3,6 +3,7 @@ package com.oservice.admin.modules.sys.dao;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.oservice.admin.modules.sys.entity.XryUserAttentionEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -30,9 +31,16 @@ public interface XryUserAttentionDao extends BaseMapper<XryUserAttentionEntity> 
     void appDelTeacherById(Map<String, Object> params);
 
     /**
-     * 
+     * 根据讲师id查询关注改讲师的所有用户
      * @param teacherId
      * @return
      */
-    List<XryUserAttentionEntity> listUserIdByTeacherId(String teacherId);
+    List<XryUserAttentionEntity> listUserIdByTeacherId(@Param("teacherId") String teacherId);
+
+    /**
+     * 查询讲师的关注人数
+     * @param teacherId
+     * @return
+     */
+    List<XryUserAttentionEntity> countAttentionByTeacherId(@Param("teacherId") String teacherId);
 }

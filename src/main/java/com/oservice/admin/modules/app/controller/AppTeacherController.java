@@ -5,6 +5,7 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryUserAttentionEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
@@ -143,10 +144,35 @@ public class AppTeacherController extends AbstractController {
     @SysLog("app端讲师主页")
     @PostMapping("/appQueryTeacherDetailByTeacherId")
     @ApiOperation(value="进入讲师主页的接口",notes="teacherId：讲师的id，必填")
-    public Result appQueryTeacherDetailByTeacherId(@RequestParam String teacherId){
+    public Result appQueryTeacherDetailByTeacherId(@RequestParam String teacherId, HttpServletRequest request){
         // 1、讲师详情
         Map<String, Object> teacherDetail = xryTeacherService.appQueryTeacherDetailByTeacherId(teacherId);
-        // 她/他主讲的课程
+        // 2、判断该用户是否关注了该讲师
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        // 查询讲师的关注人数列表
+        List<XryUserAttentionEntity> teacherAttentionList = xryUserAttentionService.countAttentionByTeacherId(teacherId);
+        Integer teacherAttentionCount = teacherAttentionList.size();
+        teacherDetail.put("teacherAttentionCount", teacherAttentionCount);
+        Integer isAttention = 0;
+        if (teacherAttentionCount > 0) {
+            for (XryUserAttentionEntity userAttention : teacherAttentionList) {
+                if (userId.equals(userAttention.getUserId())) {
+                    isAttention = 1;
+                }
+            }
+        }
+        teacherDetail.put("isAttention", isAttention);
+
+        // 3、她/他主讲的课程
         List<Map<String, Object>> teacherRelatedList = xryTeacherService.listTeacherCourseByTeacherId(teacherId);
         Map<String, Object> params = new HashMap<>();
         params.put("teacherDetail", teacherDetail);
