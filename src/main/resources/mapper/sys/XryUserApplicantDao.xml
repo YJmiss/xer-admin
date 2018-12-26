@@ -39,5 +39,13 @@
       select xua.* from xry_user_applicant xua left join xry_message xm on xua.obj_id = xm.obj_id
       where xm.id = #{msgId} and xua.obj_type = 0 and xua.obj_status = 0
     </select>
+    <!--查询课程的报名人数列表-->
+    <select id="countApplicantByCourseId" parameterType="java.lang.Long" resultType="com.oservice.admin.modules.sys.entity.XryUserApplicantEntity">
+      select * from  xry_user_applicant where obj_id = #{courseId} and obj_type = 0 and obj_status = 0
+    </select>
+    <!--根据用户id和课程id查询该用户是否报名了该课程-->
+    <select id="isApplicantByUserIdAndCourseId" parameterType="java.util.Map" resultType="com.oservice.admin.modules.sys.entity.XryUserApplicantEntity">
+      select * from  xry_user_applicant where obj_id = #{params.courseId} and user_id = #{params.userId} and obj_type = 0 and obj_status = 0
+    </select>
 
 </mapper>

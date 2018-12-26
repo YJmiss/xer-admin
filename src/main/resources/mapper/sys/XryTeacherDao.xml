@@ -99,5 +99,9 @@
     <select id="countStudentByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
       select count(*) from xry_user_applicant where obj_id = #{courseId} and obj_type = 0 and obj_status = 0
     </select>
+    <!--查询用户已经关注的讲师数-->
+    <select id="countUserApplicantByUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
+      select count(*) from xry_user_attention where user_id = #{userId} and obj_type = 0 and obj_status = 0
+    </select>
 
 </mapper>

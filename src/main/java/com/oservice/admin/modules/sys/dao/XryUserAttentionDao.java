@@ -38,9 +38,16 @@ public interface XryUserAttentionDao extends BaseMapper<XryUserAttentionEntity> 
     List<XryUserAttentionEntity> listUserIdByTeacherId(@Param("teacherId") String teacherId);
 
     /**
-     * 查询讲师的关注人数
+     * 查询讲师的关注人数列表
      * @param teacherId
      * @return
      */
     List<XryUserAttentionEntity> countAttentionByTeacherId(@Param("teacherId") String teacherId);
+
+    /**
+     * 根据用户id和讲师id查询该用户是否关注了该讲师
+     * @param params
+     * @return
+     */
+    XryUserAttentionEntity isAttentionByUserIdAndTeacherId(@Param("params") Map<String, Object> params);
 }

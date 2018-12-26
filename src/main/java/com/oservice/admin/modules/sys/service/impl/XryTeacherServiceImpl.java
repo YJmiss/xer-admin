@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.DateUtils;
 import com.oservice.admin.common.utils.PageUtils;
+import com.oservice.admin.modules.sys.dao.XryCourseDao;
 import com.oservice.admin.modules.sys.dao.XryTeacherDao;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryTeacherEntity;
@@ -24,6 +25,8 @@ import java.util.*;
  */
 @Service("xryTeacherService")
 public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacherEntity> implements XryTeacherService {
+    @Resource
+    private XryCourseDao xryCourseDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -187,6 +190,11 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
             }
         }
         return teacherCourseList;
+    }
+
+    @Override
+    public Integer countUserApplicantByUserId(String userId) {
+        return baseMapper.countUserApplicantByUserId(userId);
     }
 
 

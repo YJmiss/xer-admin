@@ -108,4 +108,11 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
      * @return
      */
     Integer countStudentByCourseId(@Param("courseId") Long courseId);
+
+    /**
+     * 查询用户已经关注的讲师数
+     * @param userId
+     * @return
+     */
+    Integer countUserApplicantByUserId(@Param("userId") String userId);
 }

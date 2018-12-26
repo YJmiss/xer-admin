@@ -10,6 +10,7 @@ import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.ShiroService;
 import com.oservice.admin.modules.sys.service.XryCourseCatService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
+import com.oservice.admin.modules.sys.service.XryTeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -41,16 +42,17 @@ public class AppUserCenterController extends AbstractController {
      private XryCourseCatService xryCourseCatService;
      @Resource
      private ShiroService shiroService;
+     @Resource
+     private XryTeacherService xryTeacherService;
 
     /**
      * 根据userId查询用户已经选择喜好的课程类目
      * 不需要根据类目分类显示
      * @return
      */
-    @SysLog("查询用户已经选择喜好的课程类目")
-    @GetMapping("/userCenter/appListCourseCatByUserId")
+    @GetMapping("/userCenter/listCourseCatByUserId")
     @ApiOperation(value = "查询用户已经选择喜好的课程类目，即“我的兴趣”", notes = "需要在请求头里加token参数")
-    public Result appListCourseCatByUserId(HttpServletRequest request) {
+    public Result listCourseCatByUserId(HttpServletRequest request) {
         Map<String, Object> params = new HashMap<>();
         String userId = "";
         String accessToken = request.getHeader("token");
@@ -75,5 +77,23 @@ public class AppUserCenterController extends AbstractController {
         return Result.ok().put("courseCatList",courseCatList);
     }
 
+
+    @GetMapping("/userCenter/countUserApplicantByUserId")
+    @ApiOperation(value = "查询用户已经关注的讲师数", notes = "需要在请求头里加token参数")
+    public Result countUserApplicantByUserId(HttpServletRequest request) {
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        Integer userApplicantCount = xryTeacherService.countUserApplicantByUserId(userId);
+
+        return Result.ok().put("userApplicantCount", userApplicantCount);
+    }
 
 }

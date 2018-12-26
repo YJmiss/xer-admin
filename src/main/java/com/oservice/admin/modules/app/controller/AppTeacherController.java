@@ -164,10 +164,10 @@ public class AppTeacherController extends AbstractController {
         teacherDetail.put("teacherAttentionCount", teacherAttentionCount);
         Integer isAttention = 0;
         if (teacherAttentionCount > 0) {
-            for (XryUserAttentionEntity userAttention : teacherAttentionList) {
-                if (userId.equals(userAttention.getUserId())) {
-                    isAttention = 1;
-                }
+            // 根据用户id和讲师id查询该用户是否关注了该讲师
+            XryUserAttentionEntity userAttention = xryUserAttentionService.isAttentionByUserIdAndTeacherId(teacherId, userId);
+            if (null != userAttention) {
+                isAttention = 1;
             }
         }
         teacherDetail.put("isAttention", isAttention);
