@@ -255,6 +255,7 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         map.put("pageSize", pageSize);
         map.put("courseId", courseId);
         List<Map<String, Object>> courseCommentList = baseMapper.listCourseCommentByCourseId(map);
+        params.put("courseCommentCount", courseCommentList.size());
         params.put("courseCommentList", courseCommentList);
         return params;
     }
