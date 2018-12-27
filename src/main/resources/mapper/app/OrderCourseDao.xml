@@ -13,5 +13,4 @@
     <delete id="deleteOrderCourseByorID">
         delete from xry_order_course where order_id=#{orserId};
     </delete>
-
 </mapper>

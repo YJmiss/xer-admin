@@ -7,6 +7,12 @@
         VALUES(#{orderId},#{totalFee},#{paymentType},#{status},#{createTime},#{updateTime},#{userId},#{buyerPhone})
     </insert>
 
+    <update id="updatecancelOrderByorId" parameterType="com.oservice.admin.modules.app.entity.XryOrderEntity">
+        update xry_order set status=#{status}, update_time=#{updateTime},close_time=#{closeTime} where order_id=#{orderId}
+    </update>
+    <update id="updatePayOrderByorId" parameterType="com.oservice.admin.modules.app.entity.XryOrderEntity">
+         update xry_order set status=#{status}, update_time=#{updateTime},end_time=#{endTime},payment=#{payment},payment_time=#{paymentTime} where order_id=#{orderId};
+    </update>
     <select id="getOrderIdByUserId" parameterType="string" resultType="String">
         select order_id from xry_order where user_id=#{id};
     </select>

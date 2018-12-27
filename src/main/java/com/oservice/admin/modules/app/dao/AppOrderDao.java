@@ -25,6 +25,19 @@ public interface AppOrderDao extends BaseMapper<XryOrderEntity> {
     List<XryOrderEntity> getCloseOrderByUserId(String id);
 
     /**
+     * 生成取消订单
+     *
+     * @param
+     */
+    Integer updatecancelOrderByorId(XryOrderEntity order);
+
+    /**
+     * 生成交易成功订单
+     *
+     * @param
+     */
+    Integer updatePayOrderByorId(XryOrderEntity order);
+    /**
      * 查询返回的数据总数
      *
      * @param map

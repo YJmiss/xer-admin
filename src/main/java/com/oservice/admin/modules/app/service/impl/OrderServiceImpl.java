@@ -80,10 +80,10 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
         order.setPaymentTime(new Date());
         order.setEndTime(new Date());
         order.setPayment(money);
-        baseMapper.updateById(order);
+        baseMapper.updatePayOrderByorId(order);
     }
 
-    @Override
+   /* @Override
     public void closeOrder(String orderId) {
         XryOrderEntity order = new XryOrderEntity();
         order.setOrderId(orderId);
@@ -91,7 +91,7 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
         order.setUpdateTime(new Date());
         order.setCloseTime(new Date());
         baseMapper.updateById(order);
-    }
+    }*/
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -156,7 +156,7 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
         order.setStatus(3);
         order.setUpdateTime(new Date());
         order.setCloseTime(new Date());
-        baseMapper.updateById(order);
+        baseMapper.updatecancelOrderByorId(order);
     }
 
     @Override

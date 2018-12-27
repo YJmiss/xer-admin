@@ -34,7 +34,7 @@ public interface OrderService {
      *
      * @param
      */
-    void closeOrder(String orderId);
+    // void closeOrder(String orderId);
 
     /**
      * 后台列表所有订单

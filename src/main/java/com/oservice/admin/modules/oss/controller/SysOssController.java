@@ -22,9 +22,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
+import javax.servlet.http.Part;
+import java.util.*;
 
 /**
  * 文件上传
@@ -135,25 +134,33 @@ public class SysOssController {
     @PostMapping("/uploadImg")
     @RequiresPermissions("sys:oss:uploadImg")
     public Result uploadImg(HttpServletRequest request, MultipartHttpServletRequest multipartRequest) throws Exception {
+        Map map = new HashMap<>();
         try {
-            MultipartFile file = multipartRequest.getFile("file");
-            if (file.isEmpty()) {
-                throw new GlobalException("上传文件不能为空");
+            MultipartFile uploadFile = multipartRequest.getFile("file");
+            if (uploadFile == null) {
+                Collection<Part> parts = multipartRequest.getParts();
+                for (Iterator<Part> iterator = parts.iterator(); iterator.hasNext(); ) {
+                    Part part = iterator.next();
+                    //2.根据上传文件分析出基本后缀名
+                    String fileName = OSSFactory.generateFileName(part.getSubmittedFileName(), part.getContentType());
+                    //设置文件的保存路径
+                    //3.得到文件的内容（二进制数据）
+                    // 把InputStream转成byte[]
+                    byte[] fileByte = OSSFactory.inputStreamToByteArr(part.getInputStream());
+                    String url = OSSFactory.build().uploadSuffix(fileByte, fileName);
+                    map.put("url", url);
+                }
+                return Result.ok(map);
             }
-            //上传文件
-            String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));//文件后缀名
-            String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
-            //保存文件信息
-            SysOssEntity ossEntity = new SysOssEntity();
-            ossEntity.setUrl(url);
-            ossEntity.setCreateDate(new Date());
-            sysOssService.insert(ossEntity);
-            return Result.ok().put("url", url);
+            return Result.error(500, "上传失败文件服务器配置错误，联系管理员");
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
+            map.put("error", 1);
+            map.put("message", "图片上传失败！");
         }
-        return Result.error(500, "上传失败文件服务器配置错误，联系管理员");
+        return Result.ok(map);
     }
+
 }
 
 

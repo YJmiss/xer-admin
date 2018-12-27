@@ -1,8 +1,6 @@
 package com.oservice.admin.modules.wechat.service.menu;
 
 
-import com.oservice.admin.modules.wechat.bean.Menu;
-
 /**
  * @ClassName: MenuService
  * @Description: 自定义菜单业务类
@@ -19,7 +17,7 @@ public interface MenuService {
      * @Date: 2018/9/20 15:21
      * @Version 1.0
      */
-    void createMenu(Menu menu);
+    //  void createMenu(Menu menu);
 
     /**
      * @Description: 获取菜单

@@ -2,15 +2,10 @@ package com.oservice.admin.modules.wechat.service.menu;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Preconditions;
-import com.oservice.admin.modules.wechat.bean.AccessTokenBean;
 import com.oservice.admin.modules.wechat.bean.Menu;
-import com.oservice.admin.modules.wechat.constant.WechatConstant;
 import com.oservice.admin.modules.wechat.service.AbstractWechatService;
 import com.oservice.admin.modules.wechat.service.accesstoken.AccessTokenService;
-import com.oservice.admin.modules.wechat.utils.HttpClientUtils;
 import com.oservice.admin.modules.wechat.utils.MessageUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -37,25 +32,26 @@ public class MenuServiceImpl extends AbstractWechatService implements MenuServic
         return accessTokenService;
     }
 
+    /*
     @Override
-    public void createMenu(Menu menu) {
-        Boolean isTrue;
-        Preconditions.checkNotNull(menu, " parameter is not allowed to be null or empty! ");
-        AccessTokenBean accessToken = checkAccessToken();
-        try {
-            String url = WechatConstant.CREATE_MENU_URL.replaceAll(WechatConstant.ACCESS_TOKEN, accessToken.getAccess_token());
-            String paramJson = MAPPER.writeValueAsString(menu);
-            String postResponse = HttpClientUtils.sendPost(url, paramJson);
-            if (StringUtils.isNotEmpty(postResponse) && postResponse.indexOf("ok") > 0) {
-                isTrue = true;
-            } else {
-                LOGGER.error(postResponse);
-            }
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-    }
-
+     public void createMenu(Menu menu) {
+         Boolean isTrue;
+         Preconditions.checkNotNull(menu, " parameter is not allowed to be null or empty! ");
+         AccessTokenBean accessToken = checkAccessToken();
+         try {
+             String url = WechatConstant.CREATE_MENU_URL.replaceAll(WechatConstant.ACCESS_TOKEN, accessToken.getAccess_token());
+             String paramJson = MAPPER.writeValueAsString(menu);
+             String postResponse = HttpClientUtils.sendPost(url, paramJson);
+             if (StringUtils.isNotEmpty(postResponse) && postResponse.indexOf("ok") > 0) {
+                 isTrue = true;
+             } else {
+                 LOGGER.error(postResponse);
+             }
+         } catch (Exception e) {
+             LOGGER.error(e.getMessage(), e);
+         }
+     }
+ */
     @Override
     public String getMenu() {
         return null;
@@ -71,6 +67,6 @@ public class MenuServiceImpl extends AbstractWechatService implements MenuServic
     @Override
     public void afterPropertiesSet() throws Exception {
         Menu menus = MessageUtils.getMenu();
-        this.createMenu(menus);
+        //   this.createMenu(menus);
     }
 }
