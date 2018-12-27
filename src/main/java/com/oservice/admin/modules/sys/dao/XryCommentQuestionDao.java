@@ -31,4 +31,10 @@ public interface XryCommentQuestionDao extends BaseMapper<XryCommentQuestionEnti
      * @return
      */
     List<Map<String, Object>> pageList(@Param("params") Map<String, Object> map);
+
+    /**
+     * 修改常见问题的状态
+     * @param params
+     */
+    void updateQuestionStatus(@Param("params") Map<String, Object> params);
 }

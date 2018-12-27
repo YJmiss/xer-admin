@@ -10,7 +10,7 @@
             and title like #{params.title}
         </if>
         <if test="params.createTime != null and params.createTime != ''">
-            and create_time like #{params.title}
+            and create_time like #{params.createTime}
         </if>
         <if test="params.questionStatus != null and params.questionStatus != ''">
             and question_status = #{params.questionStatus}
@@ -23,7 +23,7 @@
             and title like #{params.title}
         </if>
         <if test="params.createTime != null and params.createTime != ''">
-            and create_time like #{params.title}
+            and create_time like #{params.createTime}
         </if>
         <if test="params.questionStatus != null and params.questionStatus != ''">
             and question_status = #{params.questionStatus}
@@ -32,5 +32,12 @@
             limit ${params.pageNo},${params.pageSize}
         </if>
     </select>
+    <!--修改常见问题的状态-->
+    <update id="updateQuestionStatus" parameterType="java.util.Map">
+      update xry_comment_question set question_status = #{params.questionStatus} where id in
+      <foreach collection="params.ids" item="id" open="(" separator="," close=")">
+          #{id}
+      </foreach>
+    </update>
 
 </mapper>

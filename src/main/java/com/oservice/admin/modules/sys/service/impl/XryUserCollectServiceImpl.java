@@ -46,6 +46,6 @@ public class XryUserCollectServiceImpl extends ServiceImpl<XryUserCollectDao, Xr
 
     @Override
     public void appDelUserCollectByCollectId(Long collectId) {
-        baseMapper.appDelUserCollectByCollectId(collectId);
+        baseMapper.deleteById(collectId);
     }
 }

@@ -6,17 +6,18 @@
     <!--app端根据用户查询用户加入学习的课程列表-->
     <select id="appPageListCourseByUserId" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.title, b.image from xry_user_applicant a left join xry_course b on a.obj_id=b.id
-          where a.user_id = #{params.userId} and a.obj_type = 0 and a.obj_status = 0
-        <if test="params.flag != null and params.flag != ''">
-            <if test="params.flag == 1">
-                and a.create_time between current_date()-7 and sysdate();
-            </if>
-            <if test="params.flag == 2">
-                and date_format(a.create_time, '%Y%m' ) = date_format(curdate() , '%Y%m' )
-            </if>
-            <if test="params.flag == 3">
-                
-            </if>
+          where and a.obj_type = 0 and a.obj_status = 0
+        <if test="params.userId != null and params.userId != ''">
+            and a.user_id = #{params.userId,jdbcType=VARCHAR}
+        </if>
+        <if test="params.flag == 1">
+            and a.create_time between current_date()-7 and sysdate();
+        </if>
+        <if test="params.flag == 2">
+            and date_format(a.create_time, '%Y%m' ) = date_format(curdate() , '%Y%m' )
+        </if>
+        <if test="params.flag == 3">
+
         </if>
         <if test="params.pageSize != null and params.pageSize != ''">
             limit ${params.pageNo},${params.pageSize}

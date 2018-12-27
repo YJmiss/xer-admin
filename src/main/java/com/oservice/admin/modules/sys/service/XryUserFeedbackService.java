@@ -2,6 +2,7 @@ package com.oservice.admin.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
+import com.oservice.admin.modules.sys.entity.XryCommentQuestionEntity;
 import com.oservice.admin.modules.sys.entity.XryUserCollectEntity;
 import com.oservice.admin.modules.sys.entity.XryUserFeedbackEntity;
 
@@ -19,13 +20,28 @@ public interface XryUserFeedbackService extends IService<XryUserFeedbackEntity> 
 
     /**
      * 分页查询
+     *
      * @param params
      * @return
      */
     PageUtils queryPage(Map<String, Object> params);
 
     /**
+     * 根据反馈id，查询反馈
+     *
+     * @param id
+     * @return
+     */
+    XryUserFeedbackEntity queryById(Long id);
+
+    /** 删除
+     * @param ids
+     */
+    void deleteBatch(Long[] ids);
+
+    /**
      * app端用户反馈问题
+     *
      * @param userId
      * @param params
      */

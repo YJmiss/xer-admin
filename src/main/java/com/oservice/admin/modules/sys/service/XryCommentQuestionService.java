@@ -49,4 +49,9 @@ public interface XryCommentQuestionService extends IService<XryCommentQuestionEn
      */
     void deleteBatch(Long[] ids);
 
+    /**
+     * 修改常见问题的状态
+     * @param params
+     */
+    void updateQuestionStatus(Map<String, Object> params);
 }

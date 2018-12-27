@@ -23,7 +23,7 @@ public interface XryUserApplicantDao extends BaseMapper<XryUserApplicantEntity> 
      * @param params
      * @return
      */
-    List<Map<String, Object>> appPageListCourseByUserId(Map<String, Object> params);
+    List<Map<String, Object>> appPageListCourseByUserId(@Param("params") Map<String, Object> params);
 
     /**
      * app端用户删除已经加入学习的课程

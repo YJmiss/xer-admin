@@ -12,10 +12,7 @@ import com.oservice.admin.modules.sys.service.XryUserFeedbackService;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统用户
@@ -34,20 +31,21 @@ public class XryUserFeedbackServiceImpl extends ServiceImpl<XryUserFeedbackDao, 
         Map<String, Object> map = new HashMap<>();
         String pageNo = (String) params.get("page");
         String pageSize = (String) params.get("limit");
-        String title = (String) params.get("title");
+        String userInfo = (String) params.get("userInfo");
         String userId = (String) params.get("userId");
         String createTime = (String) params.get("createTime");
-        // 状态（0：问题未发布  1：问题发布）
-        String objStatus = (String) params.get("objStatus");
         // 审核状态（0：未审核  1：已回复（针对用户发起的反馈问题，管理回复表示已经审核通过））
         String checkStatus = (String) params.get("checkStatus");
         map.put("pageNo", (new Integer(pageNo) - 1) * new Integer(pageSize));
         map.put("pageSize", pageSize);
         map.put("userId", userId);
-        map.put("objStatus", objStatus);
         map.put("checkStatus", checkStatus);
-        map.put("title", "%" + title + "%");
-        map.put("createTime", "%" + createTime + "%");
+        if (null != userInfo && !"".equals(userInfo)) {
+            map.put("userInfo", "%" + userInfo + "%");
+        }
+        if (null != createTime && !"".equals(createTime)) {
+            map.put("createTime", "%" + createTime + "%");
+        }
         // 查询返回的数据总数page.totalCount
         Long total = baseMapper.countTotal(map);
         pageList.setTotal(total);
@@ -55,6 +53,16 @@ public class XryUserFeedbackServiceImpl extends ServiceImpl<XryUserFeedbackDao, 
         List<Map<String, Object>> courseList = baseMapper.pageList(map);
         pageList.setRecords(courseList);
         return new PageUtils(pageList);
+    }
+
+    @Override
+    public XryUserFeedbackEntity queryById(Long id) {
+        return baseMapper.selectById(id);
+    }
+
+    @Override
+    public void deleteBatch(Long[] ids) {
+        baseMapper.deleteBatchIds(Arrays.asList(ids));
     }
 
     @Override

@@ -116,10 +116,20 @@ public class AppCourseController extends AbstractController {
     @SysLog("app端根据用户查询用户加入学习的课程列表")
     @PostMapping("/appPageListCourseByUserId")
     @ApiOperation(value="查询用户已报名学习课程列表",notes="pageNo：页码，必填；pageSize：单页的列表数量，必填；flag：标识符，用来标识本周学习、本月学习、全部课程，必填")
-    public Result appPageListCourseByUserId(@RequestParam Integer pageNo, Integer pageSize, Integer flag) {
+    public Result appPageListCourseByUserId(@RequestParam Integer pageNo, @RequestParam Integer pageSize, @RequestParam Integer flag, HttpServletRequest request) {
         // 把课程id和用户id加入到数据库表中
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", getAppUserId());
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        params.put("userId", userId);
         params.put("pageNo", (pageNo - 1) * pageSize);
         params.put("pageSize", pageSize);
         params.put("flag", flag);
