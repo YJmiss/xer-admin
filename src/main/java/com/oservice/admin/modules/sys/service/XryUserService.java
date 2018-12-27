@@ -35,6 +35,18 @@ public interface XryUserService extends IService<XryUserEntity> {
      * @return
      */
     List<XryUserEntity> treeUser();
-    
 
+    /**
+     * 个人中心修改个人资料接口
+     * @param params
+     * @param userId
+     */
+    void updateUserInfoByUserId(String params, String userId);
+
+    /**
+     *
+     * @param newHeadImg
+     * @param userId
+     */
+    void updateUserHeadImgByUserId(String newHeadImg, String userId);
 }

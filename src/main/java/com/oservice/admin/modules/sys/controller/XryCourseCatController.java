@@ -116,11 +116,13 @@ public class XryCourseCatController extends AbstractController {
 
     /**
      * 课程类目树(添加、修改菜单)
+     * @param flag
+     * @return
      */
     @GetMapping("/treeCourseCat")
     @RequiresPermissions("xry:course:cat:treeCourseCat")
-    public Result treeCourseCat() {
-        List<XryCourseCatEntity> courseCatList = xryCourseCatService.treeCourseCat();
+    public Result treeCourseCat(Integer flag) {
+        List<XryCourseCatEntity> courseCatList = xryCourseCatService.treeCourseCat(flag);
         return Result.ok().put("courseCatList", courseCatList);
     }
 

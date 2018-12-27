@@ -59,9 +59,11 @@
      LEFT JOIN xry_user b on a.user_id = b.id
      LEFT JOIN xry_organization c on a.org_id = c.id where a.id = #{id}
     </select>
-    <!--app查询讲师列表-->
+    <!--app查询'我的关注'列表-->
     <select id="appPageListTeacherByUserId" parameterType="java.util.Map" resultType="java.util.Map">
-     select a.*, b.nickname as userName, b.phone as userPhone from xry_teacher a LEFT JOIN xry_user b on a.user_id = b.id where a.user_id = #{userId}
+     select xua.obj_id as teacherId, xt.*,xu.avatar as headImg from xry_user_attention xua left join xry_teacher xt on xua.obj_id = xt.id
+     left join xry_user xu on xt.user_id = xu.id where xua.user_id = #{params.userId} and xua.obj_type = 0 and xua.obj_status = 0
+     limit ${params.pageNo},${params.pageSize}
     </select>
     <!--构造讲师树-->
     <select id="treeTeacher" resultType="com.oservice.admin.modules.sys.entity.XryTeacherEntity">
@@ -98,6 +100,15 @@
     <!--根据课程id查询该课程的学生人数-->
     <select id="countStudentByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
       select count(*) from xry_user_applicant where obj_id = #{courseId} and obj_type = 0 and obj_status = 0
+    </select>
+    <!--查询用户已经关注的讲师数-->
+    <select id="countUserApplicantByUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
+      select count(*) from xry_user_attention where user_id = #{userId} and obj_type = 0 and obj_status = 0
+    </select>
+    <!--根据讲师id查询出讲师所上的课程-->
+    <select id="listCourseByTeacherId" parameterType="java.lang.String" resultType="java.util.Map">
+      select xc.* from xry_course xc left join xry_teacher xt on xc.tid = xt.id
+      left join xry_course_cat xcc on xc.cid = xcc.id where xc.tid = #{teacherId} and xcc.parent_id not in (0)
     </select>
 
 </mapper>

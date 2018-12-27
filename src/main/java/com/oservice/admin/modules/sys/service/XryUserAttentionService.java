@@ -45,4 +45,18 @@ public interface XryUserAttentionService extends IService<XryUserAttentionEntity
      */
     List<String> listUserIdByTeacherId(String teacherId);
 
+    /**
+     * 查询讲师的关注人数列表
+     * @param teacherId
+     * @return
+     */
+    List<XryUserAttentionEntity> countAttentionByTeacherId(String teacherId);
+
+    /**
+     * 根据用户id和讲师id查询该用户是否关注了该讲师
+     * @param teacherId
+     * @param userId
+     * @return
+     */
+    XryUserAttentionEntity isAttentionByUserIdAndTeacherId(String teacherId, String userId);
 }

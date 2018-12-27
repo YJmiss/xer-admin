@@ -94,4 +94,11 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 	 * @return
 	 */
 	List<Map<String, Object>> listTeacherCourseByTeacherId(String teacherId);
+
+	/**
+	 * 查询用户已经关注的讲师数
+	 * @param userId
+	 * @return
+	 */
+	Integer countUserApplicantByUserId(String userId);
 }

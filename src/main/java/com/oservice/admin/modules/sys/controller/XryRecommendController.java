@@ -47,28 +47,6 @@ public class XryRecommendController extends AbstractController {
     }
 
     /**
-     * 根据userId查询用户已经选择喜好的课程类目
-     * 不需要根据类目分类显示
-     * @return
-     */
-    @SysLog("查询用户已经选择喜好的课程类目")
-    @GetMapping("/appListCourseCatByUserId")
-    public Result appListCourseCatByUserId() {
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId",getAppUserId());
-        XryRecommendEntity recommend = xryCourseService.listRecommendCourseCatByUserId(params);
-        String[] courseCatIds = recommend.getCatId().split(",");
-        List<XryCourseCatEntity> courseCatList = new ArrayList<>();
-        if (courseCatIds.length > 0) {
-            for (String courseCatId : courseCatIds) {
-                XryCourseCatEntity courseCat = xryCourseCatService.selectById(courseCatId);
-                courseCatList.add(courseCat);
-            }    
-        }
-        return Result.ok().put("courseCatList",courseCatList);
-    }
-
-    /**
      * 用户设置喜好课程，添加到数据库表中
      * @param tokenJSON
      * @return

@@ -9,9 +9,7 @@ import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
-import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseEntity;
-import com.oservice.admin.modules.sys.entity.XryUserEntity;
+import com.oservice.admin.modules.sys.entity.*;
 import com.oservice.admin.modules.sys.service.ShiroService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryUserApplicantService;
@@ -197,6 +195,19 @@ public class AppCourseController extends AbstractController {
                 } else {
                     detail.put("identifying", false);
                 }
+                // 查询课程的报名人数列表
+                List<XryUserApplicantEntity> courseApplicantList = xryUserApplicantService.countApplicantByCourseId(courseId);
+                Integer courseApplicantCount = courseApplicantList.size();
+                detail.put("courseApplicantCount", courseApplicantCount);
+                Integer isApplicant = 0;
+                if (courseApplicantCount > 0) {
+                    // 根据用户id和课程id查询该用户是否报名了该课程
+                    XryUserApplicantEntity userApplicant = xryUserApplicantService.isApplicantByUserIdAndCourseId(courseId, userId);
+                    if (null != userApplicant) {
+                        isApplicant = 1;
+                    }
+                }
+                detail.put("isApplicant", isApplicant);
             }
 
         } catch (GlobalException e) {

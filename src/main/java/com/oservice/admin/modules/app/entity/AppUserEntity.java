@@ -54,6 +54,10 @@ public class AppUserEntity implements Serializable {
      */
     private String email;
     /**
+     * 性别（1：男  2：女）
+     */
+    private Integer sex;
+    /**
      *角色--0:普通用户 1：讲师
      */
     private int role;
@@ -249,5 +253,13 @@ public class AppUserEntity implements Serializable {
      */
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 }

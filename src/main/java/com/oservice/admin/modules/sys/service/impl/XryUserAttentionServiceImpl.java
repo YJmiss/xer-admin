@@ -8,10 +8,7 @@ import com.oservice.admin.modules.sys.entity.XryUserAttentionEntity;
 import com.oservice.admin.modules.sys.service.XryUserAttentionService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统用户
@@ -60,6 +57,19 @@ public class XryUserAttentionServiceImpl extends ServiceImpl<XryUserAttentionDao
             }
         }
         return userIds;
+    }
+
+    @Override
+    public List<XryUserAttentionEntity> countAttentionByTeacherId(String teacherId) {
+        return baseMapper.countAttentionByTeacherId(teacherId);
+    }
+
+    @Override
+    public XryUserAttentionEntity isAttentionByUserIdAndTeacherId(String teacherId, String userId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId" ,userId);
+        params.put("teacherId" ,teacherId);
+        return baseMapper.isAttentionByUserIdAndTeacherId(params);
     }
 
 

@@ -3,6 +3,7 @@ package com.oservice.admin.modules.sys.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryUserApplicantEntity;
+import com.oservice.admin.modules.sys.entity.XryUserAttentionEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -49,4 +50,19 @@ public interface XryUserApplicantService extends IService<XryUserApplicantEntity
      * @return
      */
     List<Map<String, Object>> listUserIdByMsgId(Long id);
+
+    /**
+     * 查询课程的报名人数列表
+     * @param courseDetailId
+     * @return
+     */
+    List<XryUserApplicantEntity> countApplicantByCourseId(Long courseDetailId);
+
+    /**
+     * 根据用户id和课程id查询该用户是否报名了该课程
+     * @param courseId
+     * @param userId
+     * @return
+     */
+    XryUserApplicantEntity isApplicantByUserIdAndCourseId(Long courseId, String userId);
 }

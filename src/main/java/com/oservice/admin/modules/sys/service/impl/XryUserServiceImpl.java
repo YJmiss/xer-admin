@@ -7,6 +7,7 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryUserDao;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.XryUserService;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -55,6 +56,30 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
     @Override
     public List<XryUserEntity> treeUser() {
         return baseMapper.treeUser();
+    }
+
+    @Override
+    public void updateUserInfoByUserId(String params, String userId) {
+        // 根据用户id查询出用户信息
+        XryUserEntity user = baseMapper.selectById(userId);
+
+        JSONObject json = new JSONObject(params);
+        String nickname = json.getString("nickname");
+        Integer sex = json.getInt("sex");
+        String email = json.getString("email");
+
+        user.setEmail(email);
+        user.setSex(sex);
+        user.setNickname(nickname);
+        baseMapper.updateById(user);
+    }
+
+    @Override
+    public void updateUserHeadImgByUserId(String newHeadImg, String userId) {
+        // 根据用户id查询出用户信息
+        XryUserEntity user = baseMapper.selectById(userId);
+        user.setAvatar(newHeadImg);
+        baseMapper.updateById(user);
     }
 
 }

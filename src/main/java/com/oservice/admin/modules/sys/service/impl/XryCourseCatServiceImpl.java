@@ -64,8 +64,8 @@ public class XryCourseCatServiceImpl extends ServiceImpl<XryCourseCatDao, XryCou
     }
 
     @Override
-    public List<XryCourseCatEntity> treeCourseCat() {
-        return baseMapper.treeCourseCat();
+    public List<XryCourseCatEntity> treeCourseCat(Integer flag) {
+        return baseMapper.treeCourseCat(flag);
 	}
 
 	@Override

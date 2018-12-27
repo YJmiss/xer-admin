@@ -5,13 +5,11 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryUserApplicantDao;
 import com.oservice.admin.modules.sys.entity.XryUserApplicantEntity;
+import com.oservice.admin.modules.sys.entity.XryUserAttentionEntity;
 import com.oservice.admin.modules.sys.service.XryUserApplicantService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统用户
@@ -65,6 +63,19 @@ public class XryUserApplicantServiceImpl extends ServiceImpl<XryUserApplicantDao
     @Override
     public List<Map<String, Object>> listUserIdByMsgId(Long id) {
         return baseMapper.listUserIdByMsgId(id);
+    }
+
+    @Override
+    public List<XryUserApplicantEntity> countApplicantByCourseId(Long courseDetailId) {
+        return baseMapper.countApplicantByCourseId(courseDetailId);
+    }
+
+    @Override
+    public XryUserApplicantEntity isApplicantByUserIdAndCourseId(Long courseId, String userId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId" ,userId);
+        params.put("courseId" ,courseId);
+        return baseMapper.isApplicantByUserIdAndCourseId(params);
     }
 
 }
