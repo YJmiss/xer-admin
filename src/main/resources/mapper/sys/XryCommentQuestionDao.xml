@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.sys.dao.XryCommentQuestionDao">
+
+    <!--查询返回的数据总数-->
+    <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from xry_comment_question where 1=1
+        <if test="params.title != null and params.title != ''">
+            and title like #{params.title}
+        </if>
+        <if test="params.createTime != null and params.createTime != ''">
+            and create_time like #{params.title}
+        </if>
+        <if test="params.questionStatus != null and params.questionStatus != ''">
+            and question_status = #{params.questionStatus}
+        </if>
+    </select>
+    <!--自定义分页查询-->
+    <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from xry_comment_question where 1=1
+        <if test="params.title != null and params.title != ''">
+            and title like #{params.title}
+        </if>
+        <if test="params.createTime != null and params.createTime != ''">
+            and create_time like #{params.title}
+        </if>
+        <if test="params.questionStatus != null and params.questionStatus != ''">
+            and question_status = #{params.questionStatus}
+        </if>
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit ${params.pageNo},${params.pageSize}
+        </if>
+    </select>
+
+</mapper>

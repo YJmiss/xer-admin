@@ -1,6 +1,7 @@
 package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.oservice.admin.modules.sys.entity.XryCommentQuestionEntity;
 import com.oservice.admin.modules.sys.entity.XryUserFeedbackEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,7 +16,7 @@ import java.util.Map;
  * @version 1.0
  */
 @Mapper
-public interface XryUserFeedbackDao extends BaseMapper<XryUserFeedbackEntity> {
+public interface XryCommentQuestionDao extends BaseMapper<XryCommentQuestionEntity> {
 
     /**
      * 计算列表总数

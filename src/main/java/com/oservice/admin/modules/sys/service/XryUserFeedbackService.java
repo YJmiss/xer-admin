@@ -1,6 +1,7 @@
 package com.oservice.admin.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryUserCollectEntity;
 import com.oservice.admin.modules.sys.entity.XryUserFeedbackEntity;
 
@@ -15,6 +16,13 @@ import java.util.Map;
  * @version 1.0
  */
 public interface XryUserFeedbackService extends IService<XryUserFeedbackEntity> {
+
+    /**
+     * 分页查询
+     * @param params
+     * @return
+     */
+    PageUtils queryPage(Map<String, Object> params);
 
     /**
      * app端用户反馈问题

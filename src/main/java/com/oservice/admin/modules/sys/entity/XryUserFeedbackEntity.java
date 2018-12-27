@@ -23,14 +23,6 @@ public class XryUserFeedbackEntity implements Serializable {
      */
     private String userId;
     /**
-     * 类型（1：用户反馈 2：管理添加的问题）
-     */
-    private Integer objType;
-    /**
-     * 状态（0：问题未发布  1：问题发布）
-     */
-    private Integer objStatus;
-    /**
      * 审核状态（0：未审核  1：已回复（针对用户发起的反馈问题，管理回复表示已经审核通过））
      */
     private Integer checkStatus;
@@ -54,6 +46,10 @@ public class XryUserFeedbackEntity implements Serializable {
      * 创建时间
      */
     private Date createTime;
+    /**
+     * 回复时间
+     */
+    private Date replyTime;
 
 
     public Long getId() {
@@ -70,22 +66,6 @@ public class XryUserFeedbackEntity implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public Integer getObjType() {
-        return objType;
-    }
-
-    public void setObjType(Integer objType) {
-        this.objType = objType;
-    }
-
-    public Integer getObjStatus() {
-        return objStatus;
-    }
-
-    public void setObjStatus(Integer objStatus) {
-        this.objStatus = objStatus;
     }
 
     public Integer getCheckStatus() {
@@ -135,4 +115,8 @@ public class XryUserFeedbackEntity implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+    public Date getReplyTime() { return replyTime; }
+
+    public void setReplyTime(Date replyTime) { this.replyTime = replyTime; }
 }

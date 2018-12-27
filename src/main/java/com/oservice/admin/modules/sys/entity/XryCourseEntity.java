@@ -65,7 +65,12 @@ public class XryCourseEntity implements Serializable {
 	 * 实时报名人数（可删减）
 	 */
 	private Integer applicantSum;
-	
+
+	/**
+	 * app端收藏里判断用户拉出、收起
+	 */
+	private Integer appStatus;
+
 	/**
 	 * 创建时间
 	 */
@@ -178,5 +183,13 @@ public class XryCourseEntity implements Serializable {
 
 	public void setRecommend(Integer recommend) {
 		this.recommend = recommend;
+	}
+
+	public Integer getAppStatus() {
+		return appStatus;
+	}
+
+	public void setAppStatus(Integer appStatus) {
+		this.appStatus = appStatus;
 	}
 }
