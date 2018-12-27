@@ -38,8 +38,20 @@ public class AliyunCloudStorageService extends CloudStorageService {
         } catch (Exception e){
             throw new GlobalException("上传文件失败，请检查配置信息", e);
         }
-
-        return config.getAliyunDomain() + "/" + path;
+        String aliyunBucketName = config.getAliyunBucketName() + ".";
+        String aliyunDomain = config.getAliyunDomain();
+        char[] stringArr = aliyunDomain.toCharArray();
+        String aliyunUp = "";
+        for (int i = 0; i < 8; i++) {
+            aliyunUp += stringArr[i];
+        }
+        aliyunUp += aliyunBucketName;
+        for (int i = 0; i < stringArr.length; i++) {
+            if (i > 7) {
+                aliyunUp += stringArr[i];
+            }
+        }
+        return aliyunUp + "/" + path;
     }
 
     @Override

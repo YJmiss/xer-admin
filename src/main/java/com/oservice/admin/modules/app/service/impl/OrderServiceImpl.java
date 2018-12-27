@@ -2,11 +2,11 @@ package com.oservice.admin.modules.app.service.impl;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.oservice.admin.common.utils.DateUtils;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.common.utils.UUIDUtils;
 import com.oservice.admin.modules.app.dao.AppOrderDao;
+import com.oservice.admin.modules.app.entity.AppUserPrderEntity;
 import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.entity.XryOrderEntity;
 import com.oservice.admin.modules.app.service.OrderCourseService;
@@ -169,10 +169,12 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
     public Map<String, Object> getOrderByUserId(String id) {
         Map<String, Object> map = new HashMap<>();
         List<XryOrderEntity> orders = baseMapper.selectByUserId(id);
-        map.put("order", orders);
         for (XryOrderEntity order : orders) {
+            AppUserPrderEntity appUserPrderEntity = new AppUserPrderEntity();
             List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(order.getOrderId());
-            map.put(order.getOrderId(), orderCourses);
+            appUserPrderEntity.setOrderEntity(order);
+            appUserPrderEntity.setOrderCourses(orderCourses);
+            map.put(order.getOrderId(), appUserPrderEntity);
         }
         return map;
     }
@@ -181,10 +183,12 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
     public Map<String, Object> getUnpaidOrderByUserId(String id) {
         Map<String, Object> map = new HashMap<>();
         List<XryOrderEntity> paidOrders = baseMapper.getunpaidOrderByUserId(id);
-        map.put("order", paidOrders);
         for (XryOrderEntity order : paidOrders) {
+            AppUserPrderEntity appUserPrderEntity = new AppUserPrderEntity();
             List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(order.getOrderId());
-            map.put(order.getOrderId(), orderCourses);
+            appUserPrderEntity.setOrderEntity(order);
+            appUserPrderEntity.setOrderCourses(orderCourses);
+            map.put(order.getOrderId(), appUserPrderEntity);
         }
         return map;
     }
@@ -193,10 +197,12 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
     public Map<String, Object> getPaidOrderByUserId(String id) {
         Map<String, Object> map = new HashMap<>();
         List<XryOrderEntity> paidOrders = baseMapper.getPaidOrderByUserId(id);
-        map.put("order", paidOrders);
         for (XryOrderEntity order : paidOrders) {
+            AppUserPrderEntity appUserPrderEntity = new AppUserPrderEntity();
             List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(order.getOrderId());
-            map.put(order.getOrderId(), orderCourses);
+            appUserPrderEntity.setOrderEntity(order);
+            appUserPrderEntity.setOrderCourses(orderCourses);
+            map.put(order.getOrderId(), appUserPrderEntity);
         }
         return map;
     }
@@ -205,10 +211,12 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
     public Map<String, Object> getCloseOrderByUserId(String id) {
         Map<String, Object> map = new HashMap<>();
         List<XryOrderEntity> paidOrders = baseMapper.getCloseOrderByUserId(id);
-        map.put("order", paidOrders);
         for (XryOrderEntity order : paidOrders) {
+            AppUserPrderEntity appUserPrderEntity = new AppUserPrderEntity();
             List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(order.getOrderId());
-            map.put(order.getOrderId(), orderCourses);
+            appUserPrderEntity.setOrderEntity(order);
+            appUserPrderEntity.setOrderCourses(orderCourses);
+            map.put(order.getOrderId(), appUserPrderEntity);
         }
         return map;
     }
