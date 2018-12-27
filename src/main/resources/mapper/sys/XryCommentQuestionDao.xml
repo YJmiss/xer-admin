@@ -39,5 +39,17 @@
           #{id}
       </foreach>
     </update>
+    <!--app查询常见问题列表-->
+    <select id="appListCommentQuestionByUserId" parameterType="java.lang.Integer" resultType="java.util.Map">
+        select * from xry_comment_question where 1=1
+        <!-- 0表示查询6条 -->
+        <if test="flag == 0">
+          order by create_time desc limit 0,6
+        </if>
+        <!-- 1查询所有列表 -->
+        <if test="flag == 1">
+          order by create_time
+        </if>
+    </select>
 
 </mapper>

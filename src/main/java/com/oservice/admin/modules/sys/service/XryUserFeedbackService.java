@@ -46,4 +46,10 @@ public interface XryUserFeedbackService extends IService<XryUserFeedbackEntity> 
      * @param params
      */
     void appUserFeedbackByUserId(String userId, String params);
+
+    /**
+     * app查询我的反馈列表
+     * @param userId
+     */
+    List<Map<String, Object>> appListUserFeedbackByUserId(String userId);
 }

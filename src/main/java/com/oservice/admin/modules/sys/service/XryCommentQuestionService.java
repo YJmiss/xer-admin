@@ -6,6 +6,7 @@ import com.oservice.admin.modules.sys.entity.XryCommentQuestionEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryUserFeedbackEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,4 +55,11 @@ public interface XryCommentQuestionService extends IService<XryCommentQuestionEn
      * @param params
      */
     void updateQuestionStatus(Map<String, Object> params);
+
+    /**
+     * app查询常见问题列表
+     * @param flag
+     * @return
+     */
+    List<Map<String, Object>> appListCommentQuestionByUserId(Integer flag);
 }

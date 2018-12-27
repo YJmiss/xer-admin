@@ -76,8 +76,12 @@ public class XryUserFeedbackServiceImpl extends ServiceImpl<XryUserFeedbackDao, 
         userFeedback.setFeedbackImg(feedbackImg);
         userFeedback.setUserId(userId);
         userFeedback.setCheckStatus(0);
-        userFeedback.setCheckStatus(0);
         userFeedback.setCreateTime(new Date());
         baseMapper.insert(userFeedback);
+    }
+
+    @Override
+    public List<Map<String, Object>> appListUserFeedbackByUserId(String userId) {
+        return baseMapper.appListUserFeedbackByUserId(userId);
     }
 }

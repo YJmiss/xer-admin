@@ -4,10 +4,7 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
-import com.oservice.admin.modules.sys.service.ShiroService;
-import com.oservice.admin.modules.sys.service.XryCourseService;
-import com.oservice.admin.modules.sys.service.XryUserCollectService;
-import com.oservice.admin.modules.sys.service.XryUserFeedbackService;
+import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -33,6 +30,8 @@ public class AppUserFeedbackController extends AbstractController {
     private ShiroService shiroService;
     @Resource
     private XryUserFeedbackService xryUserFeedbackService;
+    @Resource
+    private XryCommentQuestionService xryCommentQuestionService;
 
     /**
      * app端用户反馈问题
@@ -40,7 +39,7 @@ public class AppUserFeedbackController extends AbstractController {
      * @return
      */
     @GetMapping("/appUserFeedbackByUserId")
-    @ApiOperation(value="app端用户反馈问题接口",notes="params：携带用户反馈图片（可空）、反馈具体信息，必填")
+    @ApiOperation(value="app端用户反馈问题接口",notes="params：携带用户反馈图片（可空）、反馈具体信息，必填；需要在请求头里携带token")
     public Result appUserFeedbackByUserId(@RequestParam String params, HttpServletRequest request) {
         String userId = "";
         String accessToken = request.getHeader("token");
@@ -54,6 +53,50 @@ public class AppUserFeedbackController extends AbstractController {
         }
         xryUserFeedbackService.appUserFeedbackByUserId(userId, params);
         return Result.ok();
+    }
+
+    /**
+     * app查询我的反馈列表
+     * @param request
+     * @return
+     */
+    @PostMapping("/appListUserFeedbackByUserId")
+    @ApiOperation(value="app查询我的反馈列表",notes="需要在请求头里携带token")
+    public Result appListUserFeedbackByUserId(HttpServletRequest request) {
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        List<Map<String, Object>> userFeedbackList = xryUserFeedbackService.appListUserFeedbackByUserId(userId);
+        return Result.ok().put("userFeedbackList" ,userFeedbackList);
+    }
+
+    /**
+     * app查询常见问题列表
+     * @param request
+     * @param flag
+     * @return
+     */
+    @PostMapping("/appListCommentQuestionByUserId")
+    @ApiOperation(value="app查询常见问题列表",notes="params：0表示查询6条；1查询所有；需要在请求头里携带token")
+    public Result appListCommentQuestionByUserId(@RequestParam Integer flag, HttpServletRequest request) {
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+        }
+        // 进入问题反馈界面，查询6条常见问题，以添加时间降序排序
+        // flag:0表示查询6条；1查询所有
+        List<Map<String, Object>> commentQuestionList = xryCommentQuestionService.appListCommentQuestionByUserId(flag);
+        return Result.ok().put("commentQuestionList" ,commentQuestionList);
     }
 
 }

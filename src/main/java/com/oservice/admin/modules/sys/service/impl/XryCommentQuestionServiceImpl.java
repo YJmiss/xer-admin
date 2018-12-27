@@ -80,4 +80,9 @@ public class XryCommentQuestionServiceImpl extends ServiceImpl<XryCommentQuestio
         baseMapper.updateQuestionStatus(params);
     }
 
+    @Override
+    public List<Map<String, Object>> appListCommentQuestionByUserId(Integer flag) {
+        return baseMapper.appListCommentQuestionByUserId(flag);
+    }
+
 }

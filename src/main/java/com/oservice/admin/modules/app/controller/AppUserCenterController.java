@@ -45,6 +45,28 @@ public class AppUserCenterController extends AbstractController {
      private XryUserService xryUserService;
 
     /**
+     * 用户进入修改资料页面查询用户信息
+     * @param request
+     * @return
+     */
+    @GetMapping("/userCenter/queryUserInfoByUserId")
+    @ApiOperation(value = "用户进入修改资料页面查询用户信息（昵称、性别、邮箱、头像）", notes = "需要在请求头里加token参数")
+    public Result queryUserInfoByUserId(HttpServletRequest request) {
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        XryUserEntity userInfo = xryUserService.selectById(userId);
+        return Result.ok().put("userInfo", userInfo);
+    }
+
+    /**
      * 根据userId查询用户已经选择喜好的课程类目
      * 不需要根据类目分类显示
      * @return
@@ -76,7 +98,11 @@ public class AppUserCenterController extends AbstractController {
         return Result.ok().put("courseCatList",courseCatList);
     }
 
-
+    /**
+     * 查询用户已经关注的讲师数
+     * @param request
+     * @return
+     */
     @GetMapping("/userCenter/countUserApplicantByUserId")
     @ApiOperation(value = "查询用户已经关注的讲师数", notes = "需要在请求头里加token参数")
     public Result countUserApplicantByUserId(HttpServletRequest request) {
