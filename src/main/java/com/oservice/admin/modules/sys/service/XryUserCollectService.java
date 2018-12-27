@@ -34,4 +34,10 @@ public interface XryUserCollectService extends IService<XryUserCollectEntity> {
      * @return
      */
     Integer countCourseApplicantByCourseId(Long courseId);
+
+    /**
+     * app端删除收藏列表的一个
+     * @param collectId
+     */
+    void appDelUserCollectByCollectId(Long collectId);
 }

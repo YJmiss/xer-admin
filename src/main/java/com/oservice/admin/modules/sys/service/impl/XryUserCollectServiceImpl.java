@@ -43,4 +43,9 @@ public class XryUserCollectServiceImpl extends ServiceImpl<XryUserCollectDao, Xr
     public Integer countCourseApplicantByCourseId(Long courseId) {
         return baseMapper.countCourseApplicantByCourseId(courseId);
     }
+
+    @Override
+    public void appDelUserCollectByCollectId(Long collectId) {
+        baseMapper.appDelUserCollectByCollectId(collectId);
+    }
 }

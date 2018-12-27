@@ -12,5 +12,9 @@
     <select id="countCourseApplicantByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
         select count(*) from xry_user_applicant where obj_id = #{courseId} and obj_type = 0 and obj_status = 0
     </select>
+    <!--app端删除收藏列表的一个-->
+    <delete id="appDelUserCollectByCollectId" parameterType="java.lang.Long">
+      delete from xry_user_collect where id = #{collectId}
+    </delete>
 
 </mapper>

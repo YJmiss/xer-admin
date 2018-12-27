@@ -63,5 +63,5 @@ public interface XryCommentService extends IService<XryCommentEntity> {
      * @param params
      * @param userId
      */
-    void insertCommentByUserId(String params, String userId);
+    void insertCommentByUserId(Map<String, Object> params, String userId);
 }

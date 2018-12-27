@@ -12,6 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 系统用户
@@ -31,12 +33,17 @@ public class AppCommentController extends AbstractController {
 
     /**
      * app端用户评论保存
-     * @param params
+     * @param type
+     * @param objId
+     * @param starLevel
+     * @param detail
+     * @param request
      * @return
      */
-    @GetMapping("/comment/insertCommentByUserId")
+    @PostMapping("/comment/insertCommentByUserId")
     @ApiOperation(value = "app端用户评论保存方法", notes = "params：携带评论参数（type、objId、starLevel、detail），必填")
-    public Result insertCommentByUserId(@RequestParam String params, HttpServletRequest request) {
+    public Result insertCommentByUserId(@RequestParam Integer type, @RequestParam  String objId, @RequestParam  Integer starLevel,
+            @RequestParam String detail,HttpServletRequest request) {
         String userId = "";
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
@@ -48,6 +55,11 @@ public class AppCommentController extends AbstractController {
             XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
             userId = users.getId();
         }
+        Map<String, Object> params = new HashMap<>();
+        params.put("type", type);
+        params.put("objId", objId);
+        params.put("starLevel", starLevel);
+        params.put("detail", detail);
         xryCommentService.insertCommentByUserId(params, userId);
         return Result.ok();
     }

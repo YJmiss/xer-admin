@@ -30,4 +30,10 @@ public interface XryUserCollectDao extends BaseMapper<XryUserCollectEntity> {
      * @return
      */
     Integer countCourseApplicantByCourseId(@Param("courseId") Long courseId);
+
+    /**
+     * app端删除收藏列表的一个
+     * @param collectId
+     */
+    void appDelUserCollectByCollectId(@Param("collectId") Long collectId);
 }

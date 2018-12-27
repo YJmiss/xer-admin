@@ -83,13 +83,12 @@ public class XryCommentServiceImpl extends ServiceImpl<XryCommentDao, XryComment
     }
 
     @Override
-    public void insertCommentByUserId(String params, String userId)  {
-        JSONObject json = new JSONObject(params);
+    public void insertCommentByUserId(Map<String, Object> params, String userId)  {
         // 取出app传过来的参数
-        String objId = json.getString("objId");
-        Integer type = json.getInt("type");
-        Integer starLevel = json.getInt("starLevel");
-        String detail = json.getString("detail");
+        String objId = (String) params.get("objId");
+        Integer type = (Integer) params.get("type");
+        Integer starLevel = (Integer) params.get("starLevel");
+        String detail = (String) params.get("detail");
 
         XryCommentEntity comment = new XryCommentEntity();
         comment.setObjId(objId);

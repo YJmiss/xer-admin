@@ -60,6 +60,26 @@ public class AppUserCollectController extends AbstractController {
     }
 
     /**
+     * app端删除收藏列表的一个收藏
+     * @param collectId
+     * @param request
+     * @return
+     */
+    @PostMapping("/appDelUserCollectByCollectId")
+    @ApiOperation(value = "app端删除收藏列表的一个收藏", notes = "collectId：收藏id，必填；在请求头里加上token")
+    public Result appDelUserCollectByCollectId(@RequestParam Long collectId, HttpServletRequest request) {
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+        }
+        xryUserCollectService.appDelUserCollectByCollectId(collectId);
+        return Result.ok();
+    }
+
+    /**
      * app端查询用户收藏列表
      * @param request
      * @return
