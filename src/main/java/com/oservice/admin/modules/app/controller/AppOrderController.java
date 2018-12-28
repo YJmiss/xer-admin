@@ -1,6 +1,7 @@
 package com.oservice.admin.modules.app.controller;
 
 import com.oservice.admin.common.utils.PageUtils;
+import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.service.CartService;
@@ -32,6 +33,8 @@ public class AppOrderController extends AbstractController {
     private OrderCourseService orderCourseService;
     @Resource
     private CartService cartService;
+    @Resource
+    private RedisUtils redisUtils;
     /**
      * 后台列表所有订单
      */
@@ -60,7 +63,9 @@ public class AppOrderController extends AbstractController {
     public Result createOrder(@RequestBody long[] ids) {
         orderService.createOrder(ids, getAppUser());
         for (long courseId : ids) {         //移除购物车中生成订单的课程
-            cartService.deleteCourse(getAppUser(), courseId);
+            if (redisUtils.hasKey("APPCART" + getAppUserId())) {
+                cartService.deleteCourse(getAppUser(), courseId);
+            }
         }
         return Result.ok();
     }

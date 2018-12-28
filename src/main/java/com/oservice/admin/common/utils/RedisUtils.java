@@ -132,6 +132,9 @@ public class RedisUtils {
         return gson.toJson(object);
     }
 
+    public Boolean hasKey(String key) {
+        return redisTemplate.hasKey(key);
+    }
     /**
      * JSON数据，转成Object
      */

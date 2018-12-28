@@ -11,6 +11,7 @@ import com.oservice.admin.common.validator.group.AliyunGroup;
 import com.oservice.admin.common.validator.group.QcloudGroup;
 import com.oservice.admin.common.validator.group.QiniuGroup;
 import com.oservice.admin.modules.oss.cloud.CloudStorageConfig;
+import com.oservice.admin.modules.oss.cloud.FileUploader;
 import com.oservice.admin.modules.oss.cloud.OSSFactory;
 import com.oservice.admin.modules.oss.entity.SysOssEntity;
 import com.oservice.admin.modules.oss.service.SysOssService;
@@ -102,7 +103,7 @@ public class SysOssController {
         if (file.isEmpty()) {
             throw new GlobalException("上传文件不能为空");
         }
-        //上传文件
+        //上传文件这个下面的不是
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));//文件后缀名
         String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
         //保存文件信息
@@ -161,6 +162,23 @@ public class SysOssController {
         return Result.ok(map);
     }
 
+    /**
+     * 上传视频
+     *
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/uploadVideo")
+    @ResponseBody
+    public Result uploadVideo(@RequestParam("file") MultipartFile file) {
+        String result = FileUploader.fileUpload(file);
+        String url = "";
+        if ("上传失败！".equals(result)) {
+            return Result.error(203, "上传失败，联系管理员！！");
+        }
+        url = "https://" + result;
+        return Result.ok().put("url", url);
+    }
 }
 
 

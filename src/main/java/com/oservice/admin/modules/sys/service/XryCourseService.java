@@ -147,6 +147,7 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 */
 	Map<String, Object> listCourseCatalogByCourseId(Long courseId);
 
+	Map<String, Object> listCourseCatalogByCourseIdAndUsherId(long courseId, String userId);
 	/**
 	 * 查询课程"评价"
 	 * @param courseId
