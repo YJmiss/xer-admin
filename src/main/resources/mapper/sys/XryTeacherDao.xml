@@ -5,9 +5,7 @@
 
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
-        select count(*)
-        from xry_teacher a left join xry_user b on a.user_id=b.id left join xry_organization c on a.org_id=c.id where
-        1=1
+        select count(*) from xry_teacher a left join xry_user b on a.user_id=b.id left join xry_organization c on a.org_id=c.id where 1=1
         <if test="params.status != null and params.status != '' and params.status == 3">
             and a.status = #{params.status}
         </if>
@@ -87,7 +85,7 @@
     <!--app查询'明星讲师'列表:固定6个-->
     <select id="appListStarTeacherByUserId" parameterType="java.util.Map" resultType="java.util.Map">
       select xt.*,ifnull(xua.obj_id,0) as 'attentionCount',xu.avatar from xry_teacher xt left join xry_user_attention xua on xt.id = xua.obj_id
-        left join xry_user xu on xu.id = xt.user_id where xua.obj_type = 0 and xua.obj_status = 0 order by attentionCount desc limit 0,${params.pageSize}
+        left join xry_user xu on xu.id = xt.user_id where xua.obj_type = 0 and xua.obj_status = 0 group by xt.id order by attentionCount desc limit 0,${params.pageSize}
     </select>
     <!--app端讲师主页-->
     <select id="appQueryTeacherDetailByTeacherId" parameterType="java.lang.String" resultType="java.util.Map">
