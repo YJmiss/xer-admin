@@ -1,7 +1,5 @@
 package com.oservice.admin.modules.app.controller;
 
-import com.oservice.admin.common.annotation.SysLog;
-import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
@@ -166,6 +164,60 @@ public class AppUserCenterController extends AbstractController {
         }
         xryUserService.updateUserHeadImgByUserId(newHeadImg, userId);
         return Result.ok();
+    }
+
+    /**
+     * 清除最近学习课程
+     * 不删除数据库数据
+     * @param ids
+     * @param request
+     * @return
+     */
+    @GetMapping("/userCenter/removeUserCourseByUserId")
+    @ApiOperation(value = "清除最近学习课程，不删除数据库数据", notes = "ids：最近学习的课程id，数组；需要在请求头里加token参数")
+    public Result removeUserCourseByUserId(@RequestParam String ids, HttpServletRequest request) {
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        xryUserApplicantService.removeUserCourseByUserId(userId);
+        return Result.ok();
+    }
+
+    /**
+     * 查询最近浏览课程列表
+     * @param ids
+     * @param pageNo
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @GetMapping("/userCenter/listCourseByUserIdAndCourseId")
+    @ApiOperation(value = "查询最近浏览课程列表", notes = "ids：储存在localStorage里的课程id，数组；需要在请求头里加token参数")
+    public Result listCourseByUserIdAndCourseId(@RequestParam String ids, @RequestParam Integer pageNo, @RequestParam Integer pageSize, HttpServletRequest request) {
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+        params.put(userId, userId);
+        params.put("pageSize", pageSize);
+        params.put("pageNo", (pageNo - 1) * pageSize);
+        List<Map<String, Object>> courseList = xryCourseService.listCourseByUserIdAndCourseId(params);
+        return Result.ok().put("courseList", courseList);
     }
 
 }

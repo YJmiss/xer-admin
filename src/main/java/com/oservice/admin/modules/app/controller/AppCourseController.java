@@ -140,16 +140,26 @@ public class AppCourseController extends AbstractController {
     /**
      * app端用户删除已经加入学习的课程
      *
-     * @param ids
+     * @param id
      * @return
      */
     @SysLog("app端用户删除已经加入学习的课程")
     @PostMapping("/appDelCourseById")
-    @ApiOperation(value="用户取消已报名学习课程",notes="ids：是取消学习的课程id，Long数组（批量操作课程id），必填")
-    public Result appDelCourseById(@RequestParam Long[] ids) {
+    @ApiOperation(value="app端用户删除已经加入学习的课程",notes="id：是取消学习的报名表id，必填")
+    public Result appDelCourseById(@RequestParam Long id, HttpServletRequest request) {
         Map<String, Object> params = new HashMap<>();
-        params.put("ids", ids);
-        params.put("userId", getAppUserId());
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        params.put("id", id);
+        params.put("userId", userId);
         xryUserApplicantService.appDelCourseById(params);
         return Result.ok();
     }

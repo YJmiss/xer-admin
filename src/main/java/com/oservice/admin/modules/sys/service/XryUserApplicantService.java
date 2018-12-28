@@ -45,13 +45,6 @@ public interface XryUserApplicantService extends IService<XryUserApplicantEntity
     List<String> listUserIdByCourseId(Long courseId);
 
     /**
-     * 查询出消息发送的用户id
-     * @param id
-     * @return
-     */
-    List<Map<String, Object>> listUserIdByMsgId(Long id);
-
-    /**
      * 查询课程的报名人数列表
      * @param courseDetailId
      * @return
@@ -65,4 +58,10 @@ public interface XryUserApplicantService extends IService<XryUserApplicantEntity
      * @return
      */
     XryUserApplicantEntity isApplicantByUserIdAndCourseId(Long courseId, String userId);
+
+    /**
+     * 清除最近学习课程
+     * @param userId
+     */
+    void removeUserCourseByUserId(String userId);
 }

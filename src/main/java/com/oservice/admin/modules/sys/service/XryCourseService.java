@@ -189,4 +189,11 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 * @return
 	 */
 	Integer getFeedback(Long courseId);
+
+	/**
+	 * 查询最近浏览课程列表
+	 * @param params
+	 * @return
+	 */
+	List<Map<String, Object>> listCourseByUserIdAndCourseId(Map<String, Object> params);
 }

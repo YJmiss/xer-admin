@@ -278,4 +278,11 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @return
      */
     Double getFeedback(Long courseId);
+
+    /**
+     * 查询最近浏览课程列表
+     * @param params
+     * @return
+     */
+    List<Map<String, Object>> listCourseByUserIdAndCourseId(Map<String, Object> params);
 }

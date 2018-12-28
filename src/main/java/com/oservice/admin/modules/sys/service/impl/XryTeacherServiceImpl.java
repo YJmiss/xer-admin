@@ -111,7 +111,7 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
     }
 
     @Override
-    public void deleteBatch(Long[] ids) {
+    public void deleteBatch(String[] ids) {
         this.deleteBatchIds(Arrays.asList(ids));
     }
 
