@@ -8,8 +8,12 @@ import com.oservice.admin.modules.app.dao.SolrJDao;
 import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
+import com.oservice.admin.modules.app.service.RecordtimeService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
-import com.oservice.admin.modules.sys.entity.*;
+import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.entity.XryUserApplicantEntity;
+import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.ShiroService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryUserApplicantService;
@@ -52,6 +56,9 @@ public class AppCourseController extends AbstractController {
     private ShiroService shiroService;
     @Resource
     private SolrJDao solrJDao;
+    @Resource
+    private RecordtimeService recordtimeService;
+
     /**
      * app端用户加入课程学习
      *
@@ -225,10 +232,30 @@ public class AppCourseController extends AbstractController {
     @SysLog("app端课程目录查询")
     @PostMapping("/appListCourseCatalogByCourseId")
     @ApiOperation(value="课程详情->课程所有目录列表",notes="courseId：是课程id，必填")
-    public Result appListCourseCatalogByCourseId(@RequestParam Long courseId) {
-        // 查询课程"目录"
-        Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseId(courseId);
-        return Result.ok(courseCatalogList);
+    public Result appListCourseCatalogByCourseId(@RequestParam Long courseId, HttpServletRequest request) {
+        Map<String, Object> detail = new HashMap<>();
+        String accessToken = request.getHeader("token");
+        String userId = "";
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            //token失效
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+                //throw new IncorrectCredentialsException("token失效，请重新登录");
+            }
+            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+            userId = users.getId();
+        }
+        if (userId == null || userId.equals("")) {
+            // 查询课程"目录"
+            Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseId(courseId);
+            return Result.ok(courseCatalogList);
+        } else {
+            // 查询课程"目录"
+            Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseIdAndUsherId(courseId, userId);
+            return Result.ok(courseCatalogList);
+        }
+
     }
 
     /**
@@ -275,4 +302,20 @@ public class AppCourseController extends AbstractController {
         return Result.ok().put("courseList",courseList);
     }
 
+    //long videoId,long studyTime,long sumTime
+    @SysLog("app用户查看课程视频学习时间")
+    @PostMapping("/queryPlayCourseTime")
+    @ApiOperation(value = "app用户查看课程视频学习时间", notes = "查看用户购买课程的ID")
+    public Result queryPlayCourseTime(@RequestParam long courseId) {
+        Map<String, Object> map = recordtimeService.queryPlayCourseTimeByUserIdAndCourseId(courseId, getAppUserId());
+        return Result.ok(map);
+    }
+
+    @SysLog("app保存用户学习时间")
+    @PostMapping("/addStudyTime")
+    @ApiOperation(value = "app用户保存视频学习时间", notes = "保存用户时间")
+    public Result addStudyTime(@RequestParam long courseId, long videoId, long studyTime, long sumTime) {
+        recordtimeService.addStudyTime(courseId, videoId, studyTime, sumTime, getAppUserId());
+        return Result.ok();
+    }
 }

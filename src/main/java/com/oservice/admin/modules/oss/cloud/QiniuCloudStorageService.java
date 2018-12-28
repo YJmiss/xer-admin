@@ -1,11 +1,11 @@
 package com.oservice.admin.modules.oss.cloud;
 
+import com.oservice.admin.common.exception.GlobalException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
-import com.oservice.admin.common.exception.GlobalException;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;

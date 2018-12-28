@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.UUIDUtils;
+import com.oservice.admin.modules.app.entity.XryRecordtimeEntity;
+import com.oservice.admin.modules.app.service.RecordtimeService;
 import com.oservice.admin.modules.sys.dao.XryCourseDao;
 import com.oservice.admin.modules.sys.entity.*;
 import com.oservice.admin.modules.sys.service.*;
@@ -31,6 +33,8 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     private XryCourseCatService xryCourseCatService;
     @Resource
     private XryCourseDescService xryCourseDescService;
+    @Resource
+    private RecordtimeService recordtimeService;
 
     @Override
 	public PageUtils queryPage(Map<String, Object> params) {
@@ -239,6 +243,31 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
             for (Map<String, Object> courseCatalog : courseCatalogList) {
                 Long catalogId = (Long) courseCatalog.get("id");
                 List<Map<String, Object>> videoList = baseMapper.listVideoByCourseCatalogId(catalogId);
+                courseCatalog.put("videoList", videoList);
+            }
+        }
+        params.put("courseCatalogList", courseCatalogList);
+        return params;
+    }
+
+    @Override
+    public Map<String, Object> listCourseCatalogByCourseIdAndUsherId(long courseId, String userId) {
+        Map<String, Object> params = new HashMap<>();
+        // 1、根据课程id查询出所有目录
+        List<Map<String, Object>> courseCatalogList = baseMapper.listCourseCatalogByCourseId(courseId);
+        // 2、根据目录id查询视频
+        if (courseCatalogList.size() > 0) {
+            for (Map<String, Object> courseCatalog : courseCatalogList) {
+                Long catalogId = (Long) courseCatalog.get("id");
+                List<Map<String, Object>> videoList = baseMapper.listVideoByCourseCatalogId(catalogId);
+                for (Map<String, Object> video : videoList) {
+                    Long videoId = (Long) video.get("id");
+                    XryRecordtimeEntity recordtimeEntity = new XryRecordtimeEntity();
+                    recordtimeEntity.setVideoId(videoId);
+                    recordtimeEntity.setUserId(userId);
+                    long studyTime = recordtimeService.queryStudyTimeByUidAndCid(recordtimeEntity);
+                    video.put("studyTime", studyTime);
+                }
                 courseCatalog.put("videoList", videoList);
             }
         }

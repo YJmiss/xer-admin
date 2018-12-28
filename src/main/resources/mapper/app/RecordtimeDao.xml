@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.app.dao.RecordtimeDao">
+    <select id="queryPlayCourseTimeByUserIdAndCourseId"
+            parameterType="com.oservice.admin.modules.app.entity.XryRecordtimeEntity"
+            resultType="com.oservice.admin.modules.app.entity.XryRecordtimeEntity">
+        select * from xry_recordtime where user_id=#{userId} and course_id=#{courseId};
+    </select>
+    <select id="queryStudyTimeByUidAndCid" parameterType="com.oservice.admin.modules.app.entity.XryRecordtimeEntity"
+            resultType="java.lang.Long">
+        select study_time from xry_recordtime  where user_id=#{userId} and video_id=#{videoId};
+    </select>
+    <insert id="insertRecordtime" parameterType="com.oservice.admin.modules.app.entity.XryRecordtimeEntity">
+        insert into xry_recordtime (id, video_id,  user_id,  course_id,  study_time,  sum_time,  state )
+        VALUES (#{id},#{videoId},#{userId},#{courseId},#{studyTime},#{sumTime},#{state})
+    </insert>
+    <update id="updateRecordtimeById" parameterType="com.oservice.admin.modules.app.entity.XryRecordtimeEntity">
+        update xry_recordtime SET study_time=#{studyTime},state=#{state} where id=#{id};
+    </update>
+    <select id="queryIdbyUidAndCid" parameterType="com.oservice.admin.modules.app.entity.XryRecordtimeEntity"
+            resultType="string">
+        select id from xry_recordtime where user_id=#{userId} and video_id=#{videoId};
+    </select>
+</mapper>

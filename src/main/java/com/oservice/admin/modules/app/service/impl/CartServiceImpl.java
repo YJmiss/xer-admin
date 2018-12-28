@@ -75,7 +75,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void removeCart(XryUserEntity user) {
-        redisUtils.delete("APPCART" + user.getId());
+        if (redisUtils.hasKey("APPCART" + user.getId())) {
+            redisUtils.delete("APPCART" + user.getId());
+        }
     }
-
 }

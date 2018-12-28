@@ -1,11 +1,11 @@
 package com.oservice.admin.modules.oss.cloud;
 
 import com.alibaba.fastjson.JSONObject;
+import com.oservice.admin.common.exception.GlobalException;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.request.UploadFileRequest;
 import com.qcloud.cos.sign.Credentials;
-import com.oservice.admin.common.exception.GlobalException;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
