@@ -284,5 +284,19 @@
         select a.score from
         (select obj_id, AVG(star_level)as 'score',type,status from xry_comment group by obj_id HAVING type=0 and status=1 and obj_id=#{courseId}) a;
     </select>
+    <!--查询最近浏览课程列表-->
+    <select id="listCourseByUserIdAndCourseId" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.*,b.title, ifnull(b.app_status,0) as 'app_status' ,b.image from xry_user_applicant a left join xry_course b on a.obj_id=b.id
+          where a.obj_type = 0 and a.obj_status = 0  and  b.id in
+        <foreach collection="params.ids" item="id" open="(" separator="," close=")">
+          #{id}    
+        </foreach>
+        <if test="params.userId != null and params.userId != ''">
+            and a.user_id = #{params.userId}
+        </if>
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit ${params.pageNo},${params.pageSize}
+        </if>
+    </select>
 
 </mapper>

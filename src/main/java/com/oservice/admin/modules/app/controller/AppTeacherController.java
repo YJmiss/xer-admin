@@ -111,10 +111,8 @@ public class AppTeacherController extends AbstractController {
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
-            //token失效
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
                 return Result.error(204, "token失效，请重新登录");
-                //throw new IncorrectCredentialsException("token失效，请重新登录");
             }
             XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
             userId = users.getId();
@@ -158,31 +156,26 @@ public class AppTeacherController extends AbstractController {
         // 1、讲师详情
         Map<String, Object> teacherDetail = xryTeacherService.appQueryTeacherDetailByTeacherId(teacherId);
         // 2、判断该用户是否关注了该讲师
-        String userId = "";
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
-            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-                return Result.error(204, "token失效，请重新登录");
-            }
             XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
-            userId = users.getId();
+            Integer isAttention = 0;
+            // 根据用户id和讲师id查询该用户是否关注了该讲师
+            XryUserAttentionEntity userAttention = xryUserAttentionService.isAttentionByUserIdAndTeacherId(teacherId, users.getId());
+            if (null != userAttention) {
+                teacherDetail.put("attentionId", userAttention.getId());
+                isAttention = 1;
+            }
+            teacherDetail.put("isAttention", isAttention);
         }
         // 查询讲师的关注人数列表
         List<XryUserAttentionEntity> teacherAttentionList = xryUserAttentionService.countAttentionByTeacherId(teacherId);
         Integer teacherAttentionCount = teacherAttentionList.size();
         teacherDetail.put("teacherAttentionCount", teacherAttentionCount);
-        Integer isAttention = 0;
-        if (teacherAttentionCount > 0) {
-            // 根据用户id和讲师id查询该用户是否关注了该讲师
-            XryUserAttentionEntity userAttention = xryUserAttentionService.isAttentionByUserIdAndTeacherId(teacherId, userId);
-            if (null != userAttention) {
-                isAttention = 1;
-            }
-        }
-        teacherDetail.put("isAttention", isAttention);
+        teacherDetail.put("teacherId", teacherId);
 
-        // 3、她/他主讲的课程
+        // 3、她/他主讲的课程列表
         List<Map<String, Object>> teacherRelatedList = xryTeacherService.listTeacherCourseByTeacherId(teacherId);
         Map<String, Object> params = new HashMap<>();
         params.put("teacherDetail", teacherDetail);

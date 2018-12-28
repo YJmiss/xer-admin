@@ -28,7 +28,7 @@ public interface XryUserAttentionDao extends BaseMapper<XryUserAttentionEntity> 
      * app端用户删除已经关注的讲师
      * @param params
      */
-    void appDelTeacherById(Map<String, Object> params);
+    void appDelTeacherById(@Param("params") Map<String, Object> params);
 
     /**
      * 根据讲师id查询关注改讲师的所有用户

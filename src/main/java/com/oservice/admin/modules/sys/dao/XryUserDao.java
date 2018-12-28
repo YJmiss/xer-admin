@@ -45,4 +45,9 @@ public interface XryUserDao extends BaseMapper<XryUserEntity> {
      */
     List<XryUserEntity> treeUser();
 
+    /**
+     * 讲师切换<->普通用户
+     * @param params
+     */
+    void updateUserRole(@Param("params") Map<String, Object> params);
 }

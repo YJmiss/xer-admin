@@ -23,13 +23,13 @@ public interface XryUserApplicantDao extends BaseMapper<XryUserApplicantEntity> 
      * @param params
      * @return
      */
-    List<Map<String, Object>> appPageListCourseByUserId(Map<String, Object> params);
+    List<Map<String, Object>> appPageListCourseByUserId(@Param("params") Map<String, Object> params);
 
     /**
      * app端用户删除已经加入学习的课程
      * @param params
      */
-    void appDelCourseById(Map<String, Object> params);
+    void appDelCourseById(@Param("params") Map<String, Object> params);
 
     /**
      * 
@@ -37,14 +37,7 @@ public interface XryUserApplicantDao extends BaseMapper<XryUserApplicantEntity> 
      * @return
      */
     List<XryUserApplicantEntity> listUserIdByCourseId(Long courseId);
-
-    /**
-     * 查询出消息发送的用户id
-     * @param id
-     * @return
-     */
-    List<Map<String, Object>> listUserIdByMsgId(@Param("msgId") Long id);
-
+    
     /**
      * 查询课程的报名人数列表
      * @param courseDetailId
@@ -58,4 +51,10 @@ public interface XryUserApplicantDao extends BaseMapper<XryUserApplicantEntity> 
      * @return
      */
     XryUserApplicantEntity isApplicantByUserIdAndCourseId(@Param("params") Map<String, Object> params);
+
+    /**
+     * 清除最近学习课程
+     * @param userId
+     */
+    void removeUserCourseByUserId(@Param("userId") String userId);
 }

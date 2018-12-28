@@ -77,7 +77,7 @@ public class XryTeacherController extends AbstractController {
     @SysLog("删除讲师")
     @PostMapping("/delete")
     @RequiresPermissions("xry:teacher:delete")
-    public Result delete(@RequestBody Long[] ids){
+    public Result delete(@RequestBody String[] ids){
         xryTeacherService.deleteBatch(ids);
         return Result.ok();
     }

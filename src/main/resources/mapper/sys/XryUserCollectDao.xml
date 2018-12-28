@@ -5,16 +5,12 @@
 
     <!--app端查询用户收藏列表-->
     <select id="appListUserCollectByUserId" parameterType="java.lang.String" resultType="java.util.Map">
-      select xuc.obj_id, xc.* from xry_user_collect xuc left join xry_course xc on xuc.obj_id = xc.id
+      select xuc.obj_id, xuc.id as collectId,xc.* from xry_user_collect xuc left join xry_course xc on xuc.obj_id = xc.id
         where xuc.obj_type = 1 and xuc.obj_status = 1 and xuc.user_id = #{userId}
     </select>
     <!--根据课程id查询课程报名人数-->
     <select id="countCourseApplicantByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
         select count(*) from xry_user_applicant where obj_id = #{courseId} and obj_type = 0 and obj_status = 0
     </select>
-    <!--app端删除收藏列表的一个-->
-    <delete id="appDelUserCollectByCollectId" parameterType="java.lang.Long">
-      delete from xry_user_collect where id = #{collectId}
-    </delete>
 
 </mapper>

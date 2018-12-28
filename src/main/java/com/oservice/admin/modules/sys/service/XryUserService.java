@@ -49,4 +49,10 @@ public interface XryUserService extends IService<XryUserEntity> {
      * @param userId
      */
     void updateUserHeadImgByUserId(String newHeadImg, String userId);
+
+    /**
+     * 讲师切换<->普通用户
+     * @param params
+     */
+    void updateUserRole(Map<String, Object> params);
 }

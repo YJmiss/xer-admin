@@ -5,18 +5,16 @@
 
     <!--app端根据用户查询用户加入学习的课程列表-->
     <select id="appPageListCourseByUserId" parameterType="java.util.Map" resultType="java.util.Map">
-        select a.*,b.title, b.image from xry_user_applicant a left join xry_course b on a.obj_id=b.id
-          where a.user_id = #{params.userId} and a.obj_type = 0 and a.obj_status = 0
-        <if test="params.flag != null and params.flag != ''">
-            <if test="params.flag == 1">
-                and a.create_time between current_date()-7 and sysdate();
-            </if>
-            <if test="params.flag == 2">
-                and date_format(a.create_time, '%Y%m' ) = date_format(curdate() , '%Y%m' )
-            </if>
-            <if test="params.flag == 3">
-                
-            </if>
+        select a.*,b.title, ifnull(b.app_status,0) as 'app_status' ,b.image from xry_user_applicant a left join xry_course b on a.obj_id=b.id
+          where a.obj_type = 0 and a.obj_status = 0
+        <if test="params.userId != null and params.userId != ''">
+            and a.user_id = #{params.userId}
+        </if>
+        <if test="params.flag == 2">
+            and date_sub(curdate(),interval 7 day) <![CDATA[<=]]> date(a.create_time)
+        </if>
+        <if test="params.flag == 3">
+            and date_format(a.create_time, '%Y%m' ) = date_format(curdate() , '%Y%m' )
         </if>
         <if test="params.pageSize != null and params.pageSize != ''">
             limit ${params.pageNo},${params.pageSize}
@@ -24,11 +22,7 @@
     </select>
     <!--app端用户删除已经加入学习的课程-->
     <delete id="appDelCourseById" parameterType="java.util.Map">
-        delete from xry_user_applicant where id in
-        <foreach collection="params.ids" item="id" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-        and user_id = #{params.userId}
+        delete from xry_user_applicant where id = #{params.id}
     </delete>
     <!--根据课程id查询出报名学习该课程的所有用户-->
     <select id="listUserIdByCourseId" parameterType="java.lang.Long" resultType="com.oservice.admin.modules.sys.entity.XryUserApplicantEntity">
@@ -47,5 +41,9 @@
     <select id="isApplicantByUserIdAndCourseId" parameterType="java.util.Map" resultType="com.oservice.admin.modules.sys.entity.XryUserApplicantEntity">
       select * from  xry_user_applicant where obj_id = #{params.courseId} and user_id = #{params.userId} and obj_type = 0 and obj_status = 0
     </select>
+    <!--清除最近学习课程-->
+    <update id="removeUserCourseByUserId" parameterType="java.lang.String">
+      update xry_user_applicant set obj_status = 1 where user_id = #{userId} and date_sub(curdate(),interval 7 day) <![CDATA[<=]]> date(create_time)
+    </update>
 
 </mapper>

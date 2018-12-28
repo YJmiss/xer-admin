@@ -10,7 +10,7 @@
             and title like #{params.title}
         </if>
         <if test="params.createTime != null and params.createTime != ''">
-            and create_time like #{params.title}
+            and create_time like #{params.createTime}
         </if>
         <if test="params.questionStatus != null and params.questionStatus != ''">
             and question_status = #{params.questionStatus}
@@ -23,13 +23,32 @@
             and title like #{params.title}
         </if>
         <if test="params.createTime != null and params.createTime != ''">
-            and create_time like #{params.title}
+            and create_time like #{params.createTime}
         </if>
         <if test="params.questionStatus != null and params.questionStatus != ''">
             and question_status = #{params.questionStatus}
         </if>
         <if test="params.pageSize != null and params.pageSize != ''">
             limit ${params.pageNo},${params.pageSize}
+        </if>
+    </select>
+    <!--修改常见问题的状态-->
+    <update id="updateQuestionStatus" parameterType="java.util.Map">
+      update xry_comment_question set question_status = #{params.questionStatus} where id in
+      <foreach collection="params.ids" item="id" open="(" separator="," close=")">
+          #{id}
+      </foreach>
+    </update>
+    <!--app查询常见问题列表-->
+    <select id="appListCommentQuestionByUserId" parameterType="java.lang.Integer" resultType="java.util.Map">
+        select * from xry_comment_question where 1=1
+        <!-- 0表示查询6条 -->
+        <if test="flag == 0">
+          order by create_time desc limit 0,6
+        </if>
+        <!-- 1查询所有列表 -->
+        <if test="flag == 1">
+          order by create_time
         </if>
     </select>
 

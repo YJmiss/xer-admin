@@ -5,40 +5,37 @@
 
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
-        select count(*) from xry_course a left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id
-        where 1=1
-        <if test="params.title != null and params.title != ''">
-            and a.title like #{params.title}
+        select count(*) from xry_user_feedback xuf left join xry_user xu on xuf.user_id = xu.id where 1=1
+        <if test="params.userInfo != null and params.userInfo != ''">
+            and xu.nickname like #{params.userInfo} or xu.phone like #{params.userInfo}
         </if>
-        <if test="params.cid != null and params.cid != ''">
-            and a.cid = #{params.cid}
+        <if test="params.createTime != null and params.createTime != ''">
+            and xuf.create_time like #{params.createTime}
         </if>
-        <if test="params.tid != null and params.tid != ''">
-            and a.tid = #{params.tid}
-        </if>
-        <if test="params.status != null and params.status != '' and params.status == 4">
-            and a.status = #{params.status}
+        <if test="params.checkStatus != null and params.checkStatus != ''">
+            and xuf.check_status = #{params.checkStatus}
         </if>
     </select>
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
-        select a.*,b.name as catName,c.real_name as realName
-        from xry_course a left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id where 1=1
-        <if test="params.title != null and params.title != ''">
-            and a.title like #{params.title}
+        select xuf.*,xu.id as userId,xu.nickname, xu.phone
+        from xry_user_feedback xuf left join xry_user xu on xuf.user_id = xu.id where 1=1
+        <if test="params.userInfo != null and params.userInfo != ''">
+            and xu.nickname like #{params.userInfo} or xu.phone like #{params.userInfo}
         </if>
-        <if test="params.cid != null and params.cid != ''">
-            and a.cid = #{params.cid}
+        <if test="params.createTime != null and params.createTime != ''">
+            and xuf.create_time like #{params.createTime}
         </if>
-        <if test="params.tid != null and params.tid != ''">
-            and a.tid = #{params.tid}
-        </if>
-        <if test="params.status != null and params.status != '' and params.status == 4">
-            and a.status = #{params.status}
+        <if test="params.checkStatus != null and params.checkStatus != ''">
+            and xuf.check_status = #{params.checkStatus}
         </if>
         <if test="params.pageSize != null and params.pageSize != ''">
             limit ${params.pageNo},${params.pageSize}
         </if>
+    </select>
+    <!--app查询我的反馈列表-->
+    <select id="appListUserFeedbackByUserId" parameterType="java.lang.String" resultType="java.util.Map">
+        select * from xry_user_feedback where user_id = #{userId}
     </select>
 
 </mapper>

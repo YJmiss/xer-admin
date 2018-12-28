@@ -37,9 +37,13 @@ public class XryCommentQuestionServiceImpl extends ServiceImpl<XryCommentQuestio
         String questionStatus = (String) params.get("questionStatus");
         map.put("pageNo", (new Integer(pageNo) - 1) * new Integer(pageSize));
         map.put("pageSize", pageSize);
-        map.put("title", "%" + title + "%");
+        if (null != title && !"".equals(title)) {
+            map.put("title", "%" + title + "%");
+        }
         map.put("questionStatus", questionStatus);
-        map.put("createTime", "%" + createTime + "%");
+        if (null != createTime && !"".equals(createTime)) {
+            map.put("createTime", "%" + createTime + "%");
+        }
         // 查询返回的数据总数page.totalCount
         Long total = baseMapper.countTotal(map);
         pageList.setTotal(total);
@@ -69,6 +73,16 @@ public class XryCommentQuestionServiceImpl extends ServiceImpl<XryCommentQuestio
     @Override
     public void deleteBatch(Long[] ids) {
         this.deleteBatchIds(Arrays.asList(ids));
+    }
+
+    @Override
+    public void updateQuestionStatus(Map<String, Object> params) {
+        baseMapper.updateQuestionStatus(params);
+    }
+
+    @Override
+    public List<Map<String, Object>> appListCommentQuestionByUserId(Integer flag) {
+        return baseMapper.appListCommentQuestionByUserId(flag);
     }
 
 }

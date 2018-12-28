@@ -40,7 +40,7 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 	 * 讲师删除
 	 * @param ids
 	 */
-	void deleteBatch(Long[] ids);
+	void deleteBatch(String[] ids);
 
 	/**
 	 * 讲师认证

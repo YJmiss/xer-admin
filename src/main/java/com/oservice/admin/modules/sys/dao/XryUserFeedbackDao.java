@@ -30,4 +30,11 @@ public interface XryUserFeedbackDao extends BaseMapper<XryUserFeedbackEntity> {
      * @return
      */
     List<Map<String, Object>> pageList(@Param("params") Map<String, Object> map);
+
+    /**
+     * app查询我的反馈列表
+     * @param userId
+     * @return
+     */
+    List<Map<String, Object>> appListUserFeedbackByUserId(@Param("userId") String userId);
 }

@@ -61,11 +61,6 @@ public class XryUserApplicantServiceImpl extends ServiceImpl<XryUserApplicantDao
     }
 
     @Override
-    public List<Map<String, Object>> listUserIdByMsgId(Long id) {
-        return baseMapper.listUserIdByMsgId(id);
-    }
-
-    @Override
     public List<XryUserApplicantEntity> countApplicantByCourseId(Long courseDetailId) {
         return baseMapper.countApplicantByCourseId(courseDetailId);
     }
@@ -76,6 +71,11 @@ public class XryUserApplicantServiceImpl extends ServiceImpl<XryUserApplicantDao
         params.put("userId" ,userId);
         params.put("courseId" ,courseId);
         return baseMapper.isApplicantByUserIdAndCourseId(params);
+    }
+
+    @Override
+    public void removeUserCourseByUserId(String userId) {
+        baseMapper.removeUserCourseByUserId(userId);
     }
 
 }

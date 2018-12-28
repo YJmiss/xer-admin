@@ -284,6 +284,7 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         map.put("pageSize", pageSize);
         map.put("courseId", courseId);
         List<Map<String, Object>> courseCommentList = baseMapper.listCourseCommentByCourseId(map);
+        params.put("courseCommentCount", courseCommentList.size());
         params.put("courseCommentList", courseCommentList);
         return params;
     }
@@ -423,6 +424,11 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         feed *= 10;
         feedback = Integer.parseInt(new java.text.DecimalFormat("0").format(feed));
         return feedback;
+    }
+
+    @Override
+    public List<Map<String, Object>> listCourseByUserIdAndCourseId(Map<String, Object> params) {
+        return baseMapper.listCourseByUserIdAndCourseId(params);
     }
 
 }

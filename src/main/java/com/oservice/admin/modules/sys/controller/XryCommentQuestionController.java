@@ -15,6 +15,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -94,6 +95,38 @@ public class XryCommentQuestionController extends AbstractController {
     @RequiresPermissions("xry:question:delete")
     public Result delete(@RequestBody Long[] ids){
         xryCommentQuestionService.deleteBatch(ids);
+        return Result.ok();
+    }
+
+    /**
+     * 发布问题
+     * @param ids
+     * @return
+     */
+    @SysLog("发布问题")
+    @PostMapping("/publishQuestion")
+    @RequiresPermissions("xry:question:publishQuestion")
+    public Result publishQuestion(@RequestBody Long[] ids){
+        Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+        params.put("questionStatus", 1);
+        xryCommentQuestionService.updateQuestionStatus(params);
+        return Result.ok();
+    }
+
+    /**
+     * 取消发布
+     * @param ids
+     * @return
+     */
+    @SysLog("取消发布")
+    @PostMapping("/cancelPublish")
+    @RequiresPermissions("xry:question:cancelPublish")
+    public Result cancelPublish(@RequestBody Long[] ids){
+        Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+        params.put("questionStatus", 0);
+        xryCommentQuestionService.updateQuestionStatus(params);
         return Result.ok();
     }
 
