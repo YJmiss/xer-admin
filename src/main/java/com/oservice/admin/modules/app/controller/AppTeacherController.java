@@ -117,6 +117,10 @@ public class AppTeacherController extends AbstractController {
             XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
             userId = users.getId();
         }
+        XryUserAttentionEntity isAttention = xryUserAttentionService.isAttentionByUserIdAndTeacherId(teacherId, userId);
+        if (null != isAttention) {
+            return Result.error(3, "该用户已经关注了讲师，不能再次关注");
+        }
         params.put("userId", userId);
         params.put("objId", teacherId);
         params.put("type", TEACHER_FOCUS_FLAG);

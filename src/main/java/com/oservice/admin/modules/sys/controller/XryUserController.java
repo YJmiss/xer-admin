@@ -93,19 +93,19 @@ public class XryUserController extends AbstractController {
 
     /**
      * 讲师切换<->普通用户
-     * @param id
+     * @param ids
      * @return
      */
     @SysLog("讲师切换<->普通用户")
     @PostMapping("/updateTeacherRoleToUser")
     @RequiresPermissions("xry:user:updateTeacherRoleToUser")
-    public Result updateTeacherRoleToUser(@RequestBody String id) {
+    public Result updateTeacherRoleToUser(@RequestBody String[] ids) {
         Map<String,Object> params = new HashMap<>();
-        params.put("id",id);
+        params.put("id",ids);
         params.put("role",TEACHER_TO_NORMAL);
         xryUserService.updateUserRole(params);
         // 把讲师置为普通用户后，向xry_teacher中删除该讲师
-        xryTeacherService.deleteById(id);
+        xryTeacherService.deleteBatch(ids);
         return Result.ok();
     }
 

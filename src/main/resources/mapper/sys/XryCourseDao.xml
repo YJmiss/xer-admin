@@ -16,7 +16,7 @@
         <if test="params.tid != null and params.tid != ''">
             and a.tid = #{params.tid}
         </if>
-        <if test="params.status != null and params.status != '' and params.status == 4">
+        <if test="params.status != null and params.status != ''">
             and a.status = #{params.status}
         </if>
     </select>
@@ -33,7 +33,7 @@
         <if test="params.tid != null and params.tid != ''">
             and a.tid = #{params.tid}
         </if>
-        <if test="params.status != null and params.status != '' and params.status == 4">
+        <if test="params.status != null and params.status != ''">
             and a.status = #{params.status}
         </if>
         <if test="params.pageSize != null and params.pageSize != ''">
