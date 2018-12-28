@@ -284,5 +284,5 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @param params
      * @return
      */
-    List<Map<String, Object>> listCourseByUserIdAndCourseId(Map<String, Object> params);
+    List<Map<String, Object>> listCourseByUserIdAndCourseId(@Param("params") Map<String, Object> params);
 }

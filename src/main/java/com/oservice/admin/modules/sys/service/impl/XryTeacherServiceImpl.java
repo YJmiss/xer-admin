@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.DateUtils;
 import com.oservice.admin.common.utils.PageUtils;
+import com.oservice.admin.common.utils.UUIDUtils;
 import com.oservice.admin.modules.sys.dao.XryCourseCatDao;
 import com.oservice.admin.modules.sys.dao.XryCourseDao;
 import com.oservice.admin.modules.sys.dao.XryTeacherDao;
@@ -31,6 +32,8 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
     private XryCourseDao xryCourseDao;
     @Resource
     private XryCourseCatDao xryCourseCatDao;
+    @Resource
+    private XryTeacherDao xryTeacherDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -211,6 +214,16 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
     @Override
     public Integer countUserApplicantByUserId(String userId) {
         return baseMapper.countUserApplicantByUserId(userId);
+    }
+
+    @Override
+    public void insertToTeacher(String[] userId) {
+        XryTeacherEntity xryTeacher = new XryTeacherEntity();
+        xryTeacher.setId(UUIDUtils.getUUID());
+        xryTeacher.setCreated(new Date());
+        xryTeacher.setStatus(1);
+        xryTeacher.setUserId(userId[0]);
+        baseMapper.insertToTeacher(xryTeacher);
     }
 
 

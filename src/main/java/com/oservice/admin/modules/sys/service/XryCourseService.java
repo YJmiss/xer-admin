@@ -45,9 +45,9 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 
 	/**
 	 * 课程修改
-	 * @param xryCourseEntity
+	 * @param params
 	 */
-	void update(XryCourseEntity xryCourseEntity);
+	void update(Map<String, Object> params);
 
 	/**
 	 * 课程删除

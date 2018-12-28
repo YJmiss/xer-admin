@@ -106,10 +106,13 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
 	}
 
 	@Override
-    public void update(XryCourseEntity xryCourseEntity) {
-        xryCourseEntity.setCreated(new Date());
-        xryCourseEntity.setUpdated(new Date());
-        baseMapper.updateById(xryCourseEntity);
+    public void update(Map<String, Object> params) {
+        ObjectMapper obj = new ObjectMapper();
+        XryCourseEntity course = obj.convertValue(params.get("course"), XryCourseEntity.class);
+        XryCourseDescEntity courseDesc = obj.convertValue(params.get("courseDesc"), XryCourseDescEntity.class);
+        course.setUpdated(new Date());
+        baseMapper.updateById(course);
+        xryCourseDescService.update(courseDesc);
 	}
 
 	@Override

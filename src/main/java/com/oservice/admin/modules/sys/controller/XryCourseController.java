@@ -98,17 +98,17 @@ public class XryCourseController extends AbstractController {
 
     /**
      * 修改课程
-     * @param course
+     * @param params
      * @return
      */
     @SysLog("修改课程")
     @PostMapping("/update")
     @RequiresPermissions("xry:course:update")
-    public Result update(@RequestBody XryCourseEntity course){
-        ValidatorUtils.validateEntity(course, UpdateGroup.class);
+    public Result update(@RequestBody Map<String, Object> params){
+        ValidatorUtils.validateEntity(params, UpdateGroup.class);
         // 所有修改后的课程都需要重新审核
-        course.setStatus(1);
-        xryCourseService.update(course);
+//        course.setStatus(1);
+        xryCourseService.update(params);
         return Result.ok();
     }
 

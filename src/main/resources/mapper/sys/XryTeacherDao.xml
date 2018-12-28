@@ -108,5 +108,9 @@
       select xc.* from xry_course xc left join xry_teacher xt on xc.tid = xt.id
       left join xry_course_cat xcc on xc.cid = xcc.id where xc.tid = #{teacherId} and xcc.parent_id not in (0)
     </select>
+    <!--把用户置为讲师后，向xry_teacher中加入该对象-->
+    <insert id="insertToTeacher" parameterType="com.oservice.admin.modules.sys.entity.XryTeacherEntity">
+      insert into xry_teacher(id, user_id, status, created) values (#{id}, #{userId}, #{status}, #{created})
+    </insert>
 
 </mapper>

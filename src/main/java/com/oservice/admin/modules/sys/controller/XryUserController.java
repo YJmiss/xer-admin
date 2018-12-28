@@ -3,6 +3,7 @@ package com.oservice.admin.modules.sys.controller;
 import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.common.utils.UUIDUtils;
 import com.oservice.admin.modules.sys.entity.XryTeacherEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.XryTeacherService;
@@ -74,43 +75,37 @@ public class XryUserController extends AbstractController {
 
     /**
      * 普通用户<->讲师切换
-     * @param ids
+     * @param userId
      * @return
      */
     @SysLog("普通用户<->讲师切换")
     @PostMapping("/updateUserRoleToTeacher")
     @RequiresPermissions("xry:user:updateUserRoleToTeacher")
-    public Result updateUserRoleToTeacher(@RequestBody String[] ids) {
+    public Result updateUserRoleToTeacher(@RequestBody String[] userId) {
         Map<String,Object> params = new HashMap<>();
-        params.put("ids",ids);
+        params.put("id",userId);
         params.put("role",NORMAL_TO_TEACHER);
         xryUserService.updateUserRole(params);
         // 把用户置为讲师后，向xry_teacher中加入该对象
-        for (String id : ids) {
-            XryTeacherEntity teacherEntity = new XryTeacherEntity();
-            teacherEntity.setStatus(1);
-            teacherEntity.setCreated(new Date());
-            teacherEntity.setUserId(id);
-            xryTeacherService.insert(teacherEntity);
-        }
+        xryTeacherService.insertToTeacher(userId);
         return Result.ok();
     }
 
     /**
      * 讲师切换<->普通用户
-     * @param ids
+     * @param id
      * @return
      */
     @SysLog("讲师切换<->普通用户")
     @PostMapping("/updateTeacherRoleToUser")
     @RequiresPermissions("xry:user:updateTeacherRoleToUser")
-    public Result updateTeacherRoleToUser(@RequestBody String[] ids) {
+    public Result updateTeacherRoleToUser(@RequestBody String id) {
         Map<String,Object> params = new HashMap<>();
-        params.put("ids",ids);
+        params.put("id",id);
         params.put("role",TEACHER_TO_NORMAL);
         xryUserService.updateUserRole(params);
         // 把讲师置为普通用户后，向xry_teacher中删除该讲师
-        xryTeacherService.deleteBatch(ids);
+        xryTeacherService.deleteById(id);
         return Result.ok();
     }
 

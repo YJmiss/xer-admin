@@ -169,13 +169,13 @@ public class AppUserCenterController extends AbstractController {
     /**
      * 清除最近学习课程
      * 不删除数据库数据
-     * @param ids
+     * @param 
      * @param request
      * @return
      */
     @GetMapping("/userCenter/removeUserCourseByUserId")
-    @ApiOperation(value = "清除最近学习课程，不删除数据库数据", notes = "ids：最近学习的课程id，数组；需要在请求头里加token参数")
-    public Result removeUserCourseByUserId(@RequestParam String ids, HttpServletRequest request) {
+    @ApiOperation(value = "清除最近学习课程，不删除数据库数据", notes = "需要在请求头里加token参数")
+    public Result removeUserCourseByUserId(HttpServletRequest request) {
         String userId = "";
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
@@ -200,7 +200,7 @@ public class AppUserCenterController extends AbstractController {
      */
     @GetMapping("/userCenter/listCourseByUserIdAndCourseId")
     @ApiOperation(value = "查询最近浏览课程列表", notes = "ids：储存在localStorage里的课程id，数组；需要在请求头里加token参数")
-    public Result listCourseByUserIdAndCourseId(@RequestParam String ids, @RequestParam Integer pageNo, @RequestParam Integer pageSize, HttpServletRequest request) {
+    public Result listCourseByUserIdAndCourseId(@RequestParam Long[] ids, @RequestParam Integer pageNo, @RequestParam Integer pageSize, HttpServletRequest request) {
         String userId = "";
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {

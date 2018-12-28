@@ -74,6 +74,11 @@ public class AppCourseController extends AbstractController {
             XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
             userId = users.getId();
         }
+        // 校验该用户是否已经报名学习
+        XryUserApplicantEntity isApplicant = xryUserApplicantService.isApplicantByUserIdAndCourseId(courseId, userId);
+        if (null != isApplicant) {
+            return Result.error(3, "该用户已经报名学习，不能再次报名");
+        }
         params.put("userId", userId);
         params.put("objId", courseId);
         params.put("objType", COURSE_JOIN_STUDY);

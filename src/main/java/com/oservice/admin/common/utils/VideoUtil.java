@@ -26,7 +26,7 @@ public class VideoUtil {
             e.printStackTrace();
         }
         return length;
-    }*/
+    }
 
     /**
      * 获取视频大小

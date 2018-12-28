@@ -122,4 +122,10 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
      * @return
      */
     List<Map<String, Object>> listCourseByTeacherId(@Param("teacherId") String teacherId);
+
+    /**
+     * 把用户置为讲师后，向xry_teacher中加入该对象
+     * @param xryTeacher
+     */
+    void insertToTeacher(XryTeacherEntity xryTeacher);
 }

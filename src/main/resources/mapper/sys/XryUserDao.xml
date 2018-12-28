@@ -58,7 +58,7 @@
     <!--讲师切换<->普通用户-->
     <update id="updateUserRole" parameterType="java.util.Map">
       update xry_user set role = #{params.role} where id in
-      <foreach collection="params.ids" item="id" open="(" separator="," close=")">
+      <foreach collection="params.id" item="id" open="(" separator="," close=")">
           #{id}
       </foreach>
     </update>

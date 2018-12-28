@@ -64,4 +64,5 @@ public interface XryUserApplicantService extends IService<XryUserApplicantEntity
      * @param userId
      */
     void removeUserCourseByUserId(String userId);
+
 }

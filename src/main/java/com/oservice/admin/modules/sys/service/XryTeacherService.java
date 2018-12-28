@@ -101,4 +101,10 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 	 * @return
 	 */
 	Integer countUserApplicantByUserId(String userId);
+
+	/**
+	 * 把用户置为讲师后，向xry_teacher中加入该对象
+	 * @param id
+	 */
+	void insertToTeacher(String[] id);
 }
