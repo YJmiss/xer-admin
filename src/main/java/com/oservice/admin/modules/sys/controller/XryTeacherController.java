@@ -3,6 +3,9 @@ package com.oservice.admin.modules.sys.controller;
 import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.common.validator.ValidatorUtils;
+import com.oservice.admin.common.validator.group.AddGroup;
+import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryTeacherEntity;
 import com.oservice.admin.modules.sys.service.SysUserTokenService;
 import com.oservice.admin.modules.sys.service.XryTeacherService;
@@ -43,6 +46,20 @@ public class XryTeacherController extends AbstractController {
     public Result list(@RequestParam Map<String, Object> params){
         PageUtils page = xryTeacherService.queryPage(params);
         return Result.ok().put("page", page);
+    }
+
+    /**
+     * 保存讲师资料
+     * @param xryTeacherEntity
+     * @return
+     */
+    @SysLog("保存讲师资料")
+    @PostMapping("/updateTeacher")
+    @RequiresPermissions("xry:teacher:updateTeacher")
+    public Result updateTeacher(@RequestBody XryTeacherEntity xryTeacherEntity){
+        ValidatorUtils.validateEntity(xryTeacherEntity, AddGroup.class);
+        xryTeacherService.updateById(xryTeacherEntity);
+        return Result.ok();
     }
 
     /**

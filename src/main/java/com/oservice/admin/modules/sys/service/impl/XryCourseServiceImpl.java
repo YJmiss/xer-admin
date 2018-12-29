@@ -207,7 +207,7 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         params.put("courseGoodPraiseCount", courseGoodPraiseCount);
         // 5、查询课程讲师信息String.valueOf(map.get("id")
         String teacherId = String.valueOf(courseDetailContent.get("tid"));
-        XryTeacherEntity teacher = xryTeacherService.selectById(teacherId);
+        Map<String, Object> teacher = xryTeacherService.appQueryTeacherDetailByTeacherId(teacherId);
         params.put("teacher", teacher);
         // 5.1、查询该讲师的好评度
         double teacherGoodPraiseCount = baseMapper.countGoodPraiseByTeacherId(teacherId);
@@ -220,7 +220,8 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         params.put("teacherStudentCount", teacherStudentCount);
         // 6、查询讲师所属机构
         if (null != teacher) {
-            Long orgId = teacher.getOrgId();
+//            Long orgId = teacher.getOrgId();
+            Long orgId = Long.valueOf(String.valueOf(teacher.get("org_id")));
             XryOrganizationEntity organization = xryOrganizationService.selectById(orgId);
             params.put("organization", organization);
             if (null != organization) {

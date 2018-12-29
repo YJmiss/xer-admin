@@ -84,6 +84,7 @@ public class XryCourseController extends AbstractController {
         xryCourseService.save(params);
         return Result.ok();
     }
+    
     /**
      * 课程信息
      * @param id
