@@ -193,61 +193,37 @@ public class AppCourseController extends AbstractController {
         // 查询"课程详情"
         Map<String, Object> courseDetailContent = xryCourseService.queryCourseDetailByCourseId(courseId);
         detail.put("courseDetailContent", courseDetailContent);
+        Integer isApplicant = 0;
         try {
             String accessToken = request.getHeader("token");
             String userId = "";
+            // 查询课程的报名人数列表
+            List<XryUserApplicantEntity> courseApplicantList = xryUserApplicantService.countApplicantByCourseId(courseId);
+            Integer courseApplicantCount = courseApplicantList.size();
+            detail.put("courseApplicantCount", courseApplicantCount);
             if (StringUtils.isNotBlank(accessToken)) {
                 SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
-                //token失效
                 if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-                    return Result.error(204, "token失效，请重新登录");
-                    //throw new IncorrectCredentialsException("token失效，请重新登录");
-                }
-                XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
-                userId = users.getId();
-            }
-            if (userId == null || userId.equals("")) {
-                detail.put("identifying", false);
-            } else {
-                List<String> orderId = orderService.getOrderIdByUserId(userId);
-                if (orderId.size() > 0) {
-                    List<Long> courseIds = new ArrayList<>();
-                    for (String order : orderId) {
-                        List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(order);
-                        for (XryOrderCourseEntity courses : orderCourses) {
-                            long courseId1 = courses.getCourseId();
-                            courseIds.add(courseId1);
+                    isApplicant = 0;
+                } else {
+                    XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+                    userId = users.getId();
+                    if (courseApplicantCount > 0) {
+                        // 根据用户id和课程id查询该用户是否报名了该课程
+                        XryUserApplicantEntity userApplicant = xryUserApplicantService.isApplicantByUserIdAndCourseId(courseId, userId);
+                        if (null != userApplicant) {
+                            isApplicant = 1;
                         }
                     }
-                    if (courseIds.contains(courseId)) {
-                        detail.put("identifying", true);
-                    } else {
-                        detail.put("identifying", false);
-                    }
-                } else {
-                    detail.put("identifying", false);
                 }
-                // 查询课程的报名人数列表
-                List<XryUserApplicantEntity> courseApplicantList = xryUserApplicantService.countApplicantByCourseId(courseId);
-                Integer courseApplicantCount = courseApplicantList.size();
-                detail.put("courseApplicantCount", courseApplicantCount);
-                Integer isApplicant = 0;
-                if (courseApplicantCount > 0) {
-                    // 根据用户id和课程id查询该用户是否报名了该课程
-                    XryUserApplicantEntity userApplicant = xryUserApplicantService.isApplicantByUserIdAndCourseId(courseId, userId);
-                    if (null != userApplicant) {
-                        isApplicant = 1;
-                    }
-                }
-                detail.put("isApplicant", isApplicant);
             }
-
         } catch (GlobalException e) {
-            detail.put("identifying", false);
+           e.printStackTrace();
         }
+        detail.put("isApplicant", isApplicant);
         return Result.ok(detail);
     }
-
+    
     /**
      * app端课程目录查询
      *

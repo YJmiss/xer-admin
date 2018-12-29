@@ -1,6 +1,8 @@
 package com.oservice.admin.modules.app.controller;
 
 import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.modules.app.entity.AppCartEntity;
+import com.oservice.admin.modules.app.service.CartService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
@@ -42,6 +44,10 @@ public class AppUserCenterController extends AbstractController {
      private XryUserService xryUserService;
      @Resource
      private XryUserApplicantService xryUserApplicantService;
+     @Resource
+     private XryMessageService xryMessageService;
+    @Resource
+    private CartService cartService;
 
     /**
      * 用户进入修改资料页面查询用户信息
@@ -103,21 +109,43 @@ public class AppUserCenterController extends AbstractController {
      * @return
      */
     @GetMapping("/userCenter/countUserApplicantByUserId")
-    @ApiOperation(value = "查询用户已经关注的讲师数", notes = "需要在请求头里加token参数")
+    @ApiOperation(value = "查询用户已经关注的讲师数，购物车商品数量、消息数、头像", notes = "需要在请求头里加token参数")
     public Result countUserApplicantByUserId(HttpServletRequest request) {
-        String userId = "";
+        Map<String, Object> params = new HashMap<>();
+        XryUserEntity userInfo = null;
+        Integer courseMessageCount = 0;
+        Integer teacherMessageCount = 0;
+        Integer userApplicantCount = 0;
+        Integer userCartCount = 0;
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
-            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-                return Result.error(204, "token失效，请重新登录");
-            }
             XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
-            userId = users.getId();
+            String userId = users.getId();
+            // 查询用户课程未读消息数（课程消息、我关注的）
+            params.put("userId", userId);
+            courseMessageCount = xryMessageService.countCourseMessageByUserId(params);
+            teacherMessageCount = xryMessageService.countTeacherMessageByUserId(params);
+            // 关注的讲师数
+            userApplicantCount = xryTeacherService.countUserApplicantByUserId(userId);
+            // 购物车数量
+//            List<AppCartEntity> cartList = cartService.getCartListFromRedis(xryUserService.selectById(userId));
+//            userCartCount = cartList.size();
+            // 查询用户头像
+            userInfo = xryUserService.selectById(userId);
         }
-        Integer userApplicantCount = xryTeacherService.countUserApplicantByUserId(userId);
-
-        return Result.ok().put("userApplicantCount", userApplicantCount);
+        Map<String, Object> map = new HashMap<>();
+        // 1、查询用户已经关注的讲师数
+        map.put("userApplicantCount", userApplicantCount);
+        // 2、查询用户购物车商品数量
+        map.put("userCartCount", userCartCount);
+        // 3、查询用户消息数
+        Integer systemMessageCount = xryMessageService.countSystemMessage();
+        Integer userMessageCount = courseMessageCount + teacherMessageCount + systemMessageCount;
+        map.put("userMessageCount", userMessageCount);
+        // 4、查询用户头像
+        map.put("userInfo", userInfo);
+        return Result.ok().put("params", map);
     }
 
     /**
