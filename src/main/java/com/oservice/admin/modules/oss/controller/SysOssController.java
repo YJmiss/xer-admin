@@ -2,10 +2,7 @@ package com.oservice.admin.modules.oss.controller;
 
 import com.google.gson.Gson;
 import com.oservice.admin.common.exception.GlobalException;
-import com.oservice.admin.common.utils.ConfigConstant;
-import com.oservice.admin.common.utils.Constant;
-import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.common.utils.*;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AliyunGroup;
 import com.oservice.admin.common.validator.group.QcloudGroup;
@@ -24,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -164,20 +162,39 @@ public class SysOssController {
 
     /**
      * 上传视频
-     *
      * @return
      * @throws Exception
      */
     @PostMapping("/uploadVideo")
     @ResponseBody
     public Result uploadVideo(@RequestParam("file") MultipartFile file) {
+        Map map = new HashMap<>();
+        // 获取文件名
+        String fileName = file.getOriginalFilename();
+        // 获取文件后缀
+        String prefix = fileName.substring(fileName.lastIndexOf("."));
+        //上传文件
         String result = FileUploader.fileUpload(file);
+        String videoTime = "";
+        try {
+            videoTime = ReadVideoTime.ReadVideoTime(file, prefix);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String url = "";
         if ("上传失败！".equals(result)) {
             return Result.error(203, "上传失败，联系管理员！！");
         }
+        if (url.equals("")) {
+            return Result.error(205, "上传成功，获取URL失败，请及时联系管理员手动添加！");
+        }
+        if (videoTime.equals("")) {
+            return Result.error(205, "上传成功，获取视频长度失败，请及时联系管理员手动添加！");
+        }
         url = "https://" + result;
-        return Result.ok().put("url", url);
+        map.put("url", url);
+        map.put("paramData", videoTime);
+        return Result.ok(map);
     }
 }
 

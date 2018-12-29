@@ -96,8 +96,10 @@ public class AliyunOSSUpload implements Runnable {
      */
     protected static String claimUploadId(String bucketName, String key) {
         InitiateMultipartUploadRequest request = new InitiateMultipartUploadRequest(bucketName, key);
-        // 我本地上传mp4视频，大家可根据自己的文件类型，设置不同的响应content-type
-        request.addHeader("Content-Type", "video/mp4");
+        // 设置不同的响应content-type
+        String[] split = key.split("\\.");
+        String type = "video/" + split[1];
+        request.addHeader("Content-Type", type);
         InitiateMultipartUploadResult result = FileUploader.client.initiateMultipartUpload(request);
         System.out.println(result.getUploadId());
         return result.getUploadId();
