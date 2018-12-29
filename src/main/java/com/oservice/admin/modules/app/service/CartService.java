@@ -1,5 +1,6 @@
 package com.oservice.admin.modules.app.service;
 
+import com.oservice.admin.modules.app.entity.AppCartAndCollectEntity;
 import com.oservice.admin.modules.app.entity.AppCartEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 
@@ -15,6 +16,8 @@ public interface CartService {
     void addCart(XryUserEntity user, long courseId);
 
     List<AppCartEntity> getCartListFromRedis(XryUserEntity user);
+
+    List<AppCartAndCollectEntity> getCartListIsCollectFromRedis(XryUserEntity user);
 
     void deleteCourse(XryUserEntity user, long courseId);
 

@@ -1,6 +1,7 @@
 package com.oservice.admin.modules.app.controller;
 
 import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.modules.app.entity.AppCartAndCollectEntity;
 import com.oservice.admin.modules.app.entity.AppCartEntity;
 import com.oservice.admin.modules.app.service.CartService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
@@ -56,11 +57,11 @@ public class AppCartController extends AbstractController {
     @GetMapping("listCart")
     public Result getCartListFromRedis() {
         Map<String, Object> map = new HashMap<>();
-        List<AppCartEntity> cartList = cartService.getCartListFromRedis(getAppUser());
+        List<AppCartAndCollectEntity> cartList = cartService.getCartListIsCollectFromRedis(getAppUser());
         if (cartList == null) {
             return Result.error(203, "购物车是空的哦！");
         } else {
-            for (AppCartEntity cartEntity : cartList) {
+            for (AppCartAndCollectEntity cartEntity : cartList) {
                 // 课程id
                 String objId = String.valueOf(cartEntity.getId());
                 // 判断用户是否已经购买了该课程
@@ -69,7 +70,7 @@ public class AppCartController extends AbstractController {
                 if (null != isCollect) {
                     isBuy = 1;
                 }
-                
+                cartEntity.setIsCollect(isBuy);
                 cartList.add(cartEntity);
             }
         }
