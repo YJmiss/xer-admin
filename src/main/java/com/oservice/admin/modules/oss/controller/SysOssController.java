@@ -174,15 +174,14 @@ public class SysOssController {
         // 获取文件后缀
         String prefix = fileName.substring(fileName.lastIndexOf("."));
         //上传文件
-        String result = FileUploader.fileUpload(file);
+        String url = FileUploader.fileUpload(file);
         String videoTime = "";
         try {
             videoTime = ReadVideoTime.ReadVideoTime(file, prefix);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String url = "";
-        if ("上传失败！".equals(result)) {
+        if ("上传失败！".equals(url)) {
             return Result.error(203, "上传失败，联系管理员！！");
         }
         if (url.equals("")) {
@@ -191,7 +190,7 @@ public class SysOssController {
         if (videoTime.equals("")) {
             return Result.error(205, "上传成功，获取视频长度失败，请及时联系管理员手动添加！");
         }
-        url = "https://" + result;
+        url = "https://" + url;
         map.put("url", url);
         map.put("paramData", videoTime);
         return Result.ok(map);
