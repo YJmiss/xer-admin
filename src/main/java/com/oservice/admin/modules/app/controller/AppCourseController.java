@@ -241,8 +241,8 @@ public class AppCourseController extends AbstractController {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             //token失效
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-                return Result.error(204, "token失效，请重新登录");
-                //throw new IncorrectCredentialsException("token失效，请重新登录");
+//                return Result.error(204, "token失效，请重新登录");
+//                throw new IncorrectCredentialsException("token失效，请重新登录");
             }
             XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
             userId = users.getId();
