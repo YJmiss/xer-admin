@@ -107,4 +107,5 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 	 * @param id
 	 */
 	void insertToTeacher(String[] id);
+
 }
