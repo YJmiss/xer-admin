@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,5 +48,13 @@ public class XryUserCollectServiceImpl extends ServiceImpl<XryUserCollectDao, Xr
     @Override
     public void appDelUserCollectByCollectId(Long collectId) {
         baseMapper.deleteById(collectId);
+    }
+
+    @Override
+    public Map<String, Object> isCollectByUserIdAndObjId(String objId, String userId) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("objId", objId);
+        params.put("userId", userId);
+        return baseMapper.isCollectByUserIdAndObjId(params);
     }
 }

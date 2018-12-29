@@ -1,7 +1,7 @@
 package com.oservice.admin.common.utils;
 
-//import it.sauronsoftware.jave.Encoder;
-//import it.sauronsoftware.jave.MultimediaInfo;
+import it.sauronsoftware.jave.Encoder;
+import it.sauronsoftware.jave.MultimediaInfo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,7 +12,7 @@ import java.nio.channels.FileChannel;
 
 public class VideoUtil {
 
-    /*private String readVideoTime(File source) {
+    private String readVideoTime(File source) {
         Encoder encoder = new Encoder();
         String length = "";
         try {

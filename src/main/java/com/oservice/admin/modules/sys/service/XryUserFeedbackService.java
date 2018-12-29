@@ -52,4 +52,11 @@ public interface XryUserFeedbackService extends IService<XryUserFeedbackEntity> 
      * @param userId
      */
     List<Map<String, Object>> appListUserFeedbackByUserId(String userId);
+
+    /**
+     * 反馈信息
+     * @param id
+     * @return
+     */
+    Map<String, Object> queryByIdAndUserId(Long id);
 }

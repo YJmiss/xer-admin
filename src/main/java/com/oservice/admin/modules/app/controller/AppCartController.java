@@ -4,6 +4,7 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.app.entity.AppCartEntity;
 import com.oservice.admin.modules.app.service.CartService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
+import com.oservice.admin.modules.sys.service.XryUserCollectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,8 @@ import java.util.Map;
 public class AppCartController extends AbstractController {
     @Resource
     private CartService cartService;
+    @Resource
+    private XryUserCollectService xryUserCollectService;
 
     @ApiOperation(value = "添加到购物车", notes = "用户添加课程到购物车 courseId：课程ID")
     @GetMapping("/addCart")
@@ -56,6 +59,19 @@ public class AppCartController extends AbstractController {
         List<AppCartEntity> cartList = cartService.getCartListFromRedis(getAppUser());
         if (cartList == null) {
             return Result.error(203, "购物车是空的哦！");
+        } else {
+            for (AppCartEntity cartEntity : cartList) {
+                // 课程id
+                String objId = String.valueOf(cartEntity.getId());
+                // 判断用户是否已经购买了该课程
+                Map<String, Object> isCollect = xryUserCollectService.isCollectByUserIdAndObjId(objId, getAppUserId());
+                Integer isBuy = 0;
+                if (null != isCollect) {
+                    isBuy = 1;
+                }
+                
+                cartList.add(cartEntity);
+            }
         }
         map.put("cartList", cartList);
         return Result.ok(map);

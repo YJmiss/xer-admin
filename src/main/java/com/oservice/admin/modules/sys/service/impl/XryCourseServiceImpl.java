@@ -431,7 +431,7 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     }
 
     @Override
-    public List<Map<String, Object>> listCourseByUserIdAndCourseId(Map<String, Object> params) {
+    public Map<String, Object> listCourseByUserIdAndCourseId(Map<String, Object> params) {
         return baseMapper.listCourseByUserIdAndCourseId(params);
     }
 

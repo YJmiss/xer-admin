@@ -287,13 +287,7 @@
     <!--查询最近浏览课程列表-->
     <select id="listCourseByUserIdAndCourseId" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.title, ifnull(b.app_status,0) as 'app_status' ,b.image from xry_user_applicant a left join xry_course b on a.obj_id=b.id
-          where a.obj_type = 0 and a.obj_status = 0  and  b.id in
-        <foreach collection="params.ids" item="id" open="(" separator="," close=")">
-          #{id}    
-        </foreach>
-        <if test="params.userId != null and params.userId != ''">
-            and a.user_id = #{params.userId}
-        </if>
+          where a.obj_type = 0 and a.obj_status = 0  and  b.id = #{params.id} and a.user_id = #{params.userId}
         <if test="params.pageSize != null and params.pageSize != ''">
             limit ${params.pageNo},${params.pageSize}
         </if>

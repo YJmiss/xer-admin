@@ -196,5 +196,5 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 * @param params
 	 * @return
 	 */
-	List<Map<String, Object>> listCourseByUserIdAndCourseId(Map<String, Object> params);
+	Map<String, Object> listCourseByUserIdAndCourseId(Map<String, Object> params);
 }

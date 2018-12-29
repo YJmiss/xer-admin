@@ -55,7 +55,13 @@ public class AppUserCollectController extends AbstractController {
             XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
             userId = users.getId();
         }
-        xryUserCollectService.appUserCollectByUserId(userId,objId);
+        // 判断用户是否已经收藏了该课程
+        Map<String, Object> isCollect = xryUserCollectService.isCollectByUserIdAndObjId(objId, userId);
+        if (null != isCollect) {
+            return Result.error(204, "该用户已经收藏了该课程，不能再次收藏");
+        } else {
+            xryUserCollectService.appUserCollectByUserId(userId,objId);
+        }
         return Result.ok();
     }
 

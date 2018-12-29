@@ -12,5 +12,9 @@
     <select id="countCourseApplicantByCourseId" parameterType="java.lang.Long" resultType="java.lang.Integer">
         select count(*) from xry_user_applicant where obj_id = #{courseId} and obj_type = 0 and obj_status = 0
     </select>
+    <!--判断用户是否已经收藏了该课程-->
+    <select id="isCollectByUserIdAndObjId" parameterType="java.util.Map" resultType="java.util.Map">
+      select * from xry_user_collect where obj_id = #{params.objId} and user_id = #${params.userId} and obj_type = 1 and obj_status = 1
+    </select>
 
 </mapper>

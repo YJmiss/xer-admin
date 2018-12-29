@@ -84,4 +84,9 @@ public class XryUserFeedbackServiceImpl extends ServiceImpl<XryUserFeedbackDao, 
     public List<Map<String, Object>> appListUserFeedbackByUserId(String userId) {
         return baseMapper.appListUserFeedbackByUserId(userId);
     }
+
+    @Override
+    public Map<String, Object> queryByIdAndUserId(Long id) {
+        return baseMapper.queryByIdAndUserId(id);
+    }
 }

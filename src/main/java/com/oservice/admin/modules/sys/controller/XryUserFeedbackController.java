@@ -3,12 +3,16 @@ package com.oservice.admin.modules.sys.controller;
 import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.common.validator.ValidatorUtils;
+import com.oservice.admin.common.validator.group.UpdateGroup;
+import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryUserFeedbackEntity;
 import com.oservice.admin.modules.sys.service.XryUserFeedbackService;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -43,10 +47,10 @@ public class XryUserFeedbackController extends AbstractController {
      * @param id
      * @return
      */
-    @GetMapping("/info/{id}")
-    @RequiresPermissions("xry:feedback:info")
-    public Result info(@PathVariable("id") Long id){
-        XryUserFeedbackEntity userFeedback = xryUserFeedbackService.queryById(id);
+    @GetMapping("/detail")
+    @RequiresPermissions("xry:feedback:detail")
+    public Result detail(@RequestParam Long id){
+        Map<String,Object> userFeedback = xryUserFeedbackService.queryByIdAndUserId(id);
         return Result.ok().put("userFeedback", userFeedback);
     }
 
@@ -62,5 +66,21 @@ public class XryUserFeedbackController extends AbstractController {
         xryUserFeedbackService.deleteBatch(ids);
         return Result.ok();
     }
+    /**
+     * 用户反馈回复
+     * @param userFeedbackEntity
+     * @return
+     */
+    @SysLog("用户反馈回复")
+    @PostMapping("/replySave")
+    @RequiresPermissions("xry:feedback:replySave")
+    public Result update(@RequestBody XryUserFeedbackEntity userFeedbackEntity){
+        ValidatorUtils.validateEntity(userFeedbackEntity, UpdateGroup.class);
+        userFeedbackEntity.setCheckStatus(1);
+        userFeedbackEntity.setReplyTime(new Date());
+        xryUserFeedbackService.updateById(userFeedbackEntity);
+        return Result.ok();
+    }
+
 
 }

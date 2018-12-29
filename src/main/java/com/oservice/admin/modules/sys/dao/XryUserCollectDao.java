@@ -36,4 +36,11 @@ public interface XryUserCollectDao extends BaseMapper<XryUserCollectEntity> {
      * @param collectId
      */
     void appDelUserCollectByCollectId(@Param("collectId") Long collectId);
+
+    /**
+     * 判断用户是否已经收藏了该课程
+     * @param params
+     * @return
+     */
+    Map<String, Object> isCollectByUserIdAndObjId(Map<String, Object> params);
 }

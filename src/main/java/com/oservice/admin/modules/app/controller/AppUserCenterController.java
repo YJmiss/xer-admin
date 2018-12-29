@@ -228,7 +228,7 @@ public class AppUserCenterController extends AbstractController {
      */
     @GetMapping("/userCenter/listCourseByUserIdAndCourseId")
     @ApiOperation(value = "查询最近浏览课程列表", notes = "ids：储存在localStorage里的课程id，数组；需要在请求头里加token参数")
-    public Result listCourseByUserIdAndCourseId(@RequestParam Long[] ids, @RequestParam Integer pageNo, @RequestParam Integer pageSize, HttpServletRequest request) {
+    public Result listCourseByUserIdAndCourseId(@RequestParam String[] ids, @RequestParam Integer pageNo, @RequestParam Integer pageSize, HttpServletRequest request) {
         String userId = "";
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
@@ -240,11 +240,26 @@ public class AppUserCenterController extends AbstractController {
             userId = users.getId();
         }
         Map<String, Object> params = new HashMap<>();
-        params.put("ids", ids);
-        params.put(userId, userId);
-        params.put("pageSize", pageSize);
-        params.put("pageNo", (pageNo - 1) * pageSize);
-        List<Map<String, Object>> courseList = xryCourseService.listCourseByUserIdAndCourseId(params);
+        List<Map<String, Object>> courseList = new ArrayList<>();
+        for (int i=0;i<ids.length;i++) {
+            if (0 == i) {
+                String firstItemId = ids[0].split("\\[")[1];
+                params.put("id", firstItemId);
+            } else if (ids.length-1 == i) {
+                System.out.println(ids[ids.length-1]);
+                String lastItemId = ids[ids.length-1].split("\\]")[0];
+                params.put("id", lastItemId);
+            } else {
+                params.put("id", ids[i]);
+            }
+            params.put("userId", userId);
+            params.put("pageSize", pageSize);
+            params.put("pageNo", (pageNo - 1) * pageSize);
+            Map<String, Object> course = xryCourseService.listCourseByUserIdAndCourseId(params);
+            if (null != course) {
+                courseList.add(course);
+            }
+        }
         return Result.ok().put("courseList", courseList);
     }
 

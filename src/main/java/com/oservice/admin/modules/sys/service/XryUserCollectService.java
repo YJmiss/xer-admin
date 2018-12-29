@@ -40,4 +40,12 @@ public interface XryUserCollectService extends IService<XryUserCollectEntity> {
      * @param collectId
      */
     void appDelUserCollectByCollectId(Long collectId);
+
+    /**
+     * 判断用户是否已经收藏了该课程
+     * @param objId
+     * @param userId
+     * @return
+     */
+    Map<String, Object> isCollectByUserIdAndObjId(String objId, String userId);
 }
