@@ -5,7 +5,6 @@ import com.oservice.admin.common.exception.GlobalException;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.app.dao.SolrJDao;
-import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.app.service.RecordtimeService;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -243,9 +241,10 @@ public class AppCourseController extends AbstractController {
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
 //                return Result.error(204, "token失效，请重新登录");
 //                throw new IncorrectCredentialsException("token失效，请重新登录");
+            } else {
+                XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+                userId = users.getId();
             }
-            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
-            userId = users.getId();
         }
         if (userId == null || userId.equals("")) {
             // 查询课程"目录"

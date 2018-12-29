@@ -1,5 +1,6 @@
 package com.oservice.admin.modules.app.controller;
 
+import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.app.entity.AppCartEntity;
 import com.oservice.admin.modules.app.service.CartService;
@@ -30,10 +31,22 @@ public class AppCartController extends AbstractController {
     private CartService cartService;
     @Resource
     private XryUserCollectService xryUserCollectService;
+    @Resource
+    private RedisUtils redisUtils;
 
     @ApiOperation(value = "添加到购物车", notes = "用户添加课程到购物车 courseId：课程ID")
     @GetMapping("/addCart")
     public Result addCart(long courseId) {
+        List<AppCartEntity> cartList = cartService.getCartListFromRedis(getAppUser());
+        if (cartList != null) {
+            for (AppCartEntity cart : cartList) {
+                if (courseId == cart.getId()) {
+                    return Result.error(203, "购物车已有此课程！");
+                }
+            }
+            cartService.addCart(getAppUser(), courseId);
+            return Result.ok();
+        }
         cartService.addCart(getAppUser(), courseId);
         return Result.ok();
     }
