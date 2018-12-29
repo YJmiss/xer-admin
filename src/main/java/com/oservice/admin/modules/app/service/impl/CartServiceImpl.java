@@ -2,6 +2,7 @@ package com.oservice.admin.modules.app.service.impl;
 
 import com.oservice.admin.common.utils.JsonUtil;
 import com.oservice.admin.common.utils.RedisUtils;
+import com.oservice.admin.modules.app.entity.AppCartAndCollectEntity;
 import com.oservice.admin.modules.app.entity.AppCartEntity;
 import com.oservice.admin.modules.app.service.CartService;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
@@ -50,6 +51,15 @@ public class CartServiceImpl implements CartService {
         String courseJson = redisUtils.get("APPCART" + user.getId());
         if (StringUtils.isNotBlank(courseJson)) {
             return JsonUtil.jsonToList(courseJson, AppCartEntity.class);
+        }
+        return null;
+    }
+
+    @Override
+    public List<AppCartAndCollectEntity> getCartListIsCollectFromRedis(XryUserEntity user) {
+        String courseJson = redisUtils.get("APPCART" + user.getId());
+        if (StringUtils.isNotBlank(courseJson)) {
+            return JsonUtil.jsonToList(courseJson, AppCartAndCollectEntity.class);
         }
         return null;
     }
