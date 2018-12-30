@@ -45,5 +45,9 @@
     <update id="removeUserCourseByUserId" parameterType="java.lang.String">
       update xry_user_applicant set obj_status = 1 where user_id = #{userId} and date_sub(curdate(),interval 7 day) <![CDATA[<=]]> date(create_time)
     </update>
+    <!--app保存用户课程学习进度-->
+    <update id="addCourseStudyProgress" parameterType="java.util.Map">
+      update xry_user_applicant set study_progress = #{params.studyProgress} where obj_id = #{params.courseId} and user_id = #{params.userId}
+    </update>
 
 </mapper>

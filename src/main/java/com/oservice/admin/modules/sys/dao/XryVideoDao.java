@@ -37,5 +37,10 @@ public interface XryVideoDao extends BaseMapper<XryVideoEntity> {
      */
    void recordExamineInfo(@Param("params") Map<String, Object> params);
 
-
+    /**
+     * 判断与之关联的“视频”的资料是否已填
+     * @param catalogId
+     * @return
+     */
+    XryVideoEntity judeVideoIsFullByCourseId(@Param("id") Long catalogId);
 }

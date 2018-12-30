@@ -37,5 +37,9 @@
             and courseid = #{_parameter,jdbcType=INTEGER}
         </if>
     </select>
+    <!--判断与之关联的“目录”的资料是否已填-->
+    <select id="judeCatalogIsFullByCourseId" parameterType="java.lang.Long" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity">
+      select * from xry_course_catalog where courseid = #{id}
+    </select>
 
 </mapper>

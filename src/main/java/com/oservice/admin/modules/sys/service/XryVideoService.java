@@ -57,5 +57,11 @@ public interface XryVideoService extends IService<XryVideoEntity> {
      * @param record
      */
     void recordExamineInfo(XryRecordEntity record);
-    
+
+    /**
+     * 判断与之关联的“视频”的资料是否已填
+     * @param catalogId
+     * @return
+     */
+    XryVideoEntity judeVideoIsFullByCourseId(Long catalogId);
 }
