@@ -36,7 +36,7 @@ public interface XryUserApplicantDao extends BaseMapper<XryUserApplicantEntity> 
      * @param courseId
      * @return
      */
-    List<XryUserApplicantEntity> listUserIdByCourseId(Long courseId);
+    List<String> listUserIdByCourseId(Long courseId);
     
     /**
      * 查询课程的报名人数列表

@@ -1,10 +1,18 @@
 package com.oservice.admin.config;
 
+import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryUserEntity;
+import com.oservice.admin.modules.sys.service.ShiroService;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +26,7 @@ public class MessageWebSocket {
     //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
     private static CopyOnWriteArraySet<MessageWebSocket> messageWebsocket = new CopyOnWriteArraySet<MessageWebSocket>();
     private static ConcurrentHashMap<String, MessageWebSocket> webSocketSet = new ConcurrentHashMap<>();
-    private String userId = "";
+    private String token = "";
 
     /**
      * 连接建立成功调用的方法
@@ -29,9 +37,9 @@ public class MessageWebSocket {
     @OnOpen
     public void onOpen(Session session) {
         this.session = session;
-        this.userId = session.getQueryString().split("=")[1];
+        this.token = session.getQueryString().split("=")[1];
         messageWebsocket.add(this);
-        webSocketSet.put(this.userId, this);
+        webSocketSet.put(this.token, this);
         sendMessage("-----------连接成功-----------");
         System.out.println("-----------连接成功-----------");
     }
@@ -74,15 +82,15 @@ public class MessageWebSocket {
      * 给指定ID用户发送信息
      *
      * @param message
-     * @param userIds
+     * @param tokenList
      * @throws IOException
      */
-    public void sendToUser(String message, List<String> userIds) throws IOException {
-        if (null != userIds) {
-            if (userIds.size() > 0) {
-                for (String sendUserId : userIds) {
-                    if (null != webSocketSet.get(sendUserId)) {
-                        webSocketSet.get(sendUserId).sendMessage(message);
+    public void sendToUser(String message, List<String> tokenList) throws IOException {
+        if (null != tokenList) {
+            if (tokenList.size() > 0) {
+                for (String token : tokenList) {
+                    if (null != webSocketSet.get(token)) {
+                        webSocketSet.get(token).sendMessage(message);
                     }
                 }
             }
@@ -119,7 +127,7 @@ public class MessageWebSocket {
     @OnClose
     public void onClose() {
         messageWebsocket.remove(this);
-        webSocketSet.remove(this.userId);
+        webSocketSet.remove(this.token);
         System.out.println("---------- 连接关闭 ----------");
     }
 
@@ -128,7 +136,7 @@ public class MessageWebSocket {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        webSocketSet.remove(this.userId);
+        webSocketSet.remove(this.token);
         error.printStackTrace();
         System.out.println("-------------发生错误-----------");
     }

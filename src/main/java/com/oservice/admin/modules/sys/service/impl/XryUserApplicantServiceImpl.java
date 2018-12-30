@@ -48,16 +48,8 @@ public class XryUserApplicantServiceImpl extends ServiceImpl<XryUserApplicantDao
 
     @Override
     public List<String> listUserIdByCourseId(Long courseId) {
-        List<XryUserApplicantEntity> courseList = baseMapper.listUserIdByCourseId(courseId);
-        List<String> userIds = null;
-        if (courseList.size() > 0) {
-            userIds = new ArrayList<>();
-            for (XryUserApplicantEntity course : courseList) {
-                String userId = course.getUserId();
-                userIds.add(userId);
-            }
-        }
-        return userIds;
+        List<String> tokenList = baseMapper.listUserIdByCourseId(courseId);
+        return tokenList;
     }
 
     @Override

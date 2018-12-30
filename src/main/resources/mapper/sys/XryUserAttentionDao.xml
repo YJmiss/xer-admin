@@ -20,7 +20,7 @@
     </delete>
     <!--根据讲师id查询关注该讲师的所有用户id-->
     <select id="listUserIdByTeacherId" parameterType="java.lang.String" resultType="java.lang.String">
-      select user_id from xry_user_attention where obj_id = #{teacherId} and obj_type = 0 and obj_status = 0
+      select sut.token from xry_user_attention xua left join sys_user_token sut on xua.user_id = sut.user_id where obj_id = #{teacherId} and obj_type = 0 and obj_status = 0
     </select>
     <!--查询讲师的关注人数列表-->
     <select id="countAttentionByTeacherId" parameterType="java.lang.String" resultType="com.oservice.admin.modules.sys.entity.XryUserAttentionEntity">

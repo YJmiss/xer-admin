@@ -25,8 +25,8 @@
         delete from xry_user_applicant where id = #{params.id}
     </delete>
     <!--根据课程id查询出报名学习该课程的所有用户-->
-    <select id="listUserIdByCourseId" parameterType="java.lang.Long" resultType="com.oservice.admin.modules.sys.entity.XryUserApplicantEntity">
-      select * from xry_user_applicant where obj_id = #{courseId} and obj_type = 0 and obj_status = 0
+    <select id="listUserIdByCourseId" parameterType="java.lang.Long" resultType="java.lang.String">
+      select sut.token from xry_user_applicant xua left join sys_user_token sut on xua.user_id = sut.user_id where obj_id = #{courseId} and obj_type = 0 and obj_status = 0
     </select>
     <!--查询出消息发送的用户id-->
     <select id="listUserIdByMsgId" parameterType="java.lang.Long" resultType="java.util.Map">

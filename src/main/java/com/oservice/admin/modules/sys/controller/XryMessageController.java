@@ -144,13 +144,15 @@ public class XryMessageController extends AbstractController {
                 // 指定发送消息->课程消息
                 // 查询出报名学习该课程的所有用户
                 Long courseId = message.getLong("obj_id");
-                List<String> userIds = xryUserApplicantService.listUserIdByCourseId(courseId);
-                new MessageWebSocket().sendToUser(String.valueOf(message), userIds);
+                List<String> tokenList = xryUserApplicantService.listUserIdByCourseId(courseId);
+                // 传入的必须是token，不能是userId
+                new MessageWebSocket().sendToUser(String.valueOf(message), tokenList);
             } else if (2 == msgType) {
                 // 指定发送消息->讲师关注
                 String teacherId = message.getString("user_id");
-                List<String> userIds = xryUserAttentionService.listUserIdByTeacherId(teacherId);
-                new MessageWebSocket().sendToUser(String.valueOf(message), userIds);
+                List<String> tokenList = xryUserAttentionService.listUserIdByTeacherId(teacherId);
+                // 传入的必须是token，不能是userId
+                new MessageWebSocket().sendToUser(String.valueOf(message), tokenList);
             } else {
                 //广播发送消息->平台消息
                 new MessageWebSocket().sendMessage(String.valueOf(message));

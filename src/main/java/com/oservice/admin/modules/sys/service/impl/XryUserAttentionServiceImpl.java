@@ -47,8 +47,8 @@ public class XryUserAttentionServiceImpl extends ServiceImpl<XryUserAttentionDao
 
     @Override
     public List<String> listUserIdByTeacherId(String teacherId) {
-        List<String> teacherList = baseMapper.listUserIdByTeacherId(teacherId);
-        return teacherList;
+        List<String> tokenList = baseMapper.listUserIdByTeacherId(teacherId);
+        return tokenList;
     }
 
     @Override
