@@ -131,8 +131,8 @@ public class XryVideoController extends AbstractController {
         for (Long id : ids) {
             XryVideoEntity video = xryVideoService.selectById(id);
             XryCourseEntity course = xryCourseService.selectById(video.getCourseId());
-            if (3 == course.getStatus() || 4 == course.getStatus()) {
-                return Result.error(1, "视频所属课程“" + course.getTitle() + "”已通过审核，不能删除该视频");
+            if (4 == course.getStatus()) {
+                return Result.error(1, "视频所属课程“" + course.getTitle() + "”已上架，不能删除该视频");
             } else {
                 xryVideoService.deleteBatch(ids);
             }
