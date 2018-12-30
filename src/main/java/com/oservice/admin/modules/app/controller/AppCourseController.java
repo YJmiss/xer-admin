@@ -322,7 +322,7 @@ public class AppCourseController extends AbstractController {
     @SysLog("app保存用户课程学习进度")
     @PostMapping("/addCourseStudyProgress")
     @ApiOperation(value = "app保存用户课程学习进度", notes = "courseId：课程id；studyProgress：学习进度；需要在请求头里待token")
-    public Result addCourseStudyProgress(@RequestParam long courseId, long studyProgress, HttpServletRequest request) {
+    public Result addCourseStudyProgress(@RequestParam String courseId, Integer studyProgress, HttpServletRequest request) {
         String accessToken = request.getHeader("token");
         Integer isLogin = 0;
         if (StringUtils.isNotBlank(accessToken)) {
@@ -333,7 +333,7 @@ public class AppCourseController extends AbstractController {
                 String userId = users.getId();
                 Map<String, Object> params = new HashMap<>();
                 params.put("userId", userId);
-                params.put("courseId", courseId);
+                params.put("courseId",Long.parseLong(courseId));
                 params.put("studyProgress", studyProgress);
                 xryUserApplicantService.addCourseStudyProgress(params);
             }

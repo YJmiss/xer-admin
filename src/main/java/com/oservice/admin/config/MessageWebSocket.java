@@ -78,11 +78,9 @@ public class MessageWebSocket {
      * @throws IOException
      */
     public void sendToUser(String message, List<String> userIds) throws IOException {
-        System.out.println("this.userId:" + this.userId);
         if (null != userIds) {
             if (userIds.size() > 0) {
                 for (String sendUserId : userIds) {
-                    System.out.println("webSocketSet:" + webSocketSet.get(0));
                     if (null != webSocketSet.get(sendUserId)) {
                         webSocketSet.get(sendUserId).sendMessage(message);
                     }
@@ -99,14 +97,10 @@ public class MessageWebSocket {
      * @throws IOException
      */
     public void sendToOnLineUser(String message, List<String> userIds) throws IOException {
-        System.out.println("this.userId:" + this.userId);
         if (null != userIds) {
             if (userIds.size() > 0) {
                 for (Map.Entry<String, MessageWebSocket> e : webSocketSet.entrySet()) {
-                    System.out.println("-----------键:" + e.getKey());
-                    System.out.println("-----------值:" + e.getValue());
                     String userId = e.getValue().session.getQueryString().split("=")[1];
-                    System.out.println("-----------userId:" + userId);
                     if (userIds.size() > 0) {
                         for (String sendUserId : userIds) {
                             if (userId.equals(sendUserId)) {

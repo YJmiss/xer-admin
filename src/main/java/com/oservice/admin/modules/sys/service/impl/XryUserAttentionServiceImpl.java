@@ -47,16 +47,8 @@ public class XryUserAttentionServiceImpl extends ServiceImpl<XryUserAttentionDao
 
     @Override
     public List<String> listUserIdByTeacherId(String teacherId) {
-        List<XryUserAttentionEntity> teacherList = baseMapper.listUserIdByTeacherId(teacherId);
-        List<String> userIds = null;
-        if (teacherList.size() > 0) {
-            userIds = new ArrayList<>();
-            for (XryUserAttentionEntity teacher : teacherList) {
-                String userId = teacher.getUserId();
-                userIds.add(userId);
-            }
-        }
-        return userIds;
+        List<String> teacherList = baseMapper.listUserIdByTeacherId(teacherId);
+        return teacherList;
     }
 
     @Override
