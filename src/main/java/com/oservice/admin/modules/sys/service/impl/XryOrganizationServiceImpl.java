@@ -28,15 +28,17 @@ public class XryOrganizationServiceImpl extends ServiceImpl<XryOrganizationDao, 
         Map<String, Object> map = new HashMap<>();
         String pageNo = (String) params.get("page");
         String pageSize = (String) params.get("limit");
-        String orgName = (String) params.get("orgName");
-        String corporator = (String) params.get("corporator");
+        String organizationName = (String) params.get("organizationName");
+        String corporateName = (String) params.get("corporateName");
         String status = (String) params.get("status");
         map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
         map.put("pageSize",pageSize);
-        if (null != orgName && "" != orgName) {
-            map.put("orgName", "%" + orgName + "%");
+        if (null != organizationName && !"".equals(organizationName)) {
+            map.put("organizationName", "%" + organizationName + "%");
         }
-        map.put("corporator", corporator);
+        if (null != corporateName && !"".equals(corporateName)) {
+            map.put("corporateName", "%" + corporateName + "%");
+        }
         map.put("status", status);
         // 查询返回的数据总数page.totalCount
        Long total = baseMapper.countTotal(map);

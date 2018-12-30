@@ -44,12 +44,12 @@
     <select id="examineCountTotal" parameterType="java.util.Map" resultType="java.lang.Long">
         select count(*) from xry_course a
         left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id
-        where a.status = 1 or a.status = 2
+        where (a.status = 1 or a.status = 2)
         <if test="params.cid != null and params.cid !=''">
             and a.cid = #{params.cid}
         </if>
-        <if test="params.courseId != null and params.courseId !=''">
-            and a.id = #{params.courseId}
+        <if test="params.title != null and params.title !=''">
+            and a.title like #{params.title}
         </if>
         <if test="params.examineStatus != null and params.examineStatus !=''">
             and a.status = #{params.examineStatus}
@@ -59,12 +59,12 @@
     <select id="examineList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.name as catName,c.real_name as realName from xry_course a
         left join xry_course_cat b on a.cid=b.id left join xry_teacher c on a.tid=c.id
-        where a.status = 1 or a.status = 2
+        where (a.status = 1 or a.status = 2)
         <if test="params.cid != null and params.cid !=''">
             and a.cid = #{params.cid}
         </if>
-        <if test="params.courseId != null and params.courseId !=''">
-            and a.id = #{params.courseId}
+        <if test="params.title != null and params.title !=''">
+            and a.title like #{params.title}
         </if>
         <if test="params.examineStatus != null and params.examineStatus !=''">
             and a.status = #{params.examineStatus}
@@ -242,6 +242,7 @@
                 and a.property = 1 and a.price between #{params.priceTagStart} and #{params.priceTagEnd}
             </if>
         </if>
+        group by a.id
         <!-- 综合排序：人气、好评-->
         <if test="params.sort == 1">
             order by starLevel desc,a.applicant_count desc,a.price asc
@@ -286,8 +287,7 @@
     </select>
     <!--查询最近浏览课程列表-->
     <select id="listCourseByUserIdAndCourseId" parameterType="java.util.Map" resultType="java.util.Map">
-        select a.*,b.title, ifnull(b.app_status,0) as 'app_status' ,b.image from xry_user_applicant a left join xry_course b on a.obj_id=b.id
-          where a.obj_type = 0 and a.obj_status = 0  and  b.id = #{params.id} and a.user_id = #{params.userId}
+        select * from xry_course where id = #{params.id}
         <if test="params.pageSize != null and params.pageSize != ''">
             limit ${params.pageNo},${params.pageSize}
         </if>

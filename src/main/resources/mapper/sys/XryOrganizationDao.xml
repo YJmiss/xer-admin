@@ -6,11 +6,11 @@
     <!--查询返回的数据总数-->
     <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
         select count(*) from xry_organization a left join xry_user b on  a.user_id=b.id where 1=1
-        <if test="params.orgName != null and params.orgName != ''">
-            and a.org_name like #{params.orgName}
+        <if test="params.organizationName != null and params.organizationName != ''">
+            and a.org_name like #{params.organizationName}
         </if>
-        <if test="params.corporator != null and params.corporator != ''">
-            and a.corporator = #{params.corporator}
+        <if test="params.corporateName != null and params.corporateName != ''">
+            and a.corporator like #{params.corporateName}
         </if>
         <if test="params.status != null and params.status != ''">
             and a.status != 2
@@ -19,11 +19,11 @@
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
         select a.*,b.nickname, b.phone from xry_organization a left join xry_user b on  a.user_id=b.id where 1=1
-        <if test="params.orgName != null and params.orgName != ''">
-            and a.org_name like #{params.orgName}
+        <if test="params.organizationName != null and params.organizationName != ''">
+            and a.org_name like #{params.organizationName}
         </if>
-        <if test="params.corporator != null and params.corporator != ''">
-            and a.corporator = #{params.corporator}
+        <if test="params.corporateName != null and params.corporateName != ''">
+            and a.corporator like #{params.corporateName}
         </if>
         <if test="params.status != null and params.status != ''">
             and a.status = #{params.status}

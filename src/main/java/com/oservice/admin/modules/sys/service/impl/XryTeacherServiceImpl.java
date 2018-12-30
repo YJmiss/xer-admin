@@ -47,20 +47,20 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         String flag2 = (String) params.get("teacherListStatus");
         map.put("pageNo", (new Integer(pageNo) - 1) * new Integer(pageSize));
         map.put("pageSize", pageSize);
-        if (null != realName && "".equals(realName)) {
+        if (null != realName && !"".equals(realName)) {
             map.put("realName", "%" + realName + "%");
         }
         map.put("recommend", recommend);
-        if (null != flag && "".equals(flag)) {
+        if (null != flag && !"".equals(flag)) {
             Integer status = Integer.valueOf(flag);
             map.put("status", status);
         }
         // 讲师列表
-        if (null != flag2 && "".equals(flag2)) {
+        if (null != flag2 && !"".equals(flag2)) {
             Integer status = Integer.valueOf(flag2);
             map.put("status", status);
         }
-        if (null != userPhone && "".equals(userPhone)) {
+        if (null != userPhone && !"".equals(userPhone)) {
             map.put("userPhone", "%" + userPhone + "%");
         }
         if (null != created && !"".equals(created)) {

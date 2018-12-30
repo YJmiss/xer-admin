@@ -223,22 +223,11 @@ public class AppUserCenterController extends AbstractController {
      * @param ids
      * @param pageNo
      * @param pageSize
-     * @param request
      * @return
      */
     @GetMapping("/userCenter/listCourseByUserIdAndCourseId")
     @ApiOperation(value = "查询最近浏览课程列表", notes = "ids：储存在localStorage里的课程id，数组；需要在请求头里加token参数")
-    public Result listCourseByUserIdAndCourseId(@RequestParam String[] ids, @RequestParam Integer pageNo, @RequestParam Integer pageSize, HttpServletRequest request) {
-        String userId = "";
-        String accessToken = request.getHeader("token");
-        if (StringUtils.isNotBlank(accessToken)) {
-            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
-            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-                return Result.error(204, "token失效，请重新登录");
-            }
-            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
-            userId = users.getId();
-        }
+    public Result listCourseByUserIdAndCourseId(@RequestParam String[] ids, @RequestParam Integer pageNo, @RequestParam Integer pageSize) {
         Map<String, Object> params = new HashMap<>();
         List<Map<String, Object>> courseList = new ArrayList<>();
         for (int i=0;i<ids.length;i++) {
@@ -246,13 +235,11 @@ public class AppUserCenterController extends AbstractController {
                 String firstItemId = ids[0].split("\\[")[1];
                 params.put("id", firstItemId);
             } else if (ids.length-1 == i) {
-                System.out.println(ids[ids.length-1]);
                 String lastItemId = ids[ids.length-1].split("\\]")[0];
                 params.put("id", lastItemId);
             } else {
                 params.put("id", ids[i]);
             }
-            params.put("userId", userId);
             params.put("pageSize", pageSize);
             params.put("pageNo", (pageNo - 1) * pageSize);
             Map<String, Object> course = xryCourseService.listCourseByUserIdAndCourseId(params);
