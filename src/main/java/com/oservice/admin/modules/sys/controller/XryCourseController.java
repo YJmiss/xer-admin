@@ -10,6 +10,7 @@ import com.oservice.admin.modules.app.service.SolrJService;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
 import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
