@@ -72,12 +72,14 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         String pageNo = (String) params.get("page");
         String pageSize = (String) params.get("limit");
         String catalogId = (String) params.get("catalogId");
-        String courseId = (String) params.get("courseId");
+        String title = (String) params.get("title");
         String examineStatus = (String) params.get("examineStatus");
         map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
         map.put("pageSize",pageSize);
         map.put("cid",catalogId);
-        map.put("courseId",courseId);
+        if (null != title && !"".equals(title)) {
+            map.put("title","%"+title+"%");
+        }
         map.put("examineStatus",examineStatus);
         // 查询返回的数据总数page.totalCount
         Long total = baseMapper.examineCountTotal(map);
