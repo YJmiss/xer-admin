@@ -1,6 +1,5 @@
 package com.oservice.admin.modules.app.controller;
 
-import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.app.entity.AppCartAndCollectEntity;
 import com.oservice.admin.modules.app.entity.AppCartEntity;
@@ -32,8 +31,6 @@ public class AppCartController extends AbstractController {
     private CartService cartService;
     @Resource
     private XryUserCollectService xryUserCollectService;
-    @Resource
-    private RedisUtils redisUtils;
 
     @ApiOperation(value = "添加到购物车", notes = "用户添加课程到购物车 courseId：课程ID")
     @GetMapping("/addCart")

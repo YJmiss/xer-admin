@@ -56,7 +56,7 @@ public class XryVideoEntity implements Serializable {
     /**
      * 参数数据，格式为json格式
      */
-    private String paramData;
+    private Long paramData;
 
     public Long getId() {
         return id;
@@ -130,11 +130,11 @@ public class XryVideoEntity implements Serializable {
         this.updated = updated;
     }
 
-    public String getParamData() {
+    public Long getParamData() {
         return paramData;
     }
 
-    public void setParamData(String paramData) {
+    public void setParamData(Long paramData) {
         this.paramData = paramData;
     }
 }

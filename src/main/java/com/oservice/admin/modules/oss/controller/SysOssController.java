@@ -93,7 +93,7 @@ public class SysOssController {
 
 
     /**
-     * 上传文件
+     * 上传图片文件
      */
     @PostMapping("/upload")
     @RequiresPermissions("sys:oss:all")
@@ -175,7 +175,7 @@ public class SysOssController {
         String prefix = fileName.substring(fileName.lastIndexOf("."));
         //上传文件
         String url = FileUploader.fileUpload(file);
-        String videoTime = "";
+        long videoTime = 0l;
         try {
             videoTime = ReadVideoTime.ReadVideoTime(file, prefix);
         } catch (IOException e) {
@@ -187,7 +187,7 @@ public class SysOssController {
         if (url.equals("")) {
             return Result.error(205, "上传成功，获取URL失败，请及时联系管理员手动添加！");
         }
-        if (videoTime.equals("")) {
+        if (videoTime == 0l) {
             return Result.error(205, "上传成功，获取视频长度失败，请及时联系管理员手动添加！");
         }
         url = "https://" + url;
@@ -196,5 +196,3 @@ public class SysOssController {
         return Result.ok(map);
     }
 }
-
-

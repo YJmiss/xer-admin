@@ -10,6 +10,7 @@ import com.oservice.admin.modules.app.service.SolrJService;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,8 @@ public class XryCourseController extends AbstractController {
     private XryCourseService xryCourseService;
     @Autowired
     private SolrJService solrJService;
-
+    @Resource
+    private XryCourseDescService xryCourseDescService;
     
     /**
      * 查询课程列表
@@ -93,14 +95,19 @@ public class XryCourseController extends AbstractController {
     @GetMapping("/info/{id}")
     @RequiresPermissions("xry:course:info")
     public Result info(@PathVariable("id") Long id){
+        Map<String, Object> map = new HashMap<String, Object>();
         XryCourseEntity course = xryCourseService.queryById(id);
-        return Result.ok().put("course", course);
+        XryCourseDescEntity courseDesc = xryCourseDescService.queryById(id);
+        map.put("course", course);
+        map.put("courseDesc", courseDesc);
+        return Result.ok(map);
     }
 
     /**
      * 修改课程
      * @param params
      * @return
+     *
      */
     @SysLog("修改课程")
     @PostMapping("/update")

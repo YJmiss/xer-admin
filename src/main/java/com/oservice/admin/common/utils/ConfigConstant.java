@@ -18,11 +18,7 @@ public class ConfigConstant {
     public final static String APPKEY = "23277221";
     public final static String SECRET = "ee7b5c5e5dc7bb82f27d382d1c5fb67a";
     public final static String TEMPLATECODE = "SMS_2695297";
-    /**
-     * 图片服务器地址
-     */
-    // public final static String IMAGE_URL = "http://192.168.1.30:9001/xry/imageData/";图片服务器地址
-    public final static String IMAGE_URL = "http://192.168.1.30:9001/xry/imageData/";
+
     /**
      * 默认显示搜索字段
      */
@@ -31,12 +27,5 @@ public class ConfigConstant {
      * 默认显示搜索记录数
      */
     public final static int SEARCHER_ITEM_ROWS = 20;
-    /**
-     * 图片上传配置
-     */
-    public final static String IMAGE_PATH = "D:\\imageData\\";
-    /**
-     * 订单ID前缀
-     */
-    public final static String ORDERID = "XRYORDERID";
+
 }

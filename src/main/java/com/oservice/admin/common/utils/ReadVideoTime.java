@@ -15,19 +15,16 @@ import java.io.IOException;
  **/
 
 public class ReadVideoTime {
-    public static String ReadVideoTime(MultipartFile file, String prefix) throws IOException {
+    public static long ReadVideoTime(MultipartFile file, String prefix) throws IOException {
         final File excelFile = File.createTempFile(UUIDUtils.getUUID(), prefix);
         // MultipartFile to File
         file.transferTo(excelFile);
         Encoder encoder = new Encoder();
-        String length = "";
+        long length = 0l;
         try {
             MultimediaInfo m = encoder.getInfo(excelFile);
-            long ls = m.getDuration() / 1000;
-            int hour = (int) (ls / 3600);
-            int minute = (int) (ls % 3600) / 60;
-            int second = (int) (ls - hour * 3600 - minute * 60);
-            length = hour + "'" + minute + "''" + second + "'''";
+            length = m.getDuration() / 1000;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
