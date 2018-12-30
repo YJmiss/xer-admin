@@ -68,4 +68,9 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 		return baseMapper.treeCourseCatalog(courseId);
 	}
 
+	@Override
+	public  List<XryCourseCatalogEntity> judeCatalogIsFullByCourseId(Long id) {
+		return baseMapper.judeCatalogIsFullByCourseId(id);
+	}
+
 }

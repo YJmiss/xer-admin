@@ -57,4 +57,10 @@ public interface XryUserApplicantDao extends BaseMapper<XryUserApplicantEntity> 
      * @param userId
      */
     void removeUserCourseByUserId(@Param("userId") String userId);
+
+    /**
+     * app保存用户课程学习进度
+     * @param params
+     */
+    void addCourseStudyProgress(@Param("params") Map<String, Object> params);
 }

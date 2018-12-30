@@ -37,5 +37,10 @@ public interface XryCourseCatalogDao extends BaseMapper<XryCourseCatalogEntity> 
      */
     List<XryCourseCatalogEntity> treeCourseCatalog(Long courseId);
 
-
+    /**
+     * 判断与之关联的“目录”的资料是否已填
+     * @param id
+     * @return
+     */
+    List<XryCourseCatalogEntity> judeCatalogIsFullByCourseId(@Param("id") Long id);
 }

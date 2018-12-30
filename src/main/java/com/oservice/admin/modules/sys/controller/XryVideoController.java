@@ -6,7 +6,9 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryVideoEntity;
+import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryRecordService;
 import com.oservice.admin.modules.sys.service.XryVideoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,6 +30,8 @@ import java.util.Map;
 public class XryVideoController extends AbstractController {
     @Resource
     private XryVideoService xryVideoService;
+    @Resource
+    private XryCourseService xryCourseService;
 
     /**
      * 查询视频列表
@@ -102,9 +106,15 @@ public class XryVideoController extends AbstractController {
     @RequiresPermissions("xry:video:update")
     public Result update(@RequestBody XryVideoEntity video) {
         ValidatorUtils.validateEntity(video, UpdateGroup.class);
-        xryVideoService.update(video);
-        // 视频修改后重置为未审核
-        video.setStatus(1);
+        // 修改视频（或者目录）之前要先判断与之关联的课程有没有上架（如果是上架则不能修改）
+        XryCourseEntity course = xryCourseService.selectById(video.getCourseId());
+        if (3 == course.getStatus() || 4 == course.getStatus()) {
+            return Result.error(1, "视频所属课程“" + course.getTitle() + "”已通过审核，不能修改该视频");
+        } else {
+            xryVideoService.update(video);
+            // 视频修改后重置为未审核
+            video.setStatus(1);
+        }
         return Result.ok();
     }
 
@@ -117,7 +127,16 @@ public class XryVideoController extends AbstractController {
     @PostMapping("/delete")
     @RequiresPermissions("xry:video:delete")
     public Result delete(@RequestBody Long[] ids) {
-        xryVideoService.deleteBatch(ids);
+        // 删除视频之前要先判断与之关联的课程有没有上架（如果是上架则不能删除）
+        for (Long id : ids) {
+            XryVideoEntity video = xryVideoService.selectById(id);
+            XryCourseEntity course = xryCourseService.selectById(video.getCourseId());
+            if (3 == course.getStatus() || 4 == course.getStatus()) {
+                return Result.error(1, "视频所属课程“" + course.getTitle() + "”已通过审核，不能删除该视频");
+            } else {
+                xryVideoService.deleteBatch(ids);
+            }
+        }
         return Result.ok();
     }
 

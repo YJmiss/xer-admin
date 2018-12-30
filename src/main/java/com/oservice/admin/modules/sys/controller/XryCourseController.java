@@ -10,8 +10,10 @@ import com.oservice.admin.modules.app.service.SolrJService;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseDescEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
 import com.oservice.admin.modules.sys.service.XryCourseDescService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
+import com.oservice.admin.modules.sys.service.XryVideoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +43,10 @@ public class XryCourseController extends AbstractController {
 
     @Resource
     private XryCourseService xryCourseService;
+    @Resource
+    private XryCourseCatalogService xryCourseCatalogService;
+    @Resource
+    private XryVideoService xryVideoService;
     @Autowired
     private SolrJService solrJService;
     @Resource
@@ -114,8 +120,6 @@ public class XryCourseController extends AbstractController {
     @RequiresPermissions("xry:course:update")
     public Result update(@RequestBody Map<String, Object> params){
         ValidatorUtils.validateEntity(params, UpdateGroup.class);
-        // 所有修改后的课程都需要重新审核
-//        course.setStatus(1);
         xryCourseService.update(params);
         return Result.ok();
     }
@@ -164,11 +168,29 @@ public class XryCourseController extends AbstractController {
     @RequiresPermissions("xry:course:addToCourse")
     public Result addToCourse(@RequestBody Long[] ids) {
         boolean br = false;
-        // 课程上架之前先判断课程是否已经审核 审核状态：1、2、4
         for (Long id:ids) {
             XryCourseEntity xryCourseEntity = xryCourseService.queryById(id);
+            // 课程上架之前先判断课程是否已经审核，审核状态：1、2、4
             if (1 == xryCourseEntity.getStatus() || 2 == xryCourseEntity.getStatus()) {
                 return Result.error("所选记录中有未审核的课程，请先审核通过该课程再进行此操作");
+            }
+            // 判断与之关联的“目录”的资料是否已填
+            List<XryCourseCatalogEntity> courseCatalogList = xryCourseCatalogService.judeCatalogIsFullByCourseId(id);
+            if (courseCatalogList.size() <= 0) {
+                return Result.error("课程还未上传目录");
+            } else {
+                for (XryCourseCatalogEntity courseCatalog : courseCatalogList) {
+                    Long catalogId = courseCatalog.getId();
+                    // 判断与之关联的“视频”的资料是否已填
+                    XryVideoEntity video = xryVideoService.judeVideoIsFullByCourseId(catalogId);
+                    if (null == video) {
+                        return Result.error("课程的目录“"+ courseCatalog.getTitle() +"”还未上传视频");
+                    } else {
+                        if (1 == video.getStatus() || 2 == video.getStatus() || 4 == video.getStatus()) {
+                            return Result.error("课程的目录“"+ courseCatalog.getTitle() +"”的视频"+ video.getTitle() +"还未通过审核");
+                        }
+                    }
+                }
             }
             br = solrJService.addIndexById(id);
         }

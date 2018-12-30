@@ -318,4 +318,27 @@ public class AppCourseController extends AbstractController {
         recordtimeService.addStudyTime(courseId, videoId, studyTime, sumTime, getAppUserId());
         return Result.ok();
     }
+
+    @SysLog("app保存用户课程学习进度")
+    @PostMapping("/addCourseStudyProgress")
+    @ApiOperation(value = "app保存用户课程学习进度", notes = "courseId：课程id；studyProgress：学习进度；需要在请求头里待token")
+    public Result addCourseStudyProgress(@RequestParam long courseId, long studyProgress, HttpServletRequest request) {
+        String accessToken = request.getHeader("token");
+        Integer isLogin = 0;
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity != null || tokenEntity.getExpireTime().getTime() > System.currentTimeMillis()) {
+                isLogin = 1;
+                XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+                String userId = users.getId();
+                Map<String, Object> params = new HashMap<>();
+                params.put("userId", userId);
+                params.put("courseId", courseId);
+                params.put("studyProgress", studyProgress);
+                xryUserApplicantService.addCourseStudyProgress(params);
+            }
+        }
+        return Result.ok().put("isLogin", isLogin);
+    }
+    
 }

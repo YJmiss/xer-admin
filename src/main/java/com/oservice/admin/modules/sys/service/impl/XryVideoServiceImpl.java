@@ -82,4 +82,9 @@ public class XryVideoServiceImpl extends ServiceImpl<XryVideoDao, XryVideoEntity
         params.put("status",action);
         baseMapper.recordExamineInfo(params);
     }
+
+    @Override
+    public XryVideoEntity judeVideoIsFullByCourseId(Long catalogId) {
+        return baseMapper.judeVideoIsFullByCourseId(catalogId);
+    }
 }

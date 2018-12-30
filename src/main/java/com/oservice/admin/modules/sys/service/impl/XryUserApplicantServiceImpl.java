@@ -78,4 +78,9 @@ public class XryUserApplicantServiceImpl extends ServiceImpl<XryUserApplicantDao
         baseMapper.removeUserCourseByUserId(userId);
     }
 
+    @Override
+    public void addCourseStudyProgress(Map<String, Object> params) {
+        baseMapper.addCourseStudyProgress(params);
+    }
+
 }

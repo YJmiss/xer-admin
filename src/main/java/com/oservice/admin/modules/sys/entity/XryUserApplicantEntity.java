@@ -35,6 +35,10 @@ public class XryUserApplicantEntity implements Serializable {
      */
     private Integer objStatus;
     /**
+     * 学习进度
+     */
+    private Integer studyProgress;
+    /**
      * 报名时间
      */
     private Date createTime;
@@ -78,6 +82,10 @@ public class XryUserApplicantEntity implements Serializable {
     public void setObjStatus(Integer objStatus) {
         this.objStatus = objStatus;
     }
+
+    public Integer getStudyProgress() { return studyProgress; }
+
+    public void setStudyProgress(Integer studyProgress) { this.studyProgress = studyProgress; }
 
     public Date getCreateTime() {
         return createTime;
