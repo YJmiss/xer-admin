@@ -3,19 +3,12 @@ package com.oservice.admin.modules.sys.controller;
 import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
-import com.oservice.admin.common.validator.ValidatorUtils;
-import com.oservice.admin.common.validator.group.AddGroup;
-import com.oservice.admin.common.validator.group.UpdateGroup;
-import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
-import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 import com.oservice.admin.modules.sys.service.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -93,6 +86,14 @@ public class XryRecordController extends AbstractController {
         Long userId = getUserId();
         xryRecordService.recordExamine(record,userId);
         return Result.ok("操作成功");
+    }
+
+    @SysLog("详情")
+    @GetMapping("/detail")
+    @RequiresPermissions("xry:record:detail")
+    public Result delete(Long recordId) {
+        String detailBatch = xryRecordService.detailBatch(recordId);
+        return Result.ok().put("detailBatch", detailBatch);
     }
 
 }

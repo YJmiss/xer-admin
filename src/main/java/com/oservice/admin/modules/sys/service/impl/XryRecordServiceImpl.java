@@ -77,4 +77,9 @@ public class XryRecordServiceImpl extends ServiceImpl<XryRecordDao, XryRecordEnt
         baseMapper.insert(record);
     }
 
+    @Override
+    public String detailBatch(Long id) {
+        return baseMapper.setDetailById(id);
+    }
+
 }

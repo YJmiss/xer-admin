@@ -2,7 +2,6 @@ package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
-import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,4 +30,6 @@ public interface XryRecordDao extends BaseMapper<XryRecordEntity> {
      * @return
      */
     List<Map<String, Object>> pageList(@Param("params") Map<String,Object> map);
+
+    String setDetailById(Long id);
 }

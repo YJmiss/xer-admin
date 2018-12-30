@@ -33,5 +33,8 @@
             limit ${params.pageNo},${params.pageSize}
         </if>
     </select>
-    
+
+    <select id="setDetailById" parameterType="long" resultType="string">
+        select detail from xry_record where record_id=#{recordId}
+    </select>
 </mapper>
