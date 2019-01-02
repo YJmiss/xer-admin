@@ -134,11 +134,14 @@ public class XryCourseController extends AbstractController {
     @PostMapping("/delete")
     @RequiresPermissions("xry:course:delete")
     public Result delete(@RequestBody Long[] ids){
-        // 删除课程，同事删除课程对应的课程描述和课程目录
+        // 删除课程，检查课程是否存在课程目录
         for (Long id : ids) {
             XryCourseCatalogEntity xryCourseCatalogEntity = xryCourseService.queryCourseCatalogByCourseId(id);
             if (null != xryCourseCatalogEntity) {
                 return Result.error("请先删除该课程下的课程目录");
+            } else {
+                // 同时删除课程下的课程描述
+                xryCourseDescService.deleteById(id);
             }
             solrJService.deleteIndexById(id);
         }

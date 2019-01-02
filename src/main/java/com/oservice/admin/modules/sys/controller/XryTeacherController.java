@@ -54,9 +54,9 @@ public class XryTeacherController extends AbstractController {
      * @return
      */
     @SysLog("保存讲师资料")
-    @PostMapping("/updateTeacher")
-    @RequiresPermissions("xry:teacher:updateTeacher")
-    public Result updateTeacher(@RequestBody XryTeacherEntity xryTeacherEntity){
+    @PostMapping("/addTeacherInfo")
+    @RequiresPermissions("xry:teacher:addTeacherInfo")
+    public Result addTeacherInfo(@RequestBody XryTeacherEntity xryTeacherEntity){
         ValidatorUtils.validateEntity(xryTeacherEntity, AddGroup.class);
         xryTeacherService.updateById(xryTeacherEntity);
         return Result.ok();
@@ -142,5 +142,7 @@ public class XryTeacherController extends AbstractController {
         xryTeacherService.updateTeacherRecommend(params);
         return Result.ok();
     }
+
+    
     
 }

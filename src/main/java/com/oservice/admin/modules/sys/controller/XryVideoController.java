@@ -111,9 +111,9 @@ public class XryVideoController extends AbstractController {
         if (3 == course.getStatus() || 4 == course.getStatus()) {
             return Result.error(1, "视频所属课程“" + course.getTitle() + "”已通过审核，不能修改该视频");
         } else {
-            xryVideoService.update(video);
             // 视频修改后重置为未审核
             video.setStatus(1);
+            xryVideoService.update(video);
         }
         return Result.ok();
     }

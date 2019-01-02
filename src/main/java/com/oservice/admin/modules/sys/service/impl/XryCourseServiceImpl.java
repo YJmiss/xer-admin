@@ -117,9 +117,9 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         XryCourseEntity course = obj.convertValue(params.get("course"), XryCourseEntity.class);
         XryCourseDescEntity courseDesc = obj.convertValue(params.get("courseDesc"), XryCourseDescEntity.class);
         course.setUpdated(new Date());
-        baseMapper.updateById(course);
         // 所有修改后的课程都需要重新审核
         course.setStatus(1);
+        baseMapper.updateById(course);
         xryCourseDescService.update(courseDesc);
 	}
 
