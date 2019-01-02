@@ -42,5 +42,5 @@ public interface XryVideoDao extends BaseMapper<XryVideoEntity> {
      * @param catalogId
      * @return
      */
-    XryVideoEntity judeVideoIsFullByCourseId(@Param("id") Long catalogId);
+    List<XryVideoEntity> judeVideoIsFullByCourseId(@Param("id") Long catalogId);
 }

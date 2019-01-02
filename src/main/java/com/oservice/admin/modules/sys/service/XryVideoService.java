@@ -5,6 +5,7 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,5 +64,5 @@ public interface XryVideoService extends IService<XryVideoEntity> {
      * @param catalogId
      * @return
      */
-    XryVideoEntity judeVideoIsFullByCourseId(Long catalogId);
+    List<XryVideoEntity> judeVideoIsFullByCourseId(Long catalogId);
 }

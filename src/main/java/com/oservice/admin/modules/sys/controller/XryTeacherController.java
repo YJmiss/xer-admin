@@ -87,6 +87,18 @@ public class XryTeacherController extends AbstractController {
     }
 
     /**
+     * 讲师信息查询
+     * @param id
+     * @return
+     */
+    @GetMapping("/detail")
+    @RequiresPermissions("xry:teacher:detail")
+    public Result detail(@RequestParam Long id) {
+        Map<String, Object> teacher = xryTeacherService.queryById(id);
+        return Result.ok().put("teacher", teacher);
+    }
+
+    /**
      * 删除讲师
      * @param ids
      * @return

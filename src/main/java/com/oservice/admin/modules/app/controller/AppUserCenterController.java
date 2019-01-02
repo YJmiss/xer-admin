@@ -129,8 +129,8 @@ public class AppUserCenterController extends AbstractController {
             // 关注的讲师数
             userApplicantCount = xryTeacherService.countUserApplicantByUserId(userId);
             // 购物车数量
-//            List<AppCartEntity> cartList = cartService.getCartListFromRedis(xryUserService.selectById(userId));
-//            userCartCount = cartList.size();
+            List<AppCartEntity> cartList = cartService.getCartListFromRedis(xryUserService.selectById(userId));
+            userCartCount = cartList.size();
             // 查询用户头像
             userInfo = xryUserService.selectById(userId);
         }

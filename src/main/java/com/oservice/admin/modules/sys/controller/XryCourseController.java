@@ -183,12 +183,14 @@ public class XryCourseController extends AbstractController {
                 for (XryCourseCatalogEntity courseCatalog : courseCatalogList) {
                     Long catalogId = courseCatalog.getId();
                     // 判断与之关联的“视频”的资料是否已填
-                    XryVideoEntity video = xryVideoService.judeVideoIsFullByCourseId(catalogId);
-                    if (null == video) {
+                    List<XryVideoEntity> videoList = xryVideoService.judeVideoIsFullByCourseId(catalogId);
+                    if (videoList.size() <= 0) {
                         return Result.error("课程的目录“"+ courseCatalog.getTitle() +"”还未上传视频");
                     } else {
-                        if (1 == video.getStatus() || 2 == video.getStatus() || 4 == video.getStatus()) {
-                            return Result.error("课程的目录“"+ courseCatalog.getTitle() +"”的视频"+ video.getTitle() +"还未通过审核");
+                        for (XryVideoEntity video : videoList) {
+                            if (1 == video.getStatus() || 2 == video.getStatus() || 4 == video.getStatus()) {
+                                return Result.error("课程的目录“"+ courseCatalog.getTitle() +"”的视频"+ video.getTitle() +"还未通过审核");
+                            }
                         }
                     }
                 }

@@ -84,7 +84,7 @@ public class XryVideoServiceImpl extends ServiceImpl<XryVideoDao, XryVideoEntity
     }
 
     @Override
-    public XryVideoEntity judeVideoIsFullByCourseId(Long catalogId) {
+    public List<XryVideoEntity> judeVideoIsFullByCourseId(Long catalogId) {
         return baseMapper.judeVideoIsFullByCourseId(catalogId);
     }
 }
