@@ -31,8 +31,12 @@ public class XryOrganizationServiceImpl extends ServiceImpl<XryOrganizationDao, 
         String organizationName = (String) params.get("organizationName");
         String corporateName = (String) params.get("corporateName");
         String status = (String) params.get("status");
-        map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
-        map.put("pageSize",pageSize);
+        if (StringUtils.isNotBlank(pageNo)) {
+            map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
+        }
+        if (StringUtils.isNotBlank(pageSize)) {
+            map.put("pageSize",pageSize);
+        }
         if (null != organizationName && !"".equals(organizationName)) {
             map.put("organizationName", "%" + organizationName + "%");
         }

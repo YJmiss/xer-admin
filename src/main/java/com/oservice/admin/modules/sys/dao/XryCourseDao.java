@@ -103,7 +103,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * 查询用户已经选择喜好的课程
      * @return
      */
-    XryRecommendEntity listRecommendCourseCatByUserId(Map<String, Object> params);
+    XryRecommendEntity listRecommendCourseCatByUserId(@Param("params") Map<String, Object> params);
 
     /**
      * 用户喜好添加

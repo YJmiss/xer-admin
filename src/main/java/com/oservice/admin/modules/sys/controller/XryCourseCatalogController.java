@@ -8,7 +8,10 @@ import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
 import com.oservice.admin.modules.sys.entity.XryContentEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
+import com.oservice.admin.modules.sys.service.XryCourseService;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +33,8 @@ import java.util.Map;
 public class XryCourseCatalogController extends AbstractController {
     @Resource
     private XryCourseCatalogService xryCourseCatalogService;
+    @Resource
+    private XryCourseService xryCourseService;
 
     /**
      * 查询课程目录列表                                                             
@@ -80,7 +85,14 @@ public class XryCourseCatalogController extends AbstractController {
     @RequiresPermissions("xry:course:catalog:update")
     public Result update(@RequestBody XryCourseCatalogEntity courseCatalog){
         ValidatorUtils.validateEntity(courseCatalog, UpdateGroup.class);
-        xryCourseCatalogService.update(courseCatalog);
+        // 修改视频（或者目录）之前要先判断与之关联的课程有没有上架（如果是上架则不能修改）
+        XryCourseEntity course = xryCourseService.selectById(courseCatalog.getCourseid());
+        if (3 == course.getStatus() || 4 == course.getStatus()) {
+            return Result.error(1, "目录所属课程“" + course.getTitle() + "”已通过审核，不能修改该目录，请先下架该课程");
+        } else {
+            // 目录修改后重置为未审核
+            xryCourseCatalogService.update(courseCatalog);
+        }
         return Result.ok();
     }
 
@@ -93,7 +105,16 @@ public class XryCourseCatalogController extends AbstractController {
     @PostMapping("/delete")
     @RequiresPermissions("xry:course:catalog:delete")
     public Result delete(@RequestBody Long[] ids){
-        xryCourseCatalogService.deleteBatch(ids);
+        // 修改目录之前要先判断与之关联的课程有没有上架（如果是上架则不能修改）
+        for (Long id : ids) {
+            XryCourseCatalogEntity courseCatalog = xryCourseCatalogService.selectById(id);
+            XryCourseEntity course = xryCourseService.selectById(courseCatalog.getCourseid());
+            if (4 == course.getStatus()) {
+                return Result.error(1, "目录所属课程“" + course.getTitle() + "”已上架，不能删除该目录，请先下架该课程");
+            } else {
+                xryCourseCatalogService.deleteBatch(ids);
+            }
+        }
         return Result.ok();
     }
 

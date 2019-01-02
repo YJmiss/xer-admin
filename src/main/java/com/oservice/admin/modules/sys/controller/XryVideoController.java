@@ -106,10 +106,10 @@ public class XryVideoController extends AbstractController {
     @RequiresPermissions("xry:video:update")
     public Result update(@RequestBody XryVideoEntity video) {
         ValidatorUtils.validateEntity(video, UpdateGroup.class);
-        // 修改视频（或者目录）之前要先判断与之关联的课程有没有上架（如果是上架则不能修改）
+        // 修改视频之前要先判断与之关联的课程有没有上架（如果是上架则不能修改）
         XryCourseEntity course = xryCourseService.selectById(video.getCourseId());
         if (3 == course.getStatus() || 4 == course.getStatus()) {
-            return Result.error(1, "视频所属课程“" + course.getTitle() + "”已通过审核，不能修改该视频");
+            return Result.error(1, "视频所属课程“" + course.getTitle() + "”已通过审核，不能修改该视频，请先下架该课程");
         } else {
             // 视频修改后重置为未审核
             video.setStatus(1);
@@ -132,7 +132,7 @@ public class XryVideoController extends AbstractController {
             XryVideoEntity video = xryVideoService.selectById(id);
             XryCourseEntity course = xryCourseService.selectById(video.getCourseId());
             if (4 == course.getStatus()) {
-                return Result.error(1, "视频所属课程“" + course.getTitle() + "”已上架，不能删除该视频");
+                return Result.error(1, "视频所属课程“" + course.getTitle() + "”已上架，不能删除该视频，请先下架该课程");
             } else {
                 xryVideoService.deleteBatch(ids);
             }

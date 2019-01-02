@@ -130,9 +130,8 @@
         </foreach>
     </update>
     <!--查询用户已经选择喜好的课程-->
-    <select id="listRecommendCourseCatByUserId" parameterType="java.util.Map"
-            resultType="com.oservice.admin.modules.sys.entity.XryRecommendEntity">
-      select * from xry_recommend where user_id = #{userId}
+    <select id="listRecommendCourseCatByUserId" parameterType="java.util.Map" resultType="com.oservice.admin.modules.sys.entity.XryRecommendEntity">
+      select * from xry_recommend where user_id = #{params.userId}
     </select>
     <!--用户喜好添加-->
     <insert id="appInsertRecommend" parameterType="java.util.Map">
