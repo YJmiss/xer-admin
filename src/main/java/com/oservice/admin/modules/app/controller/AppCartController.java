@@ -81,7 +81,6 @@ public class AppCartController extends AbstractController {
                     isBuy = 1;
                 }
                 cartEntity.setIsCollect(isBuy);
-                cartList.add(cartEntity);
             }
         }
         map.put("cartList", cartList);

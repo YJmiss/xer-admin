@@ -42,5 +42,5 @@ public interface XryUserCollectDao extends BaseMapper<XryUserCollectEntity> {
      * @param params
      * @return
      */
-    Map<String, Object> isCollectByUserIdAndObjId(Map<String, Object> params);
+    Map<String, Object> isCollectByUserIdAndObjId(@Param("params") Map<String, Object> params);
 }

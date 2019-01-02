@@ -14,7 +14,7 @@
     </select>
     <!--判断用户是否已经收藏了该课程-->
     <select id="isCollectByUserIdAndObjId" parameterType="java.util.Map" resultType="java.util.Map">
-      select * from xry_user_collect where obj_id = #{params.objId} and user_id = #${params.userId} and obj_type = 1 and obj_status = 1
+      select * from xry_user_collect where obj_id = #{params.objId} and user_id = #{params.userId} and obj_type = 1 and obj_status = 1
     </select>
 
 </mapper>
