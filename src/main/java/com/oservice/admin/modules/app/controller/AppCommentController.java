@@ -70,7 +70,7 @@ public class AppCommentController extends AbstractController {
      * @return
      */
     @GetMapping("/comment/queryCommentById")
-    @ApiOperation(value = "", notes = "")
+    @ApiOperation(value = "app端进入评论详情", notes = "app端进入评论详情")
     public Result queryCommentById(@RequestParam Long commentId) {
 //        XryCommentEntity comment = xryCommentService.queryById(commentId);
         return Result.ok();

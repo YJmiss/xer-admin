@@ -87,7 +87,7 @@ public class XryCommentServiceImpl extends ServiceImpl<XryCommentDao, XryComment
         // 取出app传过来的参数
         String objId = (String) params.get("objId");
         Integer type = (Integer) params.get("type");
-        Integer starLevel = (Integer) params.get("starLevel");
+        Integer starLevel = (Integer) params.get("starLevel") * 2;
         String detail = (String) params.get("detail");
 
         XryCommentEntity comment = new XryCommentEntity();
