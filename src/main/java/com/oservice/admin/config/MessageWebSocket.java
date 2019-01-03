@@ -1,18 +1,9 @@
 package com.oservice.admin.config;
 
-import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
-import com.oservice.admin.modules.sys.entity.XryUserEntity;
-import com.oservice.admin.modules.sys.service.ShiroService;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
