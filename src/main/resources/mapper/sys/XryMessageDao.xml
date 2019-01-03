@@ -97,5 +97,15 @@
     <select id="listSystemMessage" resultType="java.util.Map">
         select * from xry_message where msg_type = 3 order by read_status asc
     </select>
+    <!--查询消息对象信息返回（如有需要）-->
+    <select id="readUserMessageByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+      select xm.*, xc.id as courseId, xc.title as courseTitle, xt.id as teacherId, xt.real_name as teacherName
+      from xry_message xm left join xry_course xc on xm.obj_id=xc.id
+      left join xry_teacher xt on xm.obj_id=xt.id where xm.status = 1 and xm.id = #{params.messageId}
+    </select>
+    <!--读取消息后，把置为已读状态（字段read_status设为1）-->
+    <update id="updateReadStatusByMessageId" parameterType="java.util.Map">
+      update xry_message set read_status = 1 where id = #{messageId}
+    </update>
     
 </mapper>

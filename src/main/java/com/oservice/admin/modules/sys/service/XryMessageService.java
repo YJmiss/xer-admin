@@ -113,4 +113,17 @@ public interface XryMessageService extends IService<XryMessageEntity> {
      * @return
      */
     List<Map<String, Object>> listSystemMessage();
+
+    /**
+     * 查询消息对象信息返回（如有需要）
+     * @param params
+     * @return
+     */
+    Map<String, Object> readUserMessageByUserId(Map<String, Object> params);
+
+    /**
+     * 读取消息后，把置为已读状态（字段read_status设为1）
+     * @param messageId
+     */
+    void updateReadStatusByMessageId(Long messageId);
 }

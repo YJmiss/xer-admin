@@ -120,6 +120,9 @@ public class AppUserCenterController extends AbstractController {
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
             XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
             String userId = users.getId();
             // 查询用户课程未读消息数（课程消息、我关注的）

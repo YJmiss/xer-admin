@@ -184,9 +184,7 @@ public class AppCourseController extends AbstractController {
     @PostMapping("/appQueryCourseDetailByCourseId")
     @ApiOperation(value="课程详情->课程详细信息",notes="courseId：是课程id，必填")
     public Result appQueryCourseDetailByCourseId(@RequestParam Long courseId, HttpServletRequest request) {
-        if (null == courseId) {
-            return Result.error(1, "查询出错");
-        }
+        if (null == courseId) return Result.error(1, "查询出错"); 
         Map<String, Object> detail = new HashMap<>();
         // 查询"课程详情"
         Map<String, Object> courseDetailContent = xryCourseService.queryCourseDetailByCourseId(courseId);
@@ -232,7 +230,6 @@ public class AppCourseController extends AbstractController {
     @PostMapping("/appListCourseCatalogByCourseId")
     @ApiOperation(value="课程详情->课程所有目录列表",notes="courseId：是课程id，必填")
     public Result appListCourseCatalogByCourseId(@RequestParam Long courseId, HttpServletRequest request) {
-        Map<String, Object> detail = new HashMap<>();
         String accessToken = request.getHeader("token");
         String userId = "";
         if (StringUtils.isNotBlank(accessToken)) {
@@ -251,7 +248,6 @@ public class AppCourseController extends AbstractController {
             Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseId(courseId);
             return Result.ok(courseCatalogList);
         } else {
-            // 查询课程"目录"
             Map<String, Object> courseCatalogList = xryCourseService.listCourseCatalogByCourseIdAndUsherId(courseId, userId);
             return Result.ok(courseCatalogList);
         }

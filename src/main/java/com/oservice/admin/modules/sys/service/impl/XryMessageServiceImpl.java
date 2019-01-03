@@ -110,4 +110,14 @@ public class XryMessageServiceImpl extends ServiceImpl<XryMessageDao, XryMessage
         return baseMapper.listSystemMessage();
     }
 
+    @Override
+    public Map<String, Object> readUserMessageByUserId(Map<String, Object> params) {
+        return baseMapper.readUserMessageByUserId(params);
+    }
+
+    @Override
+    public void updateReadStatusByMessageId(Long messageId) {
+        baseMapper.updateReadStatusByMessageId(messageId);
+    }
+
 }

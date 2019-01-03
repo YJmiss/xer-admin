@@ -88,7 +88,7 @@ public class AppTeacherController extends AbstractController {
      */
     @SysLog("app查询'明星讲师'列表")
     @PostMapping("/appListStarTeacherByUserId")
-    @ApiOperation(value="首页明星讲师列表",notes="不需要任何参数")
+    @ApiOperation(value="首页明星讲师列表",notes="不需要任何参数，不考虑分页")
     public Result appListStarTeacherByUserId() {
         Map<String, Object> params = new HashMap<>();
         params.put("pageSize",6);
@@ -139,8 +139,15 @@ public class AppTeacherController extends AbstractController {
     @SysLog("app端用户取消已经关注的讲师")
     @PostMapping("/appDelTeacherById")
     @ApiOperation(value="用户取消已经关注的讲师的操作接口",notes="attentionId：是用户关注表中对应讲师的id，必填；teacherId：是被关注的讲师id，必填")
-    public Result appDelTeacherById(@RequestParam Long attentionId, String teacherId) {
+    public Result appDelTeacherById(@RequestParam Long attentionId, String teacherId, HttpServletRequest request) {
         Map<String, Object> params = new HashMap<>();
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            }
+        }
         params.put("attentionId", attentionId);
         xryUserAttentionService.appDelTeacherById(params);
         // 给对应的讲师计数-1
