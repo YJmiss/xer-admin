@@ -126,4 +126,26 @@ public interface XryMessageService extends IService<XryMessageEntity> {
      * @param messageId
      */
     void updateReadStatusByMessageId(Long messageId);
+
+    /**
+     * 用户删除消息，根据消息id
+     * @param messageId
+     * @param userId
+     */
+    void addDelMsgByUserIdAndMsgId(Long messageId, String userId);
+
+    /**
+     * 根据userId查询删除记录表，集合返回msg_id
+     * @param userId
+     * @return
+     */
+    List<Long> listMsgIdByUserId(String userId);
+
+    /**
+     * 登录情况下，只查询用户没有删除的平台消息
+     * @param userId
+     * @param msgIdList
+     * @return
+     */
+    List<Map<String, Object>> listSystemMessageByUserId(String userId, List<Long> msgIdList);
 }
