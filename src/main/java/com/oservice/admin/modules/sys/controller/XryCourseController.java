@@ -141,7 +141,7 @@ public class XryCourseController extends AbstractController {
                 return Result.error("请先删除该课程下的课程目录");
             } else {
                 // 同时删除课程下的课程描述
-                xryCourseDescService.deleteById(id);
+                xryCourseDescService.deleteDescById(id);
             }
             solrJService.deleteIndexById(id);
         }

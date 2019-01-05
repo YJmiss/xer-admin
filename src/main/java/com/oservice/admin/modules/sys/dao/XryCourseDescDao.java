@@ -50,4 +50,10 @@ public interface XryCourseDescDao extends BaseMapper<XryCourseDescEntity> {
      */
     void deleteBatchIds(@Param("courseIds")List<Long> courseIds);
 
+    /**
+     * 重写删除
+     *
+     * @param id
+     */
+    void deleteDescById(Long id);
 }

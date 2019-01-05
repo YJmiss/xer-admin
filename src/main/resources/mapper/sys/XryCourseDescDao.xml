@@ -36,4 +36,7 @@
         </foreach>
     </delete>
 
+    <delete id="deleteDescById" parameterType="java.lang.Long">
+        delete  from xry_course_desc where course_id = #{id}
+    </delete>
 </mapper>

@@ -62,4 +62,9 @@ public class XryCourseDescServiceImpl extends ServiceImpl<XryCourseDescDao, XryC
 	public void deleteBatch(Long[] ids) {
         baseMapper.deleteBatchIds(Arrays.asList(ids));
 	}
+
+	@Override
+	public void deleteDescById(Long id) {
+		baseMapper.deleteDescById(id);
+	}
 }

@@ -46,4 +46,10 @@ public interface XryCourseDescService extends IService<XryCourseDescEntity> {
 	 */
 	void deleteBatch(Long[] ids);
 
+	/**
+	 * 课程描述删除
+	 *
+	 * @param id
+	 */
+	void deleteDescById(Long id);
 }
