@@ -3,6 +3,7 @@ package com.oservice.admin.modules.sys.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -59,4 +60,11 @@ public interface XryCourseCatalogService extends IService<XryCourseCatalogEntity
 	 * @param id
 	 */
 	List<XryCourseCatalogEntity> judeCatalogIsFullByCourseId(Long id);
+
+	/**
+	 * 删除目录之前判断目录是否存在视频
+	 * @param id
+	 * @return
+	 */
+    List<XryVideoEntity> listVideoByCatalogId(Long id);
 }

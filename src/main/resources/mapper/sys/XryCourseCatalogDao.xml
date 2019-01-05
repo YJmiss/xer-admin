@@ -41,5 +41,9 @@
     <select id="judeCatalogIsFullByCourseId" parameterType="java.lang.Long" resultType="com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity">
       select * from xry_course_catalog where courseid = #{id}
     </select>
+    <!--删除目录之前判断目录是否存在视频-->
+    <select id="listVideoByCatalogId" parameterType="java.lang.Long" resultType="com.oservice.admin.modules.sys.entity.XryVideoEntity">
+      select * from xry_video where catalog_id = #{id}
+    </select>
 
 </mapper>

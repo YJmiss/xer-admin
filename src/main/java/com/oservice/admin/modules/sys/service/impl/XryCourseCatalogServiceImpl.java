@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryCourseCatalogDao;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 import com.oservice.admin.modules.sys.service.XryCourseCatalogService;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -71,6 +72,11 @@ public class XryCourseCatalogServiceImpl extends ServiceImpl<XryCourseCatalogDao
 	@Override
 	public  List<XryCourseCatalogEntity> judeCatalogIsFullByCourseId(Long id) {
 		return baseMapper.judeCatalogIsFullByCourseId(id);
+	}
+
+	@Override
+	public List<XryVideoEntity> listVideoByCatalogId(Long id) {
+		return baseMapper.listVideoByCatalogId(id);
 	}
 
 }

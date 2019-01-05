@@ -2,6 +2,7 @@ package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.oservice.admin.modules.sys.entity.XryCourseCatalogEntity;
+import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -43,4 +44,11 @@ public interface XryCourseCatalogDao extends BaseMapper<XryCourseCatalogEntity> 
      * @return
      */
     List<XryCourseCatalogEntity> judeCatalogIsFullByCourseId(@Param("id") Long id);
+
+    /**
+     * 删除目录之前判断目录是否存在视频
+     * @param id
+     * @return
+     */
+    List<XryVideoEntity> listVideoByCatalogId(@Param("id") Long id);
 }

@@ -105,14 +105,20 @@ public class XryCourseCatalogController extends AbstractController {
     @PostMapping("/delete")
     @RequiresPermissions("xry:course:catalog:delete")
     public Result delete(@RequestBody Long[] ids){
-        // 修改目录之前要先判断与之关联的课程有没有上架（如果是上架则不能修改）
         for (Long id : ids) {
-            XryCourseCatalogEntity courseCatalog = xryCourseCatalogService.selectById(id);
-            XryCourseEntity course = xryCourseService.selectById(courseCatalog.getCourseid());
-            if (4 == course.getStatus()) {
-                return Result.error(1, "目录所属课程“" + course.getTitle() + "”已上架，不能删除该目录，请先下架该课程");
+            // 1、删除目录之前判断目录是否存在视频
+            List<XryVideoEntity> videoList = xryCourseCatalogService.listVideoByCatalogId(id);
+            if (videoList.size() > 0) {
+                return Result.error(1, "该目录下有视频信息，不能删除该目录，请先删除该目录下的视频");
             } else {
-                xryCourseCatalogService.deleteBatch(ids);
+                // 2、删除目录之前要先判断与之关联的课程有没有上架
+                XryCourseCatalogEntity courseCatalog = xryCourseCatalogService.selectById(id);
+                XryCourseEntity course = xryCourseService.selectById(courseCatalog.getCourseid());
+                if (4 == course.getStatus()) {
+                    return Result.error(1, "目录所属课程“" + course.getTitle() + "”已上架，不能删除该目录，请先下架该课程");
+                } else {
+                    xryCourseCatalogService.deleteBatch(ids);
+                }
             }
         }
         return Result.ok();
