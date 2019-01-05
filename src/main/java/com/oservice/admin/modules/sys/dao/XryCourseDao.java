@@ -58,7 +58,7 @@ public interface XryCourseDao extends BaseMapper<XryCourseEntity> {
      * @param id
      * @return
      */
-    XryCourseCatalogEntity queryCourseCatalogByCourseId(Long id);
+    List<XryCourseCatalogEntity> queryCourseCatalogByCourseId(Long id);
 
     /**
      * 查询课程描述

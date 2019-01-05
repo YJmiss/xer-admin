@@ -136,8 +136,8 @@ public class XryCourseController extends AbstractController {
     public Result delete(@RequestBody Long[] ids){
         // 删除课程，检查课程是否存在课程目录
         for (Long id : ids) {
-            XryCourseCatalogEntity xryCourseCatalogEntity = xryCourseService.queryCourseCatalogByCourseId(id);
-            if (null != xryCourseCatalogEntity) {
+            List<XryCourseCatalogEntity> xryCourseCatalogList = xryCourseService.queryCourseCatalogByCourseId(id);
+            if (xryCourseCatalogList.size() > 0) {
                 return Result.error("请先删除该课程下的课程目录");
             } else {
                 // 同时删除课程下的课程描述

@@ -67,7 +67,7 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 *
 	 * @return
 	 */
-	XryCourseCatalogEntity queryCourseCatalogByCourseId(Long id);
+	List<XryCourseCatalogEntity> queryCourseCatalogByCourseId(Long id);
 
 	/**
 	 * 查询课程描述
