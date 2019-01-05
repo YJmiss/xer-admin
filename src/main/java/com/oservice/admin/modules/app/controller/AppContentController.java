@@ -99,11 +99,16 @@ public class AppContentController extends AbstractController {
         String userId = "";
         Integer courseMessageCount = 0;
         Integer teacherMessageCount = 0;
+        Integer systemMessageCount = 0;
+        List<Map<String, Object>> systemMessageList = new ArrayList<>();
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-//                return Result.error(204, "token失效，请重新登录");
+//                systemMessageCount = xryMessageService.countSystemMessage();
+                // 没有登录的情况下，查询所有的平台消息
+                systemMessageList = xryMessageService.listSystemMessage();
+                if (systemMessageList.size() > 0) systemMessageCount = systemMessageList.size();
             } else {
                 XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
                 userId = users.getId();
@@ -111,9 +116,14 @@ public class AppContentController extends AbstractController {
                 // 1、查询用户课程未读消息数（课程消息、我关注的、平台消息）
                 courseMessageCount = xryMessageService.countCourseMessageByUserId(params);
                 teacherMessageCount = xryMessageService.countTeacherMessageByUserId(params);
+                // 根据userId查询删除记录表，集合返回msg_id
+                List<Long> msgIdList = xryMessageService.listMsgIdByUserId(userId);
+                // 登录情况下，只查询用户没有删除的平台消息
+                systemMessageList = xryMessageService.listSystemMessageByUserId(userId,msgIdList);
+                if (systemMessageList.size() > 0) systemMessageCount = systemMessageList.size();
             }
         }
-        Integer systemMessageCount = xryMessageService.countSystemMessage();
+
         // 2、未读消息总数
         Integer messageCount = courseMessageCount + teacherMessageCount + systemMessageCount;
         return Result.ok().put("messageSum", messageCount);
@@ -130,12 +140,15 @@ public class AppContentController extends AbstractController {
         String userId = "";
         Integer courseMessageCount = 0;
         Integer teacherMessageCount = 0;
+        Integer systemMessageCount = 0;
+        List<Map<String, Object>> systemMessageList = new ArrayList<>();
         List<Map<String, Object>> courseMessageList = null;
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-//                return Result.error(204, "token失效，请重新登录");
+                systemMessageList = xryMessageService.listSystemMessage();
+                if (systemMessageList.size() > 0) systemMessageCount = systemMessageList.size();
             } else {
                 XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
                 userId = users.getId();
@@ -145,9 +158,13 @@ public class AppContentController extends AbstractController {
                 teacherMessageCount = xryMessageService.countTeacherMessageByUserId(params);
                 // 2、查询用户课程消息列表，包括已读和未读
                 courseMessageList = xryMessageService.listCourseMessageByUserId(params);
+                // 根据userId查询删除记录表，集合返回msg_id
+                List<Long> msgIdList = xryMessageService.listMsgIdByUserId(userId);
+                // 登录情况下，只查询用户没有删除的平台消息
+                systemMessageList = xryMessageService.listSystemMessageByUserId(userId,msgIdList);
+                if (systemMessageList.size() > 0) systemMessageCount = systemMessageList.size();
             }
         }
-        Integer systemMessageCount = xryMessageService.countSystemMessage();
         List<Map<String, Object>> messageList = new ArrayList<>();
         Map<String, Object> courseMessageMap = new HashMap<>();
         courseMessageMap.put("messageTitle", "课程消息");
@@ -158,11 +175,14 @@ public class AppContentController extends AbstractController {
         Map<String, Object> teacherMessageMap = new HashMap<>();
         teacherMessageMap.put("messageTitle", "我关注的");
         teacherMessageMap.put("messageCount", teacherMessageCount);
+        List<Map<String, Object>> teacherMessageList = new ArrayList<>();
+        teacherMessageMap.put("teacherMessageList", teacherMessageList);
         messageList.add(teacherMessageMap);
 
         Map<String, Object> systemMessageMap = new HashMap<>();
         systemMessageMap.put("messageTitle", "平台消息");
         systemMessageMap.put("messageCount", systemMessageCount);
+        systemMessageMap.put("systemMessageList", systemMessageList);
         messageList.add(systemMessageMap);
         return Result.ok().put("messageList", messageList);
     }
@@ -206,11 +226,25 @@ public class AppContentController extends AbstractController {
      */
     @GetMapping("/message/querySystemMessageListAndCount")
     @ApiOperation(value = "平台消息列表", notes = "包括已读消息列表和未读消息列表")
-    public Result querySystemMessageListAndCount() {
+    public Result querySystemMessageListAndCount(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         Integer systemMessageCount = 0;
-        // 查询平台消息列表
-        List<Map<String, Object>> systemMessageList = xryMessageService.listSystemMessage();
+        List<Map<String, Object>> systemMessageList = new ArrayList<>();
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                // 没有登录的情况下，查询所有的平台消息
+                systemMessageList = xryMessageService.listSystemMessage();
+            } else {
+                XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+                String userId = users.getId();
+                // 根据userId查询删除记录表，集合返回msg_id
+                List<Long> msgIdList = xryMessageService.listMsgIdByUserId(userId);
+                // 登录情况下，只查询用户没有删除的平台消息
+                systemMessageList = xryMessageService.listSystemMessageByUserId(userId,msgIdList);
+            }
+        }
         if (systemMessageList.size() > 0) {
             systemMessageCount = systemMessageList.size();
         }
@@ -227,7 +261,7 @@ public class AppContentController extends AbstractController {
      */
     @GetMapping("/message/readUserMessageByUserId")
     @ApiOperation(value = "用户读消息，根据消息id", notes = "messageId：记录用户已读消息、未读消息的id，必填；flag：标识符，标识课程消息1、我的关注2、平台消息3，必填")
-    public Result ReadMessage(@RequestParam Long messageId, Integer flag, HttpServletRequest request) {
+    public Result readUserMessageByUserId(@RequestParam Long messageId, Integer flag, HttpServletRequest request) {
         Map<String, Object> params = new HashMap<>();
         if (1 == flag || 2 == flag) {
             // 课程消息、我的关注，需要有效的token
@@ -245,5 +279,30 @@ public class AppContentController extends AbstractController {
         // 读取消息后，把置为已读状态（字段read_status设为1）
         xryMessageService.updateReadStatusByMessageId(messageId);
         return Result.ok().put("message", message);
+    }
+
+    /**
+     * 用户读消息
+     * @param messageId
+     * @return
+     */
+    @GetMapping("/message/delUserMessageByUserId")
+    @ApiOperation(value = "用户删除消息，根据消息id", notes = "messageId：记录用户已读消息、未读消息的id，必填；flag：标识符，标识课程消息1、我的关注2、平台消息3，必填")
+    public Result delUserMessageByUserId(@RequestParam Long messageId, HttpServletRequest request) {
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+                return Result.error(204, "token失效，请重新登录");
+            } else {
+                XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+                userId = users.getId();
+                xryMessageService.addDelMsgByUserIdAndMsgId(messageId, userId);
+            }
+        } else {
+            return Result.error(203, "token为空，请重新登录");
+        }
+        return Result.ok();
     }
 }

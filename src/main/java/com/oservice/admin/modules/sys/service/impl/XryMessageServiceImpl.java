@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.dao.XryMessageDao;
+import com.oservice.admin.modules.sys.entity.XryDeleteMessageEntity;
 import com.oservice.admin.modules.sys.entity.XryMessageEntity;
 import com.oservice.admin.modules.sys.service.XryMessageService;
 import org.springframework.stereotype.Service;
@@ -118,6 +119,28 @@ public class XryMessageServiceImpl extends ServiceImpl<XryMessageDao, XryMessage
     @Override
     public void updateReadStatusByMessageId(Long messageId) {
         baseMapper.updateReadStatusByMessageId(messageId);
+    }
+
+    @Override
+    public void addDelMsgByUserIdAndMsgId(Long messageId, String userId) {
+        XryDeleteMessageEntity deleteMessage = new XryDeleteMessageEntity();
+        deleteMessage.setMsgId(messageId);
+        deleteMessage.setUserId(userId);
+        deleteMessage.setMsgStatus(1);
+        baseMapper.addDelMsgByUserIdAndMsgId(deleteMessage);
+    }
+
+    @Override
+    public List<Long> listMsgIdByUserId(String userId) {
+        return baseMapper.listMsgIdByUserId(userId);
+    }
+
+    @Override
+    public List<Map<String, Object>> listSystemMessageByUserId(String userId, List<Long> msgIdList) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("msgIdList", msgIdList);
+        return baseMapper.listSystemMessageByUserId(params);
     }
 
 }

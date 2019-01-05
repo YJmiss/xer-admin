@@ -1,6 +1,7 @@
 package com.oservice.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.oservice.admin.modules.sys.entity.XryDeleteMessageEntity;
 import com.oservice.admin.modules.sys.entity.XryMessageEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -107,5 +108,23 @@ public interface XryMessageDao extends BaseMapper<XryMessageEntity> {
      */
     void updateReadStatusByMessageId(@Param("messageId") Long messageId);
 
-    
+    /**
+     * 用户删除消息，根据消息id
+     * @param xryDeleteMessage
+     */
+    void addDelMsgByUserIdAndMsgId(XryDeleteMessageEntity xryDeleteMessage);
+
+    /**
+     * 根据userId查询删除记录表，集合返回msg_id
+     * @param userId
+     * @return
+     */
+    List<Long> listMsgIdByUserId(@Param("userId") String userId);
+
+    /**
+     * 登录情况下，只查询用户没有删除的平台消息
+     * @param params
+     * @return
+     */
+    List<Map<String, Object>> listSystemMessageByUserId(@Param("params") Map<String, Object> params);
 }
