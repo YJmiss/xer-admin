@@ -117,7 +117,7 @@ public class XryCourseCatalogController extends AbstractController {
                 if (4 == course.getStatus()) {
                     return Result.error(1, "目录所属课程“" + course.getTitle() + "”已上架，不能删除该目录，请先下架该课程");
                 } else {
-                    xryCourseCatalogService.deleteBatch(ids);
+                    xryCourseCatalogService.deleteById(id);
                 }
             }
         }
