@@ -12,7 +12,10 @@ import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -133,7 +136,9 @@ public class AppUserCenterController extends AbstractController {
             userApplicantCount = xryTeacherService.countUserApplicantByUserId(userId);
             // 购物车数量
             List<AppCartEntity> cartList = cartService.getCartListFromRedis(xryUserService.selectById(userId));
-            userCartCount = cartList.size();
+            if (cartList.size() > 0) {
+                userCartCount = cartList.size();
+            }
             // 查询用户头像
             userInfo = xryUserService.selectById(userId);
         }

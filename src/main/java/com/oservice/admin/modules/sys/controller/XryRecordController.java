@@ -4,6 +4,7 @@ import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.entity.XryRecordEntity;
+import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 import com.oservice.admin.modules.sys.service.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
@@ -96,4 +97,20 @@ public class XryRecordController extends AbstractController {
         return Result.ok().put("detailBatch", detailBatch);
     }
 
+    @SysLog("增加视频时长")
+    @GetMapping("/getDuration")
+    @RequiresPermissions("xry:record:getDuration")
+    public Result getDuration(Long videoId, Long videoTime) {
+        if (videoId == null) {
+            return Result.error(205, "视频ID不能为空，请联系管理员检查！");
+        }
+        if (videoTime == 0l || videoTime == null) {
+            return Result.error(203, "视频总时长不能为0，请认真观看视频，完成审核！");
+        }
+        XryVideoEntity xryVideoEntity = new XryVideoEntity();
+        xryVideoEntity.setId(videoId);
+        xryVideoEntity.setParamData(videoTime);
+        xryVideoService.update(xryVideoEntity);
+        return Result.ok();
+    }
 }

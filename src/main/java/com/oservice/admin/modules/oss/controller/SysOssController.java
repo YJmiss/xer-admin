@@ -2,7 +2,10 @@ package com.oservice.admin.modules.oss.controller;
 
 import com.google.gson.Gson;
 import com.oservice.admin.common.exception.GlobalException;
-import com.oservice.admin.common.utils.*;
+import com.oservice.admin.common.utils.ConfigConstant;
+import com.oservice.admin.common.utils.Constant;
+import com.oservice.admin.common.utils.PageUtils;
+import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AliyunGroup;
 import com.oservice.admin.common.validator.group.QcloudGroup;
@@ -21,7 +24,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -169,30 +171,19 @@ public class SysOssController {
     @ResponseBody
     public Result uploadVideo(@RequestParam("file") MultipartFile file) {
         Map map = new HashMap<>();
-        // 获取文件名
-        String fileName = file.getOriginalFilename();
-        // 获取文件后缀
-        String prefix = fileName.substring(fileName.lastIndexOf("."));
+        if (file.isEmpty()) {
+            throw new GlobalException("上传文件不能为空");
+        }
         //上传文件
         String url = FileUploader.fileUpload(file);
-        long videoTime = 0l;
-        try {
-            videoTime = ReadVideoTime.ReadVideoTime(file, prefix);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         if ("上传失败！".equals(url)) {
             return Result.error(203, "上传失败，联系管理员！！");
         }
         if (url.equals("")) {
             return Result.error(205, "上传成功，获取URL失败，请及时联系管理员手动添加！");
         }
-        if (videoTime == 0l) {
-            return Result.error(205, "上传成功，获取视频长度失败，请及时联系管理员手动添加！");
-        }
         url = "https://" + url;
         map.put("url", url);
-        map.put("paramData", videoTime);
         return Result.ok(map);
     }
 }

@@ -8,6 +8,7 @@ import com.oservice.admin.modules.sys.entity.XryRecordEntity;
 import com.oservice.admin.modules.sys.entity.XryVideoEntity;
 import com.oservice.admin.modules.sys.service.XryVideoService;
 import org.springframework.stereotype.Service;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +51,7 @@ public class XryVideoServiceImpl extends ServiceImpl<XryVideoDao, XryVideoEntity
         pageList.setRecords(courseList);
         return new PageUtils(pageList);
     }
+
 
     @Override
     public XryVideoEntity queryById(Long id) {

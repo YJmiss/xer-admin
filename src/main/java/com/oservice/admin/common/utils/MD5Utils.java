@@ -1,5 +1,6 @@
 package com.oservice.admin.common.utils;
 
+import javax.annotation.Resource;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,7 +10,8 @@ import java.util.Random;
  * 使用md5的算法进行加密
  */
 public class MD5Utils {
-
+    @Resource
+    private RedisUtils redisUtils;
     /**
      * 获取十六进制字符串形式的MD5摘要
      */
@@ -70,7 +72,6 @@ public class MD5Utils {
     }
 
     public static void main(String[] args) {
-        System.out.println(verify("123456", "81fb74f3626a47950e18ca25e4bc9fc48a5ac2351b807e01"));
     }
 
 }

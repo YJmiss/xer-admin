@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oservice.admin.common.solr.SearcherItem;
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.common.utils.UUIDUtils;
+import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.modules.app.entity.XryRecordtimeEntity;
 import com.oservice.admin.modules.app.service.RecordtimeService;
 import com.oservice.admin.modules.sys.dao.XryCourseDao;
@@ -35,6 +35,8 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     private XryCourseDescService xryCourseDescService;
     @Resource
     private RecordtimeService recordtimeService;
+    @Resource
+    private RedisUtils redisUtils;
 
     @Override
 	public PageUtils queryPage(Map<String, Object> params) {
@@ -103,8 +105,9 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         //XryCourseEntity course = (XryCourseEntity) params.get("course");
         // courseDesc =(XryCourseDescEntity) params.get("courseDesc");
         course.setCreated(new Date());
+        course.setStatus(1);
         course.setUpdated(new Date());
-        long next = UUIDUtils.next();
+        long next = Long.parseLong(redisUtils.getId());
         course.setId(next);
         courseDesc.setCourseId(next);
         baseMapper.insertCourse(course);
@@ -117,7 +120,7 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         XryCourseEntity course = obj.convertValue(params.get("course"), XryCourseEntity.class);
         XryCourseDescEntity courseDesc = obj.convertValue(params.get("courseDesc"), XryCourseDescEntity.class);
         course.setUpdated(new Date());
-        // 所有修改后的课程都需要重新审核
+        // 所有修改后的课程都需要重新审核+
         course.setStatus(1);
         baseMapper.updateById(course);
         xryCourseDescService.update(courseDesc);

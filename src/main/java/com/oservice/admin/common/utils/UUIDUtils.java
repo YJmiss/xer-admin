@@ -14,7 +14,7 @@ public class UUIDUtils {
     private static Date date = new Date();
     private static StringBuilder buf = new StringBuilder();
     private static int seq = 0;
-    private static final int ROTATION = 99999;
+    private static final int ROTATION = 9999;
 
     public static synchronized long next() {
         if (seq > ROTATION) seq = 0;

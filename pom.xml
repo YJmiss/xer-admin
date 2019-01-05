@@ -285,14 +285,15 @@
 			<artifactId>spring-boot-starter-websocket</artifactId>
 			<version>1.3.5.RELEASE</version>
 		</dependency>
-
-		<dependency>
-			<groupId>jack.jave</groupId>
-			<artifactId>jave</artifactId>
-			<version>1.0.2</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/src/main/resources/lib/jave-1.0.2.jar</systemPath>
-		</dependency>
+		<!--
+                <dependency>
+                    <groupId>jack.jave</groupId>
+                    <artifactId>jave</artifactId>
+                    <version>1.0.2</version>
+                    <scope>system</scope>
+                    <systemPath>${basedir}/src/main/resources/lib/jave-1.0.2.jar</systemPath>
+                </dependency>
+                -->
 
 	</dependencies>
 	<build>
