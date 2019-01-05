@@ -3,6 +3,7 @@ package com.oservice.admin.modules.app.controller;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.app.entity.AppCartEntity;
 import com.oservice.admin.modules.app.service.CartService;
+import com.oservice.admin.modules.oss.cloud.OSSFactory;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
@@ -12,17 +13,15 @@ import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.Part;
+import java.util.*;
 
 /**
  * 系统用户
@@ -260,6 +259,42 @@ public class AppUserCenterController extends AbstractController {
             }
         }
         return Result.ok().put("courseList", courseList);
+    }
+
+    /**
+     * app端图片上传到图片服务器
+     *
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/appUploadImg")
+    @ApiOperation(value = "app端图片上传到图片服务器", notes = "需要在请求头里加token参数")
+    public Result appUploadImg(MultipartHttpServletRequest multipartRequest) {
+        Map map = new HashMap<>();
+        try {
+            MultipartFile uploadFile = multipartRequest.getFile("file");
+            if (uploadFile == null) {
+                Collection<Part> parts = multipartRequest.getParts();
+                for (Iterator<Part> iterator = parts.iterator(); iterator.hasNext(); ) {
+                    Part part = iterator.next();
+                    //2.根据上传文件分析出基本后缀名
+                    String fileName = OSSFactory.generateFileName(part.getSubmittedFileName(), part.getContentType());
+                    //设置文件的保存路径
+                    //3.得到文件的内容（二进制数据）
+                    // 把InputStream转成byte[]
+                    byte[] fileByte = OSSFactory.inputStreamToByteArr(part.getInputStream());
+                    String url = OSSFactory.build().uploadSuffix(fileByte, fileName);
+                    map.put("url", url);
+                }
+                return Result.ok(map);
+            }
+            return Result.error(500, "上传失败文件服务器配置错误，联系管理员");
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("error", 1);
+            map.put("message", "图片上传失败！");
+        }
+        return Result.ok(map);
     }
 
 }
