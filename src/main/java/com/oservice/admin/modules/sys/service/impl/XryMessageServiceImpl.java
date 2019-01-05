@@ -143,4 +143,12 @@ public class XryMessageServiceImpl extends ServiceImpl<XryMessageDao, XryMessage
         return baseMapper.listSystemMessageByUserId(params);
     }
 
+    @Override
+    public Integer countSystemMessageByUserId(String userId, List<Long> msgIdList) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        params.put("msgIdList", msgIdList);
+        return baseMapper.countSystemMessageByUserId(params);
+    }
+
 }

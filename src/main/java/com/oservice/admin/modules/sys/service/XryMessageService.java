@@ -148,4 +148,12 @@ public interface XryMessageService extends IService<XryMessageEntity> {
      * @return
      */
     List<Map<String, Object>> listSystemMessageByUserId(String userId, List<Long> msgIdList);
+
+    /**
+     * 登录的情况下，查询用户没有删除的平台消息，并且是未读数量
+     * @param userId
+     * @param msgIdList
+     * @return
+     */
+    Integer countSystemMessageByUserId(String userId, List<Long> msgIdList);
 }

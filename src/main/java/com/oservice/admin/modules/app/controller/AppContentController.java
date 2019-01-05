@@ -100,15 +100,12 @@ public class AppContentController extends AbstractController {
         Integer courseMessageCount = 0;
         Integer teacherMessageCount = 0;
         Integer systemMessageCount = 0;
-        List<Map<String, Object>> systemMessageList = new ArrayList<>();
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-//                systemMessageCount = xryMessageService.countSystemMessage();
                 // 没有登录的情况下，查询所有的平台消息
-                systemMessageList = xryMessageService.listSystemMessage();
-                if (systemMessageList.size() > 0) systemMessageCount = systemMessageList.size();
+                systemMessageCount = xryMessageService.countSystemMessage();
             } else {
                 XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
                 userId = users.getId();
@@ -118,9 +115,9 @@ public class AppContentController extends AbstractController {
                 teacherMessageCount = xryMessageService.countTeacherMessageByUserId(params);
                 // 根据userId查询删除记录表，集合返回msg_id
                 List<Long> msgIdList = xryMessageService.listMsgIdByUserId(userId);
-                // 登录情况下，只查询用户没有删除的平台消息
-                systemMessageList = xryMessageService.listSystemMessageByUserId(userId,msgIdList);
-                if (systemMessageList.size() > 0) systemMessageCount = systemMessageList.size();
+                // 登录的情况下，查询用户没有删除的平台消息，并且是未读数量
+                systemMessageCount = xryMessageService.countSystemMessageByUserId(userId,msgIdList);
+                if (null == systemMessageCount) systemMessageCount = 0;
             }
         }
 
@@ -128,7 +125,7 @@ public class AppContentController extends AbstractController {
         Integer messageCount = courseMessageCount + teacherMessageCount + systemMessageCount;
         return Result.ok().put("messageSum", messageCount);
     }
-    
+
     /**
      * 进入消息中心->课程消息列表、课程未读消息
      * @return
@@ -147,8 +144,8 @@ public class AppContentController extends AbstractController {
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-                systemMessageList = xryMessageService.listSystemMessage();
-                if (systemMessageList.size() > 0) systemMessageCount = systemMessageList.size();
+                // 没有登录的情况下，查询所有的平台消息
+                systemMessageCount = xryMessageService.countSystemMessage();
             } else {
                 XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
                 userId = users.getId();
@@ -160,9 +157,9 @@ public class AppContentController extends AbstractController {
                 courseMessageList = xryMessageService.listCourseMessageByUserId(params);
                 // 根据userId查询删除记录表，集合返回msg_id
                 List<Long> msgIdList = xryMessageService.listMsgIdByUserId(userId);
-                // 登录情况下，只查询用户没有删除的平台消息
-                systemMessageList = xryMessageService.listSystemMessageByUserId(userId,msgIdList);
-                if (systemMessageList.size() > 0) systemMessageCount = systemMessageList.size();
+                // 登录的情况下，查询用户没有删除的平台消息，并且是未读数量
+                systemMessageCount = xryMessageService.countSystemMessageByUserId(userId,msgIdList);
+                if (null == systemMessageCount) systemMessageCount = 0;
             }
         }
         List<Map<String, Object>> messageList = new ArrayList<>();
@@ -236,17 +233,16 @@ public class AppContentController extends AbstractController {
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
                 // 没有登录的情况下，查询所有的平台消息
                 systemMessageList = xryMessageService.listSystemMessage();
+                systemMessageCount = xryMessageService.countSystemMessage();
             } else {
                 XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
                 String userId = users.getId();
                 // 根据userId查询删除记录表，集合返回msg_id
                 List<Long> msgIdList = xryMessageService.listMsgIdByUserId(userId);
-                // 登录情况下，只查询用户没有删除的平台消息
-                systemMessageList = xryMessageService.listSystemMessageByUserId(userId,msgIdList);
+                // 登录的情况下，查询用户没有删除的平台消息，并且是未读数量
+                systemMessageCount = xryMessageService.countSystemMessageByUserId(userId,msgIdList);
+                if (null == systemMessageCount) systemMessageCount = 0;
             }
-        }
-        if (systemMessageList.size() > 0) {
-            systemMessageCount = systemMessageList.size();
         }
         map.put("systemMessageList", systemMessageList);
         map.put("systemMessageCount", systemMessageCount);

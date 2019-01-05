@@ -127,4 +127,11 @@ public interface XryMessageDao extends BaseMapper<XryMessageEntity> {
      * @return
      */
     List<Map<String, Object>> listSystemMessageByUserId(@Param("params") Map<String, Object> params);
+
+    /**
+     * 登录的情况下，查询用户没有删除的平台消息，并且是未读数量
+     * @param params
+     * @return
+     */
+    Integer countSystemMessageByUserId(@Param("params") Map<String, Object> params);
 }
