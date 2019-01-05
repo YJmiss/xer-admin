@@ -108,8 +108,8 @@ public class XryVideoController extends AbstractController {
         ValidatorUtils.validateEntity(video, UpdateGroup.class);
         // 修改视频之前要先判断与之关联的课程有没有上架（如果是上架则不能修改）
         XryCourseEntity course = xryCourseService.selectById(video.getCourseId());
-        if (3 == course.getStatus() || 4 == course.getStatus()) {
-            return Result.error(1, "视频所属课程“" + course.getTitle() + "”已通过审核，不能修改该视频，请先下架该课程");
+        if (4 == course.getStatus()) {
+            return Result.error(1, "视频所属课程“" + course.getTitle() + "”已上架，不能修改该视频，请先下架该课程");
         } else {
             // 视频修改后重置为未审核
             video.setStatus(1);
