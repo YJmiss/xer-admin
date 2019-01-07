@@ -1,6 +1,7 @@
 package com.oservice.admin.modules.app.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @program: oservice
@@ -29,6 +30,18 @@ public class AppCartEntity implements Serializable {
      * 昵称
      */
     private String nickname;
+    /**
+     * 课程价格 默认0，单位为：元
+     */
+    private String appPrice;
+
+    public String getAppPrice() {
+        return new BigDecimal(price).divide(new BigDecimal(100)).setScale(2).toString();
+    }
+
+    public void setAppPrice(String appPrice) {
+        this.appPrice = appPrice;
+    }
 
     public Long getId() {
         return id;

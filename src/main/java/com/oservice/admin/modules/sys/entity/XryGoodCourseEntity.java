@@ -1,6 +1,7 @@
 package com.oservice.admin.modules.sys.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @program: oservice
@@ -13,6 +14,15 @@ public class XryGoodCourseEntity implements Serializable {
     private String title;
     private String image;
     private Long price;
+    private String appPrice;
+
+    public String getAppPrice() {
+        return new BigDecimal(price).divide(new BigDecimal(100)).setScale(2).toString();
+    }
+
+    public void setAppPrice(String appPrice) {
+        this.appPrice = appPrice;
+    }
     /**
      * 星级评分：2、4、6、8、10'
      */

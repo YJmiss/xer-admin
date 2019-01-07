@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,6 +189,9 @@ public class AppCourseController extends AbstractController {
         Map<String, Object> detail = new HashMap<>();
         // 查询"课程详情"
         Map<String, Object> courseDetailContent = xryCourseService.queryCourseDetailByCourseId(courseId);
+        Map<String, Object> detailContent = (Map<String, Object>) courseDetailContent.get("detailContent");
+        Long price = (Long) detailContent.get("price");
+        detailContent.put("appPrice", new BigDecimal(price).divide(new BigDecimal(100)).setScale(2).toString());
         detail.put("courseDetailContent", courseDetailContent);
         Integer isApplicant = 0;
         try {

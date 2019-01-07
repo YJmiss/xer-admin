@@ -63,7 +63,11 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Override
     public SysUserEntity queryUser(String userId) {
-        return sysUserDao.selectById(userId);
+        if (userId.length() > 30) {
+            return null;
+        } else {
+            return sysUserDao.selectById(userId);
+        }
     }
 
     @Override

@@ -1,22 +1,25 @@
 package com.oservice.admin.modules.app.controller;
 
 import com.oservice.admin.common.annotation.SysLog;
-import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
 import com.oservice.admin.modules.sys.entity.XryUserAttentionEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
-import com.oservice.admin.modules.sys.service.*;
+import com.oservice.admin.modules.sys.service.ShiroService;
+import com.oservice.admin.modules.sys.service.XryTeacherService;
+import com.oservice.admin.modules.sys.service.XryUserAttentionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.json.JSONObject;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,11 +191,15 @@ public class AppTeacherController extends AbstractController {
 
         // 3、她/他主讲的课程列表
         List<Map<String, Object>> teacherRelatedList = xryTeacherService.listTeacherCourseByTeacherId(teacherId);
+        for (Map<String, Object> teacherRelated : teacherRelatedList) {
+            Long price = (Long) teacherRelated.get("price");
+            String appPrice = new BigDecimal(price).divide(new BigDecimal(100)).setScale(2).toString();
+            teacherRelated.put("appPrice", appPrice);
+        }
         Map<String, Object> params = new HashMap<>();
         params.put("teacherDetail", teacherDetail);
         params.put("teacherRelatedList", teacherRelatedList);
         return Result.ok().put("teacherMainPage", params);
     }
-
 
 }
