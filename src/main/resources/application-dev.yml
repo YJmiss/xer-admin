@@ -4,9 +4,9 @@ spring:
         driverClassName: com.mysql.jdbc.Driver
         druid:
             first:  #数据源1
-                url: jdbc:mysql://localhost:3306/xry_v1.0?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+                url: jdbc:mysql://120.79.192.229:3306/xry_v1.0?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
                 username: root
-                password: root
+                password: Xey#3306Jhkf@
             second:  #数据源2
                 url: jdbc:mysql://localhost:3306/xry_v1.0?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
                 username: root

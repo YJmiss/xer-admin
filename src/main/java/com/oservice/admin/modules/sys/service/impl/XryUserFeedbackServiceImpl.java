@@ -73,10 +73,11 @@ public class XryUserFeedbackServiceImpl extends ServiceImpl<XryUserFeedbackDao, 
         String feedbackInfo = json.getString("feedbackInfo");
         List<String> imgs = new ArrayList<>();
         for (int i = 0; i < feedbackImg.length(); i++) {
-            String img = (String) feedbackImg.get(i);
-            imgs.add(img);
+            if (null != feedbackImg.get(i)) {
+                String img = (String) feedbackImg.get(i);
+                imgs.add(img);
+            }
         }
-        System.out.println(imgs);
 
         XryUserFeedbackEntity userFeedback = new XryUserFeedbackEntity();
         userFeedback.setFeedbackInfo(feedbackInfo);
