@@ -9,6 +9,7 @@ import com.oservice.admin.modules.sys.entity.XryUserCollectEntity;
 import com.oservice.admin.modules.sys.entity.XryUserFeedbackEntity;
 import com.oservice.admin.modules.sys.service.XryUserCollectService;
 import com.oservice.admin.modules.sys.service.XryUserFeedbackService;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -68,12 +69,19 @@ public class XryUserFeedbackServiceImpl extends ServiceImpl<XryUserFeedbackDao, 
     @Override
     public void appUserFeedbackByUserId(String userId, String params) {
         JSONObject json = new JSONObject(params);
-        String feedbackImg = json.getString("feedbackImg");
+        JSONArray feedbackImg = json.getJSONArray("feedbackImg");
         String feedbackInfo = json.getString("feedbackInfo");
+        List<String> imgs = new ArrayList<>();
+        for (int i = 0; i < feedbackImg.length(); i++) {
+            if (null != feedbackImg.get(i)) {
+                String img = (String) feedbackImg.get(i);
+                imgs.add(img);
+            }
+        }
 
         XryUserFeedbackEntity userFeedback = new XryUserFeedbackEntity();
         userFeedback.setFeedbackInfo(feedbackInfo);
-        userFeedback.setFeedbackImg(feedbackImg);
+        userFeedback.setFeedbackImg(imgs.toString());
         userFeedback.setUserId(userId);
         userFeedback.setCheckStatus(0);
         userFeedback.setCreateTime(new Date());
