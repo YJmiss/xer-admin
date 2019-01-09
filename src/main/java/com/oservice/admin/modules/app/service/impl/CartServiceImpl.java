@@ -6,8 +6,10 @@ import com.oservice.admin.modules.app.entity.AppCartAndCollectEntity;
 import com.oservice.admin.modules.app.entity.AppCartEntity;
 import com.oservice.admin.modules.app.service.CartService;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
+import com.oservice.admin.modules.sys.entity.XryTeacherEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.XryCourseService;
+import com.oservice.admin.modules.sys.service.XryTeacherService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -28,16 +30,19 @@ public class CartServiceImpl implements CartService {
     private RedisUtils redisUtils;
     @Resource
     private XryCourseService courseService;
+    @Resource
+    private XryTeacherService xryTeacherService;
 
     @Override
     public void addCart(XryUserEntity user, long courseId) {
         List<AppCartEntity> appCartEntities = new ArrayList<>();
         String courseJson = redisUtils.get("APPCART" + user.getId());
         XryCourseEntity xryCourse = courseService.queryById(courseId);
+        XryTeacherEntity xryTeacher = xryTeacherService.selectById(xryCourse.getTid());
         AppCartEntity cartEntity = new AppCartEntity();
         cartEntity.setId(xryCourse.getId());
         cartEntity.setImage(xryCourse.getImage());
-        cartEntity.setNickname(user.getNickname());
+        cartEntity.setNickname(xryTeacher.getRealName());
         cartEntity.setTitle(xryCourse.getTitle());
         cartEntity.setPrice(xryCourse.getPrice());
         cartEntity.setAppPrice(new BigDecimal(xryCourse.getPrice()).divide(new BigDecimal(100)).setScale(2).toString());

@@ -9,13 +9,8 @@ import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.app.service.RecordtimeService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
-import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseEntity;
-import com.oservice.admin.modules.sys.entity.XryUserApplicantEntity;
-import com.oservice.admin.modules.sys.entity.XryUserEntity;
-import com.oservice.admin.modules.sys.service.ShiroService;
-import com.oservice.admin.modules.sys.service.XryCourseService;
-import com.oservice.admin.modules.sys.service.XryUserApplicantService;
+import com.oservice.admin.modules.sys.entity.*;
+import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -57,7 +52,10 @@ public class AppCourseController extends AbstractController {
     private SolrJDao solrJDao;
     @Resource
     private RecordtimeService recordtimeService;
-
+    @Resource
+    private XryUserCollectService xryUserCollectService;
+    @Resource
+    private XryUserAttentionService xryUserAttentionService;
     /**
      * app端用户加入课程学习
      *
@@ -194,6 +192,8 @@ public class AppCourseController extends AbstractController {
         detailContent.put("appPrice", new BigDecimal(price).divide(new BigDecimal(100)).setScale(2).toString());
         detail.put("courseDetailContent", courseDetailContent);
         Integer isApplicant = 0;
+        Integer isCollect = 0;
+        Integer isAttention = 0;
         try {
             String accessToken = request.getHeader("token");
             String userId = "";
@@ -205,6 +205,8 @@ public class AppCourseController extends AbstractController {
                 SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
                 if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
                     isApplicant = 0;
+                    isCollect = 0;
+                    isAttention = 0;
                 } else {
                     XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
                     userId = users.getId();
@@ -215,12 +217,26 @@ public class AppCourseController extends AbstractController {
                             isApplicant = 1;
                         }
                     }
+                    Map<String, Object> collectByUserIdAndObjId = xryUserCollectService.isCollectByUserIdAndObjId(courseId.toString(), userId);
+                    if (collectByUserIdAndObjId == null || collectByUserIdAndObjId.size() < 1) {
+                        isCollect = 0;
+                    } else if (collectByUserIdAndObjId.size() > 0) {
+                        isCollect = 1;
+                    }
+                    Map<String, Object> teacher = (Map<String, Object>) courseDetailContent.get("teacher");
+                    String tid = (String) teacher.get("id");
+                    XryUserAttentionEntity attentionByUserIdAndTeacherId = xryUserAttentionService.isAttentionByUserIdAndTeacherId(tid, userId);
+                    if (attentionByUserIdAndTeacherId != null) {
+                        isAttention = 1;
+                    }
                 }
             }
         } catch (GlobalException e) {
            e.printStackTrace();
         }
         detail.put("isApplicant", isApplicant);
+        detail.put("isCollect", isCollect);
+        detail.put("isAttention", isAttention);
         return Result.ok(detail);
     }
     

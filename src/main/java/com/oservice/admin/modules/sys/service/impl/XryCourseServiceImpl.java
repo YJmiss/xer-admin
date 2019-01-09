@@ -408,6 +408,10 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
                 // 2、查询课程章节
                 Integer catalogCount = baseMapper.countCatalogByCourseId(courseId);
                 map.put("catalogCount", catalogCount);
+                String tid = (String) map.get("tid");
+                //查询讲师姓名
+                XryTeacherEntity xryTeacherEntity = xryTeacherService.selectById(tid);
+                map.put("realName", xryTeacherEntity.getRealName());
             }
         }
         return courseList;

@@ -113,7 +113,6 @@ public class ClassPathUtils {
 
     /**
      * 根据类上是否有MessageWorker注解来区分类
-     *
      * @param annotationClass
      * @return
      */

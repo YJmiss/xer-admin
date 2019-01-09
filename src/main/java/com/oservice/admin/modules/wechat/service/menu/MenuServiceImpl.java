@@ -2,10 +2,15 @@ package com.oservice.admin.modules.wechat.service.menu;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Preconditions;
+import com.oservice.admin.modules.wechat.bean.AccessTokenBean;
 import com.oservice.admin.modules.wechat.bean.Menu;
+import com.oservice.admin.modules.wechat.constant.WechatConstant;
 import com.oservice.admin.modules.wechat.service.AbstractWechatService;
 import com.oservice.admin.modules.wechat.service.accesstoken.AccessTokenService;
+import com.oservice.admin.modules.wechat.utils.HttpClientUtils;
 import com.oservice.admin.modules.wechat.utils.MessageUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -31,8 +36,6 @@ public class MenuServiceImpl extends AbstractWechatService implements MenuServic
     protected AccessTokenService getAccessTokenService() {
         return accessTokenService;
     }
-
-    /*
     @Override
      public void createMenu(Menu menu) {
          Boolean isTrue;
@@ -51,7 +54,6 @@ public class MenuServiceImpl extends AbstractWechatService implements MenuServic
              LOGGER.error(e.getMessage(), e);
          }
      }
- */
     @Override
     public String getMenu() {
         return null;
@@ -67,6 +69,6 @@ public class MenuServiceImpl extends AbstractWechatService implements MenuServic
     @Override
     public void afterPropertiesSet() throws Exception {
         Menu menus = MessageUtils.getMenu();
-        //   this.createMenu(menus);
+        //    this.createMenu(menus);
     }
 }

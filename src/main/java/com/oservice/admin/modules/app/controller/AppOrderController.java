@@ -76,7 +76,7 @@ public class AppOrderController extends AbstractController {
      *
      */
 
-    /* *//**
+    /**
      * 生成未付款订单
      *//*
     @ApiOperation(value = "用户离开支付页面订单状态为：待支付", notes = "待支付订单，用户可以在我的待支付订单里面查看")
