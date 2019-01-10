@@ -129,7 +129,7 @@
     </select>
     <!--登录的情况下，查询用户没有删除的平台消息，并且是未读数量-->
     <select id="countSystemMessageByUserId" parameterType="java.util.Map" resultType="java.lang.Integer">
-        select * from xry_message where msg_type = 3 and status = 1 and read_status = 0
+        select count(*) from xry_message where msg_type = 3 and status = 1 and read_status = 0
             <if test="params.msgIdList != null and params.msgIdList.size() > 0">
               and id not in
                 <foreach collection="params.msgIdList" item="id" open="(" separator="," close=")">

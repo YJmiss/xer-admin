@@ -3,6 +3,7 @@ package com.oservice.admin.modules.app.controller;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.modules.app.entity.AppCartAndCollectEntity;
 import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.service.CartService;
 import com.oservice.admin.modules.app.service.OrderCourseService;
@@ -14,6 +15,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,12 +58,13 @@ public class AppOrderController extends AbstractController {
         List<XryOrderCourseEntity> orderCourses = orderCourseService.getOrderCourses(orderId);
         return Result.ok().put("orderCourses", orderCourses);
     }
-    /**
+
+    /**@RequestParam long[] ids
      * 生成订单
      */
     @ApiOperation(value = "生成订单", notes = "从购物车提交订单")
     @PostMapping("/createOrder")
-    public Result createOrder(@RequestBody long[] ids) {
+    public Result createOrder(long[] ids) {
         orderService.createOrder(ids, getAppUser());
         for (long courseId : ids) {         //移除购物车中生成订单的课程
             if (redisUtils.hasKey("APPCART" + getAppUserId())) {
@@ -70,6 +74,34 @@ public class AppOrderController extends AbstractController {
         return Result.ok();
     }
 
+    /**
+     * @RequestParam long[] ids
+     * 确认订单
+     */
+    @ApiOperation(value = "确认订单", notes = "从购物车到确认订单页面")
+    @PostMapping("/affirmOrder")
+    public Result affirmOrder(long[] ids) {
+        Map<String, Object> map = new HashMap<>();
+        List<AppCartAndCollectEntity> cartList = cartService.getCartListIsCollectFromRedis(getAppUser());
+        List<AppCartAndCollectEntity> courses = new ArrayList<>();
+        for (long courseId : ids) {
+            for (AppCartAndCollectEntity appCart : cartList) {
+                if (appCart.getId() == courseId || appCart.getId().equals(ids)) {
+                    courses.add(appCart);
+                }
+            }
+        }
+        map.put("courses", courses);
+        Long total = 0l;         //合计
+        Long actuallyPaid = 0l;//TODO:实付款金额，计算优惠,目前直接返回实际价格
+        for (AppCartAndCollectEntity appCart : courses) {
+            total += appCart.getPrice();
+            actuallyPaid += appCart.getPrice();
+        }
+        map.put("total", total);
+        map.put("actuallyPaid", actuallyPaid);
+        return Result.ok(map);
+    }
     /**
      * 订单支付成功
      * TODO:用户付款成功后调用服务：cartService.payOrder(String orderId, String money) orderId:订单号/money:实际付款金额
