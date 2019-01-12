@@ -51,7 +51,7 @@
       update xry_teacher set status = #{params.status} where id = #{params.id}
     </update>
     <!--讲师信息查询-->
-    <select id="queryById" parameterType="java.lang.Long" resultType="java.util.Map">
+    <select id="queryById" parameterType="java.lang.String" resultType="java.util.Map">
      select a.*, b.nickname as userName, b.phone as userPhone, c.org_name
      from xry_teacher a
      LEFT JOIN xry_user b on a.user_id = b.id

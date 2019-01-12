@@ -82,7 +82,7 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
     }
 
     @Override
-    public Map<String, Object> queryById(Long id) {
+    public Map<String, Object> queryById(String id) {
         return baseMapper.queryById(id);
     }
     

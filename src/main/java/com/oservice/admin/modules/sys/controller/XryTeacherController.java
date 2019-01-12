@@ -8,7 +8,9 @@ import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryTeacherEntity;
 import com.oservice.admin.modules.sys.service.SysUserTokenService;
+import com.oservice.admin.modules.sys.service.XryCourseService;
 import com.oservice.admin.modules.sys.service.XryTeacherService;
+import com.oservice.admin.modules.sys.service.XryUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -29,11 +31,13 @@ public class XryTeacherController extends AbstractController {
     final static Integer RECOMMEND_TEACHER= 1;
     /**  取消推荐 */
     final static Integer CANCEL_RECOMMEND = 0;
+    @Resource
+    private XryCourseService xryCourseService;
     
     @Resource
     private XryTeacherService xryTeacherService;
     @Resource
-    private SysUserTokenService sysUserTokenService;
+    private XryUserService xryUserService;
 
     /**
      * 查询讲师列表
@@ -81,7 +85,7 @@ public class XryTeacherController extends AbstractController {
      */
     @GetMapping("/info/{id}")
     @RequiresPermissions("xry:teacher:info")
-    public Result info(@PathVariable("id") Long id) {
+    public Result info(@PathVariable("id") String id) {
         Map<String, Object> teacher = xryTeacherService.queryById(id);
         return Result.ok().put("teacher", teacher);
     }
@@ -93,7 +97,7 @@ public class XryTeacherController extends AbstractController {
      */
     @GetMapping("/detail")
     @RequiresPermissions("xry:teacher:detail")
-    public Result detail(@RequestParam Long id) {
+    public Result detail(@RequestParam String id) {
         Map<String, Object> teacher = xryTeacherService.queryById(id);
         return Result.ok().put("teacher", teacher);
     }
@@ -107,7 +111,21 @@ public class XryTeacherController extends AbstractController {
     @PostMapping("/delete")
     @RequiresPermissions("xry:teacher:delete")
     public Result delete(@RequestBody String[] ids){
-        xryTeacherService.deleteBatch(ids);
+        // 删除讲师时，判断讲师是否有课程，有课程不能删除讲师
+        for (String id : ids) {
+            List<Map<String, Object>> courseList = xryCourseService.getCourseByTeacherId(id);
+            if (courseList.size() > 0) {
+                return Result.error(402, "该讲师下有课程，请先删除该讲师下的课程");
+            } else {
+                // 第一步：从讲师表中删除该讲师信息
+                xryTeacherService.deleteById(id);
+                // 第二步：把用户表中的角色修改为“普通用户”
+                Map<String,Object> params = new HashMap<>();
+                params.put("id",id);
+                params.put("role",0);
+                xryUserService.updateUserRole(params);
+            }
+        }
         return Result.ok();
     }
 
