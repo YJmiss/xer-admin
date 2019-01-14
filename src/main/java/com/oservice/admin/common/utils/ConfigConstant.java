@@ -12,6 +12,11 @@ public class ConfigConstant {
      */
     public final static String CLOUD_STORAGE_CONFIG_KEY = "CLOUD_STORAGE_CONFIG_KEY";
     /**
+     * 云存储配置KEY
+     */
+    public final static String DISTRIBUTIONCONFIG_CONFIG_KEY = "DISTRIBUTIONCONFIG_CONFIG_KEY";
+
+    /**
      * 短信验证信息
      */
     public final static String SMSURL = "http://gw.api.taobao.com/router/rest";

@@ -320,8 +320,8 @@ public class MessageUtils {
         String reqUrl = url.delete(url.length() - req.getRequestURI().length(), url.length()).append("/").toString();
         String jumpUrl = "<a   style='color:0044BB' href='" + reqUrl + "web-static/html/app/wechat/bindWeChat.html?openId=" + openId + "'>绑定红猫账号</a>";
         StringBuilder contentBuffer = new StringBuilder();
-        contentBuffer.append("你已经成功关注了红猫plus微信公众号啦！");
-        contentBuffer.append("请点击" + jumpUrl + "以便于及时接收工作通知！");
+        contentBuffer.append("你已经成功关注了嘉乐集团微信公众号啦！");
+        contentBuffer.append("请点击" + jumpUrl + "以便于及时接收消息通知！");
         return contentBuffer.toString();
     }
 

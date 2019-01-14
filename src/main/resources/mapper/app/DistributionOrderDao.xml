@@ -3,4 +3,36 @@
 
 <mapper namespace="com.oservice.admin.modules.app.dao.DistributionOrderDao">
 
+    <!--查询返回的数据总数-->
+    <select id="countTotal1" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from distribution_order where 1=1
+        <if test="params.id != null and params.id != ''">
+            and id = #{params.id}
+        </if>
+        <if test="params.createdTime != null and params.createdTime != ''">
+            and create_time like #{params.createdTime}
+        </if>
+        <if test="params.status != null and params.status != ''">
+            and status = #{params.status}
+        </if>
+    </select>
+
+    <!--自定义分页查询-->
+    <select id="pageList1" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from distribution_order where 1=1
+        <if test="params.id != null and params.id != ''">
+            and id = #{params.id}
+        </if>
+        <if test="params.createdTime != null and params.createdTime != ''">
+            and create_time like #{params.createdTime}
+        </if>
+        <if test="params.status != null and params.status != ''">
+            and status = #{params.status}
+        </if>
+    </select>
+
+    <insert id="insertDistribution" parameterType="com.oservice.admin.modules.app.entity.DistributionOrder">
+       insert into distribution_order (id,order_id,user_id,course_id,grade,brokerage,status,create_time,update_time,end_time)
+       values (#{id},#{orderId},#{userId},#{courseId},#{grade},#{brokerage},#{status},#{createTime},#{updateTime},#{endTime})
+    </insert>
 </mapper>

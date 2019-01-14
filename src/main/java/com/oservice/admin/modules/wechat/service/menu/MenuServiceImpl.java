@@ -69,6 +69,6 @@ public class MenuServiceImpl extends AbstractWechatService implements MenuServic
     @Override
     public void afterPropertiesSet() throws Exception {
         Menu menus = MessageUtils.getMenu();
-        //    this.createMenu(menus);
+        //     this.createMenu(menus);
     }
 }

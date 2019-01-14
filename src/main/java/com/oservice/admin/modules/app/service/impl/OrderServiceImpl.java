@@ -37,12 +37,6 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
     @Override
     public void createOrder(long[] ids, XryUserEntity user) {
         List<XryOrderCourseEntity> orderCoursesList = new ArrayList<>();
-       /* //1.1）为了让订单号不重复，一般使用 redis 的 incr 命令自增长生成订单编号
-        if(!jedisClient.exists(ConfigConstant.ORDERID)){ //为订单号设置一个默认值
-            jedisClient.set(ConfigConstant.ORDERID, "54000");
-        }
-        //1.2)将上面的自动增长的 id 设置给 orderInfo 的 id
-        String id = jedisClient.incr(ConfigConstant.ORDERID).toString();*/
         String id = redisUtils.getId();
         XryOrderEntity order = new XryOrderEntity();
         order.setOrderId(id);
@@ -64,7 +58,6 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
             orderCourseEntity.setCourseId(a);
             orderCourseEntity.setOrderId(id);
             orderCoursesList.add(orderCourseEntity);
-
         }
         order.setTotalFee(totalFee);
         baseMapper.addOrder(order);

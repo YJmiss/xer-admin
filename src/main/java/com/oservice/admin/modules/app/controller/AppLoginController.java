@@ -174,6 +174,7 @@ public class AppLoginController extends AbstractController {
             newuser.setCreated(DateUtils.stringToDate(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss"));
             newuser.setUpdated(DateUtils.stringToDate(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss"));
             newuser.setSocialSource(0);
+            user.setAvatar("https://xey-file.oss-cn-shenzhen.aliyuncs.com/20190114/user-head-img.png");
             userService.register(newuser);
             map.put("token", token);
             map.put("user", newuser);
@@ -265,6 +266,7 @@ public class AppLoginController extends AbstractController {
         user.setCreated(DateUtils.stringToDate(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss"));
         user.setUpdated(DateUtils.stringToDate(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss"));
         user.setSocialSource(0);
+        user.setAvatar("https://xey-file.oss-cn-shenzhen.aliyuncs.com/20190114/user-head-img.png");
         userService.register(user);
         return Result.ok().put("result", "注册成功");
     }

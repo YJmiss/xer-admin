@@ -35,6 +35,15 @@ public class DistributionOrder implements Serializable {
     private Date createTime;
     private Date updateTime;
     private Date endTime;
+    private String appBrokerage;
+
+    public String getAppBrokerage() {
+        return appBrokerage;
+    }
+
+    public void setAppBrokerage(String appBrokerage) {
+        this.appBrokerage = appBrokerage;
+    }
 
     public String getId() {
         return id;
