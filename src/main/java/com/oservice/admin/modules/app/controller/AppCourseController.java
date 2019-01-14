@@ -224,16 +224,18 @@ public class AppCourseController extends AbstractController {
                             isApplicant = 1;
                         }
                     }
-                    Map<String, Object> collectByUserIdAndObjId = xryUserCollectService.isCollectByUserIdAndObjId(courseId.toString(), userId);
-                    if (collectByUserIdAndObjId == null || collectByUserIdAndObjId.size() < 1) {
+                    Map<String, Object> collect = xryUserCollectService.isCollectByUserIdAndObjId(courseId.toString(), userId);
+                    if (collect == null || collect.size() < 1) {
                         isCollect = 0;
-                    } else if (collectByUserIdAndObjId.size() > 0) {
+                    } else if (collect.size() > 0) {
+                        detail.put("collectId", collect);
                         isCollect = 1;
                     }
                     Map<String, Object> teacher = (Map<String, Object>) courseDetailContent.get("teacher");
                     String tid = (String) teacher.get("id");
-                    XryUserAttentionEntity attentionByUserIdAndTeacherId = xryUserAttentionService.isAttentionByUserIdAndTeacherId(tid, userId);
-                    if (attentionByUserIdAndTeacherId != null) {
+                    XryUserAttentionEntity attention = xryUserAttentionService.isAttentionByUserIdAndTeacherId(tid, userId);
+                    if (attention != null) {
+                        detail.put("attentionId", attention);
                         isAttention = 1;
                     }
                     // 查询该课程是否被用户接入到购物车
