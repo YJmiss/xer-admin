@@ -5,6 +5,8 @@ import com.oservice.admin.common.exception.GlobalException;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.app.dao.SolrJDao;
+import com.oservice.admin.modules.app.entity.AppCartEntity;
+import com.oservice.admin.modules.app.service.CartService;
 import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.app.service.RecordtimeService;
@@ -56,6 +58,9 @@ public class AppCourseController extends AbstractController {
     private XryUserCollectService xryUserCollectService;
     @Resource
     private XryUserAttentionService xryUserAttentionService;
+    @Resource
+    private CartService cartService;
+
     /**
      * app端用户加入课程学习
      *
@@ -194,6 +199,7 @@ public class AppCourseController extends AbstractController {
         Integer isApplicant = 0;
         Integer isCollect = 0;
         Integer isAttention = 0;
+        Integer isCart = 0;
         try {
             String accessToken = request.getHeader("token");
             String userId = "";
@@ -207,9 +213,10 @@ public class AppCourseController extends AbstractController {
                     isApplicant = 0;
                     isCollect = 0;
                     isAttention = 0;
+                    isCart = 0;
                 } else {
-                    XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
-                    userId = users.getId();
+                    XryUserEntity user = shiroService.queryUsers(tokenEntity.getUserId());
+                    userId = user.getId();
                     if (courseApplicantCount > 0) {
                         // 根据用户id和课程id查询该用户是否报名了该课程
                         XryUserApplicantEntity userApplicant = xryUserApplicantService.isApplicantByUserIdAndCourseId(courseId, userId);
@@ -229,6 +236,11 @@ public class AppCourseController extends AbstractController {
                     if (attentionByUserIdAndTeacherId != null) {
                         isAttention = 1;
                     }
+                    // 查询该课程是否被用户接入到购物车
+                    List<AppCartEntity> cartList = cartService.getCartListFromRedis(user);
+                    if (cartList.size() > 0) {
+                        isCart = 1;
+                    }
                 }
             }
         } catch (GlobalException e) {
@@ -237,6 +249,7 @@ public class AppCourseController extends AbstractController {
         detail.put("isApplicant", isApplicant);
         detail.put("isCollect", isCollect);
         detail.put("isAttention", isAttention);
+        detail.put("isCart", isCart);
         return Result.ok(detail);
     }
     
