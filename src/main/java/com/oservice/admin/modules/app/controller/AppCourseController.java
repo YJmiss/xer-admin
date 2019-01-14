@@ -238,8 +238,10 @@ public class AppCourseController extends AbstractController {
                     }
                     // 查询该课程是否被用户接入到购物车
                     List<AppCartEntity> cartList = cartService.getCartListFromRedis(user);
-                    if (cartList.size() > 0) {
-                        isCart = 1;
+                    if (null != cartList) {
+                        if (cartList.size() > 0) {
+                            isCart = 1;
+                        }
                     }
                 }
             }
