@@ -1,5 +1,6 @@
 package com.oservice.admin.modules.app.controller;
 
+import com.oservice.admin.common.utils.ListUtil;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.*;
@@ -7,10 +8,7 @@ import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +37,9 @@ public class AppContentController extends AbstractController {
     private XryMessageService xryMessageService;
     @Resource
     private ShiroService shiroService;
-    
+    @Resource
+    private XryCourseCatService xryCourseCatService;
+
     /**
      * @Description: 首页轮播，中部广告信息
      * @Param:
@@ -90,6 +90,7 @@ public class AppContentController extends AbstractController {
 
     /**
      * 首页右上角未读消息数量查询
+     *
      * @return
      */
     @GetMapping("/message/countIndexMessage")
@@ -116,7 +117,7 @@ public class AppContentController extends AbstractController {
                 // 根据userId查询删除记录表，集合返回msg_id
                 List<Long> msgIdList = xryMessageService.listMsgIdByUserId(userId);
                 // 登录的情况下，查询用户没有删除的平台消息，并且是未读数量
-                systemMessageCount = xryMessageService.countSystemMessageByUserId(userId,msgIdList);
+                systemMessageCount = xryMessageService.countSystemMessageByUserId(userId, msgIdList);
                 if (null == systemMessageCount) systemMessageCount = 0;
             }
         }
@@ -128,6 +129,7 @@ public class AppContentController extends AbstractController {
 
     /**
      * 进入消息中心->课程消息列表、课程未读消息
+     *
      * @return
      */
     @GetMapping("/message/queryCourseMessageListAndCount")
@@ -158,7 +160,7 @@ public class AppContentController extends AbstractController {
                 // 根据userId查询删除记录表，集合返回msg_id
                 List<Long> msgIdList = xryMessageService.listMsgIdByUserId(userId);
                 // 登录的情况下，查询用户没有删除的平台消息，并且是未读数量
-                systemMessageCount = xryMessageService.countSystemMessageByUserId(userId,msgIdList);
+                systemMessageCount = xryMessageService.countSystemMessageByUserId(userId, msgIdList);
                 if (null == systemMessageCount) systemMessageCount = 0;
             }
         }
@@ -186,6 +188,7 @@ public class AppContentController extends AbstractController {
 
     /**
      * 进入消息中心->讲师消息列表
+     *
      * @return
      */
     @GetMapping("/message/queryTeacherMessageListAndCount")
@@ -219,6 +222,7 @@ public class AppContentController extends AbstractController {
 
     /**
      * 进入消息中心->平台消息列表
+     *
      * @return
      */
     @GetMapping("/message/querySystemMessageListAndCount")
@@ -242,7 +246,7 @@ public class AppContentController extends AbstractController {
                 // 查询用户没有删除的消息列表
                 systemMessageList = xryMessageService.listSystemMessageByUserId(userId, msgIdList);
                 // 登录的情况下，查询用户没有删除的平台消息，并且是未读数量
-                systemMessageCount = xryMessageService.countSystemMessageByUserId(userId,msgIdList);
+                systemMessageCount = xryMessageService.countSystemMessageByUserId(userId, msgIdList);
                 if (null == systemMessageCount) systemMessageCount = 0;
             }
         }
@@ -253,6 +257,7 @@ public class AppContentController extends AbstractController {
 
     /**
      * 用户读消息
+     *
      * @param messageId
      * @param flag
      * @return
@@ -281,6 +286,7 @@ public class AppContentController extends AbstractController {
 
     /**
      * 用户读消息
+     *
      * @param messageId
      * @return
      */
@@ -303,4 +309,48 @@ public class AppContentController extends AbstractController {
         }
         return Result.ok();
     }
+
+    @PostMapping("/listCourseByRecommendCatAndByUserId")
+    @ApiOperation(value = "查询用户已经设置的喜好（类目）下的课程列表", notes = "pageNo：页码；pageSize：单页显示列表条数；request：请求头里待token")
+    public Result listCourseByRecommendCatAndByUserId(@RequestParam Integer pageNo, @RequestParam Integer pageSize, HttpServletRequest request) {
+        String accessToken = request.getHeader("token");
+        List<Map<String, Object>> courseRecommendList = null;
+        List<Map<String, Object>> userSettingCourseList = null;
+        Map<String, Object> courseList = new HashMap();
+        Map<String, Object> params = new HashMap();
+        params.put("pageNo", (pageNo - 1) * pageSize);
+        params.put("pageSize", pageSize);
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+
+            } else {
+                // 登录的情况下，查询用户的喜好设置类目
+                // 每个类目下查询6个课程，数量不足的查询管理员设置的推荐课程补上
+                XryUserEntity user = shiroService.queryUsers(tokenEntity.getUserId());
+                String courseCatIdArr = xryCourseCatService.listRecommendCourseCatByUserId(user.getId());
+                List<String> catIdList = new ArrayList<>();
+                if (StringUtils.isNotBlank(courseCatIdArr)) {
+                    String catId = courseCatIdArr.split("\\[")[1];
+                    catId = catId.split("\\]")[0];
+                    if (StringUtils.isNotBlank(catId)) {
+                        String[] catIdArr = catId.split(",");
+                        for (String id : catIdArr) {
+                            catIdList.add(id);
+                        }
+                    }
+                }
+                params.put("courseCatId", catIdList);
+                userSettingCourseList = courseService.listUserSettingCourseByUserId(params);
+//                List<Map<String, Object>> list = ListUtil.listToTreeList(userSettingCourseList,"id","cid","userSettingCourseList");
+                courseList.put("userSettingCourseList", userSettingCourseList);
+            }
+        }
+        // 没有登录的情况下，查询管理员根据类目设置的推荐课程
+        // 查询全部，返回一个list，不根据类目分类
+        courseRecommendList = courseService.listRecommendCourse(params);
+        courseList.put("courseRecommendList", courseRecommendList);
+        return Result.ok().put("courseList", courseList);
+    }
+
 }

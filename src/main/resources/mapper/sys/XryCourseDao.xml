@@ -298,5 +298,19 @@
     <select id="getCourseByTeacherId" parameterType="java.lang.String" resultType="java.util.Map">
         select * from xry_course where tid = #{teacherId}
     </select>
+    <!--查询管理员根据类目设置的推荐课程-->
+    <select id="listRecommendCourse" parameterType="java.util.Map" resultType="java.util.Map">
+      select * from xry_course where status = 4 and recommend = 1 limit ${params.pageNo},${params.pageSize}
+    </select>
+    <!--查询用户的喜好设置类目下的课程-->
+    <select id="listUserSettingCourseByUserId" parameterType="java.util.Map" resultType="java.util.Map">
+      select * from xry_course where status = 4 and cid in
+      <if test="null != params.courseCatId">
+          <foreach collection="params.courseCatId" item="catId" open="(" separator="," close=")">
+            #{catId}
+          </foreach>
+      </if>
+      limit ${params.pageNo},${params.pageSize}
+    </select>
 
 </mapper>

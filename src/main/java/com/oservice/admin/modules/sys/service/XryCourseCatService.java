@@ -88,4 +88,11 @@ public interface XryCourseCatService extends IService<XryCourseCatEntity> {
 	 * @return
 	 */
 	String[] listCourseCatByParentCatId(Long courseCatId);
+
+	/**
+	 * 查询用户已经设置的喜好（类目）
+	 * @param id
+	 * @return
+	 */
+	String listRecommendCourseCatByUserId(String id);
 }

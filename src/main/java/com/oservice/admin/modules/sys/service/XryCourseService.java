@@ -199,4 +199,17 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	Map<String, Object> listCourseByUserIdAndCourseId(Map<String, Object> params);
 
     List<Map<String, Object>> getCourseByTeacherId(String id);
+
+	/**
+	 * 查询管理员根据类目设置的推荐课程
+	 * @param params
+	 * @return
+	 */
+	List<Map<String, Object>> listRecommendCourse(Map<String, Object> params);
+
+	/**
+	 * 查询用户的喜好设置类目下的课程
+	 * @param params
+	 */
+	List<Map<String, Object>> listUserSettingCourseByUserId(Map<String, Object> params);
 }
