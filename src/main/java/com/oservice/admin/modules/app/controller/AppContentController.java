@@ -239,6 +239,8 @@ public class AppContentController extends AbstractController {
                 String userId = users.getId();
                 // 根据userId查询删除记录表，集合返回msg_id
                 List<Long> msgIdList = xryMessageService.listMsgIdByUserId(userId);
+                // 查询用户没有删除的消息列表
+                systemMessageList = xryMessageService.listSystemMessageByUserId(userId, msgIdList);
                 // 登录的情况下，查询用户没有删除的平台消息，并且是未读数量
                 systemMessageCount = xryMessageService.countSystemMessageByUserId(userId,msgIdList);
                 if (null == systemMessageCount) systemMessageCount = 0;

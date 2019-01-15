@@ -196,6 +196,10 @@
     <select id="countStudentByCourseCatId" parameterType="java.lang.Long" resultType="java.lang.Integer">
       select count(*) from xry_user_applicant where obj_id in (select id from xry_course where cid = #{courseCatId} and status = 4) and obj_type = 0 and obj_status = 0
     </select>
+    <!--根据课程id查询评总数-->
+    <select id="countCourseCommentByCourseId" parameterType="java.util.Map" resultType="java.lang.Integer">
+      select count(*) from xry_comment a LEFT JOIN xry_user b on a.user_id = b.id WHERE a.obj_id = #{params.courseId} and a.status = 1 and a.type = 0
+    </select>
     <!--根据课程id查询评价信息-->
     <select id="listCourseCommentByCourseId" parameterType="java.util.Map" resultType="java.util.Map">
       select a.*, b.nickname,b.phone,b.avatar from xry_comment a LEFT JOIN xry_user b on a.user_id = b.id
