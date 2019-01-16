@@ -101,17 +101,43 @@ public class XryRecommendController extends AbstractController {
     @ApiOperation(value="查询用户已经设置的喜好（类目）",notes="request：请求头里待token")
     public Result listRecommendCourseCatByUserId(HttpServletRequest request){
         String accessToken = request.getHeader("token");
-        String courseCatList =  null;
+        String courseCat =  null;
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
                 return Result.error(204, "token失效，请重新登录");
             } else {
                 XryUserEntity user = shiroService.queryUsers(tokenEntity.getUserId());
-                courseCatList = xryCourseCatService.listRecommendCourseCatByUserId(user.getId());
+                courseCat = xryCourseCatService.listRecommendCourseCatByUserId(user.getId());
+//                List<Long> catIdList = new ArrayList<>();
+//                if (StringUtils.isNotBlank(courseCat)) {
+//                    String catId = courseCat.split("\\[")[1];
+//                    catId = catId.split("\\]")[0];
+//                    if (StringUtils.isNotBlank(catId)) {
+//                        String[] catIdArr = catId.split(",");
+//                        for (String id : catIdArr) {
+//                            catIdList.add(Long.valueOf(id));
+//                        }
+//                    }
+//                }
+//                List<Map<String, Object>> catList = xryCourseCatService.listCourseCat();
+//                List<Map<String, Object>> courseCatList = ListUtil.listToTreeList(catList, "id", "parent_id", "catList");
+//                if (null != courseCatList) {
+//                    for (int i=0;i<courseCatList.size();i++) {
+//                        Map<String, Object> catList2 = courseCatList.get(i);
+//                        System.out.println(catList2);
+//                        ArrayList catList3 = (ArrayList) catList2.get("catList");
+//                        System.out.println(catList3);
+//                        for (int j=0;j<catList3.size();j++) {
+////                            String cat = (String)catList3.get(j);
+////                            System.out.println(cat);
+//
+//                        }
+//                    }
+//                }
             }
         }
-        return Result.ok().put("courseCatList", courseCatList);
+        return Result.ok().put("courseCat", courseCat);
     }
 
 }
