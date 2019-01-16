@@ -77,6 +77,24 @@ public class AppUserFeedbackController extends AbstractController {
                 params.put("user", user);
                 // 列表查询
                 List<Map<String, Object>> userFeedbackList = xryUserFeedbackService.appListUserFeedbackByUserId(user.getId());
+                if (null != userFeedbackList) {
+                    List<String> feedbackImgArray = new ArrayList<>();
+                    for (Map<String, Object> map : userFeedbackList) {
+                        String feedbackImg = (String) map.get("feedback_img");
+                        if (StringUtils.isNotBlank(feedbackImg) && !"[]".equals(feedbackImg)) {
+                            String img = feedbackImg.split("\\[")[1];
+                            img = img.split("\\]")[0];
+                            if (StringUtils.isNotBlank(img)) {
+                                String[] imgArr = img.split(",");
+                                for (String img2 : imgArr) {
+                                    img2 = img2.trim();
+                                    feedbackImgArray.add(img2);
+                                }
+                                map.put("feedbackImgArray", feedbackImgArray);
+                            }
+                        }
+                    }
+                }
                 params.put("userFeedbackList", userFeedbackList);
                 // 我的反馈列表数量
                 Integer userFeedbackCount = 0;
