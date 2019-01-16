@@ -97,4 +97,9 @@ public class XryCourseCatServiceImpl extends ServiceImpl<XryCourseCatDao, XryCou
 	public String listRecommendCourseCatByUserId(String id) {
 		return baseMapper.listRecommendCourseCatByUserId(id);
 	}
+
+	@Override
+	public Map<String, Object> getCourseCatById(Long courseCatId) {
+		return baseMapper.getCourseCatById(courseCatId);
+	}
 }

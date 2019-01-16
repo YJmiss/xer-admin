@@ -37,5 +37,9 @@
     <select id="listRecommendCourseCatByUserId" parameterType="java.lang.String" resultType="java.lang.String">
       select cat_id from xry_recommend where user_id = #{userId}
     </select>
+    <!--根据类目id查询出类目信息（类目标题）-->
+    <select id="getCourseCatById" parameterType="java.lang.Long" resultType="java.util.Map">
+      select * from xry_course_cat where id = #{courseCatId}
+    </select>
 
 </mapper>

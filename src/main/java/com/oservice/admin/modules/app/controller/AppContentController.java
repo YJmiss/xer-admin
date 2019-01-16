@@ -340,10 +340,21 @@ public class AppContentController extends AbstractController {
                         }
                     }
                 }
-                params.put("courseCatId", catIdList);
-                userSettingCourseList = courseService.listUserSettingCourseByUserId(params);
-//                List<Map<String, Object>> list = ListUtil.listToTreeList(userSettingCourseList,"id","cid","userSettingCourseList");
-                courseList.put("userSettingCourseList", userSettingCourseList);
+                List<Map<String, Object>> courseCatList = new ArrayList<>();
+                Map<String, Object> courseCat = null;
+                for (String catId : catIdList) {
+                    Long courseCatId = Long.valueOf(catId);
+                    // 根据类目id查询出类目信息（类目标题）
+                    courseCat = xryCourseCatService.getCourseCatById(courseCatId);
+                    courseCatList.add(courseCat);
+                    params.put("courseCatId", courseCatId);
+                    // 根据类目id查询出喜好设置的课程
+                    userSettingCourseList = courseService.listUserSettingCourseByUserId(params);
+                    courseCat.put("userSettingCourseList", userSettingCourseList);
+
+//                    courseCatList.addAll(userSettingCourseList);
+                }
+                courseList.put("courseCatList",courseCatList);
             }
         }
         // 没有登录的情况下，查询管理员根据类目设置的推荐课程

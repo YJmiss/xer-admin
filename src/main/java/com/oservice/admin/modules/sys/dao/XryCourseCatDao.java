@@ -63,4 +63,11 @@ public interface XryCourseCatDao extends BaseMapper<XryCourseCatEntity> {
      * @return
      */
     String listRecommendCourseCatByUserId(@Param("userId") String id);
+
+    /**
+     * 根据类目id查询出类目信息（类目标题）
+     * @param courseCatId
+     * @return
+     */
+    Map<String, Object> getCourseCatById(@Param("courseCatId") Long courseCatId);
 }
