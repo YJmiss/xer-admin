@@ -106,7 +106,7 @@ public class AppContentController extends AbstractController {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
                 // 没有登录的情况下，查询所有的平台消息
-                systemMessageCount = xryMessageService.countSystemMessage();
+//                systemMessageCount = xryMessageService.countSystemMessage();
             } else {
                 XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
                 userId = users.getId();
@@ -147,7 +147,7 @@ public class AppContentController extends AbstractController {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
                 // 没有登录的情况下，查询所有的平台消息
-                systemMessageCount = xryMessageService.countSystemMessage();
+//                systemMessageCount = xryMessageService.countSystemMessage();
             } else {
                 XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
                 userId = users.getId();
@@ -236,8 +236,8 @@ public class AppContentController extends AbstractController {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
                 // 没有登录的情况下，查询所有的平台消息
-                systemMessageList = xryMessageService.listSystemMessage();
-                systemMessageCount = xryMessageService.countSystemMessage();
+//                systemMessageList = xryMessageService.listSystemMessage();
+//                systemMessageCount = xryMessageService.countSystemMessage();
             } else {
                 XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
                 String userId = users.getId();

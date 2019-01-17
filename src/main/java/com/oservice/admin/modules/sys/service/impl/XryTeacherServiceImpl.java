@@ -224,5 +224,10 @@ public class XryTeacherServiceImpl extends ServiceImpl<XryTeacherDao, XryTeacher
         baseMapper.insertToTeacher(xryTeacher);
     }
 
+    @Override
+    public List<Map<String, Object>> listRecommendTeacher(int size, List<String> teacherIdList) {
+        return baseMapper.listRecommendTeacher(size, teacherIdList);
+    }
+
 
 }

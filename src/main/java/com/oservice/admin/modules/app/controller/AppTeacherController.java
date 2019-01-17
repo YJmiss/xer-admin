@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,22 @@ public class AppTeacherController extends AbstractController {
         Map<String, Object> params = new HashMap<>();
         params.put("pageSize",6);
         List<Map<String, Object>> starTeacherList = xryTeacherService.appListStarTeacherByUserId(params);
+        // 讲师数不够6个时，查询后台手动推荐的讲师
+        if (null != starTeacherList) {
+            int size = starTeacherList.size();
+            if (size < 6) {
+                List<String> teacherIdList = new ArrayList<>();
+                for (Map<String, Object> map : starTeacherList) {
+                    String teacherId = (String) map.get("id");
+                    teacherIdList.add(teacherId);
+                }
+                int i = 6 - size;
+                List<Map<String, Object>> starTeacherList2 = xryTeacherService.listRecommendTeacher(i, teacherIdList);
+                if (null != starTeacherList2 && starTeacherList2.size() > 0) {
+                    starTeacherList.addAll(starTeacherList2);
+                }
+            }
+        }
         return Result.ok().put("starTeacherList", starTeacherList);
     }
 

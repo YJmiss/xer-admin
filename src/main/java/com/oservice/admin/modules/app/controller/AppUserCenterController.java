@@ -237,7 +237,7 @@ public class AppUserCenterController extends AbstractController {
      * @return
      */
     @GetMapping("/userCenter/listCourseByUserIdAndCourseId")
-    @ApiOperation(value = "查询最近浏览课程列表", notes = "ids：储存在localStorage里的课程id，数组；需要在请求头里加token参数")
+    @ApiOperation(value = "查询最近浏览课程列表", notes = "ids：储存在localStorage里的课程id，数组；")
     public Result listCourseByUserIdAndCourseId(@RequestParam String[] ids, @RequestParam Integer pageNo, @RequestParam Integer pageSize) {
         Map<String, Object> params = new HashMap<>();
         List<Map<String, Object>> courseList = new ArrayList<>();

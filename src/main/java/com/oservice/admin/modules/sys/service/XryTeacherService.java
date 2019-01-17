@@ -108,4 +108,10 @@ public interface XryTeacherService extends IService<XryTeacherEntity> {
 	 */
 	void insertToTeacher(String[] id);
 
+	/**
+	 * 讲师数不够6个时，查询后台手动推荐的讲师
+	 * @param i
+	 * @return
+	 */
+    List<Map<String, Object>> listRecommendTeacher(int i, List<String> teacherIdList);
 }

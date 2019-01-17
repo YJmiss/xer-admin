@@ -112,5 +112,16 @@
     <insert id="insertToTeacher" parameterType="com.oservice.admin.modules.sys.entity.XryTeacherEntity">
       insert into xry_teacher(id, user_id, status, created) values (#{id}, #{userId}, #{status}, #{created})
     </insert>
+    <!--讲师数不够6个时，查询后台手动推荐的讲师-->
+    <select id="listRecommendTeacher" parameterType="java.util.Map" resultType="java.util.Map">
+      select xt.*,xu.avatar from xry_teacher xt left join xry_user_attention xua on xt.id = xua.obj_id
+        left join xry_user xu on xu.id = xt.user_id where xt.id not in
+      <if test="teacherIdList != null and teacherIdList.size() > 0">
+          <foreach collection="teacherIdList" item="id" open="(" separator="," close=")">
+              #{id}
+          </foreach>
+      </if>
+      and xt.recommend = 1 and xua.obj_type = 0 and xua.obj_status = 0 group by xt.id desc limit 0,#{size}
+    </select>
 
 </mapper>

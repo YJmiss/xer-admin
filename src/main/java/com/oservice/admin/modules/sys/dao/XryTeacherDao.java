@@ -128,4 +128,11 @@ public interface XryTeacherDao extends BaseMapper<XryTeacherEntity> {
      * @param xryTeacher
      */
     void insertToTeacher(XryTeacherEntity xryTeacher);
+
+    /**
+     * 讲师数不够6个时，查询后台手动推荐的讲师
+     * @param size
+     * @return
+     */
+    List<Map<String, Object>> listRecommendTeacher(@Param("size") int size, @Param("teacherIdList") List<String> teacherIdList);
 }
