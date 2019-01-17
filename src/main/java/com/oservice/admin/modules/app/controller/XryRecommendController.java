@@ -102,6 +102,7 @@ public class XryRecommendController extends AbstractController {
     public Result listRecommendCourseCatByUserId(HttpServletRequest request){
         String accessToken = request.getHeader("token");
         String courseCat =  null;
+        List<Map<String, Object>> catList = new ArrayList<>();
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
@@ -109,35 +110,43 @@ public class XryRecommendController extends AbstractController {
             } else {
                 XryUserEntity user = shiroService.queryUsers(tokenEntity.getUserId());
                 courseCat = xryCourseCatService.listRecommendCourseCatByUserId(user.getId());
-//                List<Long> catIdList = new ArrayList<>();
-//                if (StringUtils.isNotBlank(courseCat)) {
-//                    String catId = courseCat.split("\\[")[1];
-//                    catId = catId.split("\\]")[0];
-//                    if (StringUtils.isNotBlank(catId)) {
-//                        String[] catIdArr = catId.split(",");
-//                        for (String id : catIdArr) {
-//                            catIdList.add(Long.valueOf(id));
-//                        }
-//                    }
-//                }
-//                List<Map<String, Object>> catList = xryCourseCatService.listCourseCat();
-//                List<Map<String, Object>> courseCatList = ListUtil.listToTreeList(catList, "id", "parent_id", "catList");
-//                if (null != courseCatList) {
-//                    for (int i=0;i<courseCatList.size();i++) {
-//                        Map<String, Object> catList2 = courseCatList.get(i);
-//                        System.out.println(catList2);
-//                        ArrayList catList3 = (ArrayList) catList2.get("catList");
-//                        System.out.println(catList3);
-//                        for (int j=0;j<catList3.size();j++) {
-////                            String cat = (String)catList3.get(j);
-////                            System.out.println(cat);
-//
-//                        }
-//                    }
-//                }
+                List<Long> catIdList = new ArrayList<>();
+                if (StringUtils.isNotBlank(courseCat)) {
+                    String catId = courseCat.split("\\[")[1];
+                    catId = catId.split("\\]")[0];
+                    if (StringUtils.isNotBlank(catId)) {
+                        String[] catIdArr = catId.split(",");
+                        for (String id : catIdArr) {
+                            catIdList.add(Long.valueOf(id));
+                        }
+                    }
+                }
+                for (Long catId : catIdList) {
+                    // 查询出所有类目list
+                    catList = xryCourseCatService.listCourseCat();
+                    if (null != catList) {
+                        catList = ListUtil.listToTreeList(catList,"id","parent_id","catList");
+                        // 循环父类目的list
+                        for (Map<String, Object> parentMap : catList) {
+                            List<Map<String, Object>> catListMap = (List<Map<String, Object>>) parentMap.get("catList");
+                            if (null != catListMap) {
+                                // 循环子类目的list
+                                for (Map<String, Object> subMap : catListMap) {
+                                    Long courseCatId = (Long) subMap.get("id");
+                                    int checks = (int) subMap.get("checks");
+                                    if (catId.equals(courseCatId)) {
+                                        checks = 1;
+                                    }
+                                    // 放回子类目的map里去
+                                    subMap.put("checks", checks);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
-        return Result.ok().put("courseCat", courseCat);
+        return Result.ok().put("catList", catList);
     }
 
 }
