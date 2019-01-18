@@ -227,22 +227,18 @@
         <if test="params.type != null and params.type != ''">
 
         </if>
-        <!-- 用户输入价格查询，此时priceTag为空 -->
-        <if test="params.priceTag == null and params.priceTag == ''">
-            and a.property = 1 and a.price between #{params.customPriceStart} and #{params.customPriceEnd}
-        </if>
-        <!-- 第一次进入页面查询所有的记录 -->
-        <if test="params.priceTag == 0">
-            and 1 = 1
-        </if>
         <if test="params.priceTag != 0">
             <!-- 价格免费 -->
             <if test="params.priceTag == 1">
                 and a.property = 2
             </if>
             <!-- 有价格区间 -->
-            <if test="params.priceTag != 1">
+            <if test="params.priceTag != 1 and params.priceTag != 10">
                 and a.property = 1 and a.price between #{params.priceTagStart} and #{params.priceTagEnd}
+            </if>
+            <!-- 用户输入价格查询，此时priceTag为空 -->
+            <if test="params.priceTag == 10">
+                and a.property = 1 and a.price between #{params.customPriceStart} and #{params.customPriceEnd}
             </if>
         </if>
         group by a.id

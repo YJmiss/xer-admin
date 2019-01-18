@@ -372,6 +372,9 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
             JSONObject customPrice = json.getJSONObject("customPrice");
             customPriceStart = customPrice.getLong("customPriceStart");
             customPriceEnd = customPrice.getLong("customPriceEnd");
+            if (customPriceEnd != 0) {
+                priceTag = 10;
+            }
         } else if (1 == priceTag){    // 免费
             priceTagStart = 0L; priceTagEnd = 0L;                
         } else if (2 == priceTag) {     // 0-50
