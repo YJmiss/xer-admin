@@ -55,4 +55,11 @@ public interface XryUserService extends IService<XryUserEntity> {
      * @param params
      */
     void updateUserRole(Map<String, Object> params);
+
+    /**
+     * 
+     * @param userId
+     * @return
+     */
+    XryUserEntity queryById(String userId);
 }

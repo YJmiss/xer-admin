@@ -62,5 +62,8 @@
           #{id}
       </foreach>
     </update>
+    <select id="queryById" parameterType="java.lang.String" resultType="com.oservice.admin.modules.sys.entity.XryUserEntity">
+      select * from xry_user where id = #{userId}
+    </select>
 
 </mapper>

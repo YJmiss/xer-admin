@@ -143,7 +143,8 @@ public class AppUserCenterController extends AbstractController {
                 userCartCount = 0;
             }
             // 查询用户头像
-            userInfo = xryUserService.selectById(userId);
+//            userInfo = xryUserService.selectById(userId);
+            userInfo = xryUserService.queryById(userId);
         }
         Map<String, Object> map = new HashMap<>();
         // 1、查询用户已经关注的讲师数

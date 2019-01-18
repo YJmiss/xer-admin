@@ -50,4 +50,11 @@ public interface XryUserDao extends BaseMapper<XryUserEntity> {
      * @param params
      */
     void updateUserRole(@Param("params") Map<String, Object> params);
+
+    /**
+     *
+     * @param userId
+     * @return
+     */
+    XryUserEntity queryById(@Param("userId") String userId);
 }

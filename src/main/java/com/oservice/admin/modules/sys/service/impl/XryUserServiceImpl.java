@@ -87,4 +87,9 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
         baseMapper.updateUserRole(params);
     }
 
+    @Override
+    public XryUserEntity queryById(String userId) {
+        return baseMapper.queryById(userId);
+    }
+
 }
