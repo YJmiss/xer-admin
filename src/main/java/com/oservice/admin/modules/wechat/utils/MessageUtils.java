@@ -13,8 +13,9 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Writer;
 import java.util.List;
@@ -26,8 +27,9 @@ import java.util.regex.Pattern;
  * 消息工具类
  * Created by liujie on 2016/8/6 9:25.
  */
+@Component
 public class MessageUtils {
-    @Resource
+    @Autowired
     private static WeixinMeunService weixinMeunService;
     
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageUtils.class);
@@ -335,10 +337,9 @@ public class MessageUtils {
      */
     public static Menu getMenu() {
 
-        //     Map<WeixinMenu, List<WeixinMenu>> menus = weixinMeunService.getMenus();
 
         ViewButton btn11 = new ViewButton();
-        btn11.setName("车辆估价");
+        btn11.setName("测试菜单1");
         btn11.setType("view");
         btn11.setUrl("http://ygst.ywsoftware.com/smc/Evaluation.html");
 
@@ -348,9 +349,9 @@ public class MessageUtils {
         btn12.setUrl("http://ygst.ywsoftware.com/smc/FindVehicle.html");
 
         ViewButton btn21 = new ViewButton();
-        btn21.setName("关于我们");
+        btn21.setName("关于你们");
         btn21.setType("view");
-        btn21.setUrl("http://m.semache.com/web/AboutUs.html");
+        btn21.setUrl("http://www.hytuvip.com/");
 
         ViewButton btn22 = new ViewButton();
         btn22.setName("账号绑定");
@@ -380,7 +381,7 @@ public class MessageUtils {
 
 
         ComplexButton mainBtn1 = new ComplexButton();
-        mainBtn1.setName("二手车");
+        mainBtn1.setName("测试菜单");
         mainBtn1.setSub_button(new Button[]{btn11, btn12});
 
         ComplexButton mainBtn2 = new ComplexButton();
@@ -389,7 +390,7 @@ public class MessageUtils {
 
 
         ComplexButton mainBtn3 = new ComplexButton();
-        mainBtn3.setName("更多");
+        mainBtn3.setName("更多1");
         mainBtn3.setSub_button(new Button[]{btn31, btn33, btn34, btn35});
 
         Menu menu = new Menu();

@@ -14,12 +14,5 @@ public interface DistributionService {
      *
      * @param id:课程ID user:用户 orderId:订单ID
      */
-    void createOrder1(Long id, XryUserEntity user, String orderId);
-
-    /**
-     * 二级分销订单生成
-     *
-     * @param id:课程ID user:用户 orderId:订单ID
-     */
-    void createOrder2(Long id, XryUserEntity user, String orderId);
+    void createOrder(Long id, XryUserEntity user, String orderId);
 }

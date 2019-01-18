@@ -26,23 +26,14 @@ public class TallyOrderService {
      * @Author: YJmiss
      * @Date: 2019/1/10
      */
-    public Long getBrokerage(Long price, int status) {
+    public Long getBrokerage(Long price) {
         DistributionConfig config = sysConfigService.getConfigObject(KEY, DistributionConfig.class);
         int distributeFee = Integer.parseInt(config.getDistributeFee());
-        int firstLevelFee = Integer.parseInt(config.getFirstLevelFee());
-        int secondLevelFee = Integer.parseInt(config.getSecondLevelFee());
         long cashWithdrawal = Integer.parseInt(config.getCashWithdrawal());
         long df = 0l;
         /*全部佣金(分)*/
         df = (long) (Double.parseDouble(txfloat(distributeFee, 100)) * price);
-        if (status == 0) {
-            return df;
-        } else if (status == 1) {
-            return new Double((Double.parseDouble(txfloat(firstLevelFee, 100)) * df)).longValue();
-        } else if (status == 2) {
-            return new Double((Double.parseDouble(txfloat(secondLevelFee, 100)) * df)).longValue();
-        }
-        return cashWithdrawal;
+        return df;
     }
 
     /**

@@ -12,9 +12,13 @@ public class ConfigConstant {
      */
     public final static String CLOUD_STORAGE_CONFIG_KEY = "CLOUD_STORAGE_CONFIG_KEY";
     /**
-     * 云存储配置KEY
+     * 分销配置KEY
      */
     public final static String DISTRIBUTIONCONFIG_CONFIG_KEY = "DISTRIBUTIONCONFIG_CONFIG_KEY";
+    /**
+     * 微信公众号自定义菜单配置KEY
+     */
+    public final static String WECHAT_MENU_CONFIG_KEY = "WECHAT_MENU_CONFIG_KEY";
 
     /**
      * 短信验证信息

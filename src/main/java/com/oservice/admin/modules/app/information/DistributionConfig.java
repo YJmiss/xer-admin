@@ -14,12 +14,6 @@ import java.io.Serializable;
 public class DistributionConfig implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //分销一级利润firstLevelFee
-    @NotBlank(message = "分销一级利润secondLevelFee不能为空", groups = DistributionGroup.class)
-    private String firstLevelFee;
-    //分销二级利润secondLevelFee
-    @NotBlank(message = "分销二级利润secondLevelFee不能为空", groups = DistributionGroup.class)
-    private String secondLevelFee;
     //分销占比distributeFee
     @NotBlank(message = "分销占比distributeFee不能为空", groups = DistributionGroup.class)
     private String distributeFee;
@@ -31,22 +25,6 @@ public class DistributionConfig implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
-    }
-
-    public String getFirstLevelFee() {
-        return firstLevelFee;
-    }
-
-    public void setFirstLevelFee(String firstLevelFee) {
-        this.firstLevelFee = firstLevelFee;
-    }
-
-    public String getSecondLevelFee() {
-        return secondLevelFee;
-    }
-
-    public void setSecondLevelFee(String secondLevelFee) {
-        this.secondLevelFee = secondLevelFee;
     }
 
     public String getDistributeFee() {

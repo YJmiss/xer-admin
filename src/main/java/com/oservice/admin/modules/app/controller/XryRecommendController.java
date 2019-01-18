@@ -1,15 +1,12 @@
 package com.oservice.admin.modules.app.controller;
 
-import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.ListUtil;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
-import com.oservice.admin.modules.sys.entity.XryCourseCatEntity;
 import com.oservice.admin.modules.sys.entity.XryRecommendEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.ShiroService;
-import com.oservice.admin.modules.sys.service.SysUserTokenService;
 import com.oservice.admin.modules.sys.service.XryCourseCatService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import io.swagger.annotations.Api;

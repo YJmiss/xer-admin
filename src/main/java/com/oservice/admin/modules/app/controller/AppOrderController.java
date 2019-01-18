@@ -157,7 +157,7 @@ public class AppOrderController extends AbstractController {
     @GetMapping("/cancelOrder")
     public Result cancelOrder(String orderId) {
         orderService.cancelOrder(orderId);
-        distributionService.createOrder1(32l, getAppUser(), "20190110001");
+        distributionService.createOrder(32l, getAppUser(), "20190110001");
         return Result.ok();
     }
 

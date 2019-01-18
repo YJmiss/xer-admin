@@ -80,7 +80,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionOrderDao, D
      * @param id:课程ID user:用户 orderId:订单ID
      */
     @Override
-    public void createOrder1(Long id, XryUserEntity user, String orderId) {
+    public void createOrder(Long id, XryUserEntity user, String orderId) {
         DistributionOrder distribution = new DistributionOrder();
         distribution.setId(redisUtils.getId());
         distribution.setCourseId(id);
@@ -88,32 +88,14 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionOrderDao, D
         distribution.setOrderId(orderId);
         distribution.setCreateTime(new Date());
         distribution.setUpdateTime(new Date());
-        distribution.setStatus(1);
+        distribution.setStatus(0);
         distribution.setGrade(1);
         XryCourseEntity xryCourseEntity = xryCourseService.queryById(id);
         long price = xryCourseEntity.getPrice();
         Long brokerage = 0l;
-        brokerage = tallyOrderService.getBrokerage(price, 1);
+        brokerage = tallyOrderService.getBrokerage(price);
         distribution.setBrokerage(brokerage);
         baseMapper.insertDistribution(distribution);
     }
 
-    @Override
-    public void createOrder2(Long id, XryUserEntity user, String orderId) {
-        DistributionOrder distribution = new DistributionOrder();
-        distribution.setId(redisUtils.getId());
-        distribution.setCourseId(id);
-        distribution.setUserId(user.getId());
-        distribution.setOrderId(orderId);
-        distribution.setCreateTime(new Date());
-        distribution.setUpdateTime(new Date());
-        distribution.setStatus(1);
-        distribution.setGrade(1);
-        XryCourseEntity xryCourseEntity = xryCourseService.queryById(id);
-        long price = xryCourseEntity.getPrice();
-        Long brokerage = 0l;
-        brokerage = tallyOrderService.getBrokerage(price, 2);
-        distribution.setBrokerage(brokerage);
-        baseMapper.insertDistribution(distribution);
-    }
 }
