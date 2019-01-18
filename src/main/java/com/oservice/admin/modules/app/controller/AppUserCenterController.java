@@ -13,7 +13,6 @@ import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -114,7 +113,7 @@ public class AppUserCenterController extends AbstractController {
     @ApiOperation(value = "查询用户已经关注的讲师数，购物车商品数量、消息数、头像", notes = "需要在请求头里加token参数")
     public Result countUserApplicantByUserId(HttpServletRequest request) {
         Map<String, Object> params = new HashMap<>();
-        XryUserEntity userInfo = null;
+        XryUserEntity userInfo = new XryUserEntity();
         Integer courseMessageCount = 0;
         Integer teacherMessageCount = 0;
         Integer userApplicantCount = 0;

@@ -210,7 +210,7 @@ public class XryUserEntity implements Serializable {
     /**
      * 设置：角色
      */
-    public void setRole(int salt) {
+    public void setRole(int role) {
         this.role = role;
     }
 
