@@ -300,9 +300,20 @@ public class AppCourseController extends AbstractController {
     @SysLog("app端课程详情评价查询")
     @PostMapping("/appQueryCourseCommentByCourseId")
     @ApiOperation(value="课程详情->课程评论列表",notes="courseId：是课程id，必填；pageNo：页码，必填；pageSize：单页的列表数量，必填")
-    public Result appQueryCourseCommentByCourseId(@RequestParam Long courseId, Integer pageNo, Integer pageSize) {
+    public Result appQueryCourseCommentByCourseId(@RequestParam Long courseId, Integer pageNo, Integer pageSize, HttpServletRequest request) {
         // 查询课程"评价"
-        Map<String, Object> courseCommentList = xryCourseService.listCourseCommentByCourseId(courseId, pageNo, pageSize);
+        String userId = "";
+        String accessToken = request.getHeader("token");
+        if (StringUtils.isNotBlank(accessToken)) {
+            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
+            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
+
+            } else {
+                XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+                userId = users.getId();
+            }
+        }
+        Map<String, Object> courseCommentList = xryCourseService.listCourseCommentByCourseId(courseId, pageNo, pageSize, userId);
         return Result.ok(courseCommentList);
     }
 

@@ -48,5 +48,9 @@
             #{id}
         </foreach>
     </update>
+    <!--根据用户id和对象id查询评论-->
+    <select id="selectCommentByUserIdAndObjId" parameterType="java.util.Map" resultType="java.util.Map">
+      select * from xry_comment where obj_id = #{params.objId} and user_id = #{params.userId}
+    </select>
 
 </mapper>

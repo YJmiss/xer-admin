@@ -8,6 +8,7 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.modules.app.entity.XryRecordtimeEntity;
 import com.oservice.admin.modules.app.service.RecordtimeService;
+import com.oservice.admin.modules.sys.dao.XryCommentDao;
 import com.oservice.admin.modules.sys.dao.XryCourseDao;
 import com.oservice.admin.modules.sys.entity.*;
 import com.oservice.admin.modules.sys.service.*;
@@ -38,6 +39,8 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     private RecordtimeService recordtimeService;
     @Resource
     private RedisUtils redisUtils;
+    @Resource
+    private XryCommentDao xryCommentDao;
 
     @Override
 	public PageUtils queryPage(Map<String, Object> params) {
@@ -297,7 +300,7 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
     }
 
     @Override
-    public Map<String, Object> listCourseCommentByCourseId(Long courseId,Integer pageNo, Integer pageSize) {
+    public Map<String, Object> listCourseCommentByCourseId(Long courseId,Integer pageNo, Integer pageSize, String userId) {
         Map<String, Object> params = new HashMap<>();
         // 根据课程id查询评价信息
         Map<String, Object> map = new HashMap<>();
@@ -308,6 +311,22 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         params.put("courseCommentCount", courseCommentCount);
         List<Map<String, Object>> courseCommentList = baseMapper.listCourseCommentByCourseId(map);
         params.put("courseCommentList", courseCommentList);
+        // 查询是否评价
+        map.put("userId", userId);
+        map.put("objId", courseId);
+        Map<String, Object> comment = xryCommentDao.selectCommentByUserIdAndObjId(map);
+        int isComment = 0;
+        if (null != comment) {
+            if (null != comment.get("update_time")) {
+                // 已经修改过一次了
+                isComment = 2;
+            } else {
+                // 数据库已经存在记录，但是还没有修改过
+                isComment = 1;
+                params.put("comment", comment);
+            }
+        }
+        params.put("isComment", isComment);
         return params;
     }
 

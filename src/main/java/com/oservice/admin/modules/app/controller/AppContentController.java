@@ -358,9 +358,6 @@ public class AppContentController extends AbstractController {
         // 没有登录的情况下，查询管理员根据类目设置的推荐课程
         // 查询全部，返回一个list，不根据类目分类
         courseRecommendList = courseService.listRecommendCourse(params);
-        Map<String, Object> name = new HashMap<>();
-        name.put("name", "管理推荐");
-        courseRecommendList.add(name);
         courseList.put("courseRecommendList", courseRecommendList);
         return Result.ok().put("courseList", courseList);
     }

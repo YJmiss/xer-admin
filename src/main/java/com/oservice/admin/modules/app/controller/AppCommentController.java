@@ -3,6 +3,7 @@ package com.oservice.admin.modules.app.controller;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryCommentEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.ShiroService;
 import com.oservice.admin.modules.sys.service.XryCommentService;
@@ -42,39 +43,52 @@ public class AppCommentController extends AbstractController {
      */
     @PostMapping("/comment/insertCommentByUserId")
     @ApiOperation(value = "app端用户评论保存方法", notes = "params：携带评论参数（type、objId、starLevel、detail），必填")
-    public Result insertCommentByUserId(@RequestParam Integer type, @RequestParam  String objId, @RequestParam  Integer starLevel,
-            @RequestParam String detail,HttpServletRequest request) {
-        String userId = "";
+    public Result insertCommentByUserId(Long commentId, @RequestParam Integer type, @RequestParam  String objId, @RequestParam  Integer starLevel,
+                                        @RequestParam String detail,HttpServletRequest request) {
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
-            //token失效
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
                 return Result.error(204, "token失效，请重新登录");
+            } else {
+                XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+                String userId = users.getId();
+                Map<String, Object> params = new HashMap<>();
+                params.put("objId", objId);
+                params.put("userId", userId);
+                params.put("starLevel", starLevel);
+                params.put("detail", detail);
+                // 判断是评论是修改还是添加
+                Map<String, Object> comment = xryCommentService.selectCommentByUserIdAndObjId(params);
+//                XryCommentEntity commentEntity = xryCommentService.selectById(commentId);
+                if (null != comment) {
+                    // 修改，只能修改一次
+                    if (null != comment.get("update_time")) {
+                        return Result.error(203, "评论只可以修改一次哦");
+                    } else {
+                        params.put("commentId", commentId);
+                        xryCommentService.updateByCommentId(params);
+                    }
+                } else {
+                    // 评论添加
+                    params.put("type", type);
+                    xryCommentService.insertCommentByUserId(params);
+                }
             }
-            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
-            userId = users.getId();
         }
-        Map<String, Object> params = new HashMap<>();
-        params.put("type", type);
-        params.put("objId", objId);
-        params.put("starLevel", starLevel);
-        params.put("detail", detail);
-        xryCommentService.insertCommentByUserId(params, userId);
         return Result.ok();
     }
 
     /**
-     * app端进入评论详情
+     * 根据id查询条评论
      * @param commentId
      * @return
      */
     @GetMapping("/comment/queryCommentById")
-    @ApiOperation(value = "app端进入评论详情", notes = "app端进入评论详情")
+    @ApiOperation(value = "根据id查询条评论", notes = "commentId：评论id")
     public Result queryCommentById(@RequestParam Long commentId) {
-//        XryCommentEntity comment = xryCommentService.queryById(commentId);
-        return Result.ok();
+        XryCommentEntity comment = xryCommentService.queryById(commentId);
+        return Result.ok().put("comment", comment);
     }
-
 
 }
