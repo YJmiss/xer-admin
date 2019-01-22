@@ -153,7 +153,7 @@ public interface XryCourseService extends IService<XryCourseEntity> {
 	 * @param courseId
 	 * @return
 	 */
-	Map<String, Object> listCourseCommentByCourseId(Long courseId,Integer pageNo, Integer pageSize);
+	Map<String, Object> listCourseCommentByCourseId(Long courseId,Integer pageNo, Integer pageSize, String userId);
 
 	/**
 	 * 查询"相关课程"
