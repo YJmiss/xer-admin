@@ -63,6 +63,11 @@ public class XryCommentEntity implements Serializable {
      */
     private Date created;
 
+    /**
+     * 修改时间
+     */
+    private Date updateTime;
+
 
     public Long getId() {
         return id;
@@ -142,5 +147,13 @@ public class XryCommentEntity implements Serializable {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

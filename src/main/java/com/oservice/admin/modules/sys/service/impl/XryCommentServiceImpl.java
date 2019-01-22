@@ -83,12 +83,13 @@ public class XryCommentServiceImpl extends ServiceImpl<XryCommentDao, XryComment
     }
 
     @Override
-    public void insertCommentByUserId(Map<String, Object> params, String userId)  {
+    public void insertCommentByUserId(Map<String, Object> params)  {
         // 取出app传过来的参数
         String objId = (String) params.get("objId");
         Integer type = (Integer) params.get("type");
         Integer starLevel = (Integer) params.get("starLevel") * 2;
         String detail = (String) params.get("detail");
+        String userId = (String) params.get("userId");
 
         XryCommentEntity comment = new XryCommentEntity();
         comment.setObjId(objId);
@@ -112,6 +113,25 @@ public class XryCommentServiceImpl extends ServiceImpl<XryCommentDao, XryComment
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public Map<String, Object> selectCommentByUserIdAndObjId(Map<String, Object> params) {
+        return baseMapper.selectCommentByUserIdAndObjId(params);
+    }
+
+    @Override
+    public void updateByCommentId(Map<String, Object> params) {
+        Long id = (Long) params.get("commentId");
+        Integer starLevel = (Integer) params.get("starLevel") * 2;
+        String detail = (String) params.get("detail");
+
+        XryCommentEntity comment = new XryCommentEntity();
+        comment.setId(id);
+        comment.setStarLevel(starLevel);
+        comment.setDetail(detail);
+        comment.setUpdateTime(new Date());
+        baseMapper.updateById(comment);
     }
 
 }

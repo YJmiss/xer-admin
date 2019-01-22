@@ -38,5 +38,10 @@ public interface XryCommentDao extends BaseMapper<XryCommentEntity> {
      */
     void updateCommentStatus(Map<String, Object> params);
 
-
+    /**
+     * 根据用户id和对象id查询评论
+     * @param params
+     * @return
+     */
+    Map<String, Object> selectCommentByUserIdAndObjId(@Param("params") Map<String, Object> params);
 }
