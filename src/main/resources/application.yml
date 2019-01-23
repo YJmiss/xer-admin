@@ -4,12 +4,12 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 9001
+  port: 443
   connection-timeout: 5000ms
-  servlet:
-    context-path:
-     
-
+  ssl:
+    key-store: classpath:1766676_www.xeyvip.com.pfx
+    key-store-password: SsI7G3XN
+    keyStoreType: PKCS12
 
 spring:
   # 环境 dev|test|prod
