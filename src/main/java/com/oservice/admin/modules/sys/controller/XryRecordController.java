@@ -10,6 +10,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,8 +62,7 @@ public class XryRecordController extends AbstractController {
 
 
     /**
-     * 审核系统->视频审核
-     * 审核系统->课程审核
+     * 审核系统->讲师审核
      * @param record
      * @return
      */
@@ -86,6 +87,44 @@ public class XryRecordController extends AbstractController {
         // 第二步：记录视频审核信息到记录表
         Long userId = getUserId();
         xryRecordService.recordExamine(record,userId);
+        return Result.ok("操作成功");
+    }
+
+    /**
+     * 审核系统->视频审核
+     * 审核系统->课程审核
+     *
+     * @param params: 被审核对象ID actionNumber:1，通过 2，驳回  detail:审核详情
+     * @return type:类型：1-课程审核2-视频审核3-讲师审核4-机构审核
+     */
+    @SysLog("课程/视频审核")
+    @PostMapping("/examines")
+    @RequiresPermissions("xry:record:examine")
+    public Result bulkOperation(@RequestBody Map<String, Object> params) {
+        Integer type = (Integer) params.get("type");
+        Integer actionNumber = (Integer) params.get("actionNumber");
+        String detail = (String) params.get("detail");
+        Object rId = params.get("recordId");
+        List<Integer> recordId = (ArrayList<Integer>) rId;
+        for (Integer id : recordId) {
+            XryRecordEntity record = new XryRecordEntity();
+            record.setRecordId(Long.valueOf(id));
+            record.setActionNumber(actionNumber);
+            record.setDetail(detail);
+            if (1 == type) {
+                // 修改课程在数据库的状态
+                xryCourseService.recordExamineInfo(record);
+            } else if (2 == type) {
+                // 修改视频在数据库的状态
+                xryVideoService.recordExamineInfo(record);
+            } else if (4 == type) {
+                // 修改机构在数据库的状态
+                xryOrganizationService.recordExamineInfo(record);
+            }
+            // 第二步：记录视频审核信息到记录表
+            Long userId = getUserId();
+            xryRecordService.recordExamine(record, userId);
+        }
         return Result.ok("操作成功");
     }
 

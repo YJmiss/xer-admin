@@ -3,8 +3,11 @@ package com.oservice.admin.modules.app.controller;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.SysUserTokenEntity;
+import com.oservice.admin.modules.sys.entity.XryCommentQuestionEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
-import com.oservice.admin.modules.sys.service.*;
+import com.oservice.admin.modules.sys.service.ShiroService;
+import com.oservice.admin.modules.sys.service.XryCommentQuestionService;
+import com.oservice.admin.modules.sys.service.XryUserFeedbackService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
@@ -118,7 +121,7 @@ public class AppUserFeedbackController extends AbstractController {
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-                return Result.error(204, "token失效，请重新登录");
+                return Result.error(401, "token失效，请重新登录");
             }
         }
         // 进入问题反馈界面，查询6条常见问题，以添加时间降序排序
@@ -127,4 +130,17 @@ public class AppUserFeedbackController extends AbstractController {
         return Result.ok().put("commentQuestionList" ,commentQuestionList);
     }
 
+    /**
+     * app查询问题详情
+     *
+     * @param
+     * @param
+     * @return
+     */
+    @PostMapping("/appListCommentQuestionByQuestionId")
+    @ApiOperation(value = "app查询问题详情", notes = "Qid：问题id")
+    public Result appListCommentQuestionByQuestionId(@RequestParam Integer Qid) {
+        XryCommentQuestionEntity xryCommentQuestionEntity = xryCommentQuestionService.selectById(Qid);
+        return Result.ok().put("Question", xryCommentQuestionEntity);
+    }
 }
