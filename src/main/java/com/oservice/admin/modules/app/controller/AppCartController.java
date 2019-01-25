@@ -34,7 +34,7 @@ public class AppCartController extends AbstractController {
 
     @ApiOperation(value = "添加到购物车", notes = "用户添加课程到购物车 courseId：课程ID")
     @GetMapping("/addCart")
-    public Result addCart(long courseId) {
+    public Result addCart(long courseId, String sharingId) {
         List<AppCartEntity> cartList = cartService.getCartListFromRedis(getAppUser());
         if (cartList != null) {
             for (AppCartEntity cart : cartList) {
@@ -42,17 +42,17 @@ public class AppCartController extends AbstractController {
                     return Result.error(203, "购物车已有此课程！");
                 }
             }
-            cartService.addCart(getAppUser(), courseId);
+            cartService.addCart(getAppUser(), courseId, sharingId);
             return Result.ok();
         }
-        cartService.addCart(getAppUser(), courseId);
+        cartService.addCart(getAppUser(), courseId, sharingId);
         return Result.ok();
     }
 
     @ApiOperation(value = "移除购物车课程", notes = "用户移除购物车课程 courseId：课程ID")
     @GetMapping("/removeCart")
     public Result removeCart(long courseId) {
-        cartService.deleteCourse(getAppUser(), courseId);
+        cartService.deleteCourse(getAppUser(), courseId, "0");
         return Result.ok();
     }
 

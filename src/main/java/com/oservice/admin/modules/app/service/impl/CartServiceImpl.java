@@ -5,6 +5,7 @@ import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.modules.app.entity.AppCartAndCollectEntity;
 import com.oservice.admin.modules.app.entity.AppCartEntity;
 import com.oservice.admin.modules.app.service.CartService;
+import com.oservice.admin.modules.app.service.DistributionService;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryTeacherEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
@@ -32,15 +33,18 @@ public class CartServiceImpl implements CartService {
     private XryCourseService courseService;
     @Resource
     private XryTeacherService xryTeacherService;
+    @Resource
+    private DistributionService distributionService;
 
     @Override
-    public void addCart(XryUserEntity user, long courseId) {
+    public void addCart(XryUserEntity user, long courseId, String sharingId) {
         List<AppCartEntity> appCartEntities = new ArrayList<>();
         String courseJson = redisUtils.get("APPCART" + user.getId());
         XryCourseEntity xryCourse = courseService.queryById(courseId);
         XryTeacherEntity xryTeacher = xryTeacherService.selectById(xryCourse.getTid());
         AppCartEntity cartEntity = new AppCartEntity();
         cartEntity.setId(xryCourse.getId());
+        cartEntity.setSharingId(sharingId);
         cartEntity.setImage(xryCourse.getImage());
         cartEntity.setNickname(xryTeacher.getRealName());
         cartEntity.setTitle(xryCourse.getTitle());
@@ -72,7 +76,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteCourse(XryUserEntity user, long courseId) {
+    public void deleteCourse(XryUserEntity user, long courseId, String id) {
         List<AppCartEntity> appCartEntities = JsonUtil.jsonToList(redisUtils.get("APPCART" + user.getId()), AppCartEntity.class);
         List<AppCartEntity> appCartEntities1 = new ArrayList<>();
         if (appCartEntities.size() > 0) {
@@ -83,6 +87,11 @@ public class CartServiceImpl implements CartService {
             }
             if (appCartEntities1.size() > 0) {
                 for (AppCartEntity cart : appCartEntities1) {
+                    if (!cart.getSharingId().equals("sharingId") && !id.equals("0")) {
+                        XryUserEntity dUser = new XryUserEntity();
+                        dUser.setId(cart.getSharingId());
+                        distributionService.createOrder(cart.getId(), dUser, id);
+                    }
                     appCartEntities.remove(cart);
                 }
             }

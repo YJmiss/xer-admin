@@ -1,12 +1,10 @@
 package com.oservice.admin.modules.app.controller;
 
 import com.oservice.admin.common.utils.PageUtils;
-import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.app.entity.AppCartAndCollectEntity;
 import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.service.CartService;
-import com.oservice.admin.modules.app.service.DistributionService;
 import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
@@ -41,13 +39,9 @@ public class AppOrderController extends AbstractController {
     @Resource
     private CartService cartService;
     @Resource
-    private RedisUtils redisUtils;
-    @Resource
     private XryCourseService xryCourseService;
     @Resource
     private XryTeacherService xryTeacherService;
-    @Resource
-    private DistributionService distributionService;
     /**
      * 后台列表所有订单
      */
@@ -74,14 +68,14 @@ public class AppOrderController extends AbstractController {
      */
     @ApiOperation(value = "生成订单", notes = "从购物车提交订单")
     @PostMapping("/createOrder")
-    public Result createOrder(long[] ids) {
-        orderService.createOrder(ids, getAppUser());
-        for (long courseId : ids) {         //移除购物车中生成订单的课程
-            if (redisUtils.hasKey("APPCART" + getAppUserId())) {
-                cartService.deleteCourse(getAppUser(), courseId);
-            }
+    public Result createOrder(long[] ids, String sharingId) {
+        if (sharingId.equals("sharingId")) {
+            orderService.createOrder(ids, getAppUser(), sharingId);
+            return Result.ok();
+        } else {
+            orderService.createOrder(ids, getAppUser(), sharingId);
+            return Result.ok();
         }
-        return Result.ok();
     }
 
     /**
@@ -95,7 +89,16 @@ public class AppOrderController extends AbstractController {
         List<AppCartAndCollectEntity> cartList = cartService.getCartListIsCollectFromRedis(getAppUser());
         List<AppCartAndCollectEntity> courses = new ArrayList<>();
         for (long courseId : ids) {
-            if (cartList.size() > 0) {
+            if (cartList == null) {
+                XryCourseEntity xryCourseEntity = xryCourseService.queryById(courseId);
+                AppCartAndCollectEntity appCart = new AppCartAndCollectEntity();
+                appCart.setId(courseId);
+                appCart.setImage(xryCourseEntity.getImage());
+                appCart.setPrice(xryCourseEntity.getPrice());
+                appCart.setTitle(xryCourseEntity.getTitle());
+                appCart.setNickname(xryTeacherService.selectById(xryCourseEntity.getTid()).getRealName());
+                courses.add(appCart);
+            } else {
                 for (AppCartAndCollectEntity appCart : cartList) {
                     if (appCart.getId() == courseId || appCart.getId().equals(ids)) {
                         courses.add(appCart);
@@ -111,15 +114,6 @@ public class AppOrderController extends AbstractController {
                     appCart.setNickname(xryTeacherService.selectById(xryCourseEntity.getTid()).getRealName());
                     courses.add(appCart);
                 }
-            } else {
-                XryCourseEntity xryCourseEntity = xryCourseService.queryById(courseId);
-                AppCartAndCollectEntity appCart = new AppCartAndCollectEntity();
-                appCart.setId(courseId);
-                appCart.setImage(xryCourseEntity.getImage());
-                appCart.setPrice(xryCourseEntity.getPrice());
-                appCart.setTitle(xryCourseEntity.getTitle());
-                appCart.setNickname(xryTeacherService.selectById(xryCourseEntity.getTid()).getRealName());
-                courses.add(appCart);
             }
         }
         map.put("courses", courses);
@@ -157,7 +151,6 @@ public class AppOrderController extends AbstractController {
     @GetMapping("/cancelOrder")
     public Result cancelOrder(String orderId) {
         orderService.cancelOrder(orderId);
-        distributionService.createOrder(32l, getAppUser(), "20190110001");
         return Result.ok();
     }
 

@@ -9,6 +9,8 @@ import com.oservice.admin.modules.app.dao.AppOrderDao;
 import com.oservice.admin.modules.app.entity.AppUserPrderEntity;
 import com.oservice.admin.modules.app.entity.XryOrderCourseEntity;
 import com.oservice.admin.modules.app.entity.XryOrderEntity;
+import com.oservice.admin.modules.app.service.CartService;
+import com.oservice.admin.modules.app.service.DistributionService;
 import com.oservice.admin.modules.app.service.OrderCourseService;
 import com.oservice.admin.modules.app.service.OrderService;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
@@ -33,9 +35,13 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
     private OrderCourseService orderCourseService;
     @Resource
     private RedisUtils redisUtils;
+    @Resource
+    private DistributionService distributionService;
+    @Resource
+    private CartService cartService;
 
     @Override
-    public void createOrder(long[] ids, XryUserEntity user) {
+    public void createOrder(long[] ids, XryUserEntity user, String sharingId) {
         List<XryOrderCourseEntity> orderCoursesList = new ArrayList<>();
         String id = redisUtils.getId();
         XryOrderEntity order = new XryOrderEntity();
@@ -47,17 +53,26 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
         order.setBuyerPhone(user.getPhone());//'买家电话',
         long totalFee = 0;//课程总金额
         for (long a : ids) {
-            XryCourseEntity xryCourseEntity = xryCourseService.queryById(a);
-            XryOrderCourseEntity orderCourseEntity = new XryOrderCourseEntity();
-            orderCourseEntity.setPicPath(xryCourseEntity.getImage());
-            Long price = xryCourseEntity.getPrice();//价格
-            orderCourseEntity.setPrice(price);
-            totalFee += price;//记录总价格
-            orderCourseEntity.setTitle(xryCourseEntity.getTitle());//标题
-            orderCourseEntity.setId(UUIDUtils.getUUID());
-            orderCourseEntity.setCourseId(a);
-            orderCourseEntity.setOrderId(id);
-            orderCoursesList.add(orderCourseEntity);
+            if ((!sharingId.equals("sharingId")) && (ids.length < 2)) {
+                XryUserEntity dUser = new XryUserEntity();
+                dUser.setId(sharingId);
+                distributionService.createOrder(a, dUser, id);
+            } else {
+                XryCourseEntity xryCourseEntity = xryCourseService.queryById(a);
+                XryOrderCourseEntity orderCourseEntity = new XryOrderCourseEntity();
+                orderCourseEntity.setPicPath(xryCourseEntity.getImage());
+                Long price = xryCourseEntity.getPrice();//价格
+                orderCourseEntity.setPrice(price);
+                totalFee += price;//记录总价格
+                orderCourseEntity.setTitle(xryCourseEntity.getTitle());//标题
+                orderCourseEntity.setId(UUIDUtils.getUUID());
+                orderCourseEntity.setCourseId(a);
+                orderCourseEntity.setOrderId(id);
+                orderCoursesList.add(orderCourseEntity);
+                if (redisUtils.hasKey("APPCART" + user.getId())) {
+                    cartService.deleteCourse(user, a, id);
+                }
+            }
         }
         order.setTotalFee(totalFee);
         baseMapper.addOrder(order);
@@ -87,15 +102,15 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
     }*/
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageUtils queryPage(Map<String, Object> param) {
         Page<Map<String, Object>> pageList = new Page<>();
-        Map<String, Object> map = new HashMap<>();
-        String pageNo = (String) params.get("page");
-        String pageSize = (String) params.get("limit");
-        String orderId = (String) params.get("orderId");
-        String phone = (String) params.get("phone");
-        String time = (String) params.get("createTime");
-        String status = (String) params.get("status");
+        Map<String, Object> params = new HashMap<>();
+        String pageNo = (String) param.get("page");
+        String pageSize = (String) param.get("limit");
+        String orderId = (String) param.get("orderId");
+        String phone = (String) param.get("phone");
+        String time = (String) param.get("createTime");
+        String status = (String) param.get("status");
         if (null != time && !"".equals(time)) {
             String[] yearArr = time.split(" 年 ");
             String year = yearArr[0];
@@ -103,18 +118,18 @@ public class OrderServiceImpl extends ServiceImpl<AppOrderDao, XryOrderEntity> i
             String month = monthArr[0];
             String day = monthArr[1].split(" 日")[0];
             time = year + "-" +month + "-" + day;
-            map.put("created", "%" + time + "%");
+            params.put("created", "%" + time + "%");
         }
-        map.put("pageNo", (new Integer(pageNo) - 1) * new Integer(pageSize));
-        map.put("pageSize", pageSize);
-        map.put("orderId", orderId);
-        map.put("phone", phone);
-        map.put("status", status);
+        params.put("pageNo", (new Integer(pageNo) - 1) * new Integer(pageSize));
+        params.put("pageSize", pageSize);
+        params.put("orderId", orderId);
+        params.put("phone", phone);
+        params.put("status", status);
         // 查询返回的数据总数page.totalCount
-        Long total = baseMapper.countTotal1(map);
+        Long total = baseMapper.countTotal1(params);
         pageList.setTotal(total);
         // page.list 查询返回的数据list
-        List<Map<String, Object>> courseList = baseMapper.pageList1(map);
+        List<Map<String, Object>> courseList = baseMapper.pageList1(params);
         pageList.setRecords(courseList);
         return new PageUtils(pageList);
     }

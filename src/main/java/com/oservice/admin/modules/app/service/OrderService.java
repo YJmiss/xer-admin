@@ -19,7 +19,7 @@ public interface OrderService {
      *
      * @param
      */
-    void createOrder(long[] ids, XryUserEntity user);
+    void createOrder(long[] ids, XryUserEntity user, String sharingId);
 
     /**
      * 付款成功

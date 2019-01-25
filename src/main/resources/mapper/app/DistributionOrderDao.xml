@@ -29,6 +29,9 @@
         <if test="params.status != null and params.status != ''">
             and status = #{params.status}
         </if>
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit ${params.pageNo},${params.pageSize}
+        </if>
     </select>
 
     <insert id="insertDistribution" parameterType="com.oservice.admin.modules.app.entity.DistributionOrder">

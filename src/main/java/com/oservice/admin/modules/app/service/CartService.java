@@ -13,13 +13,13 @@ import java.util.List;
  * @create: 2018-12-18 13:57
  **/
 public interface CartService {
-    void addCart(XryUserEntity user, long courseId);
+    void addCart(XryUserEntity user, long courseId, String sharingId);
 
     List<AppCartEntity> getCartListFromRedis(XryUserEntity user);
 
     List<AppCartAndCollectEntity> getCartListIsCollectFromRedis(XryUserEntity user);
 
-    void deleteCourse(XryUserEntity user, long courseId);
+    void deleteCourse(XryUserEntity user, long courseId, String id);
 
     void removeCart(XryUserEntity user);
 }

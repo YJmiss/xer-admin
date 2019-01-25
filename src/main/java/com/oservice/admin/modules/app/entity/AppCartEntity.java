@@ -34,6 +34,18 @@ public class AppCartEntity implements Serializable {
      * 课程价格 默认0，单位为：元
      */
     private String appPrice;
+    /**
+     * 分享人ID
+     */
+    private String sharingId;
+
+    public String getSharingId() {
+        return sharingId;
+    }
+
+    public void setSharingId(String sharingId) {
+        this.sharingId = sharingId;
+    }
 
     public String getAppPrice() {
         return new BigDecimal(price).divide(new BigDecimal(100)).setScale(2).toString();
