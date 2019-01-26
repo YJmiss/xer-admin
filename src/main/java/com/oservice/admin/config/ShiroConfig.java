@@ -88,6 +88,7 @@ public class ShiroConfig {
         filterMap.put("/api/appCourse/appCourseApplicantByCourseId", "anon");  // 课程报名
 
         filterMap.put("/api/appUserCenter/userCenter/listCourseByUserIdAndCourseId", "anon");  // 课程报名
+        filterMap.put("/sys/distribution/courseList", "anon");  // 课程报名
 
         filterMap.put("/swagger/**", "anon");
         filterMap.put("/v2/api-docs", "anon");

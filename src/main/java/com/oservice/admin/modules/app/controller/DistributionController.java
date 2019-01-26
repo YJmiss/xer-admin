@@ -9,10 +9,13 @@ import com.oservice.admin.common.validator.group.DistributionGroup;
 import com.oservice.admin.modules.app.information.DistributionConfig;
 import com.oservice.admin.modules.app.service.DistributionService;
 import com.oservice.admin.modules.sys.service.SysConfigService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +24,7 @@ import java.util.Map;
  * @author: YJmiss
  * @create: 2019-01-10 10:28
  **/
+@Api(description = "分销控制器")
 @RestController
 @RequestMapping("/sys/distribution")
 public class DistributionController {
@@ -65,4 +69,16 @@ public class DistributionController {
         return Result.ok().put("page", page);
     }
 
+    /**
+     * 推广信息
+     */
+    @GetMapping("/courseList")
+    @ApiOperation(value = "推广中心数据接口")
+    public Result courseList() {
+        List<Map<String, Object>> list = distributionService.courseList();
+        if (list == null) {
+            return Result.error(203, "搜索服务异常，联系管理员");
+        }
+        return Result.ok().put("courseList", list);
+    }
 }

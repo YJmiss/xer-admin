@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.modules.app.dao.DistributionOrderDao;
+import com.oservice.admin.modules.app.dao.SolrJDao;
 import com.oservice.admin.modules.app.entity.DistributionOrder;
 import com.oservice.admin.modules.app.information.TallyOrderService;
 import com.oservice.admin.modules.app.service.DistributionService;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 import com.oservice.admin.modules.sys.service.XryCourseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,7 +36,8 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionOrderDao, D
     private XryCourseService xryCourseService;
     @Resource
     private TallyOrderService tallyOrderService;
-
+    @Autowired
+    private SolrJDao solrJDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -76,7 +79,6 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionOrderDao, D
 
     /**
      * 分销订单生成
-     *
      * @param id:课程ID user:用户 orderId:订单ID
      */
     @Override
@@ -98,4 +100,13 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionOrderDao, D
         baseMapper.insertDistribution(distribution);
     }
 
+    @Override
+    public List<Map<String, Object>> courseList() {
+        try {
+            return solrJDao.findall();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

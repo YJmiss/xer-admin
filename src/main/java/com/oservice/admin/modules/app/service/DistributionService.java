@@ -3,6 +3,7 @@ package com.oservice.admin.modules.app.service;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
 
+import java.util.List;
 import java.util.Map;
 
 public interface DistributionService {
@@ -11,8 +12,14 @@ public interface DistributionService {
 
     /**
      * 一级分销订单生成
-     *
      * @param id:课程ID user:用户 orderId:订单ID
      */
     void createOrder(Long id, XryUserEntity user, String orderId);
+
+    List<Map<String, Object>> courseList();
+    /**
+     * 分销查询所有数据
+     * @param id:课程ID user:用户 orderId:订单ID
+     */
+
 }
