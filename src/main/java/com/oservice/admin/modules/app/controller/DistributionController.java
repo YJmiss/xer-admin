@@ -8,6 +8,7 @@ import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.DistributionGroup;
 import com.oservice.admin.modules.app.information.DistributionConfig;
 import com.oservice.admin.modules.app.service.DistributionService;
+import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.service.SysConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +28,7 @@ import java.util.Map;
 @Api(description = "分销控制器")
 @RestController
 @RequestMapping("/sys/distribution")
-public class DistributionController {
+public class DistributionController extends AbstractController {
     private final static String KEY = ConfigConstant.DISTRIBUTIONCONFIG_CONFIG_KEY;
     @Resource
     private SysConfigService sysConfigService;
@@ -80,5 +81,48 @@ public class DistributionController {
             return Result.error(203, "搜索服务异常，联系管理员");
         }
         return Result.ok().put("courseList", list);
+    }
+
+    /**
+     * 我的收益页面数据接口
+     */
+    @GetMapping("/myEarnings")
+    @ApiOperation(value = "我的收益页面数据接口")
+    public Result myEarnings() {
+        Map<String, Object> map = distributionService.myEarnings(getAppUserId());
+        return Result.ok(map);
+    }
+
+    /**
+     * 佣金收入明细接口
+     */
+    @GetMapping("/accountBalance")
+    @ApiOperation(value = "佣金收入明细接口")
+    public Result accountBalance() {
+        List<Map<String, Object>> list = distributionService.accountBalance(getAppUserId());
+        if (list == null || list.size() < 1) {
+            return Result.ok();
+        }
+        return Result.ok().put("list", list);
+    }
+
+    /**
+     * 用户提现and结算信息保存
+     */
+    @GetMapping("/informationSave")
+    @ApiOperation(value = "用户结算信息保存")
+    public Result informationSave(@RequestParam int type, String userName, String cardNumber, double amount) {
+
+        return Result.ok();
+    }
+
+    /**
+     * APP提现记录数据接口
+     */
+    @GetMapping("/getWithdrawalRecord")
+    @ApiOperation(value = "APP提现记录数据接口")
+    public Result getWithdrawalRecord() {
+
+        return Result.ok();
     }
 }
