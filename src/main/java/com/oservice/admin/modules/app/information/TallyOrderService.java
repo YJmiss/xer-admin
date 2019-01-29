@@ -29,7 +29,6 @@ public class TallyOrderService {
     public Long getBrokerage(Long price) {
         DistributionConfig config = sysConfigService.getConfigObject(KEY, DistributionConfig.class);
         int distributeFee = Integer.parseInt(config.getDistributeFee());
-        long cashWithdrawal = Integer.parseInt(config.getCashWithdrawal());
         long df = 0l;
         /*全部佣金(分)*/
         df = (long) (Double.parseDouble(txfloat(distributeFee, 100)) * price);

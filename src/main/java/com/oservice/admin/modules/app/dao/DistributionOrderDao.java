@@ -29,4 +29,8 @@ public interface DistributionOrderDao extends BaseMapper<DistributionOrder> {
 
 
     void insertDistribution(DistributionOrder distribution);
+
+    Long myEarnings(String appUserId);
+
+    List<DistributionOrder> accountBalance(String appUserId);
 }

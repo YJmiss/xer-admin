@@ -38,4 +38,13 @@
        insert into distribution_order (id,order_id,user_id,course_id,grade,brokerage,status,create_time,update_time,end_time)
        values (#{id},#{orderId},#{userId},#{courseId},#{grade},#{brokerage},#{status},#{createTime},#{updateTime},#{endTime})
     </insert>
+
+    <select id="myEarnings" parameterType="String" resultType="Long">
+        select sum(brokerage) from distribution_order where user_id=#{id} and  status=2;
+    </select>
+
+    <select id="accountBalance" parameterType="String"
+            resultType="com.oservice.admin.modules.app.entity.DistributionOrder">
+        select * from distribution_order where user_id=#{id};
+    </select>
 </mapper>

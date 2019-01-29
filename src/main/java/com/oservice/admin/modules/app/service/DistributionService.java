@@ -17,9 +17,9 @@ public interface DistributionService {
     void createOrder(Long id, XryUserEntity user, String orderId);
 
     List<Map<String, Object>> courseList();
-    /**
-     * 分销查询所有数据
-     * @param id:课程ID user:用户 orderId:订单ID
-     */
+
+    Map<String, Object> myEarnings(String appUserId);
+
+    List<Map<String, Object>> accountBalance(String appUserId);
 
 }

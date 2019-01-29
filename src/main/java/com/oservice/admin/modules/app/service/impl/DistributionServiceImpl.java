@@ -2,25 +2,25 @@ package com.oservice.admin.modules.app.service.impl;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.oservice.admin.common.utils.ConfigConstant;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.RedisUtils;
 import com.oservice.admin.modules.app.dao.DistributionOrderDao;
 import com.oservice.admin.modules.app.dao.SolrJDao;
 import com.oservice.admin.modules.app.entity.DistributionOrder;
+import com.oservice.admin.modules.app.information.DistributionConfig;
 import com.oservice.admin.modules.app.information.TallyOrderService;
 import com.oservice.admin.modules.app.service.DistributionService;
 import com.oservice.admin.modules.sys.entity.XryCourseEntity;
 import com.oservice.admin.modules.sys.entity.XryUserEntity;
+import com.oservice.admin.modules.sys.service.SysConfigService;
 import com.oservice.admin.modules.sys.service.XryCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: oservice
@@ -38,6 +38,9 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionOrderDao, D
     private TallyOrderService tallyOrderService;
     @Autowired
     private SolrJDao solrJDao;
+    private final static String KEY = ConfigConstant.DISTRIBUTIONCONFIG_CONFIG_KEY;
+    @Resource
+    private SysConfigService sysConfigService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -108,5 +111,53 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionOrderDao, D
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public Map<String, Object> myEarnings(String appUserId) {
+        Map<String, Object> map = new HashMap<>();
+        DistributionConfig config = sysConfigService.getConfigObject(KEY, DistributionConfig.class);
+        int cashWithdrawal = Integer.parseInt(config.getCashWithdrawal());
+        Long myEarnings = baseMapper.myEarnings(appUserId);
+        long okEarnings = 0l;
+        int a = cashWithdrawal * 100;
+        if (myEarnings > a || myEarnings == a) {
+            okEarnings = myEarnings;
+        }
+        map.put("myEarnings", new BigDecimal(myEarnings).divide(new BigDecimal(100)).setScale(2).toString());
+        map.put("okEarnings", new BigDecimal(okEarnings).divide(new BigDecimal(100)).setScale(2).toString());
+        map.put("cashWithdrawal", cashWithdrawal);
+        return map;
+    }
+
+    @Override
+    public List<Map<String, Object>> accountBalance(String appUserId) {
+        List<DistributionOrder> list = baseMapper.accountBalance(appUserId);
+        List<Map<String, Object>> list1 = new ArrayList<>();
+        if (list == null || list.size() < 1) {
+            return null;
+        }
+        for (DistributionOrder distributionOrder : list) {
+            int status = distributionOrder.getStatus();
+            if (status == 2) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("status", "未提现");
+                map.put("brokerage", new BigDecimal(distributionOrder.getBrokerage()).divide(new BigDecimal(100)).setScale(2).toString());
+                map.put("update_time", distributionOrder.getUpdateTime());
+                Long price = xryCourseService.queryById(distributionOrder.getCourseId()).getPrice();
+                map.put("price", new BigDecimal(price).divide(new BigDecimal(100)).setScale(2).toString());
+                list1.add(map);
+            }
+            if (status == 3) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("status", "已提现");
+                map.put("brokerage", new BigDecimal(distributionOrder.getBrokerage()).divide(new BigDecimal(100)).setScale(2).toString());
+                map.put("update_time", distributionOrder.getUpdateTime());
+                Long price = xryCourseService.queryById(distributionOrder.getCourseId()).getPrice();
+                map.put("price", new BigDecimal(price).divide(new BigDecimal(100)).setScale(2).toString());
+                list1.add(map);
+            }
+        }
+        return list1;
     }
 }

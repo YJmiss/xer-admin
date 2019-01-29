@@ -168,6 +168,7 @@ public class SolrJDao {
         result.setRecordCount(numFound);
         for (SolrDocument sdoc : results) {
             Map<String, Object> map = new HashMap<>();
+            String id = (String) sdoc.get("id");                        //商品id
             String title = (String) sdoc.get("item_title");                //课程title
             long pic = Float.valueOf((Float) sdoc.get("item_price")).intValue();//课程价格
             String price = new BigDecimal(pic).divide(new BigDecimal(100)).setScale(2).toString();//课程价格（元）
@@ -176,6 +177,7 @@ public class SolrJDao {
             Integer applicantCount = (Integer) sdoc.get("applicantCount");//人气
             long coi = tallyOrderService.getBrokerage(pic);//分销佣金
             String commission = new BigDecimal(coi).divide(new BigDecimal(100)).setScale(2).toString();//分销佣金(元)
+            map.put("id", id);
             map.put("title", title);
             map.put("price", price);
             map.put("image", image);
