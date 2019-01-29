@@ -6,8 +6,10 @@ import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.DistributionGroup;
+import com.oservice.admin.modules.app.entity.WithdrawalRecord;
 import com.oservice.admin.modules.app.information.DistributionConfig;
 import com.oservice.admin.modules.app.service.DistributionService;
+import com.oservice.admin.modules.app.service.WithdrawalRecordService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.service.SysConfigService;
 import io.swagger.annotations.Api;
@@ -34,7 +36,8 @@ public class DistributionController extends AbstractController {
     private SysConfigService sysConfigService;
     @Resource
     private DistributionService distributionService;
-
+    @Resource
+    private WithdrawalRecordService withdrawalRecordService;
     /**
      * 分销配置信息
      */
@@ -106,13 +109,21 @@ public class DistributionController extends AbstractController {
         return Result.ok().put("list", list);
     }
 
-    /**
+    /** new BigDecimal(amount).divide(new BigDecimal(100)).setScale(2).toString()
      * 用户提现and结算信息保存
      */
     @GetMapping("/informationSave")
     @ApiOperation(value = "用户结算信息保存")
     public Result informationSave(@RequestParam int type, String userName, String cardNumber, double amount) {
-
+        WithdrawalRecord withdrawalRecord = new WithdrawalRecord();
+        withdrawalRecord.setType(type);
+        withdrawalRecord.setUserName(userName);
+        withdrawalRecord.setUserId(getAppUserId());
+        withdrawalRecord.setCardNumber(cardNumber);
+        if (amount > 0) {
+            withdrawalRecord.setCashWithdrawalAmount((long) amount * 100);
+        }
+        withdrawalRecordService.informationSave(withdrawalRecord);
         return Result.ok();
     }
 
@@ -122,7 +133,35 @@ public class DistributionController extends AbstractController {
     @GetMapping("/getWithdrawalRecord")
     @ApiOperation(value = "APP提现记录数据接口")
     public Result getWithdrawalRecord() {
+        List<Map<String, Object>> list = withdrawalRecordService.getWithdrawalRecordByUid(getAppUserId());
+        if (list == null || list.size() < 1) {
+            return Result.ok();
+        }
+        return Result.ok().put("list", list);
+    }
 
-        return Result.ok();
+    /**
+     * 后台列表所有提现记录
+     */
+    @ResponseBody
+    @GetMapping("/withdrawalList")
+    @RequiresPermissions("xry:cashWithdrawal:list")
+    public Result withdrawalList(@RequestParam Map<String, Object> params) {
+        PageUtils page = withdrawalRecordService.queryPage(params);
+        return Result.ok().put("page", page);
+    }
+
+    /**
+     * 修改提现申请记录状态
+     */
+    @GetMapping("/updateWithdrawal")
+    @RequiresPermissions("cashWithdrawal:handle")
+    public Result updateWithdrawal(@RequestParam String id) {
+        Boolean br = withdrawalRecordService.updateWithdrawal(id);
+        if (br) {
+            return Result.ok();
+        } else {
+            return Result.error(203, "更改数据库状态失败，联系管理员！");
+        }
     }
 }

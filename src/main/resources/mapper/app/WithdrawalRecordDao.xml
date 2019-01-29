@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.app.dao.WithdrawalRecordDao">
+    <insert id="addOrder" parameterType="com.oservice.admin.modules.app.entity.WithdrawalRecord">
+        insert into xry_order ( order_id,total_fee, payment_type,status,create_time,update_time,user_id,buyer_phone )
+        VALUES(#{orderId},#{totalFee},#{paymentType},#{status},#{createTime},#{updateTime},#{userId},#{buyerPhone})
+    </insert>
+
+    <select id="getWithdrawalRecordByUid" parameterType="string"
+            resultType="com.oservice.admin.modules.app.entity.WithdrawalRecord">
+        select * from withdrawal_record where user_id=#{id} and status=2;
+    </select>
+
+    <!--查询返回的数据总数-->
+    <select id="countTotal2" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from withdrawal_record where 1=1
+        <if test="params1.mobile != null and params1.mobile != ''">
+            and mobile = #{params1.mobile}
+        </if>
+        <if test="params1.createTime != null and params1.createTime != ''">
+            and create_time like #{params1.createTime}
+        </if>
+        <if test="params1.status != null and params1.status != ''">
+            and status = #{params1.status}
+        </if>
+    </select>
+
+    <!--自定义分页查询-->
+    <select id="pageList2" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from withdrawal_record where 1=1
+        <if test="params1.mobile != null and params1.mobile != ''">
+            and mobile = #{params1.mobile}
+        </if>
+        <if test="params1.createTime != null and params1.createTime != ''">
+            and create_time like #{params1.createTime}
+        </if>
+        <if test="params1.status != null and params1.status != ''">
+            and status = #{params1.status}
+        </if>
+        <if test="params1.pageSize != null and params1.pageSize != ''">
+            limit ${params1.pageNo},${params1.pageSize}
+        </if>
+    </select>
+
+    <update id="updateWithdrawal" parameterType="String">
+        update withdrawal_record set status=2,end_time=now() where id=#{id}
+    </update>
+</mapper>
