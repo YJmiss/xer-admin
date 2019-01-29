@@ -98,15 +98,14 @@ public class XryRecommendController extends AbstractController {
     @ApiOperation(value="查询用户已经设置的喜好（类目）",notes="request：请求头里待token")
     public Result listRecommendCourseCatByUserId(HttpServletRequest request){
         String accessToken = request.getHeader("token");
-        String courseCat =  null;
-        List<Map<String, Object>> catList = new ArrayList<>();
+        List<Map<String, Object>> catList3 = null;
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
                 return Result.error(204, "token失效，请重新登录");
             } else {
                 XryUserEntity user = shiroService.queryUsers(tokenEntity.getUserId());
-                courseCat = xryCourseCatService.listRecommendCourseCatByUserId(user.getId());
+                String courseCat = xryCourseCatService.listRecommendCourseCatByUserId(user.getId());
                 List<Long> catIdList = new ArrayList<>();
                 if (StringUtils.isNotBlank(courseCat)) {
                     String catId = courseCat.split("\\[")[1];
@@ -118,32 +117,25 @@ public class XryRecommendController extends AbstractController {
                         }
                     }
                 }
-                for (Long catId : catIdList) {
-                    // 查询出所有类目list
-                    catList = xryCourseCatService.listCourseCat();
-                    if (null != catList) {
-                        catList = ListUtil.listToTreeList(catList,"id","parent_id","catList");
-                        // 循环父类目的list
-                        for (Map<String, Object> parentMap : catList) {
-                            List<Map<String, Object>> catListMap = (List<Map<String, Object>>) parentMap.get("catList");
-                            if (null != catListMap) {
-                                // 循环子类目的list
-                                for (Map<String, Object> subMap : catListMap) {
-                                    Long courseCatId = (Long) subMap.get("id");
-                                    int checks = (int) subMap.get("checks");
-                                    if (catId.equals(courseCatId)) {
-                                        checks = 1;
-                                    }
-                                    // 放回子类目的map里去
-                                    subMap.put("checks", checks);
-                                }
-                            }
+                // 查询出所有类目list
+                List<Map<String, Object>> catList = xryCourseCatService.listCourseCat();
+                if (null != catList) {
+                    List<Map<String, Object>> catMapList2 = new ArrayList<>();
+                    for (Map<String, Object> subMap : catList) {
+                        Long courseCatId = (Long) subMap.get("id");
+                        int checks = (int) subMap.get("checks");
+                        if (catIdList.contains(courseCatId)) {
+                            checks = 1;
                         }
+                        // 放回子类目的map里去
+                        subMap.put("checks", checks);
+                        catMapList2.add(subMap);
                     }
+                    catList3 = ListUtil.listToTreeList(catMapList2,"id","parent_id","catList");
                 }
             }
         }
-        return Result.ok().put("catList", catList);
+        return Result.ok().put("catList", catList3);
     }
 
 }
