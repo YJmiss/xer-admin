@@ -47,4 +47,7 @@
             resultType="com.oservice.admin.modules.app.entity.DistributionOrder">
         select * from distribution_order where user_id=#{id};
     </select>
+    <update id="updateStatusByUid" parameterType="String">
+        update distribution_order set status=3 where user_id=#{id};
+    </update>
 </mapper>

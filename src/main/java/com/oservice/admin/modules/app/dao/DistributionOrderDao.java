@@ -33,4 +33,6 @@ public interface DistributionOrderDao extends BaseMapper<DistributionOrder> {
     Long myEarnings(String appUserId);
 
     List<DistributionOrder> accountBalance(String appUserId);
+
+    void updateStatusByUid(String appUserId);
 }

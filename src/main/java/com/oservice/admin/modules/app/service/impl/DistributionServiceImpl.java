@@ -160,4 +160,12 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionOrderDao, D
         }
         return list1;
     }
+
+    /*
+     *更改用户分销订单状态为已提现
+     * */
+    @Override
+    public void updateStatusByUid(String appUserId) {
+        baseMapper.updateStatusByUid(appUserId);
+    }
 }

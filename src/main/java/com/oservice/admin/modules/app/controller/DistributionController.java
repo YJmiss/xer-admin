@@ -18,6 +18,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -114,18 +115,66 @@ public class DistributionController extends AbstractController {
      */
     @GetMapping("/informationSave")
     @ApiOperation(value = "用户结算信息保存")
-    public Result informationSave(@RequestParam int type, String userName, String cardNumber, double amount) {
+    public Result informationSave(@RequestParam int type, String userName, String cardNumber) {
         WithdrawalRecord withdrawalRecord = new WithdrawalRecord();
         withdrawalRecord.setType(type);
         withdrawalRecord.setUserName(userName);
         withdrawalRecord.setUserId(getAppUserId());
+        withdrawalRecord.setMobile(Long.valueOf(getAppUser().getPhone()));
         withdrawalRecord.setCardNumber(cardNumber);
-        if (amount > 0) {
-            withdrawalRecord.setCashWithdrawalAmount((long) amount * 100);
+        withdrawalRecord.setStatus(0);
+        WithdrawalRecord wr = withdrawalRecordService.getInformationByUid(getAppUserId());
+        if (wr == null) {
+            withdrawalRecordService.informationSave(withdrawalRecord);
+        } else {
+            withdrawalRecord.setId(wr.getId());
+            withdrawalRecordService.informationUpdate(withdrawalRecord);
         }
-        withdrawalRecordService.informationSave(withdrawalRecord);
+
         return Result.ok();
     }
+
+    @GetMapping("/informationList")
+    @ApiOperation(value = "用户进入结算信息")
+    public Result informationList() {
+        WithdrawalRecord wr = withdrawalRecordService.getInformationByUid(getAppUserId());
+        if (wr == null) {
+            return Result.ok();
+        }
+        return Result.ok().put("withdrawalRecord", wr);
+    }
+
+    @GetMapping("/inWithdrawalRecord")
+    @ApiOperation(value = "用户进入提现页面")
+    public Result inWithdrawalRecord() {
+        Map<String, Object> map = new HashMap<>();
+        WithdrawalRecord wr = withdrawalRecordService.getInformationByUid(getAppUserId());
+        if (wr == null) {
+            map.put("userName", null);
+            map.put("cardNumber", null);
+        } else {
+            map.put("userName", wr.getUserName());
+            map.put("cardNumber", wr.getCardNumber());
+        }
+        Map<String, Object> mmp = distributionService.myEarnings(getAppUserId());
+        String okEarnings = (String) mmp.get("okEarnings");
+        map.put("okEarnings", okEarnings);
+        return Result.ok(map);
+    }
+
+    @GetMapping("/withdrawDeposit")
+    @ApiOperation(value = "用户提现")
+    public Result withdrawDeposit() {
+        WithdrawalRecord withdrawalRecord = withdrawalRecordService.getInformationByUid(getAppUserId());
+        withdrawalRecord.setStatus(1);
+        Map<String, Object> mmp = distributionService.myEarnings(getAppUserId());
+        String okEarnings = (String) mmp.get("okEarnings");
+        double v = Double.parseDouble(okEarnings) * 100;
+        withdrawalRecord.setCashWithdrawalAmount((long) v);
+        withdrawalRecordService.informationSave1(withdrawalRecord);
+        return Result.ok();
+    }
+
 
     /**
      * APP提现记录数据接口
@@ -158,7 +207,9 @@ public class DistributionController extends AbstractController {
     @RequiresPermissions("cashWithdrawal:handle")
     public Result updateWithdrawal(@RequestParam String id) {
         Boolean br = withdrawalRecordService.updateWithdrawal(id);
+        WithdrawalRecord er = withdrawalRecordService.selectWById(id);
         if (br) {
+            distributionService.updateStatusByUid(er.getUserId());
             return Result.ok();
         } else {
             return Result.error(203, "更改数据库状态失败，联系管理员！");

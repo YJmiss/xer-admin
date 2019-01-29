@@ -22,4 +22,5 @@ public interface DistributionService {
 
     List<Map<String, Object>> accountBalance(String appUserId);
 
+    void updateStatusByUid(String appUserId);
 }

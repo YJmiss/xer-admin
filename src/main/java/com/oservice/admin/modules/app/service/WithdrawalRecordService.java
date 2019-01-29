@@ -17,6 +17,8 @@ public interface WithdrawalRecordService {
 
     void informationSave(WithdrawalRecord withdrawalRecord);
 
+    void informationSave1(WithdrawalRecord withdrawalRecord);
+
     List<Map<String, Object>> getWithdrawalRecordByUid(String appUserId);
 
     /**
@@ -27,4 +29,10 @@ public interface WithdrawalRecordService {
     PageUtils queryPage(Map<String, Object> params);
 
     Boolean updateWithdrawal(String id);
+
+    WithdrawalRecord getInformationByUid(String appUserId);
+
+    WithdrawalRecord selectWById(String id);
+
+    void informationUpdate(WithdrawalRecord withdrawalRecord);
 }

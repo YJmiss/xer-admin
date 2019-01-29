@@ -12,9 +12,13 @@ public interface WithdrawalRecordDao extends BaseMapper<WithdrawalRecord> {
 
     List<WithdrawalRecord> getWithdrawalRecordByUid(String appUserId);
 
-    Long countTotal2(Map<String, Object> params1);
+    Long countTotal2(Map<String, Object> params);
 
-    List<Map<String, Object>> pageList2(Map<String, Object> params1);
+    List<Map<String, Object>> pageList2(Map<String, Object> params);
 
     Integer updateWithdrawal(String id);
+
+    WithdrawalRecord getInformationByUid(String appUserId);
+
+    void insert1(WithdrawalRecord withdrawalRecord);
 }

@@ -25,7 +25,14 @@ public class WithdrawalRecordServiceImpl extends ServiceImpl<WithdrawalRecordDao
     public void informationSave(WithdrawalRecord withdrawalRecord) {
         withdrawalRecord.setCreateTime(new Date());
         withdrawalRecord.setId(UUIDUtils.getUUID());
-        baseMapper.insert(withdrawalRecord);
+        baseMapper.insert1(withdrawalRecord);
+    }
+
+    @Override
+    public void informationSave1(WithdrawalRecord withdrawalRecord) {
+        withdrawalRecord.setEndTime(new Date());
+        withdrawalRecord.setId(UUIDUtils.getUUID());
+        baseMapper.insert1(withdrawalRecord);
     }
 
     @Override
@@ -40,6 +47,7 @@ public class WithdrawalRecordServiceImpl extends ServiceImpl<WithdrawalRecordDao
             map.put("cashWithdrawalAmount", new BigDecimal(withdrawalRecord.getCashWithdrawalAmount()).divide(new BigDecimal(100)).setScale(2).toString());
             map.put("endTime", withdrawalRecord.getEndTime());
             map.put("cardNumber", withdrawalRecord.getCardNumber());
+            map.put("userName", withdrawalRecord.getUserName());
             list1.add(map);
         }
         return list1;
@@ -48,7 +56,7 @@ public class WithdrawalRecordServiceImpl extends ServiceImpl<WithdrawalRecordDao
     @Override
     public PageUtils queryPage(Map<String, Object> param) {
         Page<Map<String, Object>> pageList = new Page<>();
-        Map<String, Object> params1 = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         String pageNo = (String) param.get("page");
         String pageSize = (String) param.get("limit");
         String mobile = (String) param.get("mobile");
@@ -61,17 +69,17 @@ public class WithdrawalRecordServiceImpl extends ServiceImpl<WithdrawalRecordDao
             String month = monthArr[0];
             String day = monthArr[1].split(" 日")[0];
             cTime = year + "-" + month + "-" + day;
-            params1.put("createdTime", "%" + cTime + "%");
+            params.put("createdTime", "%" + cTime + "%");
         }
-        params1.put("pageNo", (new Integer(pageNo) - 1) * new Integer(pageSize));
-        params1.put("pageSize", pageSize);
-        params1.put("mobile", mobile);
-        params1.put("status", status);
+        params.put("pageNo", (new Integer(pageNo) - 1) * new Integer(pageSize));
+        params.put("pageSize", pageSize);
+        params.put("mobile", mobile);
+        params.put("status", status);
         // 查询返回的数据总数page.totalCount
-        Long total = baseMapper.countTotal2(params1);
+        Long total = baseMapper.countTotal2(params);
         pageList.setTotal(total);
         // page.list 查询返回的数据list
-        List<Map<String, Object>> courseList = baseMapper.pageList2(params1);
+        List<Map<String, Object>> courseList = baseMapper.pageList2(params);
         pageList.setRecords(courseList);
         return new PageUtils(pageList);
     }
@@ -83,5 +91,25 @@ public class WithdrawalRecordServiceImpl extends ServiceImpl<WithdrawalRecordDao
             return false;
         }
         return true;
+    }
+
+    @Override
+    public WithdrawalRecord getInformationByUid(String appUserId) {
+        WithdrawalRecord withdrawalRecord = baseMapper.getInformationByUid(appUserId);
+        if (withdrawalRecord == null) {
+            return null;
+        } else {
+            return withdrawalRecord;
+        }
+    }
+
+    @Override
+    public WithdrawalRecord selectWById(String id) {
+        return baseMapper.getInformationByUid(id);
+    }
+
+    @Override
+    public void informationUpdate(WithdrawalRecord withdrawalRecord) {
+        baseMapper.updateById(withdrawalRecord);
     }
 }
