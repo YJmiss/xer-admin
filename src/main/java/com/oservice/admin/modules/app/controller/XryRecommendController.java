@@ -135,7 +135,7 @@ public class XryRecommendController extends AbstractController {
                 }
             }
         }
-        return Result.ok().put("catList", catList3);
+        return Result.ok().put("courseCatList", catList3);
     }
 
 }
