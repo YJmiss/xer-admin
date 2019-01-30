@@ -23,4 +23,6 @@ public interface DistributionService {
     List<Map<String, Object>> accountBalance(String appUserId);
 
     void updateStatusByUid(String appUserId);
+
+    Integer getOkNumByUidAndCid(String userId, Long courseId);
 }

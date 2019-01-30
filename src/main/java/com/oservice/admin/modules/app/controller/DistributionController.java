@@ -1,23 +1,28 @@
 package com.oservice.admin.modules.app.controller;
 
 import com.google.gson.Gson;
+import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.utils.ConfigConstant;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.DistributionGroup;
+import com.oservice.admin.modules.app.entity.CourseClick;
 import com.oservice.admin.modules.app.entity.WithdrawalRecord;
 import com.oservice.admin.modules.app.information.DistributionConfig;
+import com.oservice.admin.modules.app.service.CourseClickService;
 import com.oservice.admin.modules.app.service.DistributionService;
 import com.oservice.admin.modules.app.service.WithdrawalRecordService;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.service.SysConfigService;
+import com.oservice.admin.modules.sys.service.XryCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +44,10 @@ public class DistributionController extends AbstractController {
     private DistributionService distributionService;
     @Resource
     private WithdrawalRecordService withdrawalRecordService;
+    @Resource
+    private CourseClickService courseClickService;
+    @Resource
+    private XryCourseService xryCourseService;
     /**
      * 分销配置信息
      */
@@ -214,5 +223,26 @@ public class DistributionController extends AbstractController {
         } else {
             return Result.error(203, "更改数据库状态失败，联系管理员！");
         }
+    }
+
+
+    @SysLog("推广数据统计")
+    @GetMapping("/getGeneralizeList")
+    @ApiOperation(value = "用户获取推广数据统计")
+    public Result courseClickSave() {
+        List<CourseClick> list = courseClickService.selectClickByUid(getAppUserId());
+        if (list == null || list.size() < 1) {
+            return Result.ok();
+        }
+        List<Map<String, Object>> list1 = new ArrayList<>();
+        for (CourseClick courseClick : list) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("click", courseClick.getCountss());
+            map.put("courseName", xryCourseService.queryById(courseClick.getCourseId()).getTitle());
+            Integer nums = distributionService.getOkNumByUidAndCid(courseClick.getUserId(), courseClick.getCourseId());
+            map.put("okNum", nums);
+            list1.add(map);
+        }
+        return Result.ok().put("list", list1);
     }
 }
