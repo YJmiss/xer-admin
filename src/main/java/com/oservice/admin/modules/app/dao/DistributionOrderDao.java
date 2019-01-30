@@ -35,4 +35,6 @@ public interface DistributionOrderDao extends BaseMapper<DistributionOrder> {
     List<DistributionOrder> accountBalance(String appUserId);
 
     void updateStatusByUid(String appUserId);
+
+    Integer getOkNumByUidAndCid(DistributionOrder distributionOrder);
 }

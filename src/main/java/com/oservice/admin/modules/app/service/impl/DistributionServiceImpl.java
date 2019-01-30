@@ -168,4 +168,12 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionOrderDao, D
     public void updateStatusByUid(String appUserId) {
         baseMapper.updateStatusByUid(appUserId);
     }
+
+    @Override
+    public Integer getOkNumByUidAndCid(String userId, Long courseId) {
+        DistributionOrder distributionOrder = new DistributionOrder();
+        distributionOrder.setUserId(userId);
+        distributionOrder.setCourseId(courseId);
+        return baseMapper.getOkNumByUidAndCid(distributionOrder);
+    }
 }

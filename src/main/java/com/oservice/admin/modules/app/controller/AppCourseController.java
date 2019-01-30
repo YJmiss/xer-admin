@@ -4,12 +4,11 @@ import com.oservice.admin.common.annotation.SysLog;
 import com.oservice.admin.common.exception.GlobalException;
 import com.oservice.admin.common.utils.PageUtils;
 import com.oservice.admin.common.utils.Result;
+import com.oservice.admin.common.utils.UUIDUtils;
 import com.oservice.admin.modules.app.dao.SolrJDao;
 import com.oservice.admin.modules.app.entity.AppCartEntity;
-import com.oservice.admin.modules.app.service.CartService;
-import com.oservice.admin.modules.app.service.OrderCourseService;
-import com.oservice.admin.modules.app.service.OrderService;
-import com.oservice.admin.modules.app.service.RecordtimeService;
+import com.oservice.admin.modules.app.entity.CourseClick;
+import com.oservice.admin.modules.app.service.*;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.*;
 import com.oservice.admin.modules.sys.service.*;
@@ -60,6 +59,8 @@ public class AppCourseController extends AbstractController {
     private XryUserAttentionService xryUserAttentionService;
     @Resource
     private CartService cartService;
+    @Resource
+    private CourseClickService courseClickService;
 
     /**
      * app端用户加入课程学习
@@ -384,5 +385,52 @@ public class AppCourseController extends AbstractController {
         }
         return Result.ok().put("isLogin", isLogin);
     }
-    
+
+    @SysLog("app保存用户点击分享课程")
+    @GetMapping("/courseClickSave")
+    @ApiOperation(value = "用户点击分享课程", notes = "用户点击分享课程保存")
+    public Result courseClickSave(@RequestParam String uId, Long courseId) {
+        CourseClick courseClick = new CourseClick();
+        // courseClick.setId(UUIDUtils.getUUID());
+        courseClick.setUserId(uId);
+        courseClick.setCourseId(courseId);
+        List<CourseClick> list = courseClickService.selectClickByUidAndCid(courseClick);
+        if (list == null || list.size() < 1) {
+            courseClick.setId(UUIDUtils.getUUID());
+            courseClick.setCountss(1);
+            Boolean aBoolean = courseClickService.courseClickSave(courseClick);
+            if (aBoolean) {
+                return Result.ok();
+            } else {
+                return Result.error(203, "保存失败！联系管理员");
+            }
+        }
+        CourseClick courseClick1 = list.get(0);
+        courseClick.setId(courseClick1.getId());
+        courseClick.setCountss(courseClick1.getCountss() + 1);
+        courseClickService.updateClick(courseClick);
+        return Result.ok();
+    }
+
+    @SysLog("app用户点击课程分享")
+    @GetMapping("/courseClickShare")
+    @ApiOperation(value = "用户点击课程的分享", notes = "用户点击课程的分享")
+    public Result courseClickShare(@RequestParam Long courseId) {
+        CourseClick courseClick = new CourseClick();
+        courseClick.setUserId(getAppUserId());
+        courseClick.setCourseId(courseId);
+        List<CourseClick> list = courseClickService.selectClickByUidAndCid(courseClick);
+        if (list == null || list.size() < 1) {
+            courseClick.setId(UUIDUtils.getUUID());
+            courseClick.setCountss(0);
+            Boolean aBoolean = courseClickService.courseClickSave(courseClick);
+            if (aBoolean) {
+                return Result.ok();
+            } else {
+                return Result.error(203, "保存失败！联系管理员");
+            }
+        } else {
+            return Result.ok();
+        }
+    }
 }
