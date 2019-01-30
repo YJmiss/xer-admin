@@ -323,9 +323,9 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
             } else {
                 // 数据库已经存在记录，但是还没有修改过
                 isComment = 1;
-                params.put("comment", comment);
             }
         }
+        params.put("comment", comment);
         params.put("isComment", isComment);
         return params;
     }
