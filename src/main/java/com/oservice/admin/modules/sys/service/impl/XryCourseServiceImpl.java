@@ -321,11 +321,11 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
                 // 已经修改过一次了
                 isComment = 2;
                 // 返回星级
-                params.put("starLevel", comment.get("star_level"));
             } else {
                 // 数据库已经存在记录，但是还没有修改过
                 isComment = 1;
             }
+            params.put("starLevel", comment.get("star_level"));
         }
         params.put("comment", comment);
         params.put("isComment", isComment);
