@@ -174,6 +174,11 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionOrderDao, D
         DistributionOrder distributionOrder = new DistributionOrder();
         distributionOrder.setUserId(userId);
         distributionOrder.setCourseId(courseId);
-        return baseMapper.getOkNumByUidAndCid(distributionOrder);
+        List<DistributionOrder> list = baseMapper.getOkNumByUidAndCid(distributionOrder);
+        if (list == null || list.size() < 1) {
+            return 0;
+        } else {
+            return list.size();
+        }
     }
 }

@@ -36,5 +36,5 @@ public interface DistributionOrderDao extends BaseMapper<DistributionOrder> {
 
     void updateStatusByUid(String appUserId);
 
-    Integer getOkNumByUidAndCid(DistributionOrder distributionOrder);
+    List<DistributionOrder> getOkNumByUidAndCid(DistributionOrder distributionOrder);
 }

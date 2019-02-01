@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.app.dao.CourseClickDao">
+    <insert id="courseClickSave" parameterType="com.oservice.admin.modules.app.entity.CourseClick">
+        insert into course_click (id,user_id,course_id,countss)
+        VALUES(#{id},#{userId},#{courseId},#{countss})
+    </insert>
+
+    <update id="updateClick" parameterType="com.oservice.admin.modules.app.entity.CourseClick">
+        update course_click set countss=#{countss} where id=#{id}
+    </update>
+
+    <select id="selectClickByUidAndCid" parameterType="com.oservice.admin.modules.app.entity.CourseClick"
+            resultType="com.oservice.admin.modules.app.entity.CourseClick">
+        select * from course_click where user_id=#{userId} and course_id=#{courseId}
+    </select>
+    <select id="selectClickByUid" parameterType="String" resultType="com.oservice.admin.modules.app.entity.CourseClick">
+        select * from course_click where user_id=#{appUserId};
+    </select>
+
+</mapper>

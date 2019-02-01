@@ -105,10 +105,10 @@ public class XryRecordController extends AbstractController {
         Integer actionNumber = (Integer) params.get("actionNumber");
         String detail = (String) params.get("detail");
         Object rId = params.get("recordId");
-        List<Integer> recordId = (ArrayList<Integer>) rId;
-        for (Integer id : recordId) {
+        List<Long> recordId = (ArrayList<Long>) rId;
+        for (Long id : recordId) {
             XryRecordEntity record = new XryRecordEntity();
-            record.setRecordId(Long.valueOf(id));
+            record.setRecordId(id);
             record.setActionNumber(actionNumber);
             record.setDetail(detail);
             if (1 == type) {

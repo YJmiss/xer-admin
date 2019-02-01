@@ -50,4 +50,8 @@
     <update id="updateStatusByUid" parameterType="String">
         update distribution_order set status=3 where user_id=#{id};
     </update>
+    <select id="getOkNumByUidAndCid" parameterType="com.oservice.admin.modules.app.entity.DistributionOrder"
+            resultType="com.oservice.admin.modules.app.entity.DistributionOrder">
+        select * from distribution_order where user_id=#{userId} and course_id=#{courseId} and status=3;
+    </select>
 </mapper>
