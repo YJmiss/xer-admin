@@ -92,4 +92,18 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
         return baseMapper.queryById(userId);
     }
 
+    @Override
+    public String judgeNicknameIsRepet(String params, String userId) {
+        JSONObject json = new JSONObject(params);
+        String nickname = json.getString("nickname");
+        return baseMapper.judgeNicknameIsRepet(nickname, userId);
+    }
+
+    @Override
+    public String judgeEmailIsRepet(String params, String userId) {
+        JSONObject json = new JSONObject(params);
+        String email = json.getString("email");
+        return baseMapper.judgeEmailIsRepet(email, userId);
+    }
+
 }
