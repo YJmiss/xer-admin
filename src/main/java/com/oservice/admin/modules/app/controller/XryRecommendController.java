@@ -107,7 +107,7 @@ public class XryRecommendController extends AbstractController {
                 XryUserEntity user = shiroService.queryUsers(tokenEntity.getUserId());
                 String courseCat = xryCourseCatService.listRecommendCourseCatByUserId(user.getId());
                 List<Long> catIdList = new ArrayList<>();
-                if (StringUtils.isNotBlank(courseCat)) {
+                if (StringUtils.isNotBlank(courseCat) && !"[]".equals(courseCat)) {
                     String catId = courseCat.split("\\[")[1];
                     catId = catId.split("\\]")[0];
                     if (StringUtils.isNotBlank(catId)) {
