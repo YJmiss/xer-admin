@@ -100,6 +100,7 @@ public class ShiroConfig {
         filterMap.put("/templates/static/**", "anon");
         filterMap.put("/static/**", "anon");
 
+        filterMap.put("/initWXJSInterface", "anon");
         filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
