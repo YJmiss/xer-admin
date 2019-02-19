@@ -1,6 +1,5 @@
 package com.oservice.admin.modules.app.controller;
 
-import com.oservice.admin.common.utils.ListUtil;
 import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.modules.sys.controller.AbstractController;
 import com.oservice.admin.modules.sys.entity.*;
@@ -330,7 +329,7 @@ public class AppContentController extends AbstractController {
                 XryUserEntity user = shiroService.queryUsers(tokenEntity.getUserId());
                 String courseCatIdArr = xryCourseCatService.listRecommendCourseCatByUserId(user.getId());
                 List<String> catIdList = new ArrayList<>();
-                if (StringUtils.isNotBlank(courseCatIdArr) && !"[]".equals(courseCatIdArr)) {
+                if (StringUtils.isNotBlank(courseCatIdArr)) {
                     String catId = courseCatIdArr.split("\\[")[1];
                     catId = catId.split("\\]")[0];
                     if (StringUtils.isNotBlank(catId)) {

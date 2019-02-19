@@ -10,7 +10,10 @@ import com.oservice.admin.modules.sys.service.XryUserService;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 系统用户
@@ -90,20 +93,6 @@ public class XryUserServiceImpl extends ServiceImpl<XryUserDao, XryUserEntity> i
     @Override
     public XryUserEntity queryById(String userId) {
         return baseMapper.queryById(userId);
-    }
-
-    @Override
-    public String judgeNicknameIsRepet(String params, String userId) {
-        JSONObject json = new JSONObject(params);
-        String nickname = json.getString("nickname");
-        return baseMapper.judgeNicknameIsRepet(nickname, userId);
-    }
-
-    @Override
-    public String judgeEmailIsRepet(String params, String userId) {
-        JSONObject json = new JSONObject(params);
-        String email = json.getString("email");
-        return baseMapper.judgeEmailIsRepet(email, userId);
     }
 
 }

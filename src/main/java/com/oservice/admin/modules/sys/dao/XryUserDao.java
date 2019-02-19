@@ -57,18 +57,4 @@ public interface XryUserDao extends BaseMapper<XryUserEntity> {
      * @return
      */
     XryUserEntity queryById(@Param("userId") String userId);
-
-    /**
-     * 判断昵称是否存在
-     * @param nickname
-     */
-    String judgeNicknameIsRepet(@Param("nickname") String nickname, @Param("userId") String userId);
-
-    /**
-     * 邮箱是否是本人的
-     * @param email
-     * @param userId
-     * @return
-     */
-    String judgeEmailIsRepet(@Param("email") String email, @Param("userId") String userId);
 }

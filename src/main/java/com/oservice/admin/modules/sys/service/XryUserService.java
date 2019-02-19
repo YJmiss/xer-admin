@@ -44,7 +44,7 @@ public interface XryUserService extends IService<XryUserEntity> {
     void updateUserInfoByUserId(String params, String userId);
 
     /**
-     * 判断昵称是否存在
+     *
      * @param newHeadImg
      * @param userId
      */
@@ -62,18 +62,4 @@ public interface XryUserService extends IService<XryUserEntity> {
      * @return
      */
     XryUserEntity queryById(String userId);
-
-    /**
-     * 判断昵称是否存在
-     * @param params
-     */
-    String judgeNicknameIsRepet(String params,String userId);
-
-    /**
-     * 邮箱是否是本人的
-     * @param params
-     * @param userId
-     * @return
-     */
-    String judgeEmailIsRepet(String params, String userId);
 }
