@@ -6,285 +6,348 @@
     <meta name=renderer content=webkit>
     <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <title>学而用系统管理</title>
+    <link rel="shortcut icon" type=image/x-icon href=/static/icon/favicon-edu.ico>
     <link rel="shortcut icon" href=/favicon.ico>
     <link href=/static/css/chunk-elementUI.e8091cad.css rel=stylesheet>
     <link href=/static/css/chunk-libs.b517f994.css rel=stylesheet>
-    <link href=/static/css/app.b42960c0.css rel=stylesheet>
+    <link href=/static/css/app.395c9452.css rel=stylesheet>
 </head>
 <body>
 <script src=./static/config/index.js></script>
 <div id=app></div>
 <script>!function (c) {
     function e(e) {
-        for (var u, t, a = e[0], r = e[1], f = e[2], k = 0, b = []; k < a.length; k++) t = a[k], d[t] && b.push(d[t][0]), d[t] = 0;
-        for (u in r) Object.prototype.hasOwnProperty.call(r, u) && (c[u] = r[u]);
-        for (o && o(e); b.length;) b.shift()();
-        return h.push.apply(h, f || []), n()
+        for (var u, h, d = e[0], a = e[1], t = e[2], r = 0, o = []; r < d.length; r++) h = d[r], k[h] && o.push(k[h][0]), k[h] = 0;
+        for (u in a) Object.prototype.hasOwnProperty.call(a, u) && (c[u] = a[u]);
+        for (b && b(e); o.length;) o.shift()();
+        return f.push.apply(f, t || []), n()
     }
 
     function n() {
-        for (var c, e = 0; e < h.length; e++) {
-            for (var n = h[e], u = !0, t = 1; t < n.length; t++) {
-                var r = n[t];
-                0 !== d[r] && (u = !1)
+        for (var c, e = 0; e < f.length; e++) {
+            for (var n = f[e], u = !0, h = 1; h < n.length; h++) {
+                var a = n[h];
+                0 !== k[a] && (u = !1)
             }
-            u && (h.splice(e--, 1), c = a(a.s = n[0]))
+            u && (f.splice(e--, 1), c = d(d.s = n[0]))
         }
         return c
     }
 
-    var u = {}, t = {runtime: 0}, d = {runtime: 0}, h = [];
+    var u = {}, h = {runtime: 0}, k = {runtime: 0}, f = [];
 
-    function a(e) {
+    function d(e) {
         if (u[e]) return u[e].exports;
         var n = u[e] = {i: e, l: !1, exports: {}};
-        return c[e].call(n.exports, n, n.exports, a), n.l = !0, n.exports
+        return c[e].call(n.exports, n, n.exports, d), n.l = !0, n.exports
     }
 
-    a.e = function (c) {
+    d.e = function (c) {
         var e = [];
-        t[c] ? e.push(t[c]) : 0 !== t[c] && {
-            "chunk-066c": 1,
-            "chunk-06b4": 1,
-            "chunk-0937": 1,
-            "chunk-0a9c": 1,
-            "chunk-0c4b": 1,
-            "chunk-0eb0": 1,
-            "chunk-1905": 1,
-            "chunk-2026": 1,
-            "chunk-20c1": 1,
-            "chunk-20dc": 1,
-            "chunk-20f3": 1,
-            "chunk-2bcd": 1,
-            "chunk-2d74": 1,
-            "chunk-2f0d": 1,
-            "chunk-33c0": 1,
-            "chunk-3dba": 1,
-            "chunk-3f4a": 1,
-            "chunk-4881": 1,
-            "chunk-4a33": 1,
-            "chunk-528c": 1,
-            "chunk-562a": 1,
-            "chunk-5d04": 1,
-            "chunk-5e48": 1,
-            "chunk-5f19": 1,
-            "chunk-6a54": 1,
-            "chunk-7200": 1,
-            "chunk-73c9": 1,
-            "chunk-79d9": 1,
-            "chunk-8735": 1,
-            "chunk-8c81": 1,
-            "chunk-b93d": 1,
-            "chunk-dd18": 1,
-            "chunk-de61": 1,
-            "chunk-e669": 1
-        }[c] && e.push(t[c] = new Promise(function (e, n) {
-            for (var u = "static/css/" + ({}[c] || c) + "." + {
+        h[c] ? e.push(h[c]) : 0 !== h[c] && {
+            "chunk-0148": 1,
+            "chunk-01cd": 1,
+            "chunk-05d6": 1,
+            "chunk-0678": 1,
+            "chunk-0976": 1,
+            "chunk-0d3c": 1,
+            "chunk-1275": 1,
+            "chunk-12d0": 1,
+            "chunk-1b5d": 1,
+            "chunk-21bb": 1,
+            "chunk-24c7": 1,
+            "chunk-2759": 1,
+            "chunk-2b56": 1,
+            "chunk-2bab": 1,
+            "chunk-2ce0": 1,
+            "chunk-30dd": 1,
+            "chunk-375b": 1,
+            "chunk-3a09": 1,
+            "chunk-3b1b": 1,
+            "chunk-4013": 1,
+            "chunk-4491": 1,
+            "chunk-5142": 1,
+            "chunk-5259": 1,
+            "chunk-545e": 1,
+            "chunk-6185": 1,
+            "chunk-64a3": 1,
+            "chunk-74d9": 1,
+            "chunk-78b9": 1,
+            "chunk-7a1f": 1,
+            "chunk-7bb0": 1,
+            "chunk-8019": 1,
+            "chunk-809d": 1,
+            "chunk-83fd": 1,
+            "chunk-936c": 1,
+            "chunk-9595": 1,
+            "chunk-ce8e": 1,
+            "chunk-200e": 1,
+            "chunk-2407": 1,
+            "chunk-2e20": 1,
+            "chunk-45a7": 1,
+            "chunk-4cb8": 1,
+            "chunk-4e87": 1,
+            "chunk-4eb0": 1,
+            "chunk-8358": 1,
+            "chunk-9e60": 1,
+            "chunk-cc0a": 1,
+            "chunk-d666": 1,
+            "chunk-e0ca": 1,
+            "chunk-e49e": 1,
+            "chunk-e626": 1,
+            "chunk-ebb5": 1,
+            "chunk-f2b0": 1,
+            "chunk-f583": 1,
+            "chunk-ffde": 1
+        }[c] && e.push(h[c] = new Promise(function (e, n) {
+            for (var u = "static/css/" + ({"chunk-commons": "chunk-commons"}[c] || c) + "." + {
                 "6A8A": "31d6cfe0",
+                "9X3h": "31d6cfe0",
                 AxA2: "31d6cfe0",
                 Cr7o: "31d6cfe0",
-                EYnS: "31d6cfe0",
+                EDlP: "31d6cfe0",
                 Iabc: "31d6cfe0",
                 O5Nz: "31d6cfe0",
-                OVKt: "31d6cfe0",
                 QBQi: "31d6cfe0",
                 R43K: "31d6cfe0",
                 TGKG: "31d6cfe0",
                 UA2M: "31d6cfe0",
                 WVmE: "31d6cfe0",
                 ZA4w: "31d6cfe0",
-                "chunk-066c": "ca81d754",
-                "chunk-06b4": "58922dba",
-                "chunk-0937": "a66e7842",
+                "chunk-0148": "7a336911",
+                "chunk-01cd": "d4f6fd26",
+                "chunk-05d6": "4ee5ef86",
+                "chunk-0678": "7f3f2f73",
+                "chunk-0976": "d2f495f5",
                 "chunk-0a38": "31d6cfe0",
-                "chunk-0a9c": "ad1c1dd4",
-                "chunk-0c4b": "d63ebe99",
-                "chunk-0eb0": "269a6e6b",
+                "chunk-0d3c": "ba073db8",
                 "chunk-1100": "31d6cfe0",
-                "chunk-1905": "79cc872b",
-                "chunk-2026": "35e4d838",
-                "chunk-20c1": "dd8bc951",
-                "chunk-20dc": "9db51001",
-                "chunk-20f3": "b3f47171",
+                "chunk-1275": "f0efca3b",
+                "chunk-12d0": "23b8c01f",
+                "chunk-1980": "31d6cfe0",
+                "chunk-1b5d": "5a318c4f",
+                "chunk-21bb": "3a02744e",
+                "chunk-24c7": "d0365a52",
+                "chunk-2759": "78d282ba",
                 "chunk-28bc": "31d6cfe0",
-                "chunk-2bcd": "283ee292",
-                "chunk-2d74": "59d73ab6",
-                "chunk-2f0d": "242c8e39",
+                "chunk-2b56": "5f5dd408",
+                "chunk-2bab": "090acfc9",
+                "chunk-2ce0": "40626658",
+                "chunk-30dd": "7a336911",
                 "chunk-31c5": "31d6cfe0",
-                "chunk-33c0": "b3f47171",
-                "chunk-3dba": "7376cc1a",
-                "chunk-3f4a": "1bbb0f0f",
-                "chunk-4881": "47a2ce16",
-                "chunk-4a33": "3c67f794",
-                "chunk-528c": "73d7bda3",
+                "chunk-375b": "f92f2ab9",
+                "chunk-3a09": "530f0dba",
+                "chunk-3b1b": "3f656dcc",
+                "chunk-4013": "338d5aea",
+                "chunk-4491": "1b95fb11",
+                "chunk-5142": "efec6dfa",
+                "chunk-5259": "0be43753",
+                "chunk-545e": "e4ac5e6b",
                 "chunk-54fe": "31d6cfe0",
-                "chunk-562a": "29e72341",
-                "chunk-5d04": "35e4d838",
-                "chunk-5e48": "259ee2ba",
-                "chunk-5f19": "fd916ae0",
-                "chunk-6a54": "259ee2ba",
-                "chunk-7200": "85b70d6a",
-                "chunk-73c9": "9db51001",
+                "chunk-6185": "1167c109",
+                "chunk-64a3": "58829d91",
+                "chunk-74d9": "7f3f2f73",
                 "chunk-7574": "31d6cfe0",
                 "chunk-77e5": "31d6cfe0",
-                "chunk-79d9": "35e4d838",
+                "chunk-78b9": "9bf0307f",
+                "chunk-7a1f": "f0efca3b",
+                "chunk-7bb0": "9baaa8e0",
                 "chunk-7c72": "31d6cfe0",
-                "chunk-8735": "27a0ecc8",
-                "chunk-8c81": "d3c04760",
-                "chunk-b93d": "45d1e5c7",
-                "chunk-c1ac": "31d6cfe0",
-                "chunk-6440": "31d6cfe0",
-                "chunk-dd18": "1bbb0f0f",
-                "chunk-de61": "29e72341",
-                "chunk-e669": "d029f172",
+                "chunk-8019": "b1830fac",
+                "chunk-809d": "afa7c531",
+                "chunk-83fd": "4df7c49e",
+                "chunk-936c": "5061b64c",
+                "chunk-9595": "fd650f49",
+                "chunk-ce8e": "440b14de",
+                "chunk-commons": "31d6cfe0",
+                "chunk-200e": "97de5307",
+                "chunk-2407": "f286897f",
+                "chunk-2e20": "7fc03405",
+                "chunk-45a7": "72d95346",
+                "chunk-4cb8": "e25cc71a",
+                "chunk-4e87": "f286897f",
+                "chunk-4eb0": "f286897f",
+                "chunk-8358": "af304160",
+                "chunk-9e60": "03cab945",
+                "chunk-cc0a": "72d95346",
+                "chunk-d666": "4df7c49e",
+                "chunk-e0ca": "dad987d5",
+                "chunk-e49e": "c72de0b3",
+                "chunk-e626": "1c12a947",
+                "chunk-ebb5": "d1e09acb",
+                "chunk-f2b0": "5f2786c8",
+                "chunk-f583": "10772cd4",
+                "chunk-ffde": "81d629e1",
                 lSzS: "31d6cfe0",
                 n8pY: "31d6cfe0",
                 oyeJ: "31d6cfe0",
                 svyg: "31d6cfe0",
-                tOV8: "31d6cfe0"
-            }[c] + ".css", t = a.p + u, d = document.getElementsByTagName("link"), h = 0; h < d.length; h++) {
-                var r = (k = d[h]).getAttribute("data-href") || k.getAttribute("href");
-                if ("stylesheet" === k.rel && (r === u || r === t)) return e()
+                tOV8: "31d6cfe0",
+                wkZo: "31d6cfe0"
+            }[c] + ".css", h = d.p + u, k = document.getElementsByTagName("link"), f = 0; f < k.length; f++) {
+                var a = (r = k[f]).getAttribute("data-href") || r.getAttribute("href");
+                if ("stylesheet" === r.rel && (a === u || a === h)) return e()
             }
-            var f = document.getElementsByTagName("style");
-            for (h = 0; h < f.length; h++) {
-                var k;
-                if ((r = (k = f[h]).getAttribute("data-href")) === u || r === t) return e()
+            var t = document.getElementsByTagName("style");
+            for (f = 0; f < t.length; f++) {
+                var r;
+                if ((a = (r = t[f]).getAttribute("data-href")) === u || a === h) return e()
             }
-            var o = document.createElement("link");
-            o.rel = "stylesheet", o.type = "text/css", o.onload = e, o.onerror = function (e) {
-                var u = e && e.target && e.target.src || t,
-                    d = new Error("Loading CSS chunk " + c + " failed.\n(" + u + ")");
-                d.request = u, n(d)
-            }, o.href = t, document.getElementsByTagName("head")[0].appendChild(o)
+            var b = document.createElement("link");
+            b.rel = "stylesheet", b.type = "text/css", b.onload = e, b.onerror = function (e) {
+                var u = e && e.target && e.target.src || h,
+                    k = new Error("Loading CSS chunk " + c + " failed.\n(" + u + ")");
+                k.request = u, n(k)
+            }, b.href = h, document.getElementsByTagName("head")[0].appendChild(b)
         }).then(function () {
-            t[c] = 0
+            h[c] = 0
         }));
-        var n = d[c];
+        var n = k[c];
         if (0 !== n) if (n) e.push(n[2]); else {
             var u = new Promise(function (e, u) {
-                n = d[c] = [e, u]
+                n = k[c] = [e, u]
             });
             e.push(n[2] = u);
-            var h, r = document.getElementsByTagName("head")[0], f = document.createElement("script");
-            f.charset = "utf-8", f.timeout = 120, a.nc && f.setAttribute("nonce", a.nc), f.src = function (c) {
-                return a.p + "static/js/" + ({}[c] || c) + "." + {
+            var f, a = document.getElementsByTagName("head")[0], t = document.createElement("script");
+            t.charset = "utf-8", t.timeout = 120, d.nc && t.setAttribute("nonce", d.nc), t.src = function (c) {
+                return d.p + "static/js/" + ({"chunk-commons": "chunk-commons"}[c] || c) + "." + {
                     "6A8A": "39e9a775",
-                    AxA2: "9b1ae7e9",
+                    "9X3h": "24e0dc02",
+                    AxA2: "3f620244",
                     Cr7o: "45da62ac",
-                    EYnS: "66dd4e6b",
+                    EDlP: "e97bb2e6",
                     Iabc: "c5058a89",
-                    O5Nz: "b04f9ae7",
-                    OVKt: "e2a6c372",
+                    O5Nz: "93f916d6",
                     QBQi: "3837f3d4",
-                    R43K: "2bd52253",
-                    TGKG: "6f2a880f",
-                    UA2M: "367c641b",
+                    R43K: "9d60617d",
+                    TGKG: "36ca0997",
+                    UA2M: "bb731657",
                     WVmE: "67a70155",
-                    ZA4w: "19861a8e",
-                    "chunk-066c": "bc3f95b4",
-                    "chunk-06b4": "09dd4d36",
-                    "chunk-0937": "cd224f65",
-                    "chunk-0a38": "7e36bc29",
-                    "chunk-0a9c": "923c4180",
-                    "chunk-0c4b": "f608402d",
-                    "chunk-0eb0": "ec8a4204",
+                    ZA4w: "216e448c",
+                    "chunk-0148": "edbb0f16",
+                    "chunk-01cd": "3bce1a52",
+                    "chunk-05d6": "cf72c338",
+                    "chunk-0678": "f79ee703",
+                    "chunk-0976": "161825f0",
+                    "chunk-0a38": "ddc28e8a",
+                    "chunk-0d3c": "64ead504",
                     "chunk-1100": "f88c9bc8",
-                    "chunk-1905": "bdd7b18d",
-                    "chunk-2026": "b2ccb779",
-                    "chunk-20c1": "ddb2793c",
-                    "chunk-20dc": "c9be1c3a",
-                    "chunk-20f3": "cd138fcc",
-                    "chunk-28bc": "56538737",
-                    "chunk-2bcd": "9ac34ecc",
-                    "chunk-2d74": "752a6b1c",
-                    "chunk-2f0d": "0718c3c7",
-                    "chunk-31c5": "ca52d2d2",
-                    "chunk-33c0": "05dfaf02",
-                    "chunk-3dba": "d69acf00",
-                    "chunk-3f4a": "02a8a287",
-                    "chunk-4881": "286c3634",
-                    "chunk-4a33": "11be0ed4",
-                    "chunk-528c": "a343db71",
-                    "chunk-54fe": "97751b27",
-                    "chunk-562a": "ac04f451",
-                    "chunk-5d04": "bfdf33a5",
-                    "chunk-5e48": "43e25a1d",
-                    "chunk-5f19": "8fab4be8",
-                    "chunk-6a54": "ffdca783",
-                    "chunk-7200": "318f50aa",
-                    "chunk-73c9": "e635a928",
-                    "chunk-7574": "191135cf",
+                    "chunk-1275": "900e81ae",
+                    "chunk-12d0": "40caee32",
+                    "chunk-1980": "33491c89",
+                    "chunk-1b5d": "24dccebf",
+                    "chunk-21bb": "e12168a2",
+                    "chunk-24c7": "6d13ac63",
+                    "chunk-2759": "e8b40c89",
+                    "chunk-28bc": "16bd17bc",
+                    "chunk-2b56": "e6199af4",
+                    "chunk-2bab": "c10baad4",
+                    "chunk-2ce0": "9a518744",
+                    "chunk-30dd": "b17ea34a",
+                    "chunk-31c5": "9e85fcee",
+                    "chunk-375b": "f32a5b18",
+                    "chunk-3a09": "46815f51",
+                    "chunk-3b1b": "619d3007",
+                    "chunk-4013": "3fb7867f",
+                    "chunk-4491": "5a72444b",
+                    "chunk-5142": "e0db8ad5",
+                    "chunk-5259": "d7644027",
+                    "chunk-545e": "e55d62f0",
+                    "chunk-54fe": "a6bcddd0",
+                    "chunk-6185": "edd0a804",
+                    "chunk-64a3": "46980d7b",
+                    "chunk-74d9": "735b7254",
+                    "chunk-7574": "b694e056",
                     "chunk-77e5": "c36e5cfd",
-                    "chunk-79d9": "07c12c21",
-                    "chunk-7c72": "c7325410",
-                    "chunk-8735": "1a93fedb",
-                    "chunk-8c81": "0b65f7b3",
-                    "chunk-b93d": "0a7e0ac2",
-                    "chunk-c1ac": "a55f08e7",
-                    "chunk-6440": "d7754138",
-                    "chunk-dd18": "8bbfc40a",
-                    "chunk-de61": "4db8e807",
-                    "chunk-e669": "36263896",
+                    "chunk-78b9": "eaf2842d",
+                    "chunk-7a1f": "cb853ea4",
+                    "chunk-7bb0": "f8d02f24",
+                    "chunk-7c72": "cf54bc4d",
+                    "chunk-8019": "e3abf4e1",
+                    "chunk-809d": "1958c1d0",
+                    "chunk-83fd": "c80f25ee",
+                    "chunk-936c": "1b1fe670",
+                    "chunk-9595": "e170e320",
+                    "chunk-ce8e": "a38ab11a",
+                    "chunk-commons": "3302a999",
+                    "chunk-200e": "594bc2fc",
+                    "chunk-2407": "b137b7d2",
+                    "chunk-2e20": "f93ae82e",
+                    "chunk-45a7": "3cffc30f",
+                    "chunk-4cb8": "6dd93e69",
+                    "chunk-4e87": "a575c79e",
+                    "chunk-4eb0": "664e4237",
+                    "chunk-8358": "d09a41d6",
+                    "chunk-9e60": "486cc2e2",
+                    "chunk-cc0a": "93c1582d",
+                    "chunk-d666": "ccdc9320",
+                    "chunk-e0ca": "59df811e",
+                    "chunk-e49e": "a02fc4e1",
+                    "chunk-e626": "883164e2",
+                    "chunk-ebb5": "f6528b32",
+                    "chunk-f2b0": "05b57411",
+                    "chunk-f583": "086f1faf",
+                    "chunk-ffde": "78e0e567",
                     lSzS: "ea047607",
                     n8pY: "d5d8dcff",
                     oyeJ: "a6f8317e",
-                    svyg: "969da3b8",
-                    tOV8: "de259510"
+                    svyg: "18d0d78d",
+                    tOV8: "de259510",
+                    wkZo: "b12a53be"
                 }[c] + ".js"
-            }(c), h = function (e) {
-                f.onerror = f.onload = null, clearTimeout(k);
-                var n = d[c];
+            }(c), f = function (e) {
+                t.onerror = t.onload = null, clearTimeout(r);
+                var n = k[c];
                 if (0 !== n) {
                     if (n) {
-                        var u = e && ("load" === e.type ? "missing" : e.type), t = e && e.target && e.target.src,
-                            h = new Error("Loading chunk " + c + " failed.\n(" + u + ": " + t + ")");
-                        h.type = u, h.request = t, n[1](h)
+                        var u = e && ("load" === e.type ? "missing" : e.type), h = e && e.target && e.target.src,
+                            f = new Error("Loading chunk " + c + " failed.\n(" + u + ": " + h + ")");
+                        f.type = u, f.request = h, n[1](f)
                     }
-                    d[c] = void 0
+                    k[c] = void 0
                 }
             };
-            var k = setTimeout(function () {
-                h({type: "timeout", target: f})
+            var r = setTimeout(function () {
+                f({type: "timeout", target: t})
             }, 12e4);
-            f.onerror = f.onload = h, r.appendChild(f)
+            t.onerror = t.onload = f, a.appendChild(t)
         }
         return Promise.all(e)
-    }, a.m = c, a.c = u, a.d = function (c, e, n) {
-        a.o(c, e) || Object.defineProperty(c, e, {enumerable: !0, get: n})
-    }, a.r = function (c) {
+    }, d.m = c, d.c = u, d.d = function (c, e, n) {
+        d.o(c, e) || Object.defineProperty(c, e, {enumerable: !0, get: n})
+    }, d.r = function (c) {
         "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(c, Symbol.toStringTag, {value: "Module"}), Object.defineProperty(c, "__esModule", {value: !0})
-    }, a.t = function (c, e) {
-        if (1 & e && (c = a(c)), 8 & e) return c;
+    }, d.t = function (c, e) {
+        if (1 & e && (c = d(c)), 8 & e) return c;
         if (4 & e && "object" == typeof c && c && c.__esModule) return c;
         var n = Object.create(null);
-        if (a.r(n), Object.defineProperty(n, "default", {
+        if (d.r(n), Object.defineProperty(n, "default", {
             enumerable: !0,
             value: c
-        }), 2 & e && "string" != typeof c) for (var u in c) a.d(n, u, function (e) {
+        }), 2 & e && "string" != typeof c) for (var u in c) d.d(n, u, function (e) {
             return c[e]
         }.bind(null, u));
         return n
-    }, a.n = function (c) {
+    }, d.n = function (c) {
         var e = c && c.__esModule ? function () {
             return c.default
         } : function () {
             return c
         };
-        return a.d(e, "a", e), e
-    }, a.o = function (c, e) {
+        return d.d(e, "a", e), e
+    }, d.o = function (c, e) {
         return Object.prototype.hasOwnProperty.call(c, e)
-    }, a.p = "/", a.oe = function (c) {
+    }, d.p = "/", d.oe = function (c) {
         throw console.error(c), c
     };
-    var r = window.webpackJsonp = window.webpackJsonp || [], f = r.push.bind(r);
-    r.push = e, r = r.slice();
-    for (var k = 0; k < r.length; k++) e(r[k]);
-    var o = f;
+    var a = window.webpackJsonp = window.webpackJsonp || [], t = a.push.bind(a);
+    a.push = e, a = a.slice();
+    for (var r = 0; r < a.length; r++) e(a[r]);
+    var b = t;
     n()
 }([]);</script>
 <script src=/static/js/chunk-elementUI.2ddd7223.js></script>
-<script src=/static/js/chunk-libs.7010af3a.js></script>
-<script src=/static/js/app.da647b20.js></script>
+<script src=/static/js/chunk-libs.f4abbe3f.js></script>
+<script src=/static/js/app.2ad3320c.js></script>
 </body>
 </html>

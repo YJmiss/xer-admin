@@ -83,4 +83,3 @@ os-admin:
     open: false
   shiro:
     redis: false
-
