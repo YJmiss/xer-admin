@@ -65,5 +65,13 @@
     <select id="queryById" parameterType="java.lang.String" resultType="com.oservice.admin.modules.sys.entity.XryUserEntity">
       select * from xry_user where id = #{userId}
     </select>
+    <!--判断昵称是否存在-->
+    <select id="judgeNicknameIsRepet" parameterType="java.lang.String" resultType="java.lang.String">
+        select nickname from xry_user where nickname = #{nickname} and id <![CDATA[ <> ]]> #{userId}
+    </select>
+    <!--邮箱是否是本人的-->
+    <select id="judgeEmailIsRepet" parameterType="java.lang.String" resultType="java.lang.String">
+        select email from xry_user where email = #{email} and id <![CDATA[ <> ]]> #{userId}
+    </select>
 
 </mapper>
