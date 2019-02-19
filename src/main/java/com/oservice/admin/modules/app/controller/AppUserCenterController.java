@@ -13,6 +13,7 @@ import com.oservice.admin.modules.sys.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -168,17 +169,27 @@ public class AppUserCenterController extends AbstractController {
     @GetMapping("/userCenter/updateUserInfoByUserId")
     @ApiOperation(value = "个人中心修改个人资料接口", notes = "params：携带昵称、性别、邮箱信息的参数；需要在请求头里加token参数")
     public Result updateUserInfoByUserId(@RequestParam String params, HttpServletRequest request) {
-        String userId = "";
         String accessToken = request.getHeader("token");
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
                 return Result.error(204, "token失效，请重新登录");
+            } else {
+                XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
+                String userId = users.getId();
+                // 判断该昵称已被其他用户使用
+                String nickname = xryUserService.judgeNicknameIsRepet(params, userId);
+                if (StringUtils.isNotBlank(nickname)) {
+                    return Result.error(205, "该昵称已被其他用户使用，请重新填写");
+                }
+                // 判断该邮箱已被其他用户绑定
+                String email = xryUserService.judgeEmailIsRepet(params, userId);
+                if (StringUtils.isNotBlank(email)) {
+                    return Result.error(206, "该邮箱已被其他用户绑定，请重新填写");
+                }
+                xryUserService.updateUserInfoByUserId(params, userId);
             }
-            XryUserEntity users = shiroService.queryUsers(tokenEntity.getUserId());
-            userId = users.getId();
         }
-        xryUserService.updateUserInfoByUserId(params, userId);
         return Result.ok();
     }
 
