@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oservice.admin.modules.sys.dao.XryPayOfflineDao">
+
+    <!--查询返回的数据总数-->
+    <select id="countTotal" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(*) from xry_pay_offline a left join xry_user b on a.xu_id=b.id left join xry_course c on a.xc_id=c.id
+              left join sys_user d on a.su_id=d.user_id where 1=1
+        <if test="params.title != null and params.title != ''">
+            and c.title like #{params.title}
+        </if>
+        <if test="params.nickname != null and params.nickname != ''">
+            and b.nickname like #{params.nickname} or b.phone like #{params.nickname}
+        </if>
+        <if test="params.userName != null and params.userName != ''">
+            and d.username like #{params.userName} or d.mobile like #{params.userName}
+        </if>
+        <if test="params.createTime != null and params.createTime != ''">
+            and a.create_time like #{params.createTime}
+        </if>
+    </select>
+    <!--自定义分页查询-->
+    <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
+        select a.id, a.real_pay as realPay, a.create_time as createTime, b.nickname, b.phone, c.title, d.username, d.mobile from xry_pay_offline a left join xry_user b on a.xu_id=b.id
+              left join xry_course c on a.xc_id=c.id left join sys_user d on a.su_id=d.user_id where 1=1
+        <if test="params.title != null and params.title != ''">
+            and c.title like #{params.title}
+        </if>
+        <if test="params.nickname != null and params.nickname != ''">
+            and b.nickname like #{params.nickname} or b.phone like #{params.nickname}
+        </if>
+        <if test="params.userName != null and params.userName != ''">
+            and d.username like #{params.userName} or d.mobile like #{params.userName}
+        </if>
+        <if test="params.createTime != null and params.createTime != ''">
+            and a.create_time like #{params.createTime}
+        </if>
+        <if test="params.pageSize != null and params.pageSize != ''">
+            limit ${params.pageNo},${params.pageSize}
+        </if>
+    </select>
+
+</mapper>
