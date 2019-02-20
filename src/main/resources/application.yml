@@ -26,7 +26,7 @@ spring:
       enabled: true
   data:
     solr:
-      host: http://localhost:8080/solr
+      host: http://120.79.192.229:8080/solr
   redis:
     open: true  # 是否开启redis缓存  true开启   false关闭
     database: 0

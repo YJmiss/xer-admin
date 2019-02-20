@@ -58,7 +58,7 @@ public class OServiceAdminApplication extends SpringBootServletInitializer {
 	private Connector initiateHttpConnector() {
 		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
 		connector.setScheme("http");
-		connector.setPort(80); // http端口
+		connector.setPort(81); // http端口
 		connector.setSecure(false);
 		connector.setRedirectPort(443); // application.properties中配置的https端口
 		return connector;

@@ -24,6 +24,10 @@
     <delete id="appDelCourseById" parameterType="java.util.Map">
         delete from xry_user_applicant where id = #{params.id}
     </delete>
+    <!--app端用户删除已经加入学习的课程，通过用户id和课程id-->
+    <delete id="delCourseByUserIdAndCourseId" parameterType="java.util.Map">
+        delete from xry_user_applicant where obj_id = #{params.objId} and user_id = #{params.userId}
+    </delete>
     <!--根据课程id查询出报名学习该课程的所有用户-->
     <select id="listUserIdByCourseId" parameterType="java.lang.Long" resultType="java.lang.String">
       select sut.token from xry_user_applicant xua left join sys_user_token sut on xua.user_id = sut.user_id where obj_id = #{courseId} and obj_type = 0 and obj_status = 0

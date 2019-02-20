@@ -70,4 +70,10 @@ public interface XryUserApplicantService extends IService<XryUserApplicantEntity
      * @param params
      */
     void addCourseStudyProgress(Map<String, Object> params);
+
+    /**
+     * app端用户删除已经加入学习的课程，通过用户id和课程id
+     * @param params
+     */
+    void delCourseByUserIdAndCourseId(Map<String, Object> params);
 }

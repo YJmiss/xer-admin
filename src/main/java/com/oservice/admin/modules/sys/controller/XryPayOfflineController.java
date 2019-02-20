@@ -6,12 +6,15 @@ import com.oservice.admin.common.utils.Result;
 import com.oservice.admin.common.validator.ValidatorUtils;
 import com.oservice.admin.common.validator.group.AddGroup;
 import com.oservice.admin.common.validator.group.UpdateGroup;
+import com.oservice.admin.modules.app.dao.SolrJDao;
 import com.oservice.admin.modules.sys.entity.*;
 import com.oservice.admin.modules.sys.service.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -23,8 +26,16 @@ import java.util.*;
 @RestController
 @RequestMapping("/xry/payOffline")
 public class XryPayOfflineController extends AbstractController {
+    /** 课程加入学习的标识符 */
+    final static Integer COURSE_JOIN_STUDY = 0;
     @Resource
     private XryPayOfflineService xryPayOfflineService;
+    @Resource
+    private XryUserApplicantService xryUserApplicantService;
+    @Resource
+    private XryCourseService xryCourseService;
+    @Resource
+    private SolrJDao solrJDao;
 
     /**
      * 查询线下支付列表
@@ -48,7 +59,20 @@ public class XryPayOfflineController extends AbstractController {
     @PostMapping("/delete")
     @RequiresPermissions("xry:payOffline:delete")
     public Result delete(@RequestBody Long[] ids) {
-        xryPayOfflineService.deleteBatch(ids);
+//        xryPayOfflineService.deleteBatch(ids);
+        Map<String, Object> params = new HashMap<>();
+        for (Long id : ids) {
+            // 第一步：从课程报名表中删除对应信息
+            XryPayOfflineEntity xryPayOffline = xryPayOfflineService.selectById(id);
+            Long courseId = xryPayOffline.getXcId();
+            params.put("userId", xryPayOffline.getXuId());
+            params.put("objId", courseId);
+            xryUserApplicantService.delCourseByUserIdAndCourseId(params);
+            // 第二步：从线下支付表中删除对应信息
+            xryPayOfflineService.deleteById(id);
+            // 第三步：给课程表中的计数-1
+            xryCourseService.updateCourseApplicationCount(courseId, 2);
+        }
         return Result.ok();
     }
 
@@ -65,7 +89,29 @@ public class XryPayOfflineController extends AbstractController {
         xryPayOffline.setSuId(String.valueOf(getUser().getUserId()));
         xryPayOffline.setCreateTime(new Date());
         xryPayOfflineService.save(xryPayOffline);
-        return Result.ok();
+        // 保存成功后，把课程id和用户id添加到报名表中
+        Map<String, Object> params = new HashMap<>();
+        Long courseId = xryPayOffline.getXcId();
+        params.put("userId", xryPayOffline.getXuId());
+        params.put("objId", courseId);
+        params.put("objType", COURSE_JOIN_STUDY);
+        Integer isSuccess = xryUserApplicantService.appSaveCourse(params);
+        if (1 == isSuccess) {
+            // 给课程计数+1
+            xryCourseService.updateCourseApplicationCount(courseId, 1);
+            XryCourseEntity course = xryCourseService.queryById(courseId);
+            //得到课程的学习数
+            try {
+                solrJDao.update(courseId, course.getApplicantCount(), 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (SolrServerException e) {
+                e.printStackTrace();
+            }
+            return Result.ok().put("1", "课程加入学习成功");
+        } else {
+            return Result.error(2, "课程加入学习失败");
+        }
     }
 
     /**
