@@ -319,6 +319,7 @@ public class AppContentController extends AbstractController {
         Map<String, Object> params = new HashMap();
         params.put("pageNo", (pageNo - 1) * pageSize);
         params.put("pageSize", pageSize);
+        List<Map<String, Object>> courseCatList = new ArrayList<>();
         if (StringUtils.isNotBlank(accessToken)) {
             SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
             if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
@@ -339,7 +340,6 @@ public class AppContentController extends AbstractController {
                         }
                     }
                 }
-                List<Map<String, Object>> courseCatList = new ArrayList<>();
                 Map<String, Object> courseCat = null;
                 for (String catId : catIdList) {
                     Long courseCatId = Long.valueOf(catId);
@@ -351,9 +351,9 @@ public class AppContentController extends AbstractController {
                     userSettingCourseList = courseService.listUserSettingCourseByUserId(params);
                     courseCat.put("userSettingCourseList", userSettingCourseList);
                 }
-                courseList.put("courseCatList",courseCatList);
             }
         }
+        courseList.put("courseCatList",courseCatList);
         // 没有登录的情况下，查询管理员根据类目设置的推荐课程
         // 查询全部，返回一个list，不根据类目分类
         courseRecommendList = courseService.listRecommendCourse(params);
