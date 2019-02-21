@@ -70,6 +70,10 @@
         select nickname from xry_user where nickname = #{nickname} and id <![CDATA[ <> ]]> #{userId}
     </select>
     <!--邮箱是否是本人的-->
+    <select id="judgeNicknameIsRepet" parameterType="java.lang.String" resultType="java.lang.String">
+        select nickname from xry_user where nickname = #{nickname} and id <![CDATA[ <> ]]> #{userId}
+    </select>
+    <!--邮箱是否是本人的-->
     <select id="judgeEmailIsRepet" parameterType="java.lang.String" resultType="java.lang.String">
         select email from xry_user where email = #{email} and id <![CDATA[ <> ]]> #{userId}
     </select>
