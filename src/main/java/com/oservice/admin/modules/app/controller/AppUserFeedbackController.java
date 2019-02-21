@@ -110,20 +110,12 @@ public class AppUserFeedbackController extends AbstractController {
 
     /**
      * app查询常见问题列表
-     * @param request
      * @param flag
      * @return
      */
     @PostMapping("/appListCommentQuestionByUserId")
     @ApiOperation(value="app查询常见问题列表",notes="params：0表示查询6条；1查询所有；需要在请求头里携带token")
-    public Result appListCommentQuestionByUserId(@RequestParam Integer flag, HttpServletRequest request) {
-        String accessToken = request.getHeader("token");
-        if (StringUtils.isNotBlank(accessToken)) {
-            SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
-            if (tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()) {
-                return Result.error(401, "token失效，请重新登录");
-            }
-        }
+    public Result appListCommentQuestionByUserId(@RequestParam Integer flag) {
         // 进入问题反馈界面，查询6条常见问题，以添加时间降序排序
         // flag:0表示查询6条；1查询所有
         List<Map<String, Object>> commentQuestionList = xryCommentQuestionService.appListCommentQuestionByUserId(flag);
