@@ -52,6 +52,7 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         String cid = (String) params.get("cid");
         String tid = (String) params.get("tid");
         String flag = (String) params.get("status");
+        String recommend = (String) params.get("recommend");
         Integer status = 0;
         if (null != flag) {
             status = Integer.valueOf(flag);
@@ -62,6 +63,7 @@ public class XryCourseServiceImpl extends ServiceImpl<XryCourseDao, XryCourseEnt
         map.put("cid",cid);
         map.put("tid",tid);
         map.put("status",status);
+        map.put("recommend",recommend);
         // 查询返回的数据总数page.totalCount
         Long total = baseMapper.countTotal(map);
         pageList.setTotal(total);

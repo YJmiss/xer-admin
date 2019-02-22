@@ -62,6 +62,7 @@ public class XryTeacherController extends AbstractController {
     @RequiresPermissions("xry:teacher:addTeacherInfo")
     public Result addTeacherInfo(@RequestBody XryTeacherEntity xryTeacherEntity){
         ValidatorUtils.validateEntity(xryTeacherEntity, AddGroup.class);
+        xryTeacherEntity.setStatus(3);
         xryTeacherService.updateById(xryTeacherEntity);
         return Result.ok();
     }

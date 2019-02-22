@@ -28,11 +28,13 @@ public class XryArticleServiceImpl extends ServiceImpl<XryArticleDao, XryArticle
         String type = (String) params.get("type");
         String title = (String) params.get("title");
         String flag = (String) params.get("flag");
+        String recommend = (String) params.get("recommend");
         map.put("pageNo",(new Integer(pageNo) - 1) * new Integer(pageSize));
         map.put("pageSize",pageSize);
         map.put("type",type);
         map.put("title","%" + title + "%");
         map.put("flag",flag);
+        map.put("recommend",recommend);
         // 查询返回的数据总数page.totalCount
         Long total = baseMapper.countTotal(map);
         pageList.setTotal(total);

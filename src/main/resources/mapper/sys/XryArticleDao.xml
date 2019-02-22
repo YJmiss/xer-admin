@@ -16,6 +16,9 @@
         <if test="params.title != null and params.title != ''">
             and a.title like #{params.title}
         </if>
+        <if test="params.recommend != null and params.recommend != ''">
+            and a.recommend = #{params.recommend}
+        </if>
     </select>
     <!--自定义分页查询-->
     <select id="pageList" parameterType="java.util.Map" resultType="java.util.Map">
@@ -29,6 +32,9 @@
         </if>
         <if test="params.title != null and params.title != ''">
             and a.title like #{params.title}
+        </if>
+        <if test="params.recommend != null and params.recommend != ''">
+            and a.recommend = #{params.recommend}
         </if>
         <if test="params.pageSize != null and params.pageSize != ''">
             limit ${params.pageNo},${params.pageSize}
